@@ -6,6 +6,7 @@
 
 from twython import Twython
 import time
+from datetime import datetime
 import os.path
 import pickle
 
@@ -29,7 +30,7 @@ def Authenticate():
         OAUTH_TOKEN = auth['oauth_token']
         OAUTH_TOKEN_SECRET = auth['oauth_token_secret']
 
-        print auth['auth_url']
+        print(auth['auth_url'])
 
         oauth_verifier = raw_input('Enter your pin:')
 
@@ -51,9 +52,19 @@ def Authenticate():
 
 twitter = Authenticate()
 
+andrew = "@andrewtatham"
+helen = "@morris_helen"
+markr = "@fuuuunnnkkytree"
+jamie = "@jami3rez"
+dean = "@dcspamoni"
+
+
 while (True):
     timeline = twitter.get_home_timeline()
     for tweet in timeline:
-        print tweet['text']
+        print(tweet['text'])
+
+    status = "@morris_helen it is " + str(datetime.now())
+    twitter.update_status(status=status)
     time.sleep(60)
     
