@@ -57,6 +57,9 @@ helen = "@morris_helen"
 markr = "@fuuuunnnkkytree"
 jamie = "@jami3rez"
 dean = "@dcspamoni"
+chriswatson = "@watdoghotdog"
+fletch = "@paulfletcher79"
+simon = "@Tolle_Lege"
 
 
 while (True):
