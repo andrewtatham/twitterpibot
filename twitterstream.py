@@ -1,17 +1,63 @@
 
 
 
-# APP_KEY = 'xglqZ20zTPe97yq0ZLkQsV2af'
-# APP_SECRET = 'ci0fovVfpRrxuqP9C0KwAxl1tajH8yJoxQcSuUNYluFBxpS9Au'
 
-from twython import Twython
+
+from twython import Twython, TwythonStreamer
+
 import time
 from datetime import datetime
 import os.path
 from os import listdir
 import pickle
+import pprint
+
+
+class MyStreamer(TwythonStreamer):
+    def on_success(self, data):
+        if 'text' in data:
+            # STATUS UPDATE
+
+            tweetstring = data['id_str'].encode('utf-8') + ': ' + data['user']['name'].encode('utf-8') + ' [@' + data['user']['screen_name'].encode('utf-8') + '] "' + data['text'].encode('utf-8') + '"'
+            print(tweetstring)
+
+            #print(data['text'].encode('utf-8'))    
+            #pprint.pprint(data)
+        elif 'direct_message' in data:
+            # DIRECT MESSAGE
+            senderid = str(data['direct_message']['sender_id_str'])
+            sender = str(data['direct_message']['sender_screen_name'])
+            
+            print("Direct message from " + sender + ' ' + senderid )
+            
+            if senderid == andrewpiid:
+                # IGNORE
+                pass
+                print(" from pi" )
+            elif senderid == andrewid:
+                # FROM ME
+                print(" from me" )
+            else:
+                pprint.pprint(data)
+            
+
+            
+        else:
+            #pass
+            pprint.pprint(data)
+
+            
+    def on_error(self, status_code, data):
+
+            print(str(status_code)  + ' ' + data)
+
+
+
+
 
 def Authenticate():
+    # APP_KEY = 'xglqZ20zTPe97yq0ZLkQsV2af'
+    # APP_SECRET = 'ci0fovVfpRrxuqP9C0KwAxl1tajH8yJoxQcSuUNYluFBxpS9Au'
     APP_KEY = 'xglqZ20zTPe97yq0ZLkQsV2af'
     APP_SECRET = 'ci0fovVfpRrxuqP9C0KwAxl1tajH8yJoxQcSuUNYluFBxpS9Au'
 
@@ -44,16 +90,27 @@ def Authenticate():
 
         pickle.dump(FINAL_OAUTH_TOKEN, open("FINAL_OAUTH_TOKEN.pkl", "wb"))
         pickle.dump(FINAL_OAUTH_TOKEN_SECRET, open("FINAL_OAUTH_TOKEN_SECRET.pkl", "wb"))
+
+    
    
-    twitter = Twython(APP_KEY, APP_SECRET, FINAL_OAUTH_TOKEN, FINAL_OAUTH_TOKEN_SECRET)
+    streamer = MyStreamer(APP_KEY, APP_SECRET, FINAL_OAUTH_TOKEN, FINAL_OAUTH_TOKEN_SECRET)
 
-    return twitter
+    return streamer
 
+
+
+
+    
     
 
 
 
+andrewpi = "@andrewtathampi" 
+andrewpiid = "2935295111"
+
 andrew = "@andrewtatham"
+andrewid = "19201332"
+
 helen = "@morris_helen"
 markr = "@fuuuunnnkkytree"
 jamie = "@jami3rez"
@@ -65,33 +122,28 @@ simon = "@Tolle_Lege"
 users = [andrew, markr, jamie, helen, dean, chriswatson, simon]
 
 
-#deanpicsfolder = "pics/dean/"
-#deanpics = listdir(deanpicsfolder)
-#i=0
-#imax = len(deanpics)
 
 
 
-twitter = Authenticate()
-while (True):
-    
-    #timeline = twitter.get_home_timeline()
-    #for tweet in timeline:
-    #    print(tweet['text'])
+
+streamer = Authenticate()
 
 
-    #status = "@morris_helen it is " + str(datetime.now())
-    #twitter.update_status(status=status)
+#userids = users
+#userscsv = ','.join(userids)
+#print(userscsv)
+#myfilter = "andrewtatham" # userscsv
+
+## streamer.statuses.sample()
+
+## streamer.statuses.filter(track='Leeds',language='en',stall_warnings='true', filter_level='medium')
+
+## streamer.user()
+
+streamer.user()
 
 
-    #user = andrew
-    #status = user + " wow so much dean..."
-    #photo = open(deanpicsfolder + deanpics[i])
-    #twitter.update_status_with_media(status=status, media=photo)
-    
-    #i += 1
-    #if(i >= imax):
-    #    i = 0
-        
-    time.sleep(60)
+####streamer.statuses.firehose()
+
+
     
