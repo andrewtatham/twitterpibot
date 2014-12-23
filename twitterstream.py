@@ -2,10 +2,18 @@
 
 # features/fixes
 
-# smaller image size to prevet hangs
-# case insensitivity
+# Error handling
 # mentions/retweets
+# no notify on pi follow
 
+
+# image ocr/ai
+# some neural network shit
+
+
+# discovr feed
+# trends
+# hashtags
 
 
 from twython import Twython, TwythonStreamer
@@ -15,6 +23,7 @@ from datetime import datetime
 import pickle
 import pprint
 import random
+import string
 
 from os import listdir
 import os.path
@@ -45,14 +54,15 @@ def ReplyWithPhoto(sender):
     #twitter.send_direct_message(user_id=senderid,screen_name=sender,text=message,media=media['media_id_string'])
     print("done.")
 
-def ReplyWithDean(sender):
-    print("gettig dean pic...")
-    path = deanpicsfolder + random.choice(deanpics)
-    print("uploading...")
+def ReplyWithDean(sender, name):
+    print("gettig " + name + " pic...")
+    path = picsfolder + name + '/' + random.choice(pics[name])
+    print("uploading " + path + "...")
     media = twitter.upload_media(media=open(path,'rb'))
     pprint.pprint(media)
     print("tweeting...")
-    twitter.update_status(status='@' + sender + ' ' + " Your picture of Dean...", media_ids=media['media_id_string'])
+    message = random.choice(deanmessages) + ' ' + name
+    twitter.update_status(status='@' + sender + ' ' + message, media_ids=media['media_id_string'])
     print("done.")
 
 
@@ -65,14 +75,11 @@ class MyStreamer(TwythonStreamer):
         if 'text' in data:
             # STATUS UPDATE
 
-            #if 'entities' in data and user_mentions in data['entities'] :
-
+            if data['user']['id_str'] == andrewid:
+                pprint.pprint(data)
+            
             tweetstring = data['id_str'].encode('utf-8') + ': ' + data['user']['name'].encode('utf-8') + ' [@' + data['user']['screen_name'].encode('utf-8') + '] "' + data['text'].encode('utf-8') + '"'
             print(tweetstring)
-
-            #print(data['text'].encode('utf-8'))    
-            #pprint.pprint(data)
-
 
 
             
@@ -92,10 +99,10 @@ class MyStreamer(TwythonStreamer):
                 
             else:
                 # FROM ANYOE ELSE
-                if (directmessagetext == "photo"):
+                if (directmessagetext.lower() == "photo"):
                     ReplyWithPhoto(sender)
-                elif (directmessagetext == "dean"):
-                    ReplyWithDean(sender)
+                elif (directmessagetext.lower() in pics):
+                    ReplyWithDean(sender, directmessagetext.lower())
                 else:
                     #message = str(datetime.now())
                     #twitter.send_direct_message(user_id=senderid,screen_name=sender,text=message,media=media['media_id_string'])
@@ -109,7 +116,7 @@ class MyStreamer(TwythonStreamer):
                 newFollowerID = data['source']['id_str'].encode('utf-8')
                 newFollowerName = data['source']['name'].encode('utf-8')
                 newFollowerScreeName = data['source']['screen_name'].encode('utf-8')
-                newfollow = 'NEW FOLLOWER: ' + newFollowerName + ' [@' + newFollowerScreeName + '] "' + data['text'].encode('utf-8') + '"'
+                newfollow = 'NEW FOLLOWER: ' + newFollowerName + ' [@' + newFollowerScreeName + ']' 
                 print(newfollow)
             else:
                 pprint.pprint(data)
@@ -205,10 +212,23 @@ camera.resolution=[640,480]
 
 
 # INIT DEANPICS
-deanpicsfolder = "pics/dean/"
-deanpics = listdir(deanpicsfolder)
 
 
+deanmessages = ["need moar", "many", "so much", "very", "wow"]
+picsfolder = "pics/"
+pics = {}
+people = os.listdir(picsfolder)
+for person in people:
+    name = str(person)
+    personpicsfolder = picsfolder + name + '/'
+    if os.path.isdir(personpicsfolder):
+        pics[name] = os.listdir(personpicsfolder)
+    
+#pprint.pprint(people)
+#for person in people:
+#    name = str(person)
+#    print(name)
+#    pprint.pprint(pics[name])
 
 # START STREAMING
 
