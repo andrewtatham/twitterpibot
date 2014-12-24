@@ -74,9 +74,17 @@ def ReplyWithDean(sender, name):
     twitter.update_status(status="@" + sender + " " + message, media_ids=media["media_id_string"])
     print("done.")
 
+def RetweetRecursion(data):
 
+    tweetstring = data["id_str"].encode("utf-8") + ": " + data["user"]["name"].encode("utf-8") + " [@" + data["user"]["screen_name"].encode("utf-8") + "] " + data["text"].encode("utf-8")  
+    print(tweetstring)
+
+    if "retweeted_status" in data:
+        if data["retweeted_status"] is not None:
+            RetweetRecursion(data["retweeted_status"])
 
 class MyStreamer(TwythonStreamer):
+
     
     
     def on_success(self, data):
@@ -87,8 +95,20 @@ class MyStreamer(TwythonStreamer):
                 if data["user"]["id_str"] == andrewid:
                     pprint.pprint(data)
                 
-                tweetstring = data["id_str"].encode("utf-8") + ": " + data["user"]["name"].encode("utf-8") + " [@" + data["user"]["screen_name"].encode("utf-8") + "] " + data["text"].encode("utf-8")  
-                print(tweetstring)
+
+##                if "entities" in data:
+##                    entities = data["entities"]
+##
+##                    if "user_mentions" in entities:
+##                        mentions = entities["user_mentions"]
+##                        for mention in mentions:
+##                            if mention["id_str"] == andrewpiid:
+##                                # ANDREWPI MENTION
+                                
+                                
+                
+                RetweetRecursion(data)
+                
 
 
                 
