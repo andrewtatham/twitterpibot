@@ -166,8 +166,8 @@ class MyStreamer(TwythonStreamer):
                 pass
             else:
                 pprint.pprint(data)
-        except TwythonError, error:                
-            pprint.pprint(error)
+        except Error as e:                
+            pprint.pprint(e)
 
             
     def on_error(self, status_code, data):
