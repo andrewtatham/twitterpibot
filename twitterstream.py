@@ -71,10 +71,28 @@ def ReplyWithDean(sender, name):
     twitter.update_status(status="@" + sender + " " + message, media_ids=media["media_id_string"])
     print("done.")
 
+def ReplyWithSong(target, song):
+    print("getting " + song + " song...")
+    lyrics = songs[song.lower()]
+    lastlyric = ""
+    for lyric in lyrics:
+        lyric = lyric.strip().encode("utf-8")
+        if lyric and lyric != lastlyric:
+            print("tweeting: " + lyric)
+
+            twitter.update_status(status="@" + target + " " + lyric)
+            lastlyric = lyric
+            time.sleep(1)
+            
+    
+    print("done.")
+
+
+
 def RetweetRecursion(data, retweetlevel):
 
-    # todo indent retweetlevel
-    tweetstring = data["id_str"].encode("utf-8") + ": " + data["user"]["name"].encode("utf-8") + " [@" + data["user"]["screen_name"].encode("utf-8") + "] " + data["text"].encode("utf-8")  
+   
+    tweetstring = retweetlevel * 'RT ' + data["id_str"].encode("utf-8") + ": " + data["user"]["name"].encode("utf-8") + " [@" + data["user"]["screen_name"].encode("utf-8") + "] " + data["text"].encode("utf-8")  
     print(tweetstring)
 
     if "retweeted_status" in data:
@@ -131,6 +149,9 @@ class MyStreamer(TwythonStreamer):
 ##                    elif (directmessagetext.lower() in pics):
                     if (directmessagetext.lower() in pics):
                         ReplyWithDean(sender, directmessagetext.lower())
+                    elif  directmessagetext.lower() in songs:
+                        target = andrew + ' @' + markr + ' @' + jamie
+                        ReplyWithSong(target, directmessagetext.lower())
                     else:
                         #message = str(datetime.now())
                         #twitter.send_direct_message(user_id=senderid,screen_name=sender,text=message,media=media["media_id_string"])
@@ -165,7 +186,7 @@ class MyStreamer(TwythonStreamer):
                 pass
             else:
                 pprint.pprint(data)
-        except Error as e:                
+        except Exception as e:                
             pprint.pprint(e)
 
             
@@ -233,19 +254,19 @@ def Authenticate():
 
 
 
-andrewpi = "@andrewtathampi" 
+andrewpi = "andrewtathampi" 
 andrewpiid = "2935295111"
 
-andrew = "@andrewtatham"
+andrew = "andrewtatham"
 andrewid = "19201332"
 
-helen = "@morris_helen"
-markr = "@fuuuunnnkkytree"
-jamie = "@jami3rez"
-dean = "@dcspamoni"
-chriswatson = "@watdoghotdog"
-fletch = "@paulfletcher79"
-simon = "@Tolle_Lege"
+helen = "morris_helen"
+markr = "fuuuunnnkkytree"
+jamie = "jami3rez"
+dean = "dcspamoni"
+chriswatson = "watdoghotdog"
+fletch = "paulfletcher79"
+simon = "Tolle_Lege"
 
 users = [andrew, markr, jamie, helen, dean, chriswatson, simon]
 
@@ -279,6 +300,28 @@ for person in people:
 #    name = str(person)
 #    print(name)
 #    pprint.pprint(pics[name])
+
+
+
+
+
+# INIT SONGS
+songsfolder = "songs/"
+songs = {}
+songfiles = os.listdir(songsfolder)
+for songfile in songfiles:
+    songname = songfile.lower()
+    if songname.endswith('.txt'):
+        songname = songname[:-4]
+    songs[songname] = open(songsfolder + songfile, "rb").readlines()
+    
+    
+pprint.pprint(songs)
+#for person in people:
+#    name = str(person)
+#    print(name)
+#    pprint.pprint(pics[name])
+
 
 # START STREAMING
 
