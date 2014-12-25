@@ -4,14 +4,12 @@
 
 # Error handling
 # mentions/retweets
-# no notify on pi follow
-
 
 # image ocr/ai
 # some neural network shit
 
 
-# discovr feed
+# discover feed
 # trends
 # hashtags
 # followfriday
@@ -23,7 +21,7 @@
 
 # word replacement
 
-# word/isult of the day
+# word/insult of the day
 
 # song lyrics
 # boh rap
@@ -57,7 +55,7 @@ import os.path
 ##    media = twitter.upload_media(media=open(path,"rb"))
 ##    pprint.pprint(media)
 ##    print("tweeting...")
-##    twitter.update_status(status="@" + sender + " " + "Cheese!", media_ids=media["media_id_string"])
+##    twitter.update_status(status="@" + sender + " " + random.choice(photomessages), media_ids=media["media_id_string"])
 ##    #message = str(datetime.now())
 ##    #twitter.send_direct_message(user_id=senderid,screen_name=sender,text=message,media=media["media_id_string"])
 ##    print("done.")
@@ -73,14 +71,15 @@ def ReplyWithDean(sender, name):
     twitter.update_status(status="@" + sender + " " + message, media_ids=media["media_id_string"])
     print("done.")
 
-def RetweetRecursion(data):
+def RetweetRecursion(data, retweetlevel):
 
+    # todo indent retweetlevel
     tweetstring = data["id_str"].encode("utf-8") + ": " + data["user"]["name"].encode("utf-8") + " [@" + data["user"]["screen_name"].encode("utf-8") + "] " + data["text"].encode("utf-8")  
     print(tweetstring)
 
     if "retweeted_status" in data:
         if data["retweeted_status"] is not None:
-            RetweetRecursion(data["retweeted_status"])
+            RetweetRecursion(data["retweeted_status"], retweetlevel + 1)
 
 class MyStreamer(TwythonStreamer):
 
@@ -106,7 +105,7 @@ class MyStreamer(TwythonStreamer):
                                 
                                 
                 
-                RetweetRecursion(data)
+                RetweetRecursion(data, 0)
                 
 
 
@@ -257,6 +256,7 @@ twitter = Twython(tokens[0],tokens[1],tokens[2],tokens[3])
 streamer = MyStreamer(tokens[0],tokens[1],tokens[2],tokens[3])
 
 # INIT CAMERA
+##photomessages = ["cheese!", "smile!"]
 ##camera = picamera.PiCamera()
 ##camera.resolution=[640,480]
 
