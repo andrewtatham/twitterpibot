@@ -25,6 +25,12 @@
 
 # word/isult of the day
 
+# song lyrics
+# boh rap
+# ice baby
+# 5000 miles
+
+
 from twython import Twython, TwythonStreamer
 
 import time
@@ -38,33 +44,26 @@ from os import listdir
 import os.path
 
 
-import picamera
+##import picamera
+##def TakePhoto():
+##    path = "pics/pinoir.jpg"
+##    camera.capture(path) 
+##    return path
 
-
-def TakePhoto():
-    path = "pics/pinoir.jpg"
-    
-    #camera.start_preview()
-    #time.sleep(1)
-    camera.capture(path)
-    #camera.stop_preview()
-    
-    return path
-
-def ReplyWithPhoto(sender):
-    print("taking photo...")
-    path = TakePhoto()
-    print("uploading...")
-    media = twitter.upload_media(media=open(path,"rb"))
-    pprint.pprint(media)
-    print("tweeting...")
-    twitter.update_status(status="@" + sender + " " + "Cheese!", media_ids=media["media_id_string"])
-    #message = str(datetime.now())
-    #twitter.send_direct_message(user_id=senderid,screen_name=sender,text=message,media=media["media_id_string"])
-    print("done.")
+##def ReplyWithPhoto(sender):
+##    print("taking photo...")
+##    path = TakePhoto()
+##    print("uploading...")
+##    media = twitter.upload_media(media=open(path,"rb"))
+##    pprint.pprint(media)
+##    print("tweeting...")
+##    twitter.update_status(status="@" + sender + " " + "Cheese!", media_ids=media["media_id_string"])
+##    #message = str(datetime.now())
+##    #twitter.send_direct_message(user_id=senderid,screen_name=sender,text=message,media=media["media_id_string"])
+##    print("done.")
 
 def ReplyWithDean(sender, name):
-    print("gettig " + name + " pic...")
+    print("getting " + name + " pic...")
     path = picsfolder + name + "/" + random.choice(pics[name])
     print("uploading " + path + "...")
     media = twitter.upload_media(media=open(path,"rb"))
@@ -128,9 +127,10 @@ class MyStreamer(TwythonStreamer):
                     
                 else:
                     # FROM ANYOE ELSE
-                    if (directmessagetext.lower() == "photo"):
-                        ReplyWithPhoto(sender)
-                    elif (directmessagetext.lower() in pics):
+##                    if (directmessagetext.lower() == "photo"):
+##                        ReplyWithPhoto(sender)
+##                    elif (directmessagetext.lower() in pics):
+                    if (directmessagetext.lower() in pics):
                         ReplyWithDean(sender, directmessagetext.lower())
                     else:
                         #message = str(datetime.now())
@@ -257,8 +257,8 @@ twitter = Twython(tokens[0],tokens[1],tokens[2],tokens[3])
 streamer = MyStreamer(tokens[0],tokens[1],tokens[2],tokens[3])
 
 # INIT CAMERA
-camera = picamera.PiCamera()
-camera.resolution=[640,480]
+##camera = picamera.PiCamera()
+##camera.resolution=[640,480]
 
 
 # INIT DEANPICS
