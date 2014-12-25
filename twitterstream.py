@@ -41,6 +41,7 @@ import string
 from os import listdir
 import os.path
 
+from textblob import TextBlob
 
 ##import picamera
 ##def TakePhoto():
@@ -124,9 +125,47 @@ class MyStreamer(TwythonStreamer):
                                 
                 
                 RetweetRecursion(data, 0)
-                
+
+                wiki = TextBlob(data["text"])
+                pprint.pprint(wiki.tags)
 
 
+                ##CC Coordinating conjunction
+                ##CD Cardinal number
+                ##DT Determiner
+                ##EX Existential there
+                ##FW Foreign word
+                ##IN Preposition or subordinating conjunction
+                ##JJ Adjective
+                ##JJR Adjective, comparative
+                ##JJS Adjective, superlative
+                ##LS List item marker
+                ##MD Modal
+                ##NN Noun, singular or mass
+                ##NNS Noun, plural
+                ##NNP Proper noun, singular
+                ##NNPS Proper noun, plural
+                ##PDT Predeterminer
+                ##POS Possessive ending
+                ##PRP Personal pronoun
+                ##PRP$ Possessive pronoun
+                ##RB Adverb
+                ##RBR Adverb, comparative
+                ##RBS Adverb, superlative
+                ##RP Particle
+                ##SYM Symbol
+                ##TO to
+                ##UH Interjection
+                ##VB Verb, base form
+                ##VBD Verb, past tense
+                ##VBG Verb, gerund or present participle
+                ##VBN Verb, past participle
+                ##VBP Verb, non­3rd person singular present
+                ##VBZ Verb, 3rd person singular present
+                ##WDT Wh-determiner
+                ##WP Wh-pronoun
+                ##WP$ Possessive wh-pronoun
+                ##WRB Wh-adverb
                 
             elif "direct_message" in data:
                 # DIRECT MESSAGE
@@ -316,11 +355,8 @@ for songfile in songfiles:
     songs[songname] = open(songsfolder + songfile, "rb").readlines()
     
     
-pprint.pprint(songs)
-#for person in people:
-#    name = str(person)
-#    print(name)
-#    pprint.pprint(pics[name])
+##  pprint.pprint(songs)
+    
 
 
 # START STREAMING
