@@ -28,6 +28,7 @@
 # ice baby
 # 5000 miles
 
+#implement decorator pattern, esp ectractpicamera for running under  non-pi
 
 from twython import Twython, TwythonStreamer
 
@@ -37,6 +38,7 @@ import pickle
 import pprint
 import random
 import string
+import re
 
 from os import listdir
 import os.path
@@ -79,9 +81,9 @@ def ReplyWithSong(target, song):
     for lyric in lyrics:
         lyric = lyric.strip().encode("utf-8")
         if lyric and lyric != lastlyric:
-            print("tweeting: " + lyric)
-
-            twitter.update_status(status="@" + target + " " + lyric)
+            tweettext = "@" + target + " " + lyric
+            print("tweeting: " + tweettext)
+            twitter.update_status(status=tweettext)
             lastlyric = lyric
             time.sleep(1)
             
@@ -93,12 +95,36 @@ def ReplyWithSong(target, song):
 def RetweetRecursion(data, retweetlevel):
 
    
-    tweetstring = retweetlevel * 'RT ' + data["id_str"].encode("utf-8") + ": " + data["user"]["name"].encode("utf-8") + " [@" + data["user"]["screen_name"].encode("utf-8") + "] " + data["text"].encode("utf-8")  
+    tweetstring = retweetlevel * 'RT ' + data["id_str"].encode("utf-8") + ": " + \
+                  data["user"]["name"].encode("utf-8") + \
+                  " [@" + data["user"]["screen_name"].encode("utf-8") + "] " \
+                  + data["text"].encode("utf-8")  
     print(tweetstring)
 
     if "retweeted_status" in data:
         if data["retweeted_status"] is not None:
             RetweetRecursion(data["retweeted_status"], retweetlevel + 1)
+
+
+def ReplaceEntity(text, entities, replacewith):
+    for entity in entities:
+        
+        indices = entity["indices"]
+        beginindex = indices[0]
+        endindex = indices[1]
+        length = endindex - beginindex
+        
+        text = text[:beginindex] + replacewith * length + text[endindex:]
+    return text
+
+
+
+def ReplaceWordsWithList(text, tags, types, wordlist):
+    retval = text
+    for tag in tags:
+        if tag[1] in types:
+            retval = retval.replace(tag[0], random.choice(wordlist))
+    return retval
 
 class MyStreamer(TwythonStreamer):
 
@@ -108,26 +134,55 @@ class MyStreamer(TwythonStreamer):
         try:
             if "text" in data:
                 # STATUS UPDATE
-
-                if data["user"]["id_str"] == andrewid:
-                    pprint.pprint(data)
-                
-
-##                if "entities" in data:
-##                    entities = data["entities"]
-##
-##                    if "user_mentions" in entities:
-##                        mentions = entities["user_mentions"]
-##                        for mention in mentions:
-##                            if mention["id_str"] == andrewpiid:
-##                                # ANDREWPI MENTION
-                                
-                                
-                
                 RetweetRecursion(data, 0)
 
-                wiki = TextBlob(data["text"])
+
+                textinitial = data["text"].encode("utf-8")
+                textnoentities = textinitial
+
+                # remove non ascii chars
+                textnoentities = ''.join([i if ord(i) < 128 else ' ' for i in textnoentities])
+
+                #if data["user"]["id_str"] == andrewid:
+                pprint.pprint(data)
+                
+
+                if "entities" in data:
+                    entities = data["entities"]
+
+                    if "hashtags" in entities:
+                        hashtags = entities["hashtags"]
+                        textnoentities = ReplaceEntity(textnoentities, hashtags, " ")
+                                
+                    if "urls" in entities:
+                        urls = entities["urls"]
+                        textnoentities = ReplaceEntity(textnoentities, urls, " ")
+
+                    if "media" in entities:
+                        medias = entities["media"]
+                        textnoentities = ReplaceEntity(textnoentities, medias, " ")
+                            
+                    if "user_mentions" in entities:
+                        mentions = entities["user_mentions"]
+                        for mention in mentions:
+                            if mention["id_str"] == andrewpiid:
+                                # ANDREWPI MENTION
+                                print("*** ANDREWPI MENTION ***")
+
+                # remove any remaining urls                
+                # textnoentities = re.sub(r'^https?:\/\/.*[\r\n]*', '', textnoentities)
+
+
+                print("textinitial = " + textinitial)
+                print("textnoentities = " + textnoentities)
+
+                wiki = TextBlob(textnoentities)
                 pprint.pprint(wiki.tags)
+
+                types = ["NN","NNS","NNP","NNPS"]
+                newtext = ReplaceWordsWithList(textinitial, wiki.tags, types, fruitlist)
+                print("newtext = " + newtext)
+                
 
 
                 ##CC Coordinating conjunction
@@ -189,6 +244,7 @@ class MyStreamer(TwythonStreamer):
                     if (directmessagetext.lower() in pics):
                         ReplyWithDean(sender, directmessagetext.lower())
                     elif  directmessagetext.lower() in songs:
+                        # TODO parse tharget from message
                         target = andrew + ' @' + markr + ' @' + jamie
                         ReplyWithSong(target, directmessagetext.lower())
                     else:
@@ -208,7 +264,9 @@ class MyStreamer(TwythonStreamer):
                 targetName = data["target"]["name"].encode("utf-8")
                 targetScreenName = data["target"]["screen_name"].encode("utf-8")
                 
-                eventinfo = "EVENT: " + event + " SOURCE: " + sourceName + " [" + sourceScreenName + "] TARGET: " + targetName + " [" + targetScreenName + "]"
+                eventinfo = "EVENT: " + event \
+                            + " SOURCE: " + sourceName + " [" + sourceScreenName + "]" \
+                            + " TARGET: " + targetName + " [" + targetScreenName + "]"
                 print(eventinfo)
                 
                 if data["event"] == "follow":
@@ -232,6 +290,7 @@ class MyStreamer(TwythonStreamer):
     def on_error(self, status_code, data):
 
             print(str(status_code)  + " " + data)
+            time.sleep(5)
 
 
 
@@ -313,7 +372,9 @@ users = [andrew, markr, jamie, helen, dean, chriswatson, simon]
 # INIT TWITTER
 tokens = Authenticate()
 twitter = Twython(tokens[0],tokens[1],tokens[2],tokens[3])
+time.sleep(1)
 streamer = MyStreamer(tokens[0],tokens[1],tokens[2],tokens[3])
+time.sleep(1)
 
 # INIT CAMERA
 ##photomessages = ["cheese!", "smile!"]
@@ -357,6 +418,49 @@ for songfile in songfiles:
     
 ##  pprint.pprint(songs)
     
+
+fruitlist = ["Apple",
+        "Apricots",
+        "Avocado",
+        "Banana",
+        "Blackberry",
+        "Blueberries",
+        "Cherries",
+        "Coconut",
+        "Cranberry",
+        "Cucumber",
+        "Dates",
+        "Fig",
+        "Gooseberry",
+        "Grapefruit",
+        "Grapes",
+        "Kiwi",
+        "Kumquat",
+        "Lemon",
+        "Lime",
+        "Lychee",
+        "Mango",
+        "Melon",
+        "Nectarine",
+        "Orange",
+        "Papaya",
+        "Passion Fruit",
+        "Peach",
+        "Pear",
+        "Pineapple",
+        "Plum",
+        "Pomegranate",
+        "Clementine",
+        "Prunes",
+        "Raspberries",
+        "Strawberries",
+        "Tangerine",
+        "Watermelon"]
+
+
+
+##ratelimits = twitter.get_application_rate_limit_status()
+##pprint.pprint(ratelimits)
 
 
 # START STREAMING
