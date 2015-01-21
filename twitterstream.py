@@ -406,6 +406,8 @@ time.sleep(1)
 
 deanmessages = ["need moar", "many", "so much", "very", "wow"]
 picsfolder = "pics/"
+if not os.path.exists(picsfolder):
+    os.makedirs(picsfolder)
 pics = {}
 people = os.listdir(picsfolder)
 for person in people:
@@ -507,7 +509,7 @@ for trend in leeds_trends[0]["trends"]:
     trendname = trend["name"].encode("utf-8")
     trends.append(trendname)
     
-print "Trends..."
+print ("Trends...")
 for trend in trends:
     print(trend)
 
