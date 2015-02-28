@@ -36,8 +36,9 @@ import re
 
 from os import listdir
 import os.path
-
-from textblob import TextBlob
+import logging
+import urllib
+#from textblob import TextBlob
 
 ##import picamera
 ##def TakePhoto():
@@ -46,79 +47,134 @@ from textblob import TextBlob
 ##    return path
 
 ##def ReplyWithPhoto(sender):
-##    print("taking photo...")
+##    logging.info("taking photo...")
 ##    path = TakePhoto()
-##    print("uploading...")
+##    logging.info("uploading...")
 ##    media = twitter.upload_media(media=open(path,"rb"))
-##    pprint.pprint(media)
-##    print("tweeting...")
+##    plogging.info.plogging.info(media)
+##    logging.info("tweeting...")
 ##    twitter.update_status(status="@" + sender + " " + random.choice(photomessages), media_ids=media["media_id_string"])
 ##    #message = str(datetime.now())
 ##    #twitter.send_direct_message(user_id=senderid,screen_name=sender,text=message,media=media["media_id_string"])
-##    print("done.")
+##    logging.info("done.")
 
 def ReplyWithDean(sender, name):
-    print("getting " + name + " pic...")
+    logging.info("getting " + name + " pic...")
     path = picsfolder + name + "/" + random.choice(pics[name])
-    print("uploading " + path + "...")
+    logging.info("uploading " + path + "...")
     media = twitter.upload_media(media=open(path,"rb"))
-    pprint.pprint(media)
-    print("tweeting...")
+    logging.info("tweeting...")
     message = random.choice(deanmessages) + " " + name
     twitter.update_status(status="@" + sender + " " + message, media_ids=media["media_id_string"])
-    print("done.")
+    logging.info("done.")
 
 def ReplyWithSong(target, song):
-    print("getting " + song + " song...")
+    logging.info("getting " + song + " song...")
     lyrics = songs[song.lower()]
     lastlyric = ""
     for lyric in lyrics:
-        lyric = lyric.strip().encode("utf-8")
+        lyric = lyric.strip()
         if lyric and lyric != lastlyric:
             tweettext = "@" + target + " " + lyric
-            print("tweeting: " + tweettext)
+            logging.info("tweeting: " + tweettext)
             twitter.update_status(status=tweettext)
             lastlyric = lyric
             time.sleep(1)
             
     
-    print("done.")
+    logging.info("done.")
 
 
 
 def RetweetRecursion(data, retweetlevel):
-
-   
-    tweetstring = retweetlevel * 'RT ' + data["id_str"].encode("utf-8") + ": " + \
-                  data["user"]["name"].encode("utf-8") + \
-                  " [@" + data["user"]["screen_name"].encode("utf-8") + "] " \
-                  + data["text"].encode("utf-8")  
+ 
+    tweetstring = "* " + \
+        retweetlevel * 'RT '+ \
+        data["user"]["name"] + \
+        " [@" + data["user"]["screen_name"] + "] " + \
+        data["text"]
     print(tweetstring)
+    logging.info(tweetstring)
+    
 
-    if "retweeted_status" in data:
-        if data["retweeted_status"] is not None:
-            RetweetRecursion(data["retweeted_status"], retweetlevel + 1)
+    #if "retweeted_status" in data:
+    #    if data["retweeted_status"] is not None:
+    #        RetweetRecursion(data["retweeted_status"], retweetlevel + 1)
 
 
-def ReplaceEntity(text, entities, replacewith):
-    for entity in entities:
+#def ReplaceEntity(text, entities, replacewith):
+#    for entity in entities:
         
-        indices = entity["indices"]
-        beginindex = indices[0]
-        endindex = indices[1]
-        length = endindex - beginindex
+#        indices = entity["indices"]
+#        beginindex = indices[0]
+#        endindex = indices[1]
+#        length = endindex - beginindex
         
-        text = text[:beginindex] + replacewith * length + text[endindex:]
-    return text
+#        text = text[:beginindex] + replacewith * length + text[endindex:]
+#    return text
 
 
 
-def ReplaceWordsWithList(text, tags, types, wordlist):
-    retval = text
-    for tag in tags:
-        if tag[1] in types:
-            retval = retval.replace(tag[0], random.choice(wordlist))
-    return retval
+#def ReplaceWordsWithList(text, tags, types, wordlist):
+#    retval = text
+#    for tag in tags:
+#        if tag[1] in types:
+#            retval = retval.replace(tag[0], random.choice(wordlist))
+#    return retval
+
+
+def PrintTrends():
+    
+
+    #availtrends = twitter.get_available_trends()
+    #logging.info(availtrends)
+    worldwide_WOEID = 1
+    leeds_WOEID = 26042
+
+
+
+
+    worldwide_trends = twitter.get_place_trends(id = worldwide_WOEID)
+    #plogging.info.pprint(worldwide_trends)
+
+    leeds_trends = twitter.get_place_trends(id = leeds_WOEID)
+    #logging.info(leeds_trends)
+
+    trends = []
+    for trend in worldwide_trends[0]["trends"]:
+        trendname = trend["name"]
+        trends.append(trendname)
+    for trend in leeds_trends[0]["trends"]:
+        trendname = trend["name"]
+        trends.append(trendname)
+    print ("Trends...")
+    for trend in trends:
+        print("")
+        print(trend)
+        try:
+            trendtweets = twitter.search(q = urllib.quote_plus(trend), result_type = "popular")
+            for trendtweet in trendtweets["statuses"]:
+                print("  " + trendtweet["text"].replace("\n", "   "))
+        except Exception as e:   
+            logging.exception(e.message, e.args)             
+            pprint.pprint(e)
+
+
+def SuggestedUsers():
+    categories = twitter.get_user_suggestions()
+
+    for category in categories:
+        print("")
+        print(category["name"])
+        users = twitter.get_user_suggestions_by_slug(slug = category["slug"])
+        #pprint.pprint(users)
+        for user in users["users"]:
+            #pprint.pprint(user)
+            print("")
+            print("  " + user["name"])
+            print("  @" + user["screen_name"])
+            print("  " + user["description"])
+    
 
 class MyStreamer(TwythonStreamer):
 
@@ -128,41 +184,25 @@ class MyStreamer(TwythonStreamer):
         try:
             if "text" in data:
 
+                logging.info(data)
+
                 andrewpimentioned = False
 
-                tweetid = data["id_str"].encode("utf-8")
+                tweetid = data["id_str"]
 
                 sender_id = data["user"]["id_str"]
                 sender_screen_name = data["user"]["screen_name"]
+                tweettext = data["text"]
 
                 if sender_id != andrewpiid:
                     # STATUS UPDATE
                     RetweetRecursion(data, 0)
 
-                    textinitial = data["text"].encode("utf-8")
 
-                    words = textinitial.split()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    # remove non ascii chars
-                    textnoentities = textinitial
-                    textnoentities = ''.join([i if ord(i) < 128 else ' ' for i in textnoentities])                
+                #    words = tweettext.split()
+                #    # remove non ascii chars
+                #    textnoentities = tweettext
+                #    textnoentities = ''.join([i if ord(i) < 128 else ' ' for i in textnoentities])                
 
 
                     targets = []
@@ -170,21 +210,21 @@ class MyStreamer(TwythonStreamer):
                     if "entities" in data:
                         entities = data["entities"]
 
-                        if "hashtags" in entities:
-                            hashtags = entities["hashtags"]
-                            textnoentities = ReplaceEntity(textnoentities, hashtags, " ")
+                        #if "hashtags" in entities:
+                        #    hashtags = entities["hashtags"]
+                        #    #textnoentities = ReplaceEntity(textnoentities, hashtags, " ")
                                 
-                        if "urls" in entities:
-                            urls = entities["urls"]
-                            textnoentities = ReplaceEntity(textnoentities, urls, " ")
+                        #if "urls" in entities:
+                        #    urls = entities["urls"]
+                        #    #textnoentities = ReplaceEntity(textnoentities, urls, " ")
 
-                        if "media" in entities:
-                            medias = entities["media"]
-                            textnoentities = ReplaceEntity(textnoentities, medias, " ")
+                        #if "media" in entities:
+                        #    medias = entities["media"]
+                        #    #textnoentities = ReplaceEntity(textnoentities, medias, " ")
                             
                         if "user_mentions" in entities:
                             mentions = entities["user_mentions"]
-                            textnoentities = ReplaceEntity(textnoentities, mentions, " ")
+                            #textnoentities = ReplaceEntity(textnoentities, mentions, " ")
                             for mention in mentions:
 
                                 if mention["screen_name"] != andrewpi and mention["screen_name"] != sender_screen_name:
@@ -193,25 +233,25 @@ class MyStreamer(TwythonStreamer):
                             
                                 if mention["id_str"] == andrewpiid:
                                     # ANDREWPI MENTION
-                                    print("*** ANDREWPI MENTION ***")
+                                    logging.info("*** ANDREWPI MENTION ***")
                                     andrewpimentioned = True
 
 
 
 
-                # remove any remaining urls                
-                # textnoentities = re.sub(r'^https?:\/\/.*[\r\n]*', '', textnoentities)
+                ## remove any remaining urls                
+                ## textnoentities = re.sub(r'^https?:\/\/.*[\r\n]*', '', textnoentities)
 
 
-                print("textinitial = " + textinitial)
-                print("textnoentities = " + textnoentities)
+                #logging.info("textinitial = " + tweettext)
+                #logging.info("textnoentities = " + textnoentities)
 
-                wiki = TextBlob(textnoentities)
-                pprint.pprint(wiki.tags)
+                #wiki = TextBlob(textnoentities)
+                #logging.info(wiki.tags)
 
-                types = ["NN","NNS","NNP","NNPS"]
-                newtext = ReplaceWordsWithList(textinitial, wiki.tags, types, fruitlist)
-                print("newtext = " + newtext)
+                #types = ["NN","NNS","NNP","NNPS"]
+                #newtext = ReplaceWordsWithList(tweettext, wiki.tags, types, fruitlist)
+                #logging.info("newtext = " + newtext)
                 
                 if andrewpimentioned:
 
@@ -221,11 +261,12 @@ class MyStreamer(TwythonStreamer):
                         elif (word.lower() in pics):
                             ReplyWithDean(sender, word.lower())
                         elif word.lower() in songs:
-                            # TODO parse tharget from message
+                           
+
                             if targets.any():
                                 ReplyWithSong(targets, word.lower())
                             else:
-                                ReplyWithSong(target, word.lower())
+                                ReplyWithSong(sender, word.lower())
                         else:
                             pass
 
@@ -245,15 +286,15 @@ class MyStreamer(TwythonStreamer):
                     # DIRECT MESSAGE
                     senderid = str(data["direct_message"]["sender_id_str"])
                     sender = str(data["direct_message"]["sender_screen_name"])
-                    directmessagetext = str(data["direct_message"]["text"].encode("utf-8"))
-                    print("Direct message from " + sender + " " + senderid + " : " + directmessagetext)
+                    directmessagetext = str(data["direct_message"]["text"])
+                    logging.info("Direct message from " + sender + " " + senderid + " : " + directmessagetext)
                 
                     if senderid == andrewpiid:
                         # IGNORE
                         pass
                     #elif senderid == andrewid:
                         # FROM ME
-                        #print(" from me" )
+                        #logging.info(" from me" )
                     
                     else:
                         # FROM ANYOE ELSE
@@ -264,29 +305,29 @@ class MyStreamer(TwythonStreamer):
                             ReplyWithDean(sender, directmessagetext.lower())
                         elif  directmessagetext.lower() in songs:
                             # TODO parse tharget from message
-                            target = andrew + ' @' + markr + ' @' + jamie
+                            target = sender
                             ReplyWithSong(target, directmessagetext.lower())
                         else:
                             #message = str(datetime.now())
                             #twitter.send_direct_message(user_id=senderid,screen_name=sender,text=message,media=media["media_id_string"])
 
-                            pprint.pprint(data)
+                            logging.info(data)
 
                 elif "event" in data:
                     # EVENT
                     event = data["event"]
-                    sourceID = data["source"]["id_str"].encode("utf-8")
-                    sourceName = data["source"]["name"].encode("utf-8")
-                    sourceScreenName = data["source"]["screen_name"].encode("utf-8")
+                    sourceID = data["source"]["id_str"]
+                    sourceName = data["source"]["name"]
+                    sourceScreenName = data["source"]["screen_name"]
 
-                    targetID = data["target"]["id_str"].encode("utf-8")
-                    targetName = data["target"]["name"].encode("utf-8")
-                    targetScreenName = data["target"]["screen_name"].encode("utf-8")
+                    targetID = data["target"]["id_str"]
+                    targetName = data["target"]["name"]
+                    targetScreenName = data["target"]["screen_name"]
                 
                     eventinfo = "EVENT: " + event \
                                 + " SOURCE: " + sourceName + " [" + sourceScreenName + "]" \
                                 + " TARGET: " + targetName + " [" + targetScreenName + "]"
-                    print(eventinfo)
+                    logging.info(eventinfo)
                 
                     if data["event"] == "follow":
                         # NEW FOLLOWER
@@ -295,21 +336,23 @@ class MyStreamer(TwythonStreamer):
                         # UNFOLLOW
                         pass
                     else:
-                        pprint.pprint(data)
+                        logging.info(data)
                 elif "friends" in data:
-                    print("Connected...")
+                    logging.info("Connected...")
                 elif "delete" in data:
                     pass
                 else:
-                    pprint.pprint(data)
-        except Exception as e:                
+                    logging.info(data)
+        except Exception as e:   
+            logging.exception(e.message, e.args)             
             pprint.pprint(e)
 
             
     def on_error(self, status_code, data):
-
-            print(str(status_code)  + " " + data)
-            time.sleep(5)
+         
+        msg = str(status_code)  + " " + data
+        logging.error(msg)
+        print(msg)
 
 
 
@@ -369,6 +412,8 @@ def Authenticate():
     
     
 
+
+logging.basicConfig(filename='twitter.log',level=logging.INFO)
 
 
 andrewpi = "andrewtathampi" 
@@ -437,81 +482,57 @@ for songfile in songfiles:
     songs[songname] = open(songsfolder + songfile, "rb").readlines()
     
     
-##  pprint.pprint(songs)
+##  logging.info(songs)
     
 #TODO Split singular and plural
-fruitlist = ["Apple",
-        "Apricots",
-        "Avocado",
-        "Banana",
-        "Blackberry",
-        "Blueberries",
-        "Cherries",
-        "Coconut",
-        "Cranberry",
-        "Cucumber",
-        "Dates",
-        "Fig",
-        "Gooseberry",
-        "Grapefruit",
-        "Grapes",
-        "Kiwi",
-        "Kumquat",
-        "Lemon",
-        "Lime",
-        "Lychee",
-        "Mango",
-        "Melon",
-        "Nectarine",
-        "Orange",
-        "Papaya",
-        "Passion Fruit",
-        "Peach",
-        "Pear",
-        "Pineapple",
-        "Plum",
-        "Pomegranate",
-        "Clementine",
-        "Prunes",
-        "Raspberries",
-        "Strawberries",
-        "Tangerine",
-        "Watermelon"]
+###fruitlist = ["Apple",
+###        "Apricots",
+###        "Avocado",
+###        "Banana",
+###        "Blackberry",
+###        "Blueberries",
+###        "Cherries",
+###        "Coconut",
+###        "Cranberry",
+###        "Cucumber",
+###        "Dates",
+###        "Fig",
+###        "Gooseberry",
+###        "Grapefruit",
+###        "Grapes",
+###        "Kiwi",
+###        "Kumquat",
+###        "Lemon",
+###        "Lime",
+###        "Lychee",
+###        "Mango",
+###        "Melon",
+###        "Nectarine",
+###        "Orange",
+###        "Papaya",
+###        "Passion Fruit",
+###        "Peach",
+###        "Pear",
+###        "Pineapple",
+###        "Plum",
+###        "Pomegranate",
+###        "Clementine",
+###        "Prunes",
+###        "Raspberries",
+###        "Strawberries",
+###        "Tangerine",
+###        "Watermelon"]
 
 
 
-##ratelimits = twitter.get_application_rate_limit_status()
-##pprint.pprint(ratelimits)
+ratelimits = twitter.get_application_rate_limit_status()
+#pprint.pprint(ratelimits)
+logging.info(ratelimits)
 
 
+#PrintTrends()
 
-
-
-#availtrends = twitter.get_available_trends()
-#pprint.pprint(availtrends)
-worldwide_WOEID = 1
-leeds_WOEID = 26042
-
-
-
-
-worldwide_trends = twitter.get_place_trends(id = worldwide_WOEID)
-#pprint.pprint(worldwide_trends)
-
-leeds_trends = twitter.get_place_trends(id = leeds_WOEID)
-#pprint.pprint(leeds_trends)
-
-trends = []
-for trend in worldwide_trends[0]["trends"]:
-    trendname = trend["name"].encode("utf-8")
-    trends.append(trendname)
-for trend in leeds_trends[0]["trends"]:
-    trendname = trend["name"].encode("utf-8")
-    trends.append(trendname)
-    
-print ("Trends...")
-for trend in trends:
-    print(trend)
+#SuggestedUsers()
 
 
 
