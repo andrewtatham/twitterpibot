@@ -39,6 +39,12 @@ import os.path
 import logging
 import urllib
 import threading
+import webbrowser
+
+import cv2
+import urllib
+import numpy as np
+
 
 #from textblob import TextBlob
 
@@ -60,14 +66,22 @@ import threading
 ##    #twitter.send_direct_message(user_id=senderid,screen_name=sender,text=message,media=media["media_id_string"])
 ##    logging.info("done.")
 
-def ReplyWithDean(sender, name):
+def ReplyWithDean(sender = None, name = None):
+    
+    if name is None:
+        name = random.choice(people)
+        
     logging.info("getting " + name + " pic...")
     path = picsfolder + name + "/" + random.choice(pics[name])
     logging.info("uploading " + path + "...")
     media = twitter.upload_media(media=open(path,"rb"))
     logging.info("tweeting...")
     message = random.choice(deanmessages) + " " + name
-    twitter.update_status(status="@" + sender + " " + message, media_ids=media["media_id_string"])
+    
+    if sender is not None:
+        message = "@" + sender + " " + message 
+
+    twitter.update_status(status= message, media_ids=media["media_id_string"])
     logging.info("done.")
 
 def ReplyWithSong(target, song):
@@ -176,8 +190,33 @@ def SuggestedUsers():
             print("  " + user["name"])
             print("  @" + user["screen_name"])
             print("  " + user["description"])
+
+
+
+def DownloadImage(url):
+   
+    print ("Getting " + url)
+    retval = urllib.urlretrieve(url);
+    pprint.pprint(retval)
+    while(not os.path.isfile(retval[0])):
+        time.sleep(0.25)
+    return retval[0]
+    
+    
+def ShowImage(path):
+    if(os.path.isfile(path)):
+        cv2.destroyAllWindows()
+        print ("Opening " + path)
+        image = cv2.imread(path,0)
+        #windowthread = cv2.startWindowThread()
+        window = cv2.imshow(path, image)
+        cv2.waitKey(1)
+        #time.sleep(5)
+        cv2.destroyWindow(window)
     
 
+
+    
 class MyStreamer(TwythonStreamer):
 
     
@@ -216,13 +255,34 @@ class MyStreamer(TwythonStreamer):
                         #    hashtags = entities["hashtags"]
                         #    #textnoentities = ReplaceEntity(textnoentities, hashtags, " ")
                                 
-                        #if "urls" in entities:
-                        #    urls = entities["urls"]
+                        if "urls" in entities:
+                            urls = entities["urls"]
                         #    #textnoentities = ReplaceEntity(textnoentities, urls, " ")
+                            #for url in urls:
+                                #pprint.pprint(url)
+                                #print("Opening url " + url["url"])
+                                #webbrowser.open(url["url"])
+                                
+                                
 
-                        #if "media" in entities:
-                        #    medias = entities["media"]
-                        #    #textnoentities = ReplaceEntity(textnoentities, medias, " ")
+                        if "media" in entities:
+                            medias = entities["media"]
+                            pprint.pprint(medias)
+                            for media in medias:
+                                if media["type"] == "photo":
+                                    url = media["media_url"]
+                                    #webbrowser.open(url)
+
+                                    path = DownloadImage(url)
+                                    ShowImage(path)
+                                    os.remove(path)
+                                    
+
+                        
+
+
+                            
+                            #textnoentities = ReplaceEntity(textnoentities, medias, " ")
                             
                         if "user_mentions" in entities:
                             mentions = entities["user_mentions"]
@@ -441,6 +501,31 @@ def HourlyTasks():
             logging.exception(e.message, e.args)             
             pprint.pprint(e)
             time.sleep(30)
+def FifteenMinuteTasks():
+    while 1:
+        try:
+            print('Running 15min tasks: %s' % time.ctime())
+##            PrintTrends()
+##            SuggestedUsers()
+            
+            time.sleep(15*60)
+        except Exception as e:
+
+            logging.exception(e.message, e.args)             
+            pprint.pprint(e)
+            time.sleep(30)
+
+def MonitorTasks():
+    
+    while 1:
+        try:
+            print('Running monitor tasks: %s' % time.ctime())
+            
+            time.sleep(15)
+        except KeyboardInterrupt:
+            print('Exiting: %s' % time.ctime())
+            sys.exit(0)
+
 
     
 
@@ -565,12 +650,16 @@ for songfile in songfiles:
 
 
 thread_list = [
+        threading.Thread(target=MonitorTasks),
         threading.Thread(target=HourlyTasks),
+        threading.Thread(target=FifteenMinuteTasks),    
         threading.Thread(target=StreamTweets)]
 
+cv2.startWindowThread();
 
 for thread in thread_list:
    thread.start()
+   time.sleep(0.25)
 for thread in thread_list:
    thread.join()
 print("Done")
