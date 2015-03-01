@@ -45,6 +45,7 @@ import cv2
 import urllib
 import numpy as np
 
+import Tkinter
 
 #from textblob import TextBlob
 
@@ -197,26 +198,31 @@ def DownloadImage(url):
    
     print ("Getting " + url)
     retval = urllib.urlretrieve(url);
-    pprint.pprint(retval)
+    #pprint.pprint(retval)
     while(not os.path.isfile(retval[0])):
         time.sleep(0.25)
     return retval[0]
     
     
-def ShowImage(path):
+def ShowImage(path, text):
     if(os.path.isfile(path)):
         cv2.destroyAllWindows()
-        print ("Opening " + path)
+        #print ("Opening " + path)
         image = cv2.imread(path,0)
-        #windowthread = cv2.startWindowThread()
-        window = cv2.imshow(path, image)
+
+
+
+        font = cv2.FONT_HERSHEY_COMPLEX_SMALL
+        cv2.putText(image,text,(30,30), font, 1,(0,0,0),3,cv2.CV_AA)
+        cv2.putText(image,text,(30,30), font, 1,(255,255,255),1,cv2.CV_AA)
+        cv2.imshow(windowname, image)
         cv2.waitKey(1)
-        #time.sleep(5)
-        cv2.destroyWindow(window)
+        # time.sleep(5)
+        # cv2.destroyWindow(windowname)
     
 
 
-    
+ 
 class MyStreamer(TwythonStreamer):
 
     
@@ -272,9 +278,8 @@ class MyStreamer(TwythonStreamer):
                                 if media["type"] == "photo":
                                     url = media["media_url"]
                                     #webbrowser.open(url)
-
                                     path = DownloadImage(url)
-                                    ShowImage(path)
+                                    ShowImage(path, tweettext)
                                     os.remove(path)
                                     
 
@@ -477,7 +482,7 @@ def StreamTweets():
     ## streamer.statuses.filter(track="Leeds",language="en",stall_warnings="true", filter_level="medium")
     ## streamer.user()
 
-    while 1:
+    while running:
         try:       
             streamer.user()
         except Exception as e:
@@ -489,7 +494,7 @@ def StreamTweets():
     ####streamer.statuses.firehose()
 
 def HourlyTasks():
-    while 1:
+    while running:
         try:
             print('Running hourly tasks: %s' % time.ctime())
 ##            PrintTrends()
@@ -502,7 +507,7 @@ def HourlyTasks():
             pprint.pprint(e)
             time.sleep(30)
 def FifteenMinuteTasks():
-    while 1:
+    while running:
         try:
             print('Running 15min tasks: %s' % time.ctime())
 ##            PrintTrends()
@@ -517,10 +522,10 @@ def FifteenMinuteTasks():
 
 def MonitorTasks():
     
-    while 1:
+    while running:
         try:
-            print('Running monitor tasks: %s' % time.ctime())
-            
+            # print('Running monitor tasks: %s' % time.ctime())
+            print('')
             time.sleep(15)
         except KeyboardInterrupt:
             print('Exiting: %s' % time.ctime())
@@ -648,18 +653,36 @@ for songfile in songfiles:
 
 
 
+top = Tkinter.Tk()
 
+# Code to add widgets will go here...
 thread_list = [
-        threading.Thread(target=MonitorTasks),
-        threading.Thread(target=HourlyTasks),
-        threading.Thread(target=FifteenMinuteTasks),    
-        threading.Thread(target=StreamTweets)]
+##    threading.Thread(target=MonitorTasks),
+##    threading.Thread(target=HourlyTasks),
+##    threading.Thread(target=FifteenMinuteTasks),    
+    threading.Thread(target=StreamTweets)]
 
 cv2.startWindowThread();
+windowname = "Image"
+window = cv2.namedWindow(windowname)
+
+
+running = True
+for thread in thread_list:
+    thread.start()
+    time.sleep(0.1)
+
+
+
+top.mainloop()
+print('Exiting: %s' % time.ctime())
+running = False
+
+streamer.disconnect()
 
 for thread in thread_list:
-   thread.start()
-   time.sleep(0.25)
-for thread in thread_list:
-   thread.join()
+    thread.join() 
+
+cv2.destroyAllWindows()
+
 print("Done")
