@@ -542,8 +542,14 @@ logging.info(ratelimits)
 ## streamer.statuses.sample()
 ## streamer.statuses.filter(track="Leeds",language="en",stall_warnings="true", filter_level="medium")
 ## streamer.user()
+while 1:
+    try:       
+        streamer.user()
+    except Exception as e:
 
-streamer.user()
+        logging.exception(e.message, e.args)             
+        pprint.pprint(e)
+        time.sleep(30)
 
 ####streamer.statuses.firehose()
 
