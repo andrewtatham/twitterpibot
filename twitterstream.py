@@ -38,6 +38,8 @@ from os import listdir
 import os.path
 import logging
 import urllib
+import threading
+
 #from textblob import TextBlob
 
 ##import picamera
@@ -407,9 +409,39 @@ def Authenticate():
     return tokens
 
 
-
-
+def StreamTweets():
     
+    # START STREAMING
+
+    ## streamer.statuses.sample()
+    ## streamer.statuses.filter(track="Leeds",language="en",stall_warnings="true", filter_level="medium")
+    ## streamer.user()
+
+    while 1:
+        try:       
+            streamer.user()
+        except Exception as e:
+
+            logging.exception(e.message, e.args)             
+            pprint.pprint(e)
+            time.sleep(30)
+
+    ####streamer.statuses.firehose()
+
+def HourlyTasks():
+    while 1:
+        try:
+            print('Running hourly tasks: %s' % time.ctime())
+##            PrintTrends()
+##            SuggestedUsers()
+            
+            time.sleep(60*60)
+        except Exception as e:
+
+            logging.exception(e.message, e.args)             
+            pprint.pprint(e)
+            time.sleep(30)
+
     
 
 
@@ -525,33 +557,20 @@ for songfile in songfiles:
 
 
 
-ratelimits = twitter.get_application_rate_limit_status()
-#pprint.pprint(ratelimits)
-logging.info(ratelimits)
-
-
-#PrintTrends()
-
-#SuggestedUsers()
+##ratelimits = twitter.get_application_rate_limit_status()
+###pprint.pprint(ratelimits)
+##logging.info(ratelimits)
 
 
 
 
-# START STREAMING
-
-## streamer.statuses.sample()
-## streamer.statuses.filter(track="Leeds",language="en",stall_warnings="true", filter_level="medium")
-## streamer.user()
-while 1:
-    try:       
-        streamer.user()
-    except Exception as e:
-
-        logging.exception(e.message, e.args)             
-        pprint.pprint(e)
-        time.sleep(30)
-
-####streamer.statuses.firehose()
+thread_list = [
+        threading.Thread(target=HourlyTasks),
+        threading.Thread(target=StreamTweets)]
 
 
-    
+for thread in thread_list:
+   thread.start()
+for thread in thread_list:
+   thread.join()
+print("Done")
