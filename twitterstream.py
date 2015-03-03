@@ -47,6 +47,8 @@ import numpy as np
 
 import Tkinter
 
+import textwrap
+
 #from textblob import TextBlob
 
 ##import picamera
@@ -213,8 +215,13 @@ def ShowImage(path, text):
 
 
         font = cv2.FONT_HERSHEY_COMPLEX_SMALL
-        cv2.putText(image,text,(30,30), font, 1,(0,0,0),3,cv2.CV_AA)
-        cv2.putText(image,text,(30,30), font, 1,(255,255,255),1,cv2.CV_AA)
+        scale = 0.75
+        origin = (10,10)
+        text = textwrap.wrap(text,50)
+        for line in text:
+            cv2.putText(image,line,origin, font, scale,(0,0,0),3,cv2.CV_AA)
+            cv2.putText(image,line,origin, font, scale,(255,255,255),1,cv2.CV_AA)
+            origin = (origin[0],origin[1]+18)
         cv2.imshow(windowname, image)
         cv2.waitKey(1)
         # time.sleep(5)
