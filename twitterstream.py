@@ -54,8 +54,30 @@ import textwrap
 import picamera
 def TakePhoto():
     path = "pics/pinoir.jpg"
+    camera.start_preview()
+    time.sleep(5)
     camera.capture(path) 
+    camera.stop_preview()
     return path
+
+
+
+def PicameraTasks():
+    camera = picamera.PiCamera()
+    camera.resolution=[640,480]
+    while running:
+        try:
+            print('Running PicameraTasks: %s' % time.ctime())
+            TakePhoto()
+            
+            time.sleep(5*60)
+        except Exception as e:
+
+            logging.exception(e.message, e.args)             
+            pprint.pprint(e)
+            time.sleep(30)
+    camera.close()
+
 
 def ReplyWithPhoto(sender):
     logging.info("taking photo...")
@@ -64,6 +86,7 @@ def ReplyWithPhoto(sender):
     media = twitter.upload_media(media=open(path,"rb"))
     plogging.info.plogging.info(media)
     logging.info("tweeting...")
+    photomessages = ["cheese!", "smile!"]
     twitter.update_status(status="@" + sender + " " + random.choice(photomessages), media_ids=media["media_id_string"])
     #message = str(datetime.now())
     #twitter.send_direct_message(user_id=senderid,screen_name=sender,text=message,media=media["media_id_string"])
@@ -569,10 +592,7 @@ time.sleep(1)
 streamer = MyStreamer(tokens[0],tokens[1],tokens[2],tokens[3])
 time.sleep(1)
 
-# INIT CAMERA
-photomessages = ["cheese!", "smile!"]
-camera = picamera.PiCamera()
-camera.resolution=[640,480]
+
 
 
 # INIT DEANPICS
@@ -667,6 +687,7 @@ thread_list = [
 ##    threading.Thread(target=MonitorTasks),
 ##    threading.Thread(target=HourlyTasks),
 ##    threading.Thread(target=FifteenMinuteTasks),    
+    threading.Thread(target=PicameraTasks),    
     threading.Thread(target=StreamTweets)]
 
 cv2.startWindowThread();
