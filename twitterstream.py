@@ -61,10 +61,12 @@ def TakePhoto():
     return path
 
 
+camera = picamera.PiCamera()
+camera.resolution=[640,480]
 
 def PicameraTasks():
-    camera = picamera.PiCamera()
-    camera.resolution=[640,480]
+
+
     while running:
         try:
             print('Running PicameraTasks: %s' % time.ctime())
