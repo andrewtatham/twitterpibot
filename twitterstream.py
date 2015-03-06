@@ -38,6 +38,17 @@ from os import listdir
 import os.path
 import logging
 import urllib
+import threading
+import webbrowser
+
+import cv2
+import urllib
+import numpy as np
+
+import Tkinter
+
+import textwrap
+
 #from textblob import TextBlob
 
 ##import picamera
@@ -58,14 +69,22 @@ import urllib
 ##    #twitter.send_direct_message(user_id=senderid,screen_name=sender,text=message,media=media["media_id_string"])
 ##    logging.info("done.")
 
-def ReplyWithDean(sender, name):
+def ReplyWithDean(sender = None, name = None):
+    
+    if name is None:
+        name = random.choice(people)
+        
     logging.info("getting " + name + " pic...")
     path = picsfolder + name + "/" + random.choice(pics[name])
     logging.info("uploading " + path + "...")
     media = twitter.upload_media(media=open(path,"rb"))
     logging.info("tweeting...")
     message = random.choice(deanmessages) + " " + name
-    twitter.update_status(status="@" + sender + " " + message, media_ids=media["media_id_string"])
+    
+    if sender is not None:
+        message = "@" + sender + " " + message 
+
+    twitter.update_status(status= message, media_ids=media["media_id_string"])
     logging.info("done.")
 
 def ReplyWithSong(target, song):
@@ -174,8 +193,43 @@ def SuggestedUsers():
             print("  " + user["name"])
             print("  @" + user["screen_name"])
             print("  " + user["description"])
+
+
+
+def DownloadImage(url):
+   
+    print ("Getting " + url)
+    retval = urllib.urlretrieve(url);
+    #pprint.pprint(retval)
+    while(not os.path.isfile(retval[0])):
+        time.sleep(0.25)
+    return retval[0]
+    
+    
+def ShowImage(path, text):
+    if(os.path.isfile(path)):
+        cv2.destroyAllWindows()
+        #print ("Opening " + path)
+        image = cv2.imread(path,0)
+
+
+
+        font = cv2.FONT_HERSHEY_COMPLEX_SMALL
+        scale = 0.75
+        origin = (10,10)
+        text = textwrap.wrap(text,50)
+        for line in text:
+            cv2.putText(image,line,origin, font, scale,(0,0,0),3,cv2.CV_AA)
+            cv2.putText(image,line,origin, font, scale,(255,255,255),1,cv2.CV_AA)
+            origin = (origin[0],origin[1]+18)
+        cv2.imshow(windowname, image)
+        cv2.waitKey(1)
+        # time.sleep(5)
+        # cv2.destroyWindow(windowname)
     
 
+
+ 
 class MyStreamer(TwythonStreamer):
 
     
@@ -214,13 +268,33 @@ class MyStreamer(TwythonStreamer):
                         #    hashtags = entities["hashtags"]
                         #    #textnoentities = ReplaceEntity(textnoentities, hashtags, " ")
                                 
-                        #if "urls" in entities:
-                        #    urls = entities["urls"]
+                        if "urls" in entities:
+                            urls = entities["urls"]
                         #    #textnoentities = ReplaceEntity(textnoentities, urls, " ")
+                            #for url in urls:
+                                #pprint.pprint(url)
+                                #print("Opening url " + url["url"])
+                                #webbrowser.open(url["url"])
+                                
+                                
 
-                        #if "media" in entities:
-                        #    medias = entities["media"]
-                        #    #textnoentities = ReplaceEntity(textnoentities, medias, " ")
+                        if "media" in entities:
+                            medias = entities["media"]
+                            pprint.pprint(medias)
+                            for media in medias:
+                                if media["type"] == "photo":
+                                    url = media["media_url"]
+                                    #webbrowser.open(url)
+                                    path = DownloadImage(url)
+                                    ShowImage(path, tweettext)
+                                    os.remove(path)
+                                    
+
+                        
+
+
+                            
+                            #textnoentities = ReplaceEntity(textnoentities, medias, " ")
                             
                         if "user_mentions" in entities:
                             mentions = entities["user_mentions"]
@@ -407,9 +481,64 @@ def Authenticate():
     return tokens
 
 
-
-
+def StreamTweets():
     
+    # START STREAMING
+
+    ## streamer.statuses.sample()
+    ## streamer.statuses.filter(track="Leeds",language="en",stall_warnings="true", filter_level="medium")
+    ## streamer.user()
+
+    while running:
+        try:       
+            streamer.user()
+        except Exception as e:
+
+            logging.exception(e.message, e.args)             
+            pprint.pprint(e)
+            time.sleep(30)
+
+    ####streamer.statuses.firehose()
+
+def HourlyTasks():
+    while running:
+        try:
+            print('Running hourly tasks: %s' % time.ctime())
+##            PrintTrends()
+##            SuggestedUsers()
+            
+            time.sleep(60*60)
+        except Exception as e:
+
+            logging.exception(e.message, e.args)             
+            pprint.pprint(e)
+            time.sleep(30)
+def FifteenMinuteTasks():
+    while running:
+        try:
+            print('Running 15min tasks: %s' % time.ctime())
+##            PrintTrends()
+##            SuggestedUsers()
+            
+            time.sleep(15*60)
+        except Exception as e:
+
+            logging.exception(e.message, e.args)             
+            pprint.pprint(e)
+            time.sleep(30)
+
+def MonitorTasks():
+    
+    while running:
+        try:
+            # print('Running monitor tasks: %s' % time.ctime())
+            print('')
+            time.sleep(15)
+        except KeyboardInterrupt:
+            print('Exiting: %s' % time.ctime())
+            sys.exit(0)
+
+
     
 
 
@@ -525,27 +654,42 @@ for songfile in songfiles:
 
 
 
-ratelimits = twitter.get_application_rate_limit_status()
-#pprint.pprint(ratelimits)
-logging.info(ratelimits)
-
-
-#PrintTrends()
-
-#SuggestedUsers()
+##ratelimits = twitter.get_application_rate_limit_status()
+###pprint.pprint(ratelimits)
+##logging.info(ratelimits)
 
 
 
+top = Tkinter.Tk()
 
-# START STREAMING
+# Code to add widgets will go here...
+thread_list = [
+##    threading.Thread(target=MonitorTasks),
+##    threading.Thread(target=HourlyTasks),
+##    threading.Thread(target=FifteenMinuteTasks),    
+    threading.Thread(target=StreamTweets)]
 
-## streamer.statuses.sample()
-## streamer.statuses.filter(track="Leeds",language="en",stall_warnings="true", filter_level="medium")
-## streamer.user()
-
-streamer.user()
-
-####streamer.statuses.firehose()
+cv2.startWindowThread();
+windowname = "Image"
+window = cv2.namedWindow(windowname)
 
 
-    
+running = True
+for thread in thread_list:
+    thread.start()
+    time.sleep(0.1)
+
+
+
+top.mainloop()
+print('Exiting: %s' % time.ctime())
+running = False
+
+streamer.disconnect()
+
+for thread in thread_list:
+    thread.join() 
+
+cv2.destroyAllWindows()
+
+print("Done")
