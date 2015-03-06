@@ -51,23 +51,23 @@ import textwrap
 
 #from textblob import TextBlob
 
-##import picamera
-##def TakePhoto():
-##    path = "pics/pinoir.jpg"
-##    camera.capture(path) 
-##    return path
+import picamera
+def TakePhoto():
+    path = "pics/pinoir.jpg"
+    camera.capture(path) 
+    return path
 
-##def ReplyWithPhoto(sender):
-##    logging.info("taking photo...")
-##    path = TakePhoto()
-##    logging.info("uploading...")
-##    media = twitter.upload_media(media=open(path,"rb"))
-##    plogging.info.plogging.info(media)
-##    logging.info("tweeting...")
-##    twitter.update_status(status="@" + sender + " " + random.choice(photomessages), media_ids=media["media_id_string"])
-##    #message = str(datetime.now())
-##    #twitter.send_direct_message(user_id=senderid,screen_name=sender,text=message,media=media["media_id_string"])
-##    logging.info("done.")
+def ReplyWithPhoto(sender):
+    logging.info("taking photo...")
+    path = TakePhoto()
+    logging.info("uploading...")
+    media = twitter.upload_media(media=open(path,"rb"))
+    plogging.info.plogging.info(media)
+    logging.info("tweeting...")
+    twitter.update_status(status="@" + sender + " " + random.choice(photomessages), media_ids=media["media_id_string"])
+    #message = str(datetime.now())
+    #twitter.send_direct_message(user_id=senderid,screen_name=sender,text=message,media=media["media_id_string"])
+    logging.info("done.")
 
 def ReplyWithDean(sender = None, name = None):
     
@@ -570,9 +570,9 @@ streamer = MyStreamer(tokens[0],tokens[1],tokens[2],tokens[3])
 time.sleep(1)
 
 # INIT CAMERA
-##photomessages = ["cheese!", "smile!"]
-##camera = picamera.PiCamera()
-##camera.resolution=[640,480]
+photomessages = ["cheese!", "smile!"]
+camera = picamera.PiCamera()
+camera.resolution=[640,480]
 
 
 # INIT DEANPICS
