@@ -74,7 +74,7 @@ def PicameraTasks():
             cv2.waitKey(1)
 
 
-            time.sleep(60)
+            time.sleep(5)
         except Exception as e:
 
             logging.exception(e.message, e.args)             
@@ -92,7 +92,7 @@ def WebcamTasks():
             cv2.waitKey(1)
 
 
-            time.sleep(60)
+            time.sleep(5)
         except Exception as e:
 
             logging.exception(e.message, e.args)             
