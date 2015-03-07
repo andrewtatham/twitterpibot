@@ -67,14 +67,13 @@ def PicameraTasks():
 
     while running:
         try:
-            print('Running PicameraTasks: %s' % time.ctime())
+            #print('Running PicameraTasks: %s' % time.ctime())
             path = TakePhoto()
             image = cv2.imread(path)
             cv2.imshow("picamera", image)
             cv2.waitKey(1)
 
 
-            time.sleep(5)
         except Exception as e:
 
             logging.exception(e.message, e.args)             
@@ -85,14 +84,13 @@ def WebcamTasks():
 
     while running:
         try:
-            print('Running WebcamTasks: %s' % time.ctime())
+            #print('Running WebcamTasks: %s' % time.ctime())
  
             err,image = webcam.read()           
             cv2.imshow("webcam", image)
             cv2.waitKey(1)
 
 
-            time.sleep(5)
         except Exception as e:
 
             logging.exception(e.message, e.args)             
@@ -302,7 +300,7 @@ class MyStreamer(TwythonStreamer):
 
                         if "media" in entities:
                             medias = entities["media"]
-                            pprint.pprint(medias)
+                            #pprint.pprint(medias)
                             for media in medias:
                                 if media["type"] == "photo":
                                     url = media["media_url"]
