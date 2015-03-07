@@ -620,7 +620,6 @@ picamerawindow = cv2.namedWindow("picamera")
 # INIT WEBCAM
 
 webcam = cv2.VideoCapture(0)
-webcam.open()
 cv2.namedWindow("webcam")
 for i in range(5):
     err,frame = webcam.read()
