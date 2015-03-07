@@ -71,8 +71,8 @@ def PicameraTasks():
             path = TakePhoto()
             image = cv2.imread(path)
             cv2.imshow("picamera", image)
-            cv2.waitKey(1)
-
+            #cv2.waitKey(1)
+            time.sleep(1)
 
         except Exception as e:
 
@@ -88,8 +88,8 @@ def WebcamTasks():
  
             err,image = webcam.read()           
             cv2.imshow("webcam", image)
-            cv2.waitKey(1)
-
+            #cv2.waitKey(1)
+            time.sleep(1)
 
         except Exception as e:
 
@@ -601,7 +601,7 @@ for songfile in songfiles:
 
 top = Tkinter.Tk()
 cv2.startWindowThread();
-
+cv2.waitKey(1)
 thread_list = [
 ##    threading.Thread(target=MonitorTasks),
 ##    threading.Thread(target=HourlyTasks),
