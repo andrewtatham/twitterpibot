@@ -54,9 +54,9 @@ import textwrap
 import picamera
 def TakePhoto():
     path = "pics/pinoir.jpg"
-    #camera.start_preview()
-    camera.capture(path) 
-    #camera.stop_preview()
+    #mypicamera.start_preview()
+    mypicamera.capture(path) 
+    #mypicamera.stop_preview()
     return path
 
 
@@ -72,12 +72,31 @@ def PicameraTasks():
             image = cv2.imread(path)
             cv2.imshow("picamera", image)
             cv2.waitKey(1)
+
+
             time.sleep(60)
         except Exception as e:
 
             logging.exception(e.message, e.args)             
             pprint.pprint(e)
    
+def WebcamTasks():
+
+
+    while running:
+        try:
+            print('Running WebcamTasks: %s' % time.ctime())
+ 
+            err,image = webcam.read()           
+            cv2.imshow("webcam", image)
+            cv2.waitKey(1)
+
+
+            time.sleep(60)
+        except Exception as e:
+
+            logging.exception(e.message, e.args)             
+            pprint.pprint(e)
     
 
 
@@ -583,23 +602,33 @@ for songfile in songfiles:
 
 
 top = Tkinter.Tk()
+cv2.startWindowThread();
 
 thread_list = [
 ##    threading.Thread(target=MonitorTasks),
 ##    threading.Thread(target=HourlyTasks),
 ##    threading.Thread(target=FifteenMinuteTasks),    
     threading.Thread(target=PicameraTasks),    
+    threading.Thread(target=WebcamTasks),    
     threading.Thread(target=StreamTweets)]
 
-camera = picamera.PiCamera()
-camera.resolution=[640,480]
-
-cv2.startWindowThread();
-windowname = "Image"
-window = cv2.namedWindow(windowname)
-
+mypicamera = picamera.PiCamera()
+mypicamera.resolution=[640,480]
 picamerawindow = cv2.namedWindow("picamera")
 
+
+# INIT WEBCAM
+
+webcam = cv2.VideoCapture(0)
+webcam.open()
+cv2.namedWindow("webcam")
+for i in range(5):
+    err,frame = webcam.read()
+
+
+
+windowname = "Image"
+window = cv2.namedWindow(windowname)
 
 
 tokens = Authenticate()
@@ -625,9 +654,11 @@ streamer.disconnect()
 
 cv2.destroyWindow(windowname)
 cv2.namedWindow("picamera")
+cv2.namedWindow("webcam")
 cv2.destroyAllWindows()
 
-camera.close()
+mypicamera.close()
+webcam.release()
 
 for thread in thread_list:
     thread.join() 
