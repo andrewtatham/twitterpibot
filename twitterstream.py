@@ -89,7 +89,7 @@ def WebcamTasks():
             err,image = webcam.read()           
             cv2.imshow("webcam", image)
             #cv2.waitKey(1)
-            time.sleep(1)
+            time.sleep(0.1)
 
         except Exception as e:
 
