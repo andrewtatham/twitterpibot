@@ -233,8 +233,8 @@ def DownloadImage(url):
     
 def ShowImage(path, text):
     if(os.path.isfile(path)):
-        cv2.destroyAllWindows()
-        #print ("Opening " + path)
+        #cv2.destroyAllWindows()
+        print ("Opening " + path)
         image = cv2.imread(path,0)
 
 
@@ -247,10 +247,11 @@ def ShowImage(path, text):
             cv2.putText(image,line,origin, font, scale,(0,0,0),3,cv2.CV_AA)
             cv2.putText(image,line,origin, font, scale,(255,255,255),1,cv2.CV_AA)
             origin = (origin[0],origin[1]+18)
+        print ("Showing " + path)
         cv2.imshow(windowname, image)
         cv2.waitKey(1)
-        # time.sleep(5)
-        # cv2.destroyWindow(windowname)
+        time.sleep(1)
+        ##cv2.destroyWindow(windowname)
     
 
 
