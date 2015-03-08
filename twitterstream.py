@@ -521,7 +521,7 @@ def PicameraTasks():
             cv2.imshow("picamera", image)
             picamerastream.truncate(0)
             #cv2.waitKey(1)
-            time.sleep(0.25)
+            time.sleep(0.75)
 
         except Exception as e:
 
@@ -538,7 +538,7 @@ def WebcamTasks():
             err,image = webcam.read()           
             cv2.imshow("webcam", image)
             #cv2.waitKey(1)
-            time.sleep(0.25)
+            time.sleep(0.75)
 
         except Exception as e:
 
