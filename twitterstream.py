@@ -516,11 +516,11 @@ def PicameraTasks():
 
     while running:
         try:
-            mypicamera.capture(picamerastream, format='bgr')
+            mypicamera.capture(picamerastream, format='bgr', resize=(640,480))
             image = picamerastream.array
             cv2.imshow("picamera", image)
             #cv2.waitKey(1)
-            time.sleep(1)
+            time.sleep(0.25)
 
         except Exception as e:
 
