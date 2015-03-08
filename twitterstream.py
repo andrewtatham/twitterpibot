@@ -516,12 +516,12 @@ def PicameraTasks():
 
     while running:
         try:
-            mypicamera.capture(picamerastream, format='bgr', resize=(640,480))
+            mypicamera.capture(picamerastream, format='bgr', resize=(320,240))
             image = picamerastream.array
             cv2.imshow("picamera", image)
             picamerastream.truncate(0)
             #cv2.waitKey(1)
-            time.sleep(0.75)
+            time.sleep(5)
 
         except Exception as e:
 
@@ -538,7 +538,7 @@ def WebcamTasks():
             err,image = webcam.read()           
             cv2.imshow("webcam", image)
             #cv2.waitKey(1)
-            time.sleep(0.75)
+            time.sleep(5)
 
         except Exception as e:
 
@@ -608,7 +608,7 @@ thread_list = [
     threading.Thread(target=StreamTweets)]
 
 mypicamera = picamera.PiCamera()
-mypicamera.resolution=[640,480]
+mypicamera.resolution=[320,240]
 mypicamera.start_preview()
 time.sleep(2)
 mypicamera.stop_preview()
