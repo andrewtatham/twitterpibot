@@ -52,50 +52,6 @@ import textwrap
 #from textblob import TextBlob
 
 import picamera
-def TakePhoto():
-    path = "pics/pinoir.jpg"
-    #mypicamera.start_preview()
-    mypicamera.capture(path) 
-    #mypicamera.stop_preview()
-    return path
-
-
-
-
-def PicameraTasks():
-
-
-    while running:
-        try:
-            #print('Running PicameraTasks: %s' % time.ctime())
-            path = TakePhoto()
-            image = cv2.imread(path)
-            cv2.imshow("picamera", image)
-            #cv2.waitKey(1)
-            time.sleep(1)
-
-        except Exception as e:
-
-            logging.exception(e.message, e.args)             
-            pprint.pprint(e)
-   
-def WebcamTasks():
-
-
-    while running:
-        try:
-            #print('Running WebcamTasks: %s' % time.ctime())
- 
-            err,image = webcam.read()           
-            cv2.imshow("webcam", image)
-            #cv2.waitKey(1)
-            time.sleep(0.1)
-
-        except Exception as e:
-
-            logging.exception(e.message, e.args)             
-            pprint.pprint(e)
-    
 
 
 def ReplyWithPhoto(sender):
@@ -210,7 +166,6 @@ def PrintTrends():
             logging.exception(e.message, e.args)             
             pprint.pprint(e)
 
-
 def SuggestedUsers():
     categories = twitter.get_user_suggestions()
 
@@ -226,16 +181,13 @@ def SuggestedUsers():
             print("  @" + user["screen_name"])
             print("  " + user["description"])
 
-
-
 def DownloadImage(url):
    
     retval = urllib.urlretrieve(url);
     while(not os.path.isfile(retval[0])):
         time.sleep(0.25)
     return retval[0]
-    
-    
+        
 def ShowImage(path, text):
     if(os.path.isfile(path)):
         image = cv2.imread(path,0)
@@ -548,6 +500,50 @@ def MonitorTasks():
             print('Exiting: %s' % time.ctime())
             sys.exit(0)
 
+def TakePhoto():
+    path = "pics/pinoir.jpg"
+    #mypicamera.start_preview()
+    mypicamera.capture(path) 
+    #mypicamera.stop_preview()
+    return path
+
+
+
+
+
+def PicameraTasks():
+
+
+    while running:
+        try:
+            mypicamera.capture(picamerastream, format='bgr')
+            image = picamerastream.array
+            cv2.imshow("picamera", image)
+            #cv2.waitKey(1)
+            time.sleep(1)
+
+        except Exception as e:
+
+            logging.exception(e.message, e.args)             
+            pprint.pprint(e)
+   
+def WebcamTasks():
+
+
+    while running:
+        try:
+            #print('Running WebcamTasks: %s' % time.ctime())
+ 
+            err,image = webcam.read()           
+            cv2.imshow("webcam", image)
+            #cv2.waitKey(1)
+            time.sleep(0.1)
+
+        except Exception as e:
+
+            logging.exception(e.message, e.args)             
+            pprint.pprint(e)
+    
 
 
 logging.basicConfig(filename='twitter.log',level=logging.INFO)
@@ -612,6 +608,10 @@ thread_list = [
 
 mypicamera = picamera.PiCamera()
 mypicamera.resolution=[640,480]
+mypicamera.start_preview()
+time.sleep(2)
+mypicamera.stop_preview()
+picamerastream = picamera.array.PiRGBArray(mypicamera) 
 picamerawindow = cv2.namedWindow("picamera")
 
 
@@ -655,6 +655,7 @@ cv2.namedWindow("webcam")
 cv2.destroyAllWindows()
 
 mypicamera.close()
+picamerastream.close()
 webcam.release()
 
 for thread in thread_list:
