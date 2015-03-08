@@ -519,6 +519,7 @@ def PicameraTasks():
             mypicamera.capture(picamerastream, format='bgr', resize=(640,480))
             image = picamerastream.array
             cv2.imshow("picamera", image)
+            picamerastream.truncate(0)
             #cv2.waitKey(1)
             time.sleep(0.25)
 
@@ -537,7 +538,7 @@ def WebcamTasks():
             err,image = webcam.read()           
             cv2.imshow("webcam", image)
             #cv2.waitKey(1)
-            time.sleep(0.1)
+            time.sleep(0.25)
 
         except Exception as e:
 
