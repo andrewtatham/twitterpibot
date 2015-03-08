@@ -52,7 +52,7 @@ import textwrap
 #from textblob import TextBlob
 
 import picamera
-
+import picamera.array
 
 def ReplyWithPhoto(sender):
     logging.info("taking photo...")
