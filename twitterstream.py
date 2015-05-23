@@ -50,36 +50,18 @@ import Tkinter
 import textwrap
 
 #from textblob import TextBlob
+try:
+    import picamera
+    import picamera.array
+except Exception:
+    pass
 
-import picamera
-def TakePhoto():
-    path = "pics/pinoir.jpg"
-    camera.start_preview()
-    time.sleep(5)
-    camera.capture(path) 
-    camera.stop_preview()
-    return path
+try:    
+    from piglow import PiGlow
+except Exception:
+    pass
 
-
-camera = picamera.PiCamera()
-camera.resolution=[640,480]
-
-def PicameraTasks():
-
-
-    while running:
-        try:
-            print('Running PicameraTasks: %s' % time.ctime())
-            TakePhoto()
-            
-            time.sleep(5*60)
-        except Exception as e:
-
-            logging.exception(e.message, e.args)             
-            pprint.pprint(e)
-            time.sleep(30)
-    camera.close()
-
+import math
 
 def ReplyWithPhoto(sender):
     logging.info("taking photo...")
@@ -128,8 +110,6 @@ def ReplyWithSong(target, song):
     
     logging.info("done.")
 
-
-
 def RetweetRecursion(data, retweetlevel):
  
     tweetstring = "* " + \
@@ -159,12 +139,6 @@ def RetweetRecursion(data, retweetlevel):
 
 
 
-#def ReplaceWordsWithList(text, tags, types, wordlist):
-#    retval = text
-#    for tag in tags:
-#        if tag[1] in types:
-#            retval = retval.replace(tag[0], random.choice(wordlist))
-#    return retval
 
 
 def PrintTrends():
@@ -174,8 +148,6 @@ def PrintTrends():
     #logging.info(availtrends)
     worldwide_WOEID = 1
     leeds_WOEID = 26042
-
-
 
 
     worldwide_trends = twitter.get_place_trends(id = worldwide_WOEID)
@@ -203,7 +175,6 @@ def PrintTrends():
             logging.exception(e.message, e.args)             
             pprint.pprint(e)
 
-
 def SuggestedUsers():
     categories = twitter.get_user_suggestions()
 
@@ -219,26 +190,16 @@ def SuggestedUsers():
             print("  @" + user["screen_name"])
             print("  " + user["description"])
 
-
-
 def DownloadImage(url):
    
-    print ("Getting " + url)
     retval = urllib.urlretrieve(url);
-    #pprint.pprint(retval)
     while(not os.path.isfile(retval[0])):
         time.sleep(0.25)
     return retval[0]
-    
-    
+        
 def ShowImage(path, text):
     if(os.path.isfile(path)):
-        cv2.destroyAllWindows()
-        #print ("Opening " + path)
         image = cv2.imread(path,0)
-
-
-
         font = cv2.FONT_HERSHEY_COMPLEX_SMALL
         scale = 0.75
         origin = (10,10)
@@ -249,11 +210,6 @@ def ShowImage(path, text):
             origin = (origin[0],origin[1]+18)
         cv2.imshow(windowname, image)
         cv2.waitKey(1)
-        # time.sleep(5)
-        # cv2.destroyWindow(windowname)
-    
-
-
  
 class MyStreamer(TwythonStreamer):
 
@@ -305,7 +261,7 @@ class MyStreamer(TwythonStreamer):
 
                         if "media" in entities:
                             medias = entities["media"]
-                            pprint.pprint(medias)
+                            #pprint.pprint(medias)
                             for media in medias:
                                 if media["type"] == "photo":
                                     url = media["media_url"]
@@ -453,10 +409,6 @@ class MyStreamer(TwythonStreamer):
         logging.error(msg)
         print(msg)
 
-
-
-
-
 def Authenticate():
     
     exists = os.path.isfile("APP_KEY.pkl") and os.path.isfile("APP_SECRET.pkl")
@@ -505,7 +457,6 @@ def Authenticate():
    
     return tokens
 
-
 def StreamTweets():
     
     # START STREAMING
@@ -518,13 +469,9 @@ def StreamTweets():
         try:       
             streamer.user()
         except Exception as e:
-
             logging.exception(e.message, e.args)             
             pprint.pprint(e)
-            time.sleep(30)
-
-    ####streamer.statuses.firehose()
-
+ 
 def HourlyTasks():
     while running:
         try:
@@ -537,7 +484,7 @@ def HourlyTasks():
 
             logging.exception(e.message, e.args)             
             pprint.pprint(e)
-            time.sleep(30)
+        
 def FifteenMinuteTasks():
     while running:
         try:
@@ -550,7 +497,6 @@ def FifteenMinuteTasks():
 
             logging.exception(e.message, e.args)             
             pprint.pprint(e)
-            time.sleep(30)
 
 def MonitorTasks():
     
@@ -563,12 +509,81 @@ def MonitorTasks():
             print('Exiting: %s' % time.ctime())
             sys.exit(0)
 
+def TakePhoto():
+    path = "pics/pinoir.jpg"
+    #mypicamera.start_preview()
+    mypicamera.capture(path) 
+    #mypicamera.stop_preview()
+    return path
 
+
+
+
+
+def PicameraTasks():
+
+
+    while running and enablePicam:
+        try:
+            mypicamera.capture(picamerastream, format='bgr', resize=(320,240))
+            image = picamerastream.array
+            cv2.imshow("picamera", image)
+            picamerastream.truncate(0)
+            #cv2.waitKey(1)
+            time.sleep(5)
+
+        except Exception as e:
+
+            logging.exception(e.message, e.args)             
+            pprint.pprint(e)
+   
+def WebcamTasks():
+
+
+    while running and enableWebcam:
+        try:
+            #print('Running WebcamTasks: %s' % time.ctime())
+ 
+            err,image = webcam.read()           
+            cv2.imshow("webcam", image)
+            #cv2.waitKey(1)
+            time.sleep(5)
+
+        except Exception as e:
+
+            logging.exception(e.message, e.args)             
+            pprint.pprint(e)
     
+def PiglowTasks():
+
+    while running and enablePiglow:
+        try:
+            for t in range(360):
+                for led in range(18):
+                    piglow.led(led+1, pattern[led][t])
+                if running:
+                    sleep(1) 
+                else:
+                    break
+        except Exception as e:
+            logging.exception(e.message, e.args)             
+            pprint.pprint(e)
+
+
+def getLed(arm,colour):
+    return int(6*arm+colour)
+def getBright(factor):
+    return max(0, min(int(-0.5 * maxbright + maxbright * factor),255))
+
+
+#############################################################
+
+enablePiglow = False
+enablePicam = False
+enableWebcam = False
 
 
 logging.basicConfig(filename='twitter.log',level=logging.INFO)
-
 
 andrewpi = "andrewtathampi" 
 andrewpiid = "2935295111"
@@ -587,19 +602,7 @@ simon = "Tolle_Lege"
 users = [andrew, markr, jamie, helen, dean, chriswatson, simon]
 
 
-# INIT TWITTER
-tokens = Authenticate()
-twitter = Twython(tokens[0],tokens[1],tokens[2],tokens[3])
-time.sleep(1)
-streamer = MyStreamer(tokens[0],tokens[1],tokens[2],tokens[3])
-time.sleep(1)
-
-
-
-
 # INIT DEANPICS
-
-
 deanmessages = ["need moar", "many", "so much", "very", "wow"]
 picsfolder = "pics/"
 if not os.path.exists(picsfolder):
@@ -612,15 +615,6 @@ for person in people:
     if os.path.isdir(personpicsfolder):
         pics[name] = os.listdir(personpicsfolder)
     
-#pprint.pprint(people)
-#for person in people:
-#    name = str(person)
-#    print(name)
-#    pprint.pprint(pics[name])
-
-
-
-
 
 # INIT SONGS
 songsfolder = "songs/"
@@ -631,50 +625,6 @@ for songfile in songfiles:
     if songname.endswith('.txt'):
         songname = songname[:-4]
     songs[songname] = open(songsfolder + songfile, "rb").readlines()
-    
-    
-##  logging.info(songs)
-    
-#TODO Split singular and plural
-###fruitlist = ["Apple",
-###        "Apricots",
-###        "Avocado",
-###        "Banana",
-###        "Blackberry",
-###        "Blueberries",
-###        "Cherries",
-###        "Coconut",
-###        "Cranberry",
-###        "Cucumber",
-###        "Dates",
-###        "Fig",
-###        "Gooseberry",
-###        "Grapefruit",
-###        "Grapes",
-###        "Kiwi",
-###        "Kumquat",
-###        "Lemon",
-###        "Lime",
-###        "Lychee",
-###        "Mango",
-###        "Melon",
-###        "Nectarine",
-###        "Orange",
-###        "Papaya",
-###        "Passion Fruit",
-###        "Peach",
-###        "Pear",
-###        "Pineapple",
-###        "Plum",
-###        "Pomegranate",
-###        "Clementine",
-###        "Prunes",
-###        "Raspberries",
-###        "Strawberries",
-###        "Tangerine",
-###        "Watermelon"]
-
-
 
 ##ratelimits = twitter.get_application_rate_limit_status()
 ###pprint.pprint(ratelimits)
@@ -683,19 +633,66 @@ for songfile in songfiles:
 
 
 top = Tkinter.Tk()
-
-# Code to add widgets will go here...
+cv2.startWindowThread();
+cv2.waitKey(1)
 thread_list = [
 ##    threading.Thread(target=MonitorTasks),
 ##    threading.Thread(target=HourlyTasks),
 ##    threading.Thread(target=FifteenMinuteTasks),    
-    threading.Thread(target=PicameraTasks),    
+
     threading.Thread(target=StreamTweets)]
 
-cv2.startWindowThread();
+if enableWebcam:
+    thread_list.add(threading.Thread(target=WebcamTasks))    
+if enablePiglow:
+    thread_list.add(threading.Thread(target=PiglowTasks))   
+if enablePicam:
+    thread_list.add(threading.Thread(target=PicameraTasks))
+
 windowname = "Image"
 window = cv2.namedWindow(windowname)
 
+
+
+mypicamera = None
+picamerastream = None
+picamerawindow = None
+if enablePicam:
+    mypicamera = picamera.PiCamera()
+    mypicamera.resolution=[320,240]
+    mypicamera.start_preview()
+    time.sleep(2)
+    mypicamera.stop_preview()
+    picamerastream = picamera.array.PiRGBArray(mypicamera) 
+    picamerawindow = cv2.namedWindow("picamera")
+
+
+# INIT WEBCAM
+webcam = None
+if enableWebcam:
+    webcam = cv2.VideoCapture(0)
+    cv2.namedWindow("webcam")
+    for i in range(5):
+        err,frame = webcam.read()
+
+piglow = None
+if enablePiglow:
+    piglow = PiGlow()
+    maxbright = 32
+    piglow.all(0)
+    pattern = [[0 for x in range(360)]for y in range(18)]
+    for t in range(360):
+        for colour in range(6):
+            for arm in range(3):
+                b1 = math.sin(math.radians(t + arm * 15 +  colour * 360/32))
+                led = getLed(arm,colour)
+                pattern[led][t] = getBright(b1)
+
+tokens = Authenticate()
+twitter = Twython(tokens[0],tokens[1],tokens[2],tokens[3])
+time.sleep(0.1)
+streamer = MyStreamer(tokens[0],tokens[1],tokens[2],tokens[3])
+time.sleep(0.1)
 
 running = True
 for thread in thread_list:
@@ -705,14 +702,29 @@ for thread in thread_list:
 
 
 top.mainloop()
+
+
 print('Exiting: %s' % time.ctime())
 running = False
 
 streamer.disconnect()
+cv2.destroyWindow(windowname)
+
+
+if enablePicam:
+    mypicamera.close()
+    picamerastream.close()
+    cv2.namedWindow("picamera")
+    
+if enableWebcam:
+    webcam.release()
+    cv2.namedWindow("webcam")
+
+
+
+cv2.destroyAllWindows()
 
 for thread in thread_list:
     thread.join() 
-
-cv2.destroyAllWindows()
 
 print("Done")
