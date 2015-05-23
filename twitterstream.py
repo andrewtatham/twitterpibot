@@ -50,11 +50,17 @@ import Tkinter
 import textwrap
 
 #from textblob import TextBlob
+try:
+    import picamera
+    import picamera.array
+except Exception:
+    pass
 
-import picamera
-import picamera.array
+try:    
+    from piglow import PiGlow
+except Exception:
+    pass
 
-from piglow import PiGlow
 import math
 
 def ReplyWithPhoto(sender):
@@ -517,7 +523,7 @@ def TakePhoto():
 def PicameraTasks():
 
 
-    while running:
+    while running and enablePicam:
         try:
             mypicamera.capture(picamerastream, format='bgr', resize=(320,240))
             image = picamerastream.array
@@ -534,7 +540,7 @@ def PicameraTasks():
 def WebcamTasks():
 
 
-    while running:
+    while running and enableWebcam:
         try:
             #print('Running WebcamTasks: %s' % time.ctime())
  
@@ -550,7 +556,7 @@ def WebcamTasks():
     
 def PiglowTasks():
 
-    while running:
+    while running and enablePiglow:
         try:
             for t in range(360):
                 for led in range(18):
@@ -568,6 +574,13 @@ def getLed(arm,colour):
     return int(6*arm+colour)
 def getBright(factor):
     return max(0, min(int(-0.5 * maxbright + maxbright * factor),255))
+
+
+#############################################################
+
+enablePiglow = False
+enablePicam = False
+enableWebcam = False
 
 
 logging.basicConfig(filename='twitter.log',level=logging.INFO)
@@ -627,43 +640,53 @@ thread_list = [
 ##    threading.Thread(target=HourlyTasks),
 ##    threading.Thread(target=FifteenMinuteTasks),    
 
-    threading.Thread(target=PiglowTasks),    
-    threading.Thread(target=PicameraTasks),    
-    threading.Thread(target=WebcamTasks),    
     threading.Thread(target=StreamTweets)]
 
-mypicamera = picamera.PiCamera()
-mypicamera.resolution=[320,240]
-mypicamera.start_preview()
-time.sleep(2)
-mypicamera.stop_preview()
-picamerastream = picamera.array.PiRGBArray(mypicamera) 
-picamerawindow = cv2.namedWindow("picamera")
-
-
-# INIT WEBCAM
-
-webcam = cv2.VideoCapture(0)
-cv2.namedWindow("webcam")
-for i in range(5):
-    err,frame = webcam.read()
-
-
+if enableWebcam:
+    thread_list.add(threading.Thread(target=WebcamTasks))    
+if enablePiglow:
+    thread_list.add(threading.Thread(target=PiglowTasks))   
+if enablePicam:
+    thread_list.add(threading.Thread(target=PicameraTasks))
 
 windowname = "Image"
 window = cv2.namedWindow(windowname)
 
 
-piglow = PiGlow()
-maxbright = 32
-piglow.all(0)
-pattern = [[0 for x in range(360)]for y in range(18)]
-for t in range(360):
-    for colour in range(6):
-        for arm in range(3):
-            b1 = math.sin(math.radians(t + arm * 15 +  colour * 360/32))
-            led = getLed(arm,colour)
-            pattern[led][t] = getBright(b1)
+
+mypicamera = None
+picamerastream = None
+picamerawindow = None
+if enablePicam:
+    mypicamera = picamera.PiCamera()
+    mypicamera.resolution=[320,240]
+    mypicamera.start_preview()
+    time.sleep(2)
+    mypicamera.stop_preview()
+    picamerastream = picamera.array.PiRGBArray(mypicamera) 
+    picamerawindow = cv2.namedWindow("picamera")
+
+
+# INIT WEBCAM
+webcam = None
+if enableWebcam:
+    webcam = cv2.VideoCapture(0)
+    cv2.namedWindow("webcam")
+    for i in range(5):
+        err,frame = webcam.read()
+
+piglow = None
+if enablePiglow:
+    piglow = PiGlow()
+    maxbright = 32
+    piglow.all(0)
+    pattern = [[0 for x in range(360)]for y in range(18)]
+    for t in range(360):
+        for colour in range(6):
+            for arm in range(3):
+                b1 = math.sin(math.radians(t + arm * 15 +  colour * 360/32))
+                led = getLed(arm,colour)
+                pattern[led][t] = getBright(b1)
 
 tokens = Authenticate()
 twitter = Twython(tokens[0],tokens[1],tokens[2],tokens[3])
@@ -685,15 +708,21 @@ print('Exiting: %s' % time.ctime())
 running = False
 
 streamer.disconnect()
-
 cv2.destroyWindow(windowname)
-cv2.namedWindow("picamera")
-cv2.namedWindow("webcam")
-cv2.destroyAllWindows()
 
-mypicamera.close()
-picamerastream.close()
-webcam.release()
+
+if enablePicam:
+    mypicamera.close()
+    picamerastream.close()
+    cv2.namedWindow("picamera")
+    
+if enableWebcam:
+    webcam.release()
+    cv2.namedWindow("webcam")
+
+
+
+cv2.destroyAllWindows()
 
 for thread in thread_list:
     thread.join() 
