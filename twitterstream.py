@@ -192,7 +192,7 @@ def SuggestedUsers():
 
 def DownloadImage(url):
    
-    retval = urllib.urlretrieve(url);
+    retval = urllib.urlretrieve(url)
     while(not os.path.isfile(retval[0])):
         time.sleep(0.25)
     return retval[0]
@@ -202,21 +202,22 @@ def ShowImage(path, text):
         image = cv2.imread(path,0)
         font = cv2.FONT_HERSHEY_COMPLEX_SMALL
         scale = 0.75
-        origin = (10,10)
+        origin = (10,20)
         text = textwrap.wrap(text,50)
         for line in text:
             cv2.putText(image,line,origin, font, scale,(0,0,0),3,cv2.CV_AA)
             cv2.putText(image,line,origin, font, scale,(255,255,255),1,cv2.CV_AA)
-            origin = (origin[0],origin[1]+18)
-        cv2.imshow(windowname, image)
-        cv2.waitKey(1)
+            origin = (origin[0],origin[1]+20)
+        # actually we queue it now
+        imageQueue.put(image)
+
  
 class MyStreamer(TwythonStreamer):
 
     
     
     def on_success(self, data):
-        tweettext = ""
+        tweettext = U""
         tweettextraw = ""
         try:
             if "text" in data:
@@ -228,20 +229,18 @@ class MyStreamer(TwythonStreamer):
                 tweetid = data["id_str"]
 
                 sender_id = data["user"]["id_str"]
+                sender_name = data["user"]["name"]
                 sender_screen_name = data["user"]["screen_name"]
-                tweettextraw = data["text"]
-                tweettext = tweettextraw.decode('utf-8', 'ignore')
+                sender_description = data["user"]["description"]
+                sender_profile_image_url = data["user"]["profile_image_url"]
+                sender_profile_banner_url = data["user"]["profile_banner_url"]
+
+                tweettextraw = data["text"].replace('\u2026','')                
+                tweettext = tweettextraw.decode('utf-8', 'ignore')     
 
                 if sender_id != andrewpiid:
                     # STATUS UPDATE
                     RetweetRecursion(data, 0)
-
-
-                #    words = tweettext.split()
-                #    # remove non ascii chars
-                #    textnoentities = tweettext
-                #    textnoentities = ''.join([i if ord(i) < 128 else ' ' for i in textnoentities])                
-
 
                     targets = []
                    
@@ -250,17 +249,9 @@ class MyStreamer(TwythonStreamer):
 
                         #if "hashtags" in entities:
                         #    hashtags = entities["hashtags"]
-                        #    #textnoentities = ReplaceEntity(textnoentities, hashtags, " ")
                                 
                         if "urls" in entities:
                             urls = entities["urls"]
-                        #    #textnoentities = ReplaceEntity(textnoentities, urls, " ")
-                            #for url in urls:
-                                #pprint.pprint(url)
-                                #print("Opening url " + url["url"])
-                                #webbrowser.open(url["url"])
-                                
-                                
 
                         if "media" in entities:
                             medias = entities["media"]
@@ -272,44 +263,18 @@ class MyStreamer(TwythonStreamer):
                                     path = DownloadImage(url)
                                     ShowImage(path, tweettext)
                                     os.remove(path)
-                                    
-
-                        
-
-
-                            
-                            #textnoentities = ReplaceEntity(textnoentities, medias, " ")
                             
                         if "user_mentions" in entities:
                             mentions = entities["user_mentions"]
-                            #textnoentities = ReplaceEntity(textnoentities, mentions, " ")
                             for mention in mentions:
 
                                 if mention["screen_name"] != andrewpi and mention["screen_name"] != sender_screen_name:
                                     targets.append(mention["screen_name"])
-
-                            
+                      
                                 if mention["id_str"] == andrewpiid:
                                     # ANDREWPI MENTION
                                     logging.info("*** ANDREWPI MENTION ***")
                                     andrewpimentioned = True
-
-
-
-
-                ## remove any remaining urls                
-                ## textnoentities = re.sub(r'^https?:\/\/.*[\r\n]*', '', textnoentities)
-
-
-                #logging.info("textinitial = " + tweettext)
-                #logging.info("textnoentities = " + textnoentities)
-
-                #wiki = TextBlob(textnoentities)
-                #logging.info(wiki.tags)
-
-                #types = ["NN","NNS","NNP","NNPS"]
-                #newtext = ReplaceWordsWithList(tweettext, wiki.tags, types, fruitlist)
-                #logging.info("newtext = " + newtext)
                 
                 if andrewpimentioned:
 
@@ -319,8 +284,6 @@ class MyStreamer(TwythonStreamer):
                         elif (word.lower() in pics):
                             ReplyWithDean(sender, word.lower())
                         elif word.lower() in songs:
-                           
-
                             if targets.any():
                                 ReplyWithSong(targets, word.lower())
                             else:
@@ -328,12 +291,9 @@ class MyStreamer(TwythonStreamer):
                         else:
                             pass
 
-
                     trend = random.choice(trends)
 
                     replytext = "@" + sender_screen_name + " " + newtext + " " + trend
-
-
                     
                     twitter.update_status(status=replytext, 
                                           in_reply_to_status_id=tweetid)
@@ -402,11 +362,11 @@ class MyStreamer(TwythonStreamer):
                 else:
                     logging.info(data)
         except Exception as e:   
-            #problemTweets.write(tweettextraw + '\n');
-            problemTweets.write(tweettext + '\n');
-            problemTweets.flush();
-            logging.exception(e.message, e.args)             
-            pprint.pprint(e)
+            #problemTweets.write(tweettextraw + '\n')
+            problemTweets.write(tweettext + U'\n')
+            problemTweets.flush()
+            #logging.exception(e.message, e.args)             
+            #pprint.pprint(e)
 
             
     def on_error(self, status_code, data):
@@ -465,12 +425,6 @@ def Authenticate():
 
 def StreamTweets():
     
-    # START STREAMING
-
-    ## streamer.statuses.sample()
-    ## streamer.statuses.filter(track="Leeds",language="en",stall_warnings="true", filter_level="medium")
-    ## streamer.user()
-
     while running:
         try:       
             streamer.user()
@@ -478,6 +432,22 @@ def StreamTweets():
             logging.exception(e.message, e.args)             
             pprint.pprint(e)
  
+
+
+
+def DisplayImages():
+
+    while running:
+        try:       
+            image = imageQueue.get()
+            imageQueue.task_done()
+            cv2.imshow(windowname, image)
+            cv2.waitKey(1)
+            time.sleep(2)
+        except Exception as e:
+            logging.exception(e.message, e.args)             
+            pprint.pprint(e)
+                
 def HourlyTasks():
     while running:
         try:
@@ -639,17 +609,22 @@ for songfile in songfiles:
 ###pprint.pprint(ratelimits)
 ##logging.info(ratelimits)
 
+from Queue import Queue
+imageQueue = Queue()
+
+
 
 
 top = Tkinter.Tk()
-cv2.startWindowThread();
+cv2.startWindowThread()
 cv2.waitKey(1)
 thread_list = [
 ##    threading.Thread(target=MonitorTasks),
 ##    threading.Thread(target=HourlyTasks),
 ##    threading.Thread(target=FifteenMinuteTasks),    
 
-    threading.Thread(target=StreamTweets)]
+    threading.Thread(target=StreamTweets),
+    threading.Thread(target=DisplayImages)]
 
 if enableWebcam:
     thread_list.add(threading.Thread(target=WebcamTasks))    
@@ -722,8 +697,8 @@ running = False
 
 
 streamer.disconnect()
-problemTweets.flush();
-problemTweets.close();
+problemTweets.flush()
+problemTweets.close()
 
 
 cv2.destroyWindow(windowname)
