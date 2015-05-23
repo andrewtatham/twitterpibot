@@ -216,6 +216,8 @@ class MyStreamer(TwythonStreamer):
     
     
     def on_success(self, data):
+        tweettext = ""
+        tweettextraw = ""
         try:
             if "text" in data:
 
@@ -227,7 +229,8 @@ class MyStreamer(TwythonStreamer):
 
                 sender_id = data["user"]["id_str"]
                 sender_screen_name = data["user"]["screen_name"]
-                tweettext = data["text"]
+                tweettextraw = data["text"]
+                tweettext = tweettextraw.decode('utf-8', 'ignore')
 
                 if sender_id != andrewpiid:
                     # STATUS UPDATE
@@ -399,6 +402,9 @@ class MyStreamer(TwythonStreamer):
                 else:
                     logging.info(data)
         except Exception as e:   
+            #problemTweets.write(tweettextraw + '\n');
+            problemTweets.write(tweettext + '\n');
+            problemTweets.flush();
             logging.exception(e.message, e.args)             
             pprint.pprint(e)
 
@@ -585,6 +591,9 @@ enableWebcam = False
 
 logging.basicConfig(filename='twitter.log',level=logging.INFO)
 
+problemTweets = open('problemtweets.txt','w')
+
+
 andrewpi = "andrewtathampi" 
 andrewpiid = "2935295111"
 
@@ -707,7 +716,16 @@ top.mainloop()
 print('Exiting: %s' % time.ctime())
 running = False
 
+
+
+
+
+
 streamer.disconnect()
+problemTweets.flush();
+problemTweets.close();
+
+
 cv2.destroyWindow(windowname)
 
 
