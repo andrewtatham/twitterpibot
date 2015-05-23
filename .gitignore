@@ -2,3 +2,4 @@
 *.pkl
 info.txt
 /.project
+*.pyc
