@@ -126,18 +126,6 @@ def RetweetRecursion(data, retweetlevel):
     #        RetweetRecursion(data["retweeted_status"], retweetlevel + 1)
 
 
-#def ReplaceEntity(text, entities, replacewith):
-#    for entity in entities:
-        
-#        indices = entity["indices"]
-#        beginindex = indices[0]
-#        endindex = indices[1]
-#        length = endindex - beginindex
-        
-#        text = text[:beginindex] + replacewith * length + text[endindex:]
-#    return text
-
-
 
 
 
@@ -222,7 +210,7 @@ class MyStreamer(TwythonStreamer):
         try:
             if "text" in data:
 
-                logging.info(data)
+                #logging.info(data)
 
                 andrewpimentioned = False
 
@@ -236,7 +224,7 @@ class MyStreamer(TwythonStreamer):
                 sender_profile_banner_url = data["user"]["profile_banner_url"]
 
                 tweettextraw = data["text"].replace('\u2026','')                
-                tweettext = tweettextraw.decode('utf-8', 'ignore')     
+                tweettext = h.unescape(tweettextraw.decode('utf-8', 'ignore'))    
 
                 if sender_id != andrewpiid:
                     # STATUS UPDATE
@@ -308,12 +296,7 @@ class MyStreamer(TwythonStreamer):
                     logging.info("Direct message from " + sender + " " + senderid + " : " + directmessagetext)
                 
                     if senderid == andrewpiid:
-                        # IGNORE
-                        pass
-                    #elif senderid == andrewid:
-                        # FROM ME
-                        #logging.info(" from me" )
-                    
+                        pass                    
                     else:
                         # FROM ANYOE ELSE
     ##                    if (directmessagetext.lower() == "photo"):
@@ -608,6 +591,9 @@ for songfile in songfiles:
 ##ratelimits = twitter.get_application_rate_limit_status()
 ###pprint.pprint(ratelimits)
 ##logging.info(ratelimits)
+
+import HTMLParser
+h = HTMLParser.HTMLParser()
 
 from Queue import Queue
 imageQueue = Queue()
