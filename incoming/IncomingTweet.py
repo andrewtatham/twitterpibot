@@ -1,5 +1,27 @@
 
 from InboxTextItem import InboxTextItem
+
+import HTMLParser
+
+h = HTMLParser.HTMLParser()
+
+andrewpi = "andrewtathampi" 
+andrewpiid = "2935295111"
+
+andrew = "andrewtatham"
+andrewid = "19201332"
+
+helen = "morris_helen"
+markr = "fuuuunnnkkytree"
+jamie = "jami3rez"
+dean = "dcspamoni"
+chriswatson = "watdoghotdog"
+fletch = "paulfletcher79"
+simon = "Tolle_Lege"
+
+users = [andrew, markr, jamie, helen, dean, chriswatson, simon]
+
+
 class IncomingTweet(InboxTextItem):
     def __init__(self, data):
         # https://dev.twitter.com/overview/api/tweets

@@ -6,6 +6,8 @@ from ProcessInboxTask import ProcessInboxTask
 from Context import Context
 import logging
 from pprint import pprint
+from MonitorTask import MonitorTask
+import time
 
 
 class Tasks(object):
@@ -13,7 +15,8 @@ class Tasks(object):
     def __init__(self, *args, **kwargs):
 
         self.taskList = [StreamTweetsTask(),
-                         ProcessInboxTask()]
+                         ProcessInboxTask(),
+                         MonitorTask()]
 
 
         self.running = False
@@ -39,18 +42,25 @@ class Tasks(object):
     def Start(args):
 
         args.running = True
-        args.runThreads = map(lambda task : threading.Thread(target=args.RunWrapper(task)), args.taskList)
+
+        args.runThreads = []
+        for task in args.taskList:
+
+            runThread = threading.Thread(target=args.RunWrapper, args=[task])
+            #runThread.setDaemon(True)
+            args.runThreads.append(runThread)
+
         for thread in args.runThreads:
             thread.start()
 
     def RunWrapper(args, task):
-        while args.running:
-
+        while args.running:           
             try:   
                 task.onRun()
             except Exception as e:
                 logging.exception(e.message, e.args)             
                 print(e.message)
+                time.sleep(5)
 
     def Stop(args):
 

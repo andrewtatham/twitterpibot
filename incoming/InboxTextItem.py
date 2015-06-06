@@ -1,8 +1,6 @@
 
 from InboxItem import InboxItem
-import HTMLParser
 
-h = HTMLParser.HTMLParser()
 
 
 class InboxTextItem(InboxItem):

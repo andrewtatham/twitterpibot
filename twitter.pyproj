@@ -1668,6 +1668,9 @@
     <Compile Include="tasks\DisplayImagesTask.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="tasks\MonitorTask.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tasks\PicameraTask.py">
       <SubType>Code</SubType>
     </Compile>

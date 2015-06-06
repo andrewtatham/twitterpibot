@@ -13,6 +13,7 @@ class StreamTweetsTask(Task):
         args.streamer.inbox = args.Context.inbox
  
     def onRun(args):
+        print("starting stream")
         args.streamer.user()
 
     def onStop(args):

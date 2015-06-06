@@ -1,4 +1,5 @@
 from twython.streaming.api import TwythonStreamer
+import logging
 class MyStreamer(TwythonStreamer):
   
     def on_success(self, data):
@@ -11,3 +12,4 @@ class MyStreamer(TwythonStreamer):
         logging.error(msg)
         print(msg)
 
+        

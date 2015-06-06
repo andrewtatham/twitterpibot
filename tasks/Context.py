@@ -4,4 +4,6 @@ class Context(object):
         self.inbox = Queue()
         self.outbox = Queue()
 
+    def GetStatus(args):
+        return args.inbox.qsize()
 
