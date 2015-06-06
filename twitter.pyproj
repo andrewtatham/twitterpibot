@@ -5,8 +5,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0d8a6f76-90c3-43e1-8e8f-d24c25a90e50}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>twitterstream.py</StartupFile>
-    <SearchPath />
+    <StartupFile>Main.py</StartupFile>
+    <SearchPath>tasks\;twitter\;incoming\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
@@ -1626,15 +1626,87 @@
     <Content Include="pics\will\n650836710_491283_8022.JPG" />
     <Content Include="pics\will\P1010467.JPG" />
     <Content Include="pics\will\P1010493.JPG" />
+    <Content Include="songs\500miles.txt" />
     <Content Include="songs\bohrap.txt" />
     <Content Include="songs\ice.txt" />
     <Content Include="songs\japanese.txt" />
     <Content Include="songs\jingle.txt" />
+    <Content Include="songs\jungle.txt" />
+    <Content Include="songs\nighttrain.txt" />
+    <Content Include="songs\paradise.txt" />
+    <Content Include="songs\sexy.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="twitterstream.py" />
+    <Compile Include="incoming\InboxItem.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="incoming\InboxItemFactory.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="incoming\InboxTextItem.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="incoming\IncomingDirectMessage.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="incoming\IncomingEvent.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="incoming\IncomingTweet.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Main.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Outgoing.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Responses.py" />
+    <Compile Include="tasks\Context.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tasks\DisplayImagesTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tasks\PicameraTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tasks\PiglowTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tasks\ProcessInboxTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tasks\ProcessOutboxTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tasks\SongTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tasks\StreamTweetsTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tasks\Task.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tasks\Tasks.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tasks\WebcamTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="twitter\twitterstream.py" />
+    <Compile Include="twitter\Authenticator.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="twitter\MyStreamer.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="incoming\" />
+    <Folder Include="tasks\" />
+    <Folder Include="twitter\" />
     <Folder Include="pics" />
     <Folder Include="pics\andrew" />
     <Folder Include="pics\dave" />
