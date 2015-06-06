@@ -5,5 +5,13 @@ class Context(object):
         self.outbox = Queue()
 
     def GetStatus(args):
-        return args.inbox.qsize()
 
+        status = Status()
+        status.inboxCount = args.inbox.qsize()
+        status.outboxCount = args.outbox.qsize()
+
+        return status
+
+
+class Status(object):
+    pass

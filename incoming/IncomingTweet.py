@@ -34,9 +34,9 @@ class IncomingTweet(InboxTextItem):
         self.sender_id = data["user"]["id_str"]
         self.sender_name = data["user"]["name"]
         self.sender_screen_name = data["user"]["screen_name"]
-        self.sender_description = data["user"]["description"]
-        self.sender_profile_image_url = data["user"]["profile_image_url"]
-        self.sender_profile_banner_url = data["user"]["profile_banner_url"]
+        #self.sender_description = data["user"]["description"]
+        #self.sender_profile_image_url = data["user"]["profile_image_url"]
+        #self.sender_profile_banner_url = data["user"]["profile_banner_url"]
 
         self.tweettextraw = data["text"].replace('\u2026','')                
         self.text = h.unescape(self.tweettextraw.decode('utf-8', 'ignore'))

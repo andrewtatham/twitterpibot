@@ -4,7 +4,10 @@ import time
 class MonitorTask(Task):
     def onRun(args):
 
-        print(args.Context.GetStatus())
+
+        status = args.Context.GetStatus()
+        if(status.inboxCount > 0):
+            print('inbox = ' + str(status.inboxCount))
 
         time.sleep(1)
 

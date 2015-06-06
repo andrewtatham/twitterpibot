@@ -1,10 +1,10 @@
 class Task(object):
 
     def onInit(args):
-        print('onInit')
+        print('Task.onInit')
 
     def onRun(args):
-        print('onRun')
+        print('Task.onRun')
 
     def onStop(args):
-        print('onStop')
+        print('Task.onStop')

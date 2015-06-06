@@ -60,7 +60,7 @@ class Tasks(object):
             except Exception as e:
                 logging.exception(e.message, e.args)             
                 print(e.message)
-                time.sleep(5)
+                #time.sleep(5)
 
     def Stop(args):
 
