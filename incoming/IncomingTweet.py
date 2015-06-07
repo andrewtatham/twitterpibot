@@ -27,7 +27,7 @@ class IncomingTweet(InboxTextItem):
         # https://dev.twitter.com/overview/api/tweets
         #logging.info(data)
 
-        self.mentioned = False
+        self.to_me = False
 
         self.status_id = data["id_str"]
 
@@ -59,14 +59,14 @@ class IncomingTweet(InboxTextItem):
                         # ANDREWPI MENTION
                         print("*** ANDREWPI MENTION ***")
                         logging.info("*** ANDREWPI MENTION ***")
-                        self.mentioned = True
+                        self.to_me = True
                 
-    def NeedsReply(self):
-        return not self.from_me and self.mentioned
+
 
     def Display(args):
         
         text = args.text
         print(text)
 
-
+    def IsTweet(args):
+        return True

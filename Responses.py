@@ -30,20 +30,6 @@ class ResponseFactory(object):
         return super(ResponseFactory, self).__init__(*args, **kwargs)
 
 
-class Response(object):
-    pass
-
-    def Condition(args):
-        return False
-
-class HelpResponse(Response):
-    pass
-
-def ReplyWithHelp(context):
-
-    helpText = 'blah blah help'
-
-    ReplyWith(context, helpText)
 
 
 class PhotoResponse(Response):

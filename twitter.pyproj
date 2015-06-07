@@ -6,7 +6,7 @@
     <ProjectGuid>{0d8a6f76-90c3-43e1-8e8f-d24c25a90e50}</ProjectGuid>
     <ProjectHome />
     <StartupFile>Main.py</StartupFile>
-    <SearchPath>tasks\;twitter\;incoming\</SearchPath>
+    <SearchPath>tasks\;twitter\;incoming\;responses\;outgoing\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
@@ -1661,7 +1661,28 @@
     <Compile Include="Outgoing.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="outgoing\OutboxItem.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="outgoing\OutboxTextItem.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="outgoing\OutgoingDirectMessage.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="outgoing\OutgoingTweet.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Responses.py" />
+    <Compile Include="responses\HelpResponse.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="responses\Response.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="responses\ResponseFactory.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tasks\Context.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1708,6 +1729,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="incoming\" />
+    <Folder Include="outgoing\" />
+    <Folder Include="responses\" />
     <Folder Include="tasks\" />
     <Folder Include="twitter\" />
     <Folder Include="pics" />

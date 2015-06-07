@@ -1,0 +1,2 @@
+class OutboxItem(object):
+    pass

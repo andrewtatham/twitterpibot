@@ -25,3 +25,5 @@ class IncomingEvent(InboxItem):
             logging.info(data)
 
 
+    def IsEvent(args):
+        return True
