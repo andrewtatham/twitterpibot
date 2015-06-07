@@ -1,15 +1,28 @@
-def SendTweets():
+from OutgoingTweet import OutgoingTweet
+from OutgoingDirectMessage import OutgoingDirectMessage
+from Task import Task
 
-    while running:
-        try:
-            outboxItem = outbox.get()  
-            if type(outboxItem) is OutgoingTweet:
-                twitter.update_status(outboxItem)
-            if type(outboxItem) is OutgoingDirectMessage:
-                twitter.send_direct_message(outboxItem)
-            outbox.task_done()
+class ProcessOutboxTask(Task):
+    def onRun(args):
+        
+        outboxItem = args.Context.outbox.get()
 
-        except Exception as e:
-            print ('EXCEPTION SendTweets')
-            logging.exception(e.message, e.args)             
-            pprint.pprint(e)
+        outboxItem.Display()
+
+        if type(outboxItem) is OutgoingTweet:
+
+            args.Context.twitter.update_status(
+                status = outboxItem.status,
+                in_reply_to_status_id = outboxItem.in_reply_to_status_id,
+                media_ids = outboxItem.media_ids)
+
+        if type(outboxItem) is OutgoingDirectMessage:
+
+            args.Context.twitter.send_direct_message(
+                text = outboxItem.text, 
+                sender_screen_name = outboxItem.sender_screen_name, 
+                user_id = outboxItem.user_id)
+
+        # todo catch 403 error when same text sent
+        args.Context.outbox.task_done()
+        

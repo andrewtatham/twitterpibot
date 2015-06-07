@@ -13,8 +13,9 @@ class InboxItemFactory():
         elif "event" in data:
             return IncomingEvent(data)
         elif "friends" in data:
-            logging.info("Connected...")
+            print("Connected...")
         elif "delete" in data:
             pass
         else:
+            print("other...")
             logging.info(data)

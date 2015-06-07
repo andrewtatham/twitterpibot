@@ -16,10 +16,10 @@ class Response(object):
     
 
     def ReplyWith(args, inboxItem, replyText):    
-        if inboxItem.isTweet:
+        if inboxItem.IsTweet():
             tweet = OutgoingTweet(inboxItem, replyText)
             return tweet
            
-        if inboxItem.isDirectMessage:
+        if inboxItem.IsDirectMessage():
             dm = OutgoingDirectMessage(inboxItem, replyText)
             return dm

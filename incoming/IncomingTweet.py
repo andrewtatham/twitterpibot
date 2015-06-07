@@ -2,6 +2,7 @@
 from InboxTextItem import InboxTextItem
 
 import HTMLParser
+import logging
 
 h = HTMLParser.HTMLParser()
 
@@ -65,7 +66,7 @@ class IncomingTweet(InboxTextItem):
 
     def Display(args):
         
-        text = args.text
+        text = args.sender_name + ' [@' + args.sender_screen_name+ '] ' + args.text
         print(text)
 
     def IsTweet(args):

@@ -10,13 +10,13 @@ class IncomingDirectMessage(InboxTextItem):
 
         # https://dev.twitter.com/rest/reference/get/direct_messages
 
-        self.sender_id = str(data["direct_message"]["sender_id_str"])
-        self.sender_screen_name = str(data["direct_message"]["sender_screen_name"])
-        self.text = str(data["direct_message"]["text"])
+        self.sender_id = data["direct_message"]["sender_id_str"]
+        self.sender_screen_name = data["direct_message"]["sender_screen_name"]
+        self.text = data["direct_message"]["text"]
 
         self.words = self.text.split()
 
-        self.recipient_id = str(data["direct_message"]["recipient_id_str"])
+        self.recipient_id = data["direct_message"]["recipient_id_str"]
 
 
         self.from_me = self.sender_id == andrewpiid

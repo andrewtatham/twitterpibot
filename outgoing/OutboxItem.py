@@ -1,2 +1,5 @@
 class OutboxItem(object):
-    pass
+    def Display(args):
+        
+        
+        print('OutboxItem.Display')

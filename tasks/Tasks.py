@@ -8,6 +8,7 @@ import logging
 from pprint import pprint
 from MonitorTask import MonitorTask
 import time
+from ProcessOutboxTask import ProcessOutboxTask
 
 
 class Tasks(object):
@@ -16,7 +17,8 @@ class Tasks(object):
 
         self.taskList = [StreamTweetsTask(),
                          ProcessInboxTask(),
-                         MonitorTask()]
+                         MonitorTask(),
+                         ProcessOutboxTask()]
 
 
         self.running = False
@@ -58,7 +60,7 @@ class Tasks(object):
             try:   
                 task.onRun()
             except Exception as e:
-                logging.exception(e.message, e.args)             
+                logging.exception(e.message)             
                 print(e.message)
                 #time.sleep(5)
 
