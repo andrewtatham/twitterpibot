@@ -1683,6 +1683,9 @@
     <Compile Include="responses\ResponseFactory.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="responses\SongResponse.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tasks\Context.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1742,7 +1745,7 @@
     <Folder Include="pics\markg" />
     <Folder Include="pics\markr" />
     <Folder Include="pics\will" />
-    <Folder Include="songs" />
+    <Folder Include="songs\" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />

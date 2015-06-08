@@ -9,10 +9,3 @@ class HelpResponse(Response):
 
         return super(HelpResponse,args).ReplyWith(inboxItem, helpText)
 
-    def Contains(args, list, item):
-        if list is not None:
-            for listItem in list:
-                if listItem.lower() == item.lower():
-                    return True
-
-        return False;

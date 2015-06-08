@@ -5,7 +5,7 @@ except Exception:
     enablePicam = False
 
 
-def PicameraTasks():
+def PicameraTasks(args):
     mypicamera = None
     picamerastream = None
     picamerawindow = None
@@ -32,15 +32,15 @@ def PicameraTasks():
                 logging.exception(e.message, e.args)             
                 pprint.pprint(e)
 
-def onStop(args):
-    if enablePicam:
-        mypicamera.close()
-        picamerastream.close()
-        cv2.namedWindow("picamera")
+    def onStop(args):
+        if enablePicam:
+            mypicamera.close()
+            picamerastream.close()
+            cv2.namedWindow("picamera")
                 
- def TakePhoto():
-    path = "pics/pinoir.jpg"
-    #mypicamera.start_preview()
-    mypicamera.capture(path) 
-    #mypicamera.stop_preview()
-    return path
+    def TakePhoto(args):
+        path = "pics/pinoir.jpg"
+        #mypicamera.start_preview()
+        mypicamera.capture(path) 
+        #mypicamera.stop_preview()
+        return path

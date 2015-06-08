@@ -21,8 +21,8 @@ class IncomingDirectMessage(InboxTextItem):
 
         self.from_me = self.sender_id == andrewpiid
         self.to_me = self.recipient_id == andrewpiid
+        self.targets = [self.sender_screen_name]
 
-        print("DIRECT MESSAGE: from @" + self.sender_screen_name + ": " + self.text)
 
 
 
@@ -30,3 +30,8 @@ class IncomingDirectMessage(InboxTextItem):
 
     def IsDirectMessage(args):
         return True
+
+    def Display(args):
+        text = " * DM from @" + args.sender_screen_name + ": " + args.text
+        print()
+        

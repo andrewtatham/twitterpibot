@@ -28,4 +28,4 @@ class OutgoingTweet(OutboxTextItem):
     def Display(args):
         
         
-        print(args.status)
+        print("-> Tweet: " + args.status)

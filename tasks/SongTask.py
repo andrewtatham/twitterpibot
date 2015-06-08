@@ -1,14 +1,16 @@
 
-def SongTweets():
+from Task import Task
+import time
 
-    while running:
-        try:
-            tweet = songTweetQueue.get()            
-            outbox.put(tweet)
-            songTweetQueue.task_done()
-            time.sleep(5)
-        except Exception as e:
-            logging.exception(e.message, e.args)             
-            pprint.pprint(e)
+
+class SongTask(Task):
+    def onRun(args):
+    
+
+        tweet = args.Context.song.get()            
+        args.Context.outbox.put(tweet)
+        args.Context.song.task_done()
+        time.sleep(5)
+
 
 

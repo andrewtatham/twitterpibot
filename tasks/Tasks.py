@@ -9,6 +9,7 @@ from pprint import pprint
 from MonitorTask import MonitorTask
 import time
 from ProcessOutboxTask import ProcessOutboxTask
+from SongTask import SongTask
 
 
 class Tasks(object):
@@ -17,7 +18,8 @@ class Tasks(object):
 
         self.taskList = [StreamTweetsTask(),
                          ProcessInboxTask(),
-                         MonitorTask(),
+                         MonitorTask(),     
+                         SongTask(),
                          ProcessOutboxTask()]
 
 

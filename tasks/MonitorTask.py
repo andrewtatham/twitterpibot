@@ -6,9 +6,11 @@ class MonitorTask(Task):
 
 
         status = args.Context.GetStatus()
-        if(status.inboxCount > 0):
-            print('inbox = ' + str(status.inboxCount))
+        if(status.inboxCount + status.songCount + status.outboxCount > 0):
+            print('inbox = ' + str(status.inboxCount)
+                  + 'songs = ' + str(status.songCount)
+                  + 'outbox = ' + str(status.outboxCount))
 
-        time.sleep(1)
+        time.sleep(15)
 
   

@@ -8,6 +8,16 @@ class Response(object):
             and not inboxItem.from_me and inboxItem.to_me
             )
 
+
+
+    def Contains(args, list, item):
+        if list is not None:
+            for listItem in list:
+                if listItem.lower() == item.lower():
+                    return True
+
+        return False;
+
     def Respond(args, inboxItem):
         return None
 

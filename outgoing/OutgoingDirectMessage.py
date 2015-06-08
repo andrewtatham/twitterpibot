@@ -6,10 +6,8 @@ class OutgoingDirectMessage(OutboxTextItem):
         
 
         self.user_id = inboxItem.sender_id
-        self.sender_screen_name = inboxItem.sender_screen_name
+        self.screen_name = inboxItem.sender_screen_name
         self.text = text
          
     def Display(args):
-        
-        
-        print(args.text)
+        print("-> DM to @" + args.screen_name + ": " + args.text)

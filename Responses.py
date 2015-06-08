@@ -17,14 +17,7 @@ class ResponseFactory(object):
 
 
 
-        songsfolder = "songs/"
-        songs = {}
-        songfiles = os.listdir(songsfolder)
-        for songfile in songfiles:
-            songname = songfile.lower()
-            if songname.endswith('.txt'):
-                songname = songname[:-4]
-            songs[songname] = open(songsfolder + songfile, "rb").readlines()
+       
 
 
         return super(ResponseFactory, self).__init__(*args, **kwargs)
@@ -82,18 +75,7 @@ class SongResponse(Response):
         
     def Respond(target, song):
     
-        logging.info("getting " + song + " song...")
-        lyrics = songs[song.lower()]
-        lastlyric = ""
-        for lyric in lyrics:
-            lyric = lyric.strip()
-            if lyric and lyric != lastlyric:
-                tweettext = "@" + target + " " + lyric
-                logging.info("tweeting: " + tweettext)
-                tweet = OutgoingTweet()
-                tweet.status = tweettext
-                songTweetQueue.put(tweet)
-                lastlyric = lyric
+
        
             
     

@@ -26,16 +26,10 @@ class DisplayImagesTask(Task):
 
         pass
 
-
-def DisplayImages():
-
-    while running:
-
-  
 def OnStop(args):
     cv2.destroyWindow(windowname)
 
-    def DownloadImage(url):
+def DownloadImage(url):
    
     retval = urllib.urlretrieve(url)
     while(not os.path.isfile(retval[0])):

@@ -1,7 +1,15 @@
 from HelpResponse import HelpResponse
+from SongResponse import SongResponse
 class ResponseFactory(object):
     def __init__(self, *args, **kwargs):
-        self.responses = [HelpResponse()]
+
+
+        self.responses = [HelpResponse(),SongResponse()]
+
+        self.context = kwargs['context']
+        for response in self.responses:
+            response.context = self.context
+
 
 
 

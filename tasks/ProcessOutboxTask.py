@@ -20,7 +20,7 @@ class ProcessOutboxTask(Task):
 
             args.Context.twitter.send_direct_message(
                 text = outboxItem.text, 
-                sender_screen_name = outboxItem.sender_screen_name, 
+                screen_name = outboxItem.screen_name, 
                 user_id = outboxItem.user_id)
 
         # todo catch 403 error when same text sent
