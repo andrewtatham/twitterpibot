@@ -1,10 +1,15 @@
 
 from Task import Task
+import time
 class PiglowTask(Task):
     def onRun(args):
 
+        print('Fading')
+        args.Context.piglow.Fade()
 
-        args.Context.piglow.Display()
+        time.sleep(1)
+
+
 
        
    

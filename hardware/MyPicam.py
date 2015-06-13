@@ -7,33 +7,36 @@ enablePicam = True
 try:
     import picamera
     import picamera.array
-except Exception:
+except Exception as e:
+    print(e.message)
     enablePicam = False
 
 
 class MyPicam(Camera):
     def __init__(self, *args, **kwargs):
+        if enablePicam:
 
+            try:
+                self.mypicamera = picamera.PiCamera()
+                self.mypicamera.resolution = [320,240]
+                self.mypicamera.start_preview()
+                time.sleep(2)
+                self.mypicamera.stop_preview()
+                self.picamerastream = picamera.array.PiRGBArray(mypicamera) 
+                #picamerawindow = cv2.namedWindow("picamera")
+                self.enabled = True
 
-        try:
-            self.mypicamera = picamera.PiCamera()
-            self.mypicamera.resolution = [320,240]
-            self.mypicamera.start_preview()
-            time.sleep(2)
-            self.mypicamera.stop_preview()
-            self.picamerastream = picamera.array.PiRGBArray(mypicamera) 
-            #picamerawindow = cv2.namedWindow("picamera")
-            self.enabled = True
-
-        except Exception:
-            self.enabled = False
+            except Exception as e:
+                print(e.message)
+                self.enabled = False
+                enablePicam = False
     
     
 
 
     def TakePhoto(args):
-        if args.enabled:
-            
+        if enablePicam and args.enabled:
+            print('taking photo')
             args.mypicamera.capture(picamerastream, format='bgr', resize=(320,240))
 
             photo = MyPicamPhoto()
@@ -47,7 +50,7 @@ class MyPicam(Camera):
         
 
     def Close(args):
-        if args.enabled:
+        if enablePicam and args.enabled:
             args.mypicamera.close()
             args.picamerastream.close()
             # cv2.namedWindow("picamera")
