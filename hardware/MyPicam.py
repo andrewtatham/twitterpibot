@@ -22,7 +22,7 @@ class MyPicam(Camera):
             self.mypicamera.start_preview()
             time.sleep(2)
             self.mypicamera.stop_preview()
-            self.picamerastream = picamera.array.PiRGBArray(mypicamera) 
+            self.picamerastream = picamera.array.PiRGBArray(self.mypicamera) 
             #picamerawindow = cv2.namedWindow("picamera")
             self.enabled = True
 
@@ -37,10 +37,10 @@ class MyPicam(Camera):
     def TakePhoto(args):
         if args.enabled:
             print('taking photo')
-            args.mypicamera.capture(picamerastream, format='bgr', resize=(320,240))
+            args.mypicamera.capture(args.picamerastream, format='bgr', resize=(320,240))
 
             photo = MyPicamPhoto()
-            photo.image = picamerastream.array
+            photo.image = args.picamerastream.array
             #cv2.imshow("picamera", image)
             args.picamerastream.truncate(0)
 
