@@ -17,6 +17,10 @@ class Tasks(object):
     
     def __init__(self, *args, **kwargs):
 
+
+
+
+
         self.taskList = [StreamTweetsTask(),
                          ProcessInboxTask(),
                          MonitorTask(),     
@@ -62,7 +66,8 @@ class Tasks(object):
     def RunWrapper(args, task):
         while args.running:           
             try:   
-                task.onRun()
+                if task.enabled:
+                    task.onRun()
             except Exception as e:
                 logging.exception(e.message)             
                 print(e.message)
