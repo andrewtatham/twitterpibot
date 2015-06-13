@@ -30,6 +30,8 @@ def ProcessInboxItem(args, inboxItem):
 
         # determine response
         response = args.responseFactory.Create(inboxItem)
+
+
         if response is not None:
 
             #todo uploads

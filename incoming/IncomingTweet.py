@@ -28,6 +28,9 @@ class IncomingTweet(InboxTextItem):
         # https://dev.twitter.com/overview/api/tweets
         #logging.info(data)
 
+        super(IncomingTweet, self).__init__(data)
+
+        self.isTweet = True
         self.to_me = False
 
         self.status_id = data["id_str"]
@@ -69,5 +72,4 @@ class IncomingTweet(InboxTextItem):
         text = "* " + args.sender_name + ' [@' + args.sender_screen_name+ '] ' + args.text
         print(text)
 
-    def IsTweet(args):
-        return True
+ 

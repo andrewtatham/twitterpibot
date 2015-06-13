@@ -4,7 +4,7 @@ from OutgoingDirectMessage import OutgoingDirectMessage
 class Response(object):
     def Condition(args, inboxItem):
         return ( 
-            (inboxItem.IsTweet() or inboxItem.IsDirectMessage() ) 
+            (inboxItem.isTweet or inboxItem.isDirectMessage ) 
             and not inboxItem.from_me and inboxItem.to_me
             )
 
@@ -25,11 +25,28 @@ class Response(object):
 
     
 
-    def ReplyWith(args, inboxItem, replyText):    
-        if inboxItem.IsTweet():
-            tweet = OutgoingTweet(inboxItem, replyText)
+    def ReplyWith(self, inboxItem, text, media_ids, asTweet = False, asDM = False, *args, **kwargs):    
+
+
+
+
+
+
+
+        replyAsTweet = asTweet or not asDM and inboxItem.isTweet
+
+        replyAsDM = asDM or not asTweet and inboxItem.isDirectMessage
+
+
+        if replyAsTweet :
+            tweet = OutgoingTweet(
+                replyTo=inboxItem,
+                text=text,
+                media_ids = media_ids)
             return tweet
            
-        if inboxItem.IsDirectMessage():
-            dm = OutgoingDirectMessage(inboxItem, replyText)
+        if replyAsDM:
+            dm = OutgoingDirectMessage(   
+                replyTo=inboxItem,
+                text=text)
             return dm

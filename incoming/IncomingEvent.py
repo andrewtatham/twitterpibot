@@ -2,6 +2,11 @@ from InboxItem import InboxItem
 
 class IncomingEvent(InboxItem):
     def __init__(self, data):
+        
+        super(IncomingEvent, self).__init__(data)
+
+        self.isEvent = True
+
         # https://dev.twitter.com/streaming/overview/messages-types#Events_event
         self.event = data["event"]
         self.sourceID = data["source"]["id_str"]
@@ -12,8 +17,8 @@ class IncomingEvent(InboxItem):
         self.targetName = data["target"]["name"]
         self.targetScreenName = data["target"]["screen_name"]
 
-    def IsEvent(args):
-        return True
+        
+  
 
     def Display(args):
         

@@ -69,14 +69,3 @@ class PictureResponse(Response):
         logging.info("done.")
 
 
-
-
-class SongResponse(Response):
-        
-    def Respond(target, song):
-    
-
-       
-            
-    
-        logging.info("done.")

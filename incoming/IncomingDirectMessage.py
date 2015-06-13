@@ -5,7 +5,12 @@ class IncomingDirectMessage(InboxTextItem):
 
 
 
+
     def __init__(self, data):
+        super(IncomingDirectMessage, self).__init__(data)
+
+        self.isDirectMessage = True
+
         # https://dev.twitter.com/streaming/overview/messages-types#Direct_Messages
 
         # https://dev.twitter.com/rest/reference/get/direct_messages
@@ -23,13 +28,6 @@ class IncomingDirectMessage(InboxTextItem):
         self.to_me = self.recipient_id == andrewpiid
         self.targets = [self.sender_screen_name]
 
-
-
-
-
-
-    def IsDirectMessage(args):
-        return True
 
     def Display(args):
         text = " * DM from @" + args.sender_screen_name + ": " + args.text
