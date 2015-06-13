@@ -1646,6 +1646,9 @@
     <Compile Include="hardware\MyPicam.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="hardware\MyPiglow.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="hardware\Webcam.py">
       <SubType>Code</SubType>
     </Compile>
