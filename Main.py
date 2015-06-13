@@ -5,8 +5,16 @@ import logging
 
 
 import Tkinter
-from Tasks import Tasks
 
+import sys
+
+sys.path.append('tasks')
+sys.path.append('incoming')
+sys.path.append('responses')
+sys.path.append('outgoing')
+sys.path.append('hardware')
+
+from Tasks import Tasks
 
 logging.basicConfig(filename='twitter.log',level=logging.INFO)
 
