@@ -2,6 +2,7 @@ import math
 import time
 try:    
     from piglow import PiGlow
+    enablePiglow = True
 except Exception:
     enablePiglow = False
 
