@@ -7,7 +7,7 @@ class HelpResponse(Response):
     def Respond(args, inboxItem):
         helpText = 'blah blah help'
 
-        return super(HelpResponse,args).ReplyWith(
-            replyTo=inboxItem, 
+        return args.ReplyWith(
+            inboxItem=inboxItem, 
             text=helpText)
 
