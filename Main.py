@@ -13,6 +13,7 @@ sys.path.append('incoming')
 sys.path.append('responses')
 sys.path.append('outgoing')
 sys.path.append('hardware')
+sys.path.append('twitter')
 
 from Tasks import Tasks
 
