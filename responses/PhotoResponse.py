@@ -19,8 +19,13 @@ class PhotoResponse(Response):
     def Respond(args, inboxItem):
 
         # TOT use Piglow as flash/light
+        
+        args.context.piglow.CameraFlash(True)
 
         photos = args.context.cameras.TakePhotos()
+
+        args.context.piglow.CameraFlash(False)
+
 
         media_ids = []
         for photo in photos:
