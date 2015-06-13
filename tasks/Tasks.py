@@ -10,6 +10,7 @@ from MonitorTask import MonitorTask
 import time
 from ProcessOutboxTask import ProcessOutboxTask
 from SongTask import SongTask
+from PiglowTask import PiglowTask
 
 
 class Tasks(object):
@@ -20,7 +21,8 @@ class Tasks(object):
                          ProcessInboxTask(),
                          MonitorTask(),     
                          SongTask(),
-                         ProcessOutboxTask()]
+                         ProcessOutboxTask(),
+                         PiglowTask()]
 
 
         self.running = False

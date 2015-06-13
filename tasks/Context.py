@@ -1,5 +1,6 @@
 from Queue import Queue
 from Cameras import Cameras
+from MyPiglow import MyPiglow
 class Context(object):
     def __init__(self, *args, **kwargs):
         self.inbox = Queue()
@@ -8,6 +9,7 @@ class Context(object):
 
 
         self.cameras = Cameras()
+        self.piglow = MyPiglow()
 
     def GetStatus(args):
 

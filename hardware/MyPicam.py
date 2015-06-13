@@ -33,6 +33,7 @@ class MyPicam(Camera):
 
     def TakePhoto(args):
         if args.enabled:
+            
             args.mypicamera.capture(picamerastream, format='bgr', resize=(320,240))
 
             photo = MyPicamPhoto()

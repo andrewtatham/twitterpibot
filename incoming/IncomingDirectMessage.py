@@ -31,5 +31,5 @@ class IncomingDirectMessage(InboxTextItem):
 
     def Display(args):
         text = " * DM from @" + args.sender_screen_name + ": " + args.text
-        print()
+        print(text)
         
