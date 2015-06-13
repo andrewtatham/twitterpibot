@@ -4,7 +4,7 @@ import time
 class PiglowTask(Task):
     def onRun(args):
 
-        print('Fading')
+        #print('Fading')
         args.Context.piglow.Fade()
 
         time.sleep(1)
