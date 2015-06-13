@@ -19,6 +19,8 @@ class MyPiglow(object):
             self.maxbright = 8
             self.piglow.all(0)
 
+
+            print('piglow init buffer')
             self.buffer = [0 for led in range(18)]
 
 
@@ -56,6 +58,7 @@ class MyPiglow(object):
 
 
     def OnInboxItemRecieved(args, inboxItem):
+        print('piglow OnInboxItemRecieved')
         if enablePiglow:
             led = random.randint(0,17)
             args.buffer[led] = args.maxbright
@@ -63,6 +66,7 @@ class MyPiglow(object):
 
 
     def Fade(args):
+        print('piglow Fade')
         if enablePiglow:
 
             for led in range(18):
@@ -72,11 +76,13 @@ class MyPiglow(object):
             args.WriteAll()
 
     def WriteAll(args):
+        print('piglow WriteAll')
         if enablePiglow:
             for led in range(18):
                 args.WriteLed(led)
                 
 
     def WriteLed(args, led):
+        print('piglow WriteLed')
         if enablePiglow:
             args.piglow.led(led + 1, args.buffer[led])
