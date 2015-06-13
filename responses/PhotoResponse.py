@@ -26,15 +26,21 @@ class PhotoResponse(Response):
         for photo in photos:
             if photo is not None and photo.image is not None:
 
-                #temp = tempfile.TemporaryFile(suffix='.jpg')
+                #temp = tempfile.TemporaryFile(suffix='.jpg').name
                 
                 temp = 'temp.jpg'
 
+                print('saving ' + temp)
                 cv2.imwrite(temp, photo.image)
                 try:
-                    media = args.context.twitter.upload_media(media=open(temp, 'rb'))
+                    print('opening ' + temp)
+                    file = open(temp, 'rb')
+                    print('uploading')
+                    media = args.context.twitter.upload_media(media=file)
+                    print('media_id = ' + media["media_id_string"])
                     media_ids.append(media["media_id_string"])
                 finally:
+                    print('removing ' + temp)
                     os.remove(temp)
         
         photomessages = ["cheese!", "smile!"]

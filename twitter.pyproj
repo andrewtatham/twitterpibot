@@ -1670,9 +1670,6 @@
     <Compile Include="Main.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Outgoing.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="outgoing\OutboxItem.py">
       <SubType>Code</SubType>
     </Compile>
