@@ -61,7 +61,7 @@ class MyPiglow(object):
         #print('piglow OnInboxItemRecieved')
         if enablePiglow:
             led = random.randint(0,17)
-            args.buffer[led] += args.maxbright
+            args.buffer[led] = max(0, min(args.buffer[led] + args.maxbright, 255))
             args.WriteLed(led)
 
 
