@@ -4,7 +4,8 @@ import random
 try:    
     from piglow import PiGlow
     enablePiglow = True
-except Exception:
+except Exception as e:
+    print(e.message)
     enablePiglow = False
 
 
@@ -62,7 +63,7 @@ class MyPiglow(object):
         if enablePiglow:
             led = random.randint(0,17)
             args.buffer[led] = max(0, min((args.buffer[led] + args.maxbright), 255))
-            print("led {0} bright {1}", led, args.buffer[led]) 
+            print("led {0} bright {1}".format(led, args.buffer[led])) 
             args.WriteLed(led)
 
 
@@ -87,6 +88,7 @@ class MyPiglow(object):
         #print('piglow WriteLed')
         if enablePiglow:
             bright = max(0, min(args.buffer[led], 255))
+            print("led {0} bright {1}".format(led, bright)) 
             args.piglow.led(led + 1, 0)
 
     def CameraFlash(args, on):
