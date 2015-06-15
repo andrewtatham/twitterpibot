@@ -12,11 +12,16 @@ class ProcessInboxTask(Task):
     
 
     def onRun(args):
-        data = args.Context.inbox.get()
-        inboxItem = args.factory.Create(data)
-        if inboxItem is not None:
-            ProcessInboxItem(args, inboxItem)
-        args.Context.inbox.task_done()
+
+
+        try:
+
+            data = args.Context.inbox.get()
+            inboxItem = args.factory.Create(data)
+            if inboxItem is not None:
+                ProcessInboxItem(args, inboxItem)
+        finally:
+            args.Context.inbox.task_done()
 
 
 
