@@ -59,18 +59,15 @@ class MyPiglow(object):
 
 
     def OnInboxItemRecieved(args, inboxItem):
-        #print('piglow OnInboxItemRecieved')
         if enablePiglow:
             led = random.randint(0,17)
             args.buffer[led] = max(0, min((args.buffer[led] + args.maxbright), 255))
-            print("led {0} bright {1}".format(led, args.buffer[led])) 
             args.WriteLed(led)
 
 
     def Fade(args):
-        #print('piglow Fade')
-        if enablePiglow:
 
+        if enablePiglow:
             for led in range(18):
                 if args.buffer[led] > 1:
                     args.buffer[led] -= 1
@@ -78,18 +75,15 @@ class MyPiglow(object):
             args.WriteAll()
 
     def WriteAll(args):
-        #print('piglow WriteAll')
         if enablePiglow:
             for led in range(18):
                 args.WriteLed(led)
                 
 
     def WriteLed(args, led):
-        #print('piglow WriteLed')
         if enablePiglow:
             bright = max(0, min(args.buffer[led], 255))
-            print("led {0} bright {1}".format(led, bright)) 
-            args.piglow.led(led + 1, 0)
+            args.piglow.led(led + 1, bright)
 
     def CameraFlash(args, on):
         if enablePiglow:
