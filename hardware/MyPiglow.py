@@ -47,18 +47,18 @@ class MyPiglow(object):
 
                     led = args.getLed(arm,colour)
 
-                    b1 = math.sin(math.radians(t + arm * 15 + colour * 360 / 6))
+                    b1 = math.sin(math.radians(t + arm * 15 + colour * 30))
                     args.tweetMentionPattern[led][t] = args.getBright(b1)
 
-                    b2 = math.sin(math.radians(t + arm * 60 - colour * 120))
+                    b2 = math.sin(math.radians(-t + arm * 30 - colour * 15))
                     args.directMessagePattern[led][t] = args.getBright(b2)
 
     def DisplayPattern(args, pattern):
         if enablePiglow:
-            for t in range(0, 720):               
+            for t in range(0, 360):               
                 for led in range(18):
                     args.piglow.led(led + 1, pattern[led][args.t])
-            time.sleep(0.1) 
+                time.sleep(0.05) 
 
 
     def OnInboxItemRecieved(args, inboxItem):
@@ -80,7 +80,7 @@ class MyPiglow(object):
         if enablePiglow:
             for led in range(18):
                 if args.buffer[led] > 1:
-                    args.buffer[led] -= 1        
+                    args.buffer[led] = max(0,args.buffer[led] - 5)        
             args.WriteAll()
 
     def WriteAll(args):

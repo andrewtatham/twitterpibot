@@ -17,7 +17,7 @@ class Webcam(Camera):
             self.webcam = cv2.VideoCapture(args[0])
             #cv2.namedWindow("webcam" + str(args[0]))
             for i in range(5):
-                err,frame = self.webcam.read()
+                err,image = self.webcam.read()
             self.enabled = True
 
         except Exception as e:
@@ -30,7 +30,8 @@ class Webcam(Camera):
     def TakePhoto(args):
         if args.enabled:
             photo = WebcamPhoto()
-            err,image = args.webcam.read()
+            for i in range(5):
+                err,image = self.webcam.read()
             photo.image = image                      
             return photo
 
