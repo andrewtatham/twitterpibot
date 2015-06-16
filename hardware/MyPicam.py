@@ -18,7 +18,7 @@ class MyPicam(Camera):
 
         try:
             self.mypicamera = picamera.PiCamera()
-            #self.mypicamera.resolution = [320,240]
+            self.mypicamera.resolution = [320,240]
             self.mypicamera.start_preview()
             time.sleep(2)
             self.mypicamera.stop_preview()
@@ -37,11 +37,7 @@ class MyPicam(Camera):
     def TakePhoto(args):
         if args.enabled:
             print('taking photo')
-            args.mypicamera.capture(
-                args.picamerastream, 
-                format='bgr', 
-                #resize=(320,240)
-                )
+            args.mypicamera.capture(args.picamerastream, format='bgr', resize=(320,240))
 
             photo = MyPicamPhoto()
             photo.image = args.picamerastream.array
