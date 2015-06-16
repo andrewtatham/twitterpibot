@@ -31,7 +31,7 @@ class Webcam(Camera):
         if args.enabled:
             photo = WebcamPhoto()
             for i in range(5):
-                err,image = self.webcam.read()
+                err,image = args.webcam.read()
             photo.image = image                      
             return photo
 

@@ -19,9 +19,9 @@ class MyPicam(Camera):
         try:
             self.mypicamera = picamera.PiCamera()
             self.mypicamera.resolution = [320,240]
-            self.mypicamera.start_preview()
-            time.sleep(2)
-            self.mypicamera.stop_preview()
+            #self.mypicamera.start_preview()
+            #time.sleep(2)
+            #self.mypicamera.stop_preview()
             self.picamerastream = picamera.array.PiRGBArray(self.mypicamera) 
             #picamerawindow = cv2.namedWindow("picamera")
             self.enabled = True
