@@ -69,8 +69,8 @@ class Tasks(object):
                 if task.enabled:
                     task.onRun()
             except Exception as e:
-                logging.exception(e.message)             
-                print(e.message)
+                logging.exception(e)             
+                print(e)
                 #time.sleep(5)
 
     def Stop(args):

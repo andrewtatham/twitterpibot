@@ -59,8 +59,8 @@ def PrintTrends():
             for trendtweet in trendtweets["statuses"]:
                 print("  " + trendtweet["text"].replace("\n", "   "))
         except Exception as e:   
-            logging.exception(e.message, e.args)             
-            pprint.pprint(e)
+            logging.exception(e)             
+            print(e)
 
 def SuggestedUsers():
     categories = twitter.get_user_suggestions()
@@ -69,9 +69,9 @@ def SuggestedUsers():
         print("")
         print(category["name"])
         users = twitter.get_user_suggestions_by_slug(slug = category["slug"])
-        #pprint.pprint(users)
+        #print(users)
         for user in users["users"]:
-            #pprint.pprint(user)
+            #print(user)
             print("")
             print("  " + user["name"])
             print("  @" + user["screen_name"])

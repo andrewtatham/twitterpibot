@@ -8,7 +8,7 @@ try:
     import picamera.array
 
 except Exception as e:
-    print(e.message)
+    print(e)
   
 
 
@@ -27,7 +27,7 @@ class MyPicam(Camera):
             self.enabled = True
 
         except Exception as e:
-            print(e.message)
+            print(e)
             self.enabled = False
                 
     
