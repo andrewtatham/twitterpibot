@@ -21,7 +21,7 @@ class Webcam(Camera):
             self.enabled = True
 
         except Exception as e:
-            print(e.message)
+            print(e)
             self.enabled = False
             
 

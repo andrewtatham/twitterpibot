@@ -28,9 +28,8 @@ def WebcamTasks():
             time.sleep(5)
 
         except Exception as e:
-
-            logging.exception(e.message, e.args)             
-            pprint.pprint(e)
+            logging.exception(e)             
+            print(e)
 
 
     
