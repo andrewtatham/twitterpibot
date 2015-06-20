@@ -16,7 +16,7 @@ class MyPiglow(object):
 
         self.piglow = None
         if enablePiglow:
-            self.piglow = PiGlow()
+            self.piglow = PyGlow()
             self.maxbright = 255
             self.piglow.all(0)
 
