@@ -2,7 +2,8 @@ import math
 import time
 import random
 try:    
-    from PyGlow import PyGlow
+    from piglow import PiGlow
+    #from PyGlow import PyGlow
     enablePiglow = True
 except Exception as e:
     print(e)
@@ -16,7 +17,8 @@ class MyPiglow(object):
 
         self.piglow = None
         if enablePiglow:
-            self.piglow = PyGlow()
+            self.piglow = PiGlow()
+            #self.piglow = PyGlow()
             self.maxbright = 255
             self.piglow.all(0)
 
@@ -65,14 +67,16 @@ class MyPiglow(object):
         if enablePiglow:
             if inboxItem.isTweet:
                 if not inboxItem.from_me and inboxItem.to_me:
-                    args.DisplayPattern(args.tweetMentionPattern)
+                    #args.DisplayPattern(args.tweetMentionPattern)
+                    pass
                 else:
                     led = random.randint(0,17)
                     args.buffer[led] = max(0, min((args.buffer[led] + 1), 255))
                     args.WriteLed(led)
             elif inboxItem.isDirectMessage:
                 if not inboxItem.from_me and inboxItem.to_me:
-                    args.DisplayPattern(args.directMessagePattern)
+                    #args.DisplayPattern(args.directMessagePattern)
+                    pass
 
 
 
