@@ -101,6 +101,6 @@ class MyPiglow(object):
     def CameraFlash(args, on):
         if enablePiglow:
             if on:
-                args.piglow.white(255)
+                args.piglow.white(1)
             else:
                 args.WriteAll()
