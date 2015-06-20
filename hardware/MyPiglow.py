@@ -5,7 +5,7 @@ try:
     from PyGlow import PyGlow
     enablePiglow = True
 except Exception as e:
-    print(e.message)
+    print(e)
     enablePiglow = False
 
 
