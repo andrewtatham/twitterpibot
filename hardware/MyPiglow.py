@@ -2,7 +2,7 @@ import math
 import time
 import random
 try:    
-    from piglow import PiGlow
+    from PyGlow import PiGlow
     enablePiglow = True
 except Exception as e:
     print(e.message)
@@ -50,7 +50,7 @@ class MyPiglow(object):
                     b1 = math.sin(math.radians(t + arm * 15 + colour * 30))
                     args.tweetMentionPattern[led][t] = args.getBright(b1)
 
-                    b2 = math.sin(math.radians(-t + arm * 30 - colour * 15))
+                    b2 = math.sin(math.radians(t - arm * 30 - colour * 15))
                     args.directMessagePattern[led][t] = args.getBright(b2)
 
     def DisplayPattern(args, pattern):
