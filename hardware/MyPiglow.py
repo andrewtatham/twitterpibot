@@ -2,7 +2,7 @@ import math
 import time
 import random
 try:    
-    from PyGlow import PiGlow
+    from PyGlow import PyGlow
     enablePiglow = True
 except Exception as e:
     print(e.message)
