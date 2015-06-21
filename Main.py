@@ -1,4 +1,10 @@
-
+sys.path.append('tasks')
+sys.path.append('incoming')
+sys.path.append('responses')
+sys.path.append('outgoing')
+sys.path.append('hardware')
+sys.path.append('twitter')
+sys.path.append('schedule')
 
 
 import logging
@@ -7,16 +13,15 @@ import logging
 import Tkinter
 
 import sys
+
+
+
+
+
 from Schedule import Schedule
 from Context import Context
 
-sys.path.append('tasks')
-sys.path.append('incoming')
-sys.path.append('responses')
-sys.path.append('outgoing')
-sys.path.append('hardware')
-sys.path.append('twitter')
-sys.path.append('schedule')
+
 
 from Tasks import Tasks
 
