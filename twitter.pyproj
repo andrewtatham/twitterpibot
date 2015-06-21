@@ -1690,6 +1690,9 @@
     <Compile Include="responses\HelpResponse.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="responses\Magic8BallResponse.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="responses\Response.py">
       <SubType>Code</SubType>
     </Compile>
