@@ -22,7 +22,7 @@ class Schedule(object):
 
 
         for job in self.jobs:
-            job.Context = context
+            job.context = context
 
             job.onInit()
 

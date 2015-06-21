@@ -30,4 +30,4 @@ class PhotoScheduledTask(ScheduledTask):
 
 
         tweet = OutgoingTweet(text=text,media_ids=media_ids)
-        args.Context.outbox.add(tweet)
+        args.context.outbox.add(tweet)
