@@ -18,7 +18,6 @@ class PhotoResponse(Response):
 
     def Respond(args, inboxItem):
 
-        # TOT use Piglow as flash/light
         
         args.context.piglow.CameraFlash(True)
 
@@ -26,27 +25,8 @@ class PhotoResponse(Response):
 
         args.context.piglow.CameraFlash(False)
 
+        media_ids = args.context.UploadMedia(photos)
 
-        media_ids = []
-        for photo in photos:
-            if photo is not None and photo.image is not None:
-
-                #temp = tempfile.TemporaryFile(suffix='.jpg').name
-                
-                temp = 'temp.jpg'
-
-                print('saving ' + temp)
-                cv2.imwrite(temp, photo.image)
-                try:
-                    print('opening ' + temp)
-                    file = open(temp, 'rb')
-                    print('uploading')
-                    media = args.context.twitter.upload_media(media=file)
-                    print('media_id = ' + media["media_id_string"])
-                    media_ids.append(media["media_id_string"])
-                finally:
-                    print('removing ' + temp)
-                    os.remove(temp)
         
         photomessages = ["cheese!", "smile!"]
 
@@ -57,6 +37,3 @@ class PhotoResponse(Response):
             asTweet=True)
 
 
-   
-        
-        
