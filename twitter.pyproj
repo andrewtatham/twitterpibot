@@ -6,7 +6,7 @@
     <ProjectGuid>{0d8a6f76-90c3-43e1-8e8f-d24c25a90e50}</ProjectGuid>
     <ProjectHome />
     <StartupFile>Main.py</StartupFile>
-    <SearchPath>tasks\;twitter\;incoming\;responses\;outgoing\;hardware\</SearchPath>
+    <SearchPath>tasks\;twitter\;incoming\;responses\;outgoing\;hardware\;schedule\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
@@ -1705,6 +1705,15 @@
     <Compile Include="responses\PhotoResponse.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="schedule\PhotoScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="schedule\Schedule.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="schedule\ScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tasks\Context.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1749,6 +1758,7 @@
   <ItemGroup>
     <Folder Include="incoming\" />
     <Folder Include="hardware\" />
+    <Folder Include="schedule\" />
     <Folder Include="outgoing\" />
     <Folder Include="responses\" />
     <Folder Include="tasks\" />
