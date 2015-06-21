@@ -1702,7 +1702,13 @@
     <Compile Include="responses\PhotoResponse.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="schedule\PhotoScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="schedule\Schedule.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="schedule\ScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tasks\Context.py">

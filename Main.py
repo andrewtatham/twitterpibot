@@ -8,6 +8,7 @@ import Tkinter
 
 import sys
 from Schedule import Schedule
+from Context import Context
 
 sys.path.append('tasks')
 sys.path.append('incoming')
@@ -24,11 +25,13 @@ logging.basicConfig(filename='twitter.log',level=logging.INFO)
 
 top = Tkinter.Tk()
 
-tasks = Tasks()
+context = Context()
+
+tasks = Tasks(context=context)
 
 tasks.Init()
 
-schedule = Schedule()
+schedule = Schedule(context=context)
 
 schedule.Start()
 tasks.Start()

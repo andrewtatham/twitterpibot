@@ -15,7 +15,7 @@ from PiglowTask import PiglowTask
 
 class Tasks(object):
     
-    def __init__(self, *args, **kwargs):
+    def __init__(self, context, *args, **kwargs):
 
 
 
@@ -31,7 +31,6 @@ class Tasks(object):
 
         self.running = False
 
-        context = Context()
         for task in self.taskList:
             task.Context = context
 
