@@ -10,23 +10,22 @@ class OutgoingTweet(OutboxTextItem):
 
 
 
-        if replyTo is not None and replyTo.isTweet and replyTo.status_id is not None:
+        if replyTo and replyTo.isTweet and replyTo.status_id :
             self.in_reply_to_status_id = replyTo.status_id
 
-        if media_ids is not None:
+        if media_ids:
             self.media_ids = media_ids
 
         self.status = ''
 
-        if replyTo.targets is not None:
+        if replyTo and replyTo.targets:
             for to_screen_name in replyTo.targets:
                 self.status = self.status + '@' + to_screen_name + ' '
-        else:
-            if replyTo.sender_screen_name is not None:
+        elif replyTo and replyTo.sender_screen_name:
                 self.status = self.status + '@' + replyTo.sender_screen_name + ' '
 
-             
-        self.status = self.status + text
+        if text:
+            self.status = self.status + text
 
     def Display(args):
         

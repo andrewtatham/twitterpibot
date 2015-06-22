@@ -5,6 +5,7 @@ import os
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from PhotoScheduledTask import PhotoScheduledTask
+import logging
 
 
 
@@ -26,7 +27,7 @@ class Schedule(object):
 
             job.onInit()
 
-            self.scheduler.add_job(job.onRun, trigger = job.GetTrigger())
+            self.scheduler.add_job(self.RunWrapper, args=[job], trigger = job.GetTrigger())
     
         #self.scheduler.add_job(self.tick, 'interval', seconds=3)
         #self.scheduler.add_job(self.tock, 'interval', seconds=7)
@@ -68,6 +69,14 @@ class Schedule(object):
         print('Tick')    
     def tock(args):
         print('Tock')
+
+    def RunWrapper(args, task):
+        try:   
+            task.onRun()
+        except Exception as e:
+            logging.exception(e)             
+            print(e)
+
 
 
     def Start(args):

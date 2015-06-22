@@ -18,7 +18,7 @@ class ProcessInboxTask(Task):
 
             data = args.Context.inbox.get()
             inboxItem = args.factory.Create(data)
-            if inboxItem is not None:
+            if inboxItem :
                 ProcessInboxItem(args, inboxItem)
         finally:
             args.Context.inbox.task_done()
@@ -39,7 +39,7 @@ def ProcessInboxItem(args, inboxItem):
         response = args.responseFactory.Create(inboxItem)
 
 
-        if response is not None:
+        if response :
 
             #todo uploads
             args.Context.outbox.put(response)

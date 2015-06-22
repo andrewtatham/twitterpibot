@@ -22,7 +22,7 @@ class Cameras(object):
         for camera in args.cameras:
             if camera.enabled:
                 photo = camera.TakePhoto()
-                if photo is not None:
+                if photo :
                     photos.append(photo)
 
         return photos

@@ -25,7 +25,7 @@ class Context(object):
     def UploadMedia(args, photos):
         media_ids = []
         for photo in photos:
-            if photo is not None and photo.image is not None:
+            if photo and photo.image is not None :
 
                 #temp = tempfile.TemporaryFile(suffix='.jpg').name
                 
@@ -33,16 +33,22 @@ class Context(object):
 
                 print('saving ' + temp)
                 cv2.imwrite(temp, photo.image)
+
                 try:
                     print('opening ' + temp)
                     file = open(temp, 'rb')
                     print('uploading')
                     media = args.twitter.upload_media(media=file)
-                    print('media_id = ' + media["media_id_string"])
-                    media_ids.append(media["media_id_string"])
+                    media_id =  media["media_id_string"]
+                    if media_id :
+                        print('media_id = ' + media_id)
+                        media_ids.append(media_id)
+
                 finally:
-                    print('removing ' + temp)
-                    os.remove(temp)
+
+                    file.close()
+                    #print('removing ' + temp)
+                    #os.remove(temp)
         
         return media_ids
 class Status(object):

@@ -11,7 +11,7 @@ class Response(object):
 
 
     def Contains(args, list, item):
-        if list is not None:
+        if list :
             for listItem in list:
                 if listItem.lower() == item.lower():
                     return True
