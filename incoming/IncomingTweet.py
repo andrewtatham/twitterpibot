@@ -42,8 +42,9 @@ class IncomingTweet(InboxTextItem):
         #self.sender_profile_image_url = data["user"]["profile_image_url"]
         #self.sender_profile_banner_url = data["user"]["profile_banner_url"]
 
-        self.tweettextraw = data["text"].replace('\u2026','')                
-        self.text = h.unescape(self.tweettextraw.decode('utf-8', 'ignore'))
+        self.text = h.unescape(data["text"].decode('utf-8','ignore'))
+
+
         self.words = self.text.split()
         
         self.from_me = self.sender_id == andrewpiid
@@ -71,5 +72,6 @@ class IncomingTweet(InboxTextItem):
         
         text = "* " + args.sender_name + ' [@' + args.sender_screen_name+ '] ' + args.text
         print(text)
+
 
  
