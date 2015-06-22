@@ -15,13 +15,13 @@ tweetsRemaining = None
 
 
 def getRateLimits():
-    if twitter is not None:
+    if twitter :
         rateLimits = twitter.get_application_rate_limit_status()
     tweetsRemaining = 100
 
 
 def canTweet():
-    return tweetsRemaining is not None and tweetsRemaining > 0
+    return tweetsRemaining  and tweetsRemaining > 0
 
 
 

@@ -20,7 +20,7 @@ class ResponseFactory(object):
 
 
     def Create(args, inboxItem):
-        if inboxItem is not None:
+        if inboxItem :
             for response in args.responses:
                 if response.Condition(inboxItem):
                     return response.Respond(inboxItem)

@@ -57,7 +57,7 @@ class PictureResponse(Response):
         logging.info("tweeting...")
         message = random.choice(deanmessages) + " " + name
     
-        if sender is not None:
+        if sender :
             message = "@" + sender + " " + message 
 
 

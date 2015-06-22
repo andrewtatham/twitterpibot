@@ -6,13 +6,10 @@ class PhotoScheduledTask(ScheduledTask):
 
     def  __init__(self, *args, **kwargs):
 
-        self.messages = ["cheese!", "smile!"]
-
-
         return super(PhotoScheduledTask, self).__init__(*args, **kwargs)
 
     def GetTrigger(args):
-        return IntervalTrigger(minutes=7)
+        return IntervalTrigger(seconds=15)
 
 
     def onRun(args):
@@ -25,9 +22,8 @@ class PhotoScheduledTask(ScheduledTask):
 
         media_ids = args.context.UploadMedia(photos)
 
-        text = random.choice(args.messages)
 
 
-
-        tweet = OutgoingTweet(text=text,media_ids=media_ids)
-        args.context.outbox.add(tweet)
+        if any(media_ids):
+            tweet = OutgoingTweet(media_ids=media_ids)
+            args.context.outbox.put(tweet)
