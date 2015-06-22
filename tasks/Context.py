@@ -47,8 +47,8 @@ class Context(object):
                 finally:
 
                     file.close()
-                    print('removing ' + temp)
-                    os.remove(temp)
+                    #print('removing ' + temp)
+                    #os.remove(temp)
         
         return media_ids
 class Status(object):
