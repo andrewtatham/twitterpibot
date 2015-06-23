@@ -18,7 +18,9 @@ class Schedule(object):
 
 
 
-        self.jobs = [PhotoScheduledTask()]
+        self.jobs = [
+            PhotoScheduledTask()
+            ]
 
 
 
