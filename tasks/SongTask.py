@@ -7,10 +7,10 @@ class SongTask(Task):
     def onRun(args):
     
         try:
-            tweet = args.Context.song.get()            
-            args.Context.outbox.put(tweet)
+            tweet = args.context.song.get()            
+            args.context.outbox.put(tweet)
         finally:
-            args.Context.song.task_done()
+            args.context.song.task_done()
             time.sleep(5)
 
 

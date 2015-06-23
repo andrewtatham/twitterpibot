@@ -1637,6 +1637,9 @@
     <Content Include="songs\sexy.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExceptionHandler.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="hardware\Camera.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1745,6 +1748,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tasks\WebcamTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="twitter\MyTwitter.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="twitter\twitterstream.py" />

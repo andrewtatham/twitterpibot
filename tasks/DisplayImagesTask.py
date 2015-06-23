@@ -1,10 +1,13 @@
 from Task import Task
+from ExceptionHandler import ExceptionHandler
 
 try:
     import cv2
     import urllib
     import numpy as np
-except Exception:
+except Exception as e:
+    ExceptionHandler().HandleSilently(e)
+
     enableImages = False
 
 

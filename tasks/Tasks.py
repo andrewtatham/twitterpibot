@@ -11,6 +11,7 @@ import time
 from ProcessOutboxTask import ProcessOutboxTask
 from SongTask import SongTask
 from PiglowTask import PiglowTask
+from ExceptionHandler import ExceptionHandler
 
 
 class Tasks(object):
@@ -32,7 +33,7 @@ class Tasks(object):
         self.running = False
 
         for task in self.taskList:
-            task.Context = context
+            task.context = context
 
     def Init(args):
 
@@ -68,8 +69,7 @@ class Tasks(object):
                 if task.enabled:
                     task.onRun()
             except Exception as e:
-                logging.exception(e)             
-                print(e)
+                ExceptionHandler().Handle(e)
                 #time.sleep(5)
 
     def Stop(args):

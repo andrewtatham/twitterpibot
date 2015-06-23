@@ -6,20 +6,20 @@ class ProcessOutboxTask(Task):
     def onRun(args):
         
         try:
-            outboxItem = args.Context.outbox.get()
+            outboxItem = args.context.outbox.get()
 
             outboxItem.Display()
 
             if type(outboxItem) is OutgoingTweet:
 
-                args.Context.twitter.update_status(
+                args.context.twitter.update_status(
                     status = outboxItem.status,
                     in_reply_to_status_id = outboxItem.in_reply_to_status_id,
                     media_ids = outboxItem.media_ids)
 
             if type(outboxItem) is OutgoingDirectMessage:
 
-                args.Context.twitter.send_direct_message(
+                args.context.twitter.send_direct_message(
                     text = outboxItem.text, 
                     screen_name = outboxItem.screen_name, 
                     user_id = outboxItem.user_id)
@@ -27,5 +27,5 @@ class ProcessOutboxTask(Task):
             # todo catch 403 error when same text sent
 
         finally:
-            args.Context.outbox.task_done()
+            args.context.outbox.task_done()
         

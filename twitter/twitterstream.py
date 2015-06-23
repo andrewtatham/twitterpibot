@@ -1,4 +1,5 @@
 
+from ExceptionHandler import ExceptionHandler
 
 
 
@@ -59,8 +60,8 @@ def PrintTrends():
             for trendtweet in trendtweets["statuses"]:
                 print("  " + trendtweet["text"].replace("\n", "   "))
         except Exception as e:   
-            logging.exception(e)             
-            print(e)
+            ExceptionHandler().Handle(e)
+
 
 def SuggestedUsers():
     categories = twitter.get_user_suggestions()

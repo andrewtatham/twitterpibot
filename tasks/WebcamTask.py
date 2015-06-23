@@ -1,9 +1,11 @@
 
+from ExceptionHandler import ExceptionHandler
 try:
     import cv2
     import urllib
     import numpy as np
-except Exception:
+except Exception as e:
+    ExceptionHandler().HandleSilently(e)
     enableImages = False
     enableWebcam = False
 
@@ -28,8 +30,8 @@ def WebcamTasks():
             time.sleep(5)
 
         except Exception as e:
-            logging.exception(e)             
-            print(e)
+            ExceptionHandler().Handle(e)
+            
 
 
     

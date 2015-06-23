@@ -1,6 +1,7 @@
 
 from Camera import Camera, Photo
 import time
+from ExceptionHandler import ExceptionHandler
 
 
 try:
@@ -8,7 +9,8 @@ try:
     import picamera.array
 
 except Exception as e:
-    print(e)
+    ExceptionHandler().HandleSilently(e)
+
   
 
 
@@ -27,7 +29,7 @@ class MyPicam(Camera):
             self.enabled = True
 
         except Exception as e:
-            print(e)
+            ExceptionHandler().HandleSilently(e)
             self.enabled = False
                 
     
