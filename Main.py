@@ -26,16 +26,17 @@ tasks = Tasks(context=context)
 
 tasks.Init()
 
-schedule = Schedule(context=context)
+#schedule = Schedule(context=context)
 
-schedule.Start()
+#schedule.Start()
+
 tasks.Start()
 
 top.mainloop()
 
-
 tasks.Stop();
-schedule.Stop()
+
+#schedule.Stop()
 
 print("Done")
 
