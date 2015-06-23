@@ -1,11 +1,14 @@
 from Camera import *
+from ExceptionHandler import ExceptionHandler
 
 enableWebcam = False
 try:
     import cv2
     import urllib
     import numpy as np
-except Exception:
+except Exception as e:
+    ExceptionHandler().HandleSilently(e)
+
     enableWebcam = False
 
 
@@ -21,7 +24,7 @@ class Webcam(Camera):
             self.enabled = True
 
         except Exception as e:
-            print(e)
+            ExceptionHandler().HandleSilently(e)
             self.enabled = False
             
 

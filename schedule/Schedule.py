@@ -6,6 +6,7 @@ import os
 from apscheduler.schedulers.background import BackgroundScheduler
 from PhotoScheduledTask import PhotoScheduledTask
 import logging
+from ExceptionHandler import ExceptionHandler
 
 
 
@@ -74,8 +75,7 @@ class Schedule(object):
         try:   
             task.onRun()
         except Exception as e:
-            logging.exception(e)             
-            print(e)
+            ExceptionHandler().Handle(e)
 
 
 

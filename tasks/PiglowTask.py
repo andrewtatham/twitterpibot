@@ -5,7 +5,7 @@ class PiglowTask(Task):
     def onRun(args):
 
         #print('Fading')
-        args.Context.piglow.Fade()
+        args.context.piglow.Fade()
 
         time.sleep(1)
 
