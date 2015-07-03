@@ -22,7 +22,7 @@ class IncomingEvent(InboxItem):
 
     def Display(args):
         
-        text = "* Event: " + + args.event \
+        text = "* Event: " + args.event \
                     + " Source: " + args.sourceName + " [" + args.sourceScreenName + "]" \
                     + " Target: " + args.targetName + " [" + args.targetScreenName + "]"
         print(text)
