@@ -9,13 +9,12 @@ sys.path.append('schedule')
 
 
 
-import logging
+
 import Tkinter
 from Schedule import Schedule
 from Context import Context
 from Tasks import Tasks
 
-logging.basicConfig(filename='twitter.log',level=logging.INFO)
 
 
 top = Tkinter.Tk()

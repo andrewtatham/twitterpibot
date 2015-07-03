@@ -3,6 +3,13 @@ from MyTwitter import MyTwitter
 from Authenticator import Authenticator
 from twython.exceptions import TwythonError
 
+
+import logging
+
+logging.basicConfig(filename='twitter.log',level=logging.INFO)
+
+
+
 class ExceptionHandler(object):
 
 
