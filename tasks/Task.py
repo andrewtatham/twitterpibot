@@ -5,10 +5,10 @@ class Task(object):
         return super(Task, self).__init__(*args, **kwargs)
 
     def onInit(args):
-        print('Task.onInit')
+        pass
 
     def onRun(args):
-        print('Task.onRun')
+        pass
 
     def onStop(args):
-        print('Task.onStop')
+        pass
