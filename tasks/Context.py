@@ -40,20 +40,21 @@ class Context(object):
                     if not temp.close_called:
                         temp.close()
 
+                    try:
+                        f = open(temp.name,'rb')
 
-                    f = open(temp.name,'rb')
-
-                    print('uploading')
-                    media = args.twitter.upload_media(media=f)
-                    media_id =  media["media_id_string"]
-                    if media_id :
-                        print('media_id = ' + media_id)
-                        media_ids.append(media_id)
-
+                        print('uploading')
+                        media = args.twitter.upload_media(media=f)
+                        media_id =  media["media_id_string"]
+                        if media_id :
+                            print('media_id = ' + media_id)
+                            media_ids.append(media_id)
+                    finally:
+                        if not f.closed:
+                                    f.close() 
                 finally:
                
-                    if not f.closed:
-                        f.close()            
+                   
                     if not temp.close_called:
                         temp.close()
                     #print('removing ' + temp)
