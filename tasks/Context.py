@@ -30,7 +30,7 @@ class Context(object):
                 try:
                     temp = None
                     try:
-                        temp = tempfile.TemporaryFile(suffix='.jpg',delete=False)
+                        temp = tempfile.NamedTemporaryFile(suffix='.jpg',delete=False)
                         print('saving ' + temp.name)
                         cv2.imwrite(temp.name, photo.image)
                     finally:
