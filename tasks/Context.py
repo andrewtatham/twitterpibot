@@ -28,21 +28,17 @@ class Context(object):
         for photo in photos:
             if photo and photo.image is not None :
                 try:
-                    temp = tempfile.TemporaryFile(suffix='.jpg',delete=False)
-
-       
-
-                    print('saving ' + temp.name)
-                    cv2.imwrite(temp.name, photo.image)
-
-                    temp.file.seek(0)
-                    
-                    if not temp.close_called:
-                        temp.close()
+                    temp = None
+                    try:
+                        temp = tempfile.TemporaryFile(suffix='.jpg',delete=False)
+                        print('saving ' + temp.name)
+                        cv2.imwrite(temp.name, photo.image)
+                    finally:
+                        if not temp.close_called:
+                            temp.close()
 
                     try:
                         f = open(temp.name,'rb')
-
                         print('uploading')
                         media = args.twitter.upload_media(media=f)
                         media_id =  media["media_id_string"]
@@ -51,13 +47,9 @@ class Context(object):
                             media_ids.append(media_id)
                     finally:
                         if not f.closed:
-                                    f.close() 
+                            f.close() 
                 finally:
-               
-                   
-                    if not temp.close_called:
-                        temp.close()
-                    #print('removing ' + temp)
+                    print('removing ' + temp.name)
                     os.remove(temp.name)
         
         return media_ids
