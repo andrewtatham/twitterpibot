@@ -49,8 +49,10 @@ class Context(object):
                         if not f.closed:
                             f.close() 
                 finally:
-                    print('removing ' + temp.name)
-                    os.remove(temp.name)
+                    if temp:               
+                        if os.path.exists(temp.name):
+                            print('removing ' + temp.name)
+                            os.remove(temp.name)
         
         return media_ids
 class Status(object):
