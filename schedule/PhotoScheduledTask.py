@@ -9,8 +9,8 @@ class PhotoScheduledTask(ScheduledTask):
         return super(PhotoScheduledTask, self).__init__(*args, **kwargs)
 
     def GetTrigger(args):
-        return IntervalTrigger(seconds=15)
-        #return IntervalTrigger(minutes=15)
+        #return IntervalTrigger(seconds=15)
+        return IntervalTrigger(minutes=15)
         #return IntervalTrigger(hours=3)
 
 
