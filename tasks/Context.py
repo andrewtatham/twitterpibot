@@ -34,8 +34,9 @@ class Context(object):
                         print('saving ' + temp.name)
                         cv2.imwrite(temp.name, photo.image)
                     finally:
-                        if not temp.close_called:
-                            temp.close()
+                        if temp:
+                            if not temp.close_called:
+                                temp.close()
 
                     try:
                         f = open(temp.name,'rb')
@@ -46,8 +47,9 @@ class Context(object):
                             print('media_id = ' + media_id)
                             media_ids.append(media_id)
                     finally:
-                        if not f.closed:
-                            f.close() 
+                        if f:
+                            if not f.closed:
+                                f.close() 
                 finally:
                     if temp:               
                         if os.path.exists(temp.name):
