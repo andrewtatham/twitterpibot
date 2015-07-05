@@ -18,6 +18,7 @@ class StreamTweetsTask(Task):
         args.streamer.user()
 
     def onStop(args):
+        print("stopping stream")
         args.streamer.disconnect()
 
 

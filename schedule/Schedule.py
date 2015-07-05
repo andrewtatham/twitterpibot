@@ -7,6 +7,9 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from PhotoScheduledTask import PhotoScheduledTask
 import logging
 from ExceptionHandler import ExceptionHandler
+from EdBallsDay import EdBallsDay
+from Wikipedia import Wikipedia
+
 
 
 
@@ -19,7 +22,9 @@ class Schedule(object):
 
 
         self.jobs = [
-            PhotoScheduledTask()
+            PhotoScheduledTask(),
+            Wikipedia(),
+            EdBallsDay()
             ]
 
 
@@ -85,7 +90,8 @@ class Schedule(object):
         args.scheduler.start()
     def Stop(args):
         args.scheduler.shutdown()
-
+        #print("stopping")
         for job in args.jobs:
+            #print(".")
             job.onStop()
         
