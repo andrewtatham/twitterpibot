@@ -10,8 +10,8 @@ class PhotoScheduledTask(ScheduledTask):
 
     def GetTrigger(args):
         #return IntervalTrigger(seconds=15)
-        return IntervalTrigger(minutes=15)
-        #return IntervalTrigger(hours=3)
+        #return IntervalTrigger(minutes=15)
+        return IntervalTrigger(hours=3, minutes=15)
 
 
     def onRun(args):
