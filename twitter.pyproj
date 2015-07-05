@@ -1720,6 +1720,9 @@
     <Compile Include="schedule\ScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="schedule\Wikipedia.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tasks\Context.py">
       <SubType>Code</SubType>
     </Compile>
