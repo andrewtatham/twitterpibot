@@ -7,6 +7,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from PhotoScheduledTask import PhotoScheduledTask
 import logging
 from ExceptionHandler import ExceptionHandler
+from EdBallsDay import EdBallsDay
+
 
 
 
@@ -19,7 +21,8 @@ class Schedule(object):
 
 
         self.jobs = [
-            PhotoScheduledTask()
+            PhotoScheduledTask(),
+            EdBallsDay()
             ]
 
 
