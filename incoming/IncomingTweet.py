@@ -3,8 +3,18 @@ from InboxTextItem import InboxTextItem
 
 import HTMLParser
 import logging
+from itertools import cycle
+from colorama import Fore, Style
+import random
+
 
 h = HTMLParser.HTMLParser()
+
+colours = cycle([
+            Fore.GREEN,
+            Fore.YELLOW
+                   ])
+
 
 andrewpi = "andrewtathampi" 
 andrewpiid = "2935295111"
@@ -42,7 +52,9 @@ class IncomingTweet(InboxTextItem):
         #self.sender_profile_image_url = data["user"]["profile_image_url"]
         #self.sender_profile_banner_url = data["user"]["profile_banner_url"]
 
-        self.text = h.unescape(data["text"].decode('utf-8','ignore'))
+
+        logging.info(data["text"])
+        self.text = h.unescape(data["text"])
 
 
         self.words = self.text.split()
@@ -61,9 +73,6 @@ class IncomingTweet(InboxTextItem):
                         self.targets.append(mention["screen_name"])
                       
                     if mention["id_str"] == andrewpiid:
-                        # ANDREWPI MENTION
-                        print("*** ANDREWPI MENTION ***")
-                        logging.info("*** ANDREWPI MENTION ***")
                         self.to_me = True
                 
 
@@ -71,7 +80,24 @@ class IncomingTweet(InboxTextItem):
     def Display(args):
         
         text = "* " + args.sender_name + ' [@' + args.sender_screen_name+ '] ' + args.text
-        print(text)
+        
 
+
+
+        colour = colours.next()
+
+     
+        if args.to_me:
+            colour += Style.BRIGHT
+        elif args.from_me:
+            colour += Style.NORMAL
+        else:
+            colour += Style.DIM
+
+
+
+        print(colour + text.encode("utf-8"))
+ 
 
  
+        

@@ -10,7 +10,7 @@ class MonitorTask(Task):
             print('inbox = ' + str(status.inboxCount)
                   + 'songs = ' + str(status.songCount)
                   + 'outbox = ' + str(status.outboxCount))
-
+        
         time.sleep(15)
 
   

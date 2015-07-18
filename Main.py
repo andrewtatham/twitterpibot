@@ -15,7 +15,9 @@ from Schedule import Schedule
 from Context import Context
 from Tasks import Tasks
 
+import colorama
 
+colorama.init()
 
 top = Tkinter.Tk()
 

@@ -1711,6 +1711,9 @@
     <Compile Include="schedule\EdBallsDay.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="schedule\MonitorScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="schedule\PhotoScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>

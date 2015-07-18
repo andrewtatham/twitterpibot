@@ -9,6 +9,7 @@ import logging
 from ExceptionHandler import ExceptionHandler
 from EdBallsDay import EdBallsDay
 from Wikipedia import Wikipedia
+from MonitorScheduledTask import MonitorScheduledTask
 
 
 
@@ -24,7 +25,8 @@ class Schedule(object):
         self.jobs = [
             PhotoScheduledTask(),
             Wikipedia(),
-            EdBallsDay()
+            EdBallsDay(),
+            MonitorScheduledTask()
             ]
 
 
