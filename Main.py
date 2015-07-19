@@ -17,21 +17,21 @@ from Tasks import Tasks
 
 import colorama
 
+
+
 colorama.init()
 
-top = Tkinter.Tk()
 
 context = Context()
 
 tasks = Tasks(context=context)
-
 tasks.Init()
-
-schedule = Schedule(context=context)
-
-schedule.Start()
 tasks.Start()
 
+schedule = Schedule(context=context)
+schedule.Start()
+
+top = Tkinter.Tk()
 top.mainloop()
 
 

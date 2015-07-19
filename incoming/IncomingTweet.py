@@ -6,7 +6,7 @@ import logging
 from itertools import cycle
 from colorama import Fore, Style
 import random
-
+import nltk
 
 h = HTMLParser.HTMLParser()
 
@@ -77,6 +77,18 @@ class IncomingTweet(InboxTextItem):
                 
 
 
+
+
+    
+
+
+        self.tokens = nltk.word_tokenize(self.text)
+
+        self.tags = nltk.pos_tag(self.tokens)
+
+        self.entities =nltk.chunk.ne_chunk(self.tags)
+
+
     def Display(args):
         
         text = "* " + args.sender_name + ' [@' + args.sender_screen_name+ '] ' + args.text
@@ -98,6 +110,8 @@ class IncomingTweet(InboxTextItem):
 
         print(colour + text.encode("utf-8"))
  
-
+        print(Fore.MAGENTA + str(args.tokens))
+        print(Fore.CYAN + str(args.tags))
+        print(Fore.WHITE + str(args.entities))
  
         
