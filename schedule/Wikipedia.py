@@ -20,7 +20,7 @@ class Wikipedia(ScheduledTask):
   
         #return CronTrigger(second = datetime.datetime.now().second + 5)
 
-        return CronTrigger(hour = 9, minute = 0)
+        return CronTrigger(hour = '8-22', minute = '*/15')
     
 
     def onRun(args):
