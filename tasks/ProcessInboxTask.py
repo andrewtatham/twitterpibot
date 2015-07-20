@@ -6,9 +6,10 @@ from ResponseFactory import ResponseFactory
 
 
 class ProcessInboxTask(Task):
+
     def onInit(args):
-        args.factory = InboxItemFactory()
-        args.responseFactory = ResponseFactory(context = args.context)
+        args.factory = InboxItemFactory(args.context)
+        args.responseFactory = ResponseFactory(args.context)
     
 
     def onRun(args):

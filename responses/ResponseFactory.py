@@ -4,7 +4,7 @@ from PhotoResponse import PhotoResponse
 from Magic8BallResponse import Magic8BallResponse
 
 class ResponseFactory(object):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, context, *args, **kwargs):
 
 
         self.responses = [HelpResponse(),
@@ -12,7 +12,7 @@ class ResponseFactory(object):
                           SongResponse(),
                           Magic8BallResponse()]
 
-        self.context = kwargs['context']
+        self.context = context
         for response in self.responses:
             response.context = self.context
 

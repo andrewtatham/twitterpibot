@@ -6,7 +6,7 @@ import logging
 from itertools import cycle
 from colorama import Fore, Style
 import random
-import nltk
+#import nltk
 
 h = HTMLParser.HTMLParser()
 
@@ -16,25 +16,10 @@ colours = cycle([
                    ])
 
 
-andrewpi = "andrewtathampi" 
-andrewpiid = "2935295111"
-
-andrew = "andrewtatham"
-andrewid = "19201332"
-
-helen = "morris_helen"
-markr = "fuuuunnnkkytree"
-jamie = "jami3rez"
-dean = "dcspamoni"
-chriswatson = "watdoghotdog"
-fletch = "paulfletcher79"
-simon = "Tolle_Lege"
-
-users = [andrew, markr, jamie, helen, dean, chriswatson, simon]
 
 
 class IncomingTweet(InboxTextItem):
-    def __init__(self, data):
+    def __init__(self, data, context):
         # https://dev.twitter.com/overview/api/tweets
         #logging.info(data)
 
@@ -59,7 +44,7 @@ class IncomingTweet(InboxTextItem):
 
         self.words = self.text.split()
         
-        self.from_me = self.sender_id == andrewpiid
+        self.from_me = self.sender_id == context.users.me["id"]
         self.targets = []
 
                    
@@ -69,10 +54,10 @@ class IncomingTweet(InboxTextItem):
             if "user_mentions" in entities:
                 mentions = entities["user_mentions"]
                 for mention in mentions:
-                    if mention["screen_name"] != andrewpi and mention["screen_name"] != self.sender_screen_name:
+                    if mention["screen_name"] != context.users.me["id"] and mention["screen_name"] != self.sender_screen_name:
                         self.targets.append(mention["screen_name"])
                       
-                    if mention["id_str"] == andrewpiid:
+                    if mention["id_str"] == context.users.me["id"]:
                         self.to_me = True
                 
 
@@ -82,11 +67,11 @@ class IncomingTweet(InboxTextItem):
     
 
 
-        self.tokens = nltk.word_tokenize(self.text)
+        #self.tokens = nltk.word_tokenize(self.text)
 
-        self.tags = nltk.pos_tag(self.tokens)
+        #self.tags = nltk.pos_tag(self.tokens)
 
-        self.entities =nltk.chunk.ne_chunk(self.tags)
+        #self.entities =nltk.chunk.ne_chunk(self.tags)
 
 
     def Display(args):
@@ -110,8 +95,8 @@ class IncomingTweet(InboxTextItem):
 
         print(colour + text.encode("utf-8"))
  
-        print(Fore.MAGENTA + str(args.tokens))
-        print(Fore.CYAN + str(args.tags))
-        print(Fore.WHITE + str(args.entities))
+        #print(Fore.MAGENTA + str(args.tokens))
+        #print(Fore.CYAN + str(args.tags))
+        #print(Fore.WHITE + str(args.entities))
  
         

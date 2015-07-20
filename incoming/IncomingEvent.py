@@ -1,7 +1,7 @@
 from InboxItem import InboxItem
 
 class IncomingEvent(InboxItem):
-    def __init__(self, data):
+    def __init__(self, data, context):
         
         super(IncomingEvent, self).__init__(data)
 

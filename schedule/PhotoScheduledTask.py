@@ -3,6 +3,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 from OutgoingTweet import OutgoingTweet
 import random
 import time
+from apscheduler.triggers.cron import CronTrigger
 class PhotoScheduledTask(ScheduledTask):
 
     def  __init__(self, *args, **kwargs):
