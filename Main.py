@@ -6,9 +6,7 @@ sys.path.append('outgoing')
 sys.path.append('hardware')
 sys.path.append('twitter')
 sys.path.append('schedule')
-
-
-
+sys.path.append('users')
 
 import Tkinter
 from Schedule import Schedule
@@ -16,8 +14,6 @@ from Context import Context
 from Tasks import Tasks
 
 import colorama
-
-
 
 colorama.init()
 

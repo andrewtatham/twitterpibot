@@ -1,12 +1,11 @@
 from InboxTextItem import InboxTextItem
-from IncomingTweet import andrewpiid
 
 class IncomingDirectMessage(InboxTextItem):
 
 
 
 
-    def __init__(self, data):
+    def __init__(self, data, context):
         super(IncomingDirectMessage, self).__init__(data)
 
         self.isDirectMessage = True
@@ -24,8 +23,8 @@ class IncomingDirectMessage(InboxTextItem):
         self.recipient_id = data["direct_message"]["recipient_id_str"]
 
 
-        self.from_me = self.sender_id == andrewpiid
-        self.to_me = self.recipient_id == andrewpiid
+        self.from_me = self.sender_id == context.users.me["id"]
+        self.to_me = self.recipient_id == context.users.me["id"]
         self.targets = [self.sender_screen_name]
 
 

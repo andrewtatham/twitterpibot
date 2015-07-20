@@ -4,6 +4,7 @@ from MyPiglow import MyPiglow
 import cv2
 import os
 import tempfile
+from Users import Users
 class Context(object):
     def __init__(self, *args, **kwargs):
         self.inbox = Queue()
@@ -13,6 +14,8 @@ class Context(object):
 
         self.cameras = Cameras()
         self.piglow = MyPiglow()
+
+        self.users = Users()
 
     def GetStatus(args):
 
