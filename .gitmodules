@@ -7,3 +7,6 @@
 [submodule "instagram-filters"]
 	path = instagram-filters
 	url = https://github.com/andrewtatham/instagram-filters.git
+[submodule "brightpi"]
+	path = brightpi
+	url = https://github.com/andrewtatham/brightpi.git

@@ -1637,7 +1637,6 @@
     <Content Include="songs\sexy.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="brightpi\BrightPILed.py" />
     <Compile Include="ExceptionHandler.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1788,7 +1787,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="brightpi\" />
     <Folder Include="incoming\" />
     <Folder Include="hardware\" />
     <Folder Include="users\" />
