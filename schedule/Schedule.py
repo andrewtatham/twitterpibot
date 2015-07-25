@@ -10,6 +10,9 @@ from ExceptionHandler import ExceptionHandler
 from EdBallsDay import EdBallsDay
 from Wikipedia import Wikipedia
 from MonitorScheduledTask import MonitorScheduledTask
+from TrendsScheduledTask import TrendsScheduledTask
+from RateLimitsScheduledTask import RateLimitsScheduledTask
+from SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
 
 
 
@@ -26,7 +29,10 @@ class Schedule(object):
             PhotoScheduledTask(),
             Wikipedia(),
             EdBallsDay(),
-            MonitorScheduledTask()
+            MonitorScheduledTask(),
+            TrendsScheduledTask(),
+            SuggestedUsersScheduledTask(),
+            RateLimitsScheduledTask()
             ]
 
 

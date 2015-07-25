@@ -34,7 +34,7 @@ def ProcessInboxItem(args, inboxItem):
         # show items
         inboxItem.Display()
 
-        args.context.piglow.OnInboxItemRecieved(inboxItem=inboxItem)
+        args.context.OnInboxItemRecieved(inboxItem=inboxItem)
 
         # determine response
         response = args.responseFactory.Create(inboxItem)

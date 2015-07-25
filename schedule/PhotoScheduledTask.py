@@ -17,11 +17,11 @@ class PhotoScheduledTask(ScheduledTask):
 
     def onRun(args):
 
-        args.context.piglow.CameraFlash(True)
+        args.context.CameraFlash(True)
         time.sleep(1)
         photos = args.context.cameras.TakePhotos()
 
-        args.context.piglow.CameraFlash(False)
+        args.context.CameraFlash(False)
 
         media_ids = args.context.UploadMedia(photos)
 

@@ -9,8 +9,8 @@ from colorama import Fore, Style
 
 logging.basicConfig(filename='twitter.log',level=logging.INFO)
 
-
-
+# "Twitter API returned a 429 (Too Many Requests), Rate limit exceeded"
+# "Twitter API returned a 403 (Forbidden), There was an error sending your message: Whoops! You already said that."
 class ExceptionHandler(object):
 
 

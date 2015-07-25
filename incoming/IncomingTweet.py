@@ -10,7 +10,7 @@ import random
 
 h = HTMLParser.HTMLParser()
 
-colours = cycle([
+tweetcolours = cycle([
             Fore.GREEN,
             Fore.YELLOW
                    ])
@@ -38,7 +38,7 @@ class IncomingTweet(InboxTextItem):
         #self.sender_profile_banner_url = data["user"]["profile_banner_url"]
 
 
-        logging.info(data["text"])
+        logging.debug(data["text"])
         self.text = h.unescape(data["text"])
 
 
@@ -81,7 +81,7 @@ class IncomingTweet(InboxTextItem):
 
 
 
-        colour = colours.next()
+        colour = tweetcolours.next()
 
      
         if args.to_me:

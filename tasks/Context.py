@@ -5,17 +5,29 @@ import cv2
 import os
 import tempfile
 from Users import Users
+from RateLimits import RateLimits
+from MyBrightPi import MyBrightPi
+
 class Context(object):
     def __init__(self, *args, **kwargs):
+
         self.inbox = Queue()
         self.outbox = Queue()
         self.song = Queue()
-
-
+        self.users = Users()
+        self.ratelimits = RateLimits()
         self.cameras = Cameras()
         self.piglow = MyPiglow()
+        self.brightpi = MyBrightPi()
 
-        self.users = Users()
+    def CameraFlash(args, on):
+
+        args.piglow.CameraFlash(on)
+        args.brightpi.CameraFlash(on)
+
+    def OnInboxItemRecieved(args, inboxItem):
+        args.piglow.OnInboxItemRecieved(inboxItem)
+
 
     def GetStatus(args):
 

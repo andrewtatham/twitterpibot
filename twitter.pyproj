@@ -6,7 +6,7 @@
     <ProjectGuid>{0d8a6f76-90c3-43e1-8e8f-d24c25a90e50}</ProjectGuid>
     <ProjectHome />
     <StartupFile>Main.py</StartupFile>
-    <SearchPath>tasks\;twitter\;incoming\;responses\;outgoing\;hardware\;schedule\;users\</SearchPath>
+    <SearchPath>tasks\;twitter\;incoming\;responses\;outgoing\;hardware\;schedule\;users\;brightpi\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
@@ -1646,13 +1646,15 @@
     <Compile Include="hardware\Cameras.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="hardware\MyBrightPi.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="hardware\MyPicam.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="hardware\MyPiglow.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="hardware\PyGlow.py" />
     <Compile Include="hardware\Webcam.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1717,10 +1719,19 @@
     <Compile Include="schedule\PhotoScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="schedule\RateLimitsScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="schedule\Schedule.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="schedule\ScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="schedule\SuggestedUsersScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="schedule\TrendsScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="schedule\Wikipedia.py">
@@ -1744,6 +1755,9 @@
     <Compile Include="tasks\ProcessOutboxTask.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="tasks\RateLimits.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tasks\SongTask.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1762,7 +1776,6 @@
     <Compile Include="twitter\MyTwitter.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="twitter\twitterstream.py" />
     <Compile Include="twitter\Authenticator.py">
       <SubType>Code</SubType>
     </Compile>
