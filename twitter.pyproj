@@ -1716,10 +1716,19 @@
     <Compile Include="schedule\PhotoScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="schedule\RateLimitsScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="schedule\Schedule.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="schedule\ScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="schedule\SuggestedUsersScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="schedule\TrendsScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="schedule\Wikipedia.py">
@@ -1743,6 +1752,9 @@
     <Compile Include="tasks\ProcessOutboxTask.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="tasks\RateLimits.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tasks\SongTask.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1761,7 +1773,6 @@
     <Compile Include="twitter\MyTwitter.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="twitter\twitterstream.py" />
     <Compile Include="twitter\Authenticator.py">
       <SubType>Code</SubType>
     </Compile>

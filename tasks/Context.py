@@ -5,6 +5,7 @@ import cv2
 import os
 import tempfile
 from Users import Users
+from RateLimits import RateLimits
 class Context(object):
     def __init__(self, *args, **kwargs):
         self.inbox = Queue()
@@ -16,6 +17,9 @@ class Context(object):
         self.piglow = MyPiglow()
 
         self.users = Users()
+
+        self.ratelimits = RateLimits()
+
 
     def GetStatus(args):
 

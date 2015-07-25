@@ -10,7 +10,7 @@ import random
 
 h = HTMLParser.HTMLParser()
 
-colours = cycle([
+tweetcolours = cycle([
             Fore.GREEN,
             Fore.YELLOW
                    ])
@@ -81,7 +81,7 @@ class IncomingTweet(InboxTextItem):
 
 
 
-        colour = colours.next()
+        colour = tweetcolours.next()
 
      
         if args.to_me:

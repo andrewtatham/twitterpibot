@@ -1,8 +1,10 @@
 from Task import Task
 
 from apscheduler.triggers import *
+from apscheduler.triggers.cron import CronTrigger
+import datetime
 
 class ScheduledTask(Task):
 
     def GetTrigger(args):
-        pass
+        return CronTrigger(second = datetime.datetime.now().second + 15)
