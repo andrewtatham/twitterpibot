@@ -1652,7 +1652,6 @@
     <Compile Include="hardware\MyPiglow.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="hardware\PyGlow.py" />
     <Compile Include="hardware\Webcam.py">
       <SubType>Code</SubType>
     </Compile>

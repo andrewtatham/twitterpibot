@@ -1,0 +1,9 @@
+[submodule "PyGlow"]
+	path = PyGlow
+	url = https://github.com/benleb/PyGlow
+[submodule "PiGlow"]
+	path = PiGlow
+	url = https://github.com/Boeeerb/PiGlow.git
+[submodule "instagram-filters"]
+	path = instagram-filters
+	url = https://github.com/andrewtatham/instagram-filters.git
