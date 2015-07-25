@@ -38,7 +38,7 @@ class IncomingTweet(InboxTextItem):
         #self.sender_profile_banner_url = data["user"]["profile_banner_url"]
 
 
-        logging.info(data["text"])
+        logging.debug(data["text"])
         self.text = h.unescape(data["text"])
 
 

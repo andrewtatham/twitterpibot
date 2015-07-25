@@ -19,11 +19,11 @@ class PhotoResponse(Response):
     def Respond(args, inboxItem):
 
         
-        args.context.piglow.CameraFlash(True)
+        args.context.CameraFlash(True)
 
         photos = args.context.cameras.TakePhotos()
 
-        args.context.piglow.CameraFlash(False)
+        args.context.CameraFlash(False)
 
         media_ids = args.context.UploadMedia(photos)
 

@@ -8,6 +8,8 @@ sys.path.append('twitter')
 sys.path.append('schedule')
 sys.path.append('users')
 
+sys.path.append('brightpi')
+
 import Tkinter
 from Schedule import Schedule
 from Context import Context
