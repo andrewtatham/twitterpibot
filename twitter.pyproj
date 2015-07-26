@@ -1647,6 +1647,9 @@
     <Compile Include="hardware\Cameras.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="hardware\Hardware.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="hardware\MyBrightPi.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1739,7 +1742,7 @@
     <Compile Include="schedule\Wikipedia.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="tasks\Context.py">
+    <Compile Include="Context.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tasks\DisplayImagesTask.py">

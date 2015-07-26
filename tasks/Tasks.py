@@ -22,12 +22,17 @@ class Tasks(object):
 
 
 
+
+
+
         self.taskList = [StreamTweetsTask(),
                          ProcessInboxTask(),
                          MonitorTask(),     
                          SongTask(),
-                         ProcessOutboxTask(),
-                         PiglowTask()]
+                         ProcessOutboxTask()]
+        
+        if context.piglow:
+            self.taskList.append(PiglowTask())
 
 
         self.running = False

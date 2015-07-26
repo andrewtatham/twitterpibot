@@ -7,6 +7,7 @@ import tempfile
 from Users import Users
 from RateLimits import RateLimits
 from MyBrightPi import MyBrightPi
+from Hardware import Hardware
 
 class Context(object):
     def __init__(self, *args, **kwargs):
@@ -17,16 +18,28 @@ class Context(object):
         self.users = Users()
         self.ratelimits = RateLimits()
         self.cameras = Cameras()
-        self.piglow = MyPiglow()
-        self.brightpi = MyBrightPi()
+        
+        self.piglow = None
+        self.brightpi = None
+
+        self.hardware = Hardware()
+
+        if self.hardware.piglowattached:
+            self.piglow = MyPiglow()
+        if self.hardware.brightpiattached:
+            self.brightpi = MyBrightPi()
 
     def CameraFlash(args, on):
 
-        args.piglow.CameraFlash(on)
-        args.brightpi.CameraFlash(on)
+        if args.hardware.piglowattached:
+            args.piglow.CameraFlash(on)
+
+        if args.hardware.brightpiattached:
+            args.brightpi.CameraFlash(on)
 
     def OnInboxItemRecieved(args, inboxItem):
-        args.piglow.OnInboxItemRecieved(inboxItem)
+        if args.hardware.piglowattached:
+            args.piglow.OnInboxItemRecieved(inboxItem)
 
 
     def GetStatus(args):
