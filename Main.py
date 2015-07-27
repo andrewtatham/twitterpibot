@@ -44,8 +44,9 @@ tasks = Tasks(context=context)
 tasks.Init()
 tasks.Start()
 
-schedule = Schedule(context=context)
-schedule.Start()
+scheduler = Schedule(context=context)
+context.scheduler = scheduler
+scheduler.Start()
 
 top = Tkinter.Tk()
 top.mainloop()
