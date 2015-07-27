@@ -7,4 +7,4 @@ import datetime
 class ScheduledTask(Task):
 
     def GetTrigger(args):
-        return CronTrigger(second = datetime.datetime.now().second + 15)
+        return CronTrigger(second = datetime.datetime.now().second + 5)

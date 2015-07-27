@@ -13,6 +13,7 @@ from MonitorScheduledTask import MonitorScheduledTask
 from TrendsScheduledTask import TrendsScheduledTask
 from RateLimitsScheduledTask import RateLimitsScheduledTask
 from SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
+from MidnightScheduledTask import MidnightScheduledTask
 
 
 
@@ -20,6 +21,9 @@ from SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
 
 class Schedule(object):
     def __init__(self, context, *args, **kwargs):
+
+        self.context = context
+
 
         self.scheduler = BackgroundScheduler()
 
@@ -32,7 +36,8 @@ class Schedule(object):
             MonitorScheduledTask(),
             TrendsScheduledTask(),
             SuggestedUsersScheduledTask(),
-            RateLimitsScheduledTask()
+            RateLimitsScheduledTask(),
+            MidnightScheduledTask()
             ]
 
 
@@ -103,3 +108,9 @@ class Schedule(object):
             #print(".")
             job.onStop()
         
+    def add(args, job):
+        job.context = args.context
+
+        job.onInit()
+
+        args.scheduler.add_job(args.RunWrapper, args=[job], trigger = job.GetTrigger())
