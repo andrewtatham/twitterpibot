@@ -23,10 +23,9 @@ class PhotoScheduledTask(ScheduledTask):
 
         args.context.CameraFlash(False)
 
-        media_ids = args.context.UploadMedia(photos)
 
 
 
-        if any(media_ids):
-            tweet = OutgoingTweet(media_ids=media_ids)
+        if any(photos):
+            tweet = OutgoingTweet(photos=photos)
             args.context.outbox.put(tweet)

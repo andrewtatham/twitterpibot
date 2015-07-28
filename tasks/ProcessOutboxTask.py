@@ -12,6 +12,11 @@ class ProcessOutboxTask(Task):
 
             if type(outboxItem) is OutgoingTweet:
 
+                if outboxItem.photos and any(outboxItem.photos):
+                    outboxItem.media_ids = args.context.UploadMedia(outboxItem.photos)
+
+
+
                 args.context.twitter.update_status(
                     status = outboxItem.status,
                     in_reply_to_status_id = outboxItem.in_reply_to_status_id,
