@@ -18,4 +18,12 @@ class MonitorScheduledTask(ScheduledTask):
         logging.info(text)
 
 
+        
+        status = args.context.GetStatus()
+        if(status.inboxCount + status.songCount + status.outboxCount > 0):
+            print('inbox = ' + str(status.inboxCount)
+                  + 'songs = ' + str(status.songCount)
+                  + 'outbox = ' + str(status.outboxCount))
+
+
 
