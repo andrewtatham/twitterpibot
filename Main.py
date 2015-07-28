@@ -54,7 +54,7 @@ top.mainloop()
 
 print("Exiting...")
 tasks.Stop();
-schedule.Stop()
+scheduler.Stop()
 print("Done")
 
 

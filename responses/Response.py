@@ -25,7 +25,7 @@ class Response(object):
 
     
 
-    def ReplyWith(self, inboxItem, text, media_ids = None, asTweet = False, asDM = False, *args, **kwargs):    
+    def ReplyWith(self, inboxItem, text, asTweet = False, asDM = False, photos = None, *args, **kwargs):    
 
 
 
@@ -41,8 +41,8 @@ class Response(object):
         if replyAsTweet :
             tweet = OutgoingTweet(
                 replyTo=inboxItem,
-                text=text,
-                media_ids = media_ids)
+                text=text,                
+                photos = photos)
             return tweet
            
         if replyAsDM:

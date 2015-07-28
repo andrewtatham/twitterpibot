@@ -25,15 +25,15 @@ class PhotoResponse(Response):
 
         args.context.CameraFlash(False)
 
-        media_ids = args.context.UploadMedia(photos)
-
         
-        photomessages = ["cheese!", "smile!"]
+        if any(photos):
+        
+            photomessages = ["cheese!", "smile!"]
 
-        return args.ReplyWith(
-            inboxItem=inboxItem, 
-            text=random.choice(photomessages), 
-            media_ids=media_ids, 
-            asTweet=True)
+            return args.ReplyWith(
+                inboxItem=inboxItem, 
+                text=random.choice(photomessages), 
+                asTweet=True,
+                photos = photos)
 
 
