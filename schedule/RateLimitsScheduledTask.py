@@ -3,6 +3,8 @@ import pprint
 import pickle
 import os
 from apscheduler.triggers.interval import IntervalTrigger
+from MyTwitter import MyTwitter
+
 
 
 filename = "RATE_LIMITS.pkl"
@@ -18,10 +20,9 @@ class RateLimitsScheduledTask(ScheduledTask):
         # https://dev.twitter.com/rest/public/rate-limits
         # https://dev.twitter.com/rest/reference/get/application/rate_limit_status
 
-
-        rates = args.context.twitter.get_application_rate_limit_status()
-
-        args.context.ratelimits.UpdateRateLimits(rates)
+        with MyTwitter() as twitter:
+            rates = twitter.get_application_rate_limit_status()
+            args.context.ratelimits.UpdateRateLimits(rates)
 
 
     def onInit(args):
