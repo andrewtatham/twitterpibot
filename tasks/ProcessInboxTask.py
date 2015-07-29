@@ -41,8 +41,7 @@ def ProcessInboxItem(args, inboxItem):
 
 
         if response :
-
-            #todo uploads
+   
             args.context.outbox.put(response)
             
 

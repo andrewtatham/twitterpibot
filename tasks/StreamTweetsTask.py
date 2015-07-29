@@ -7,9 +7,10 @@ from MyTwitter import MyTwitter
 class StreamTweetsTask(Task):
 
     def onInit(args):
+
         authenticator = Authenticator()
         tokens = authenticator.Authenticate()
-        args.context.twitter = MyTwitter(tokens[0],tokens[1],tokens[2],tokens[3])
+                        
         args.streamer = MyStreamer(tokens[0],tokens[1],tokens[2],tokens[3])
         args.streamer.inbox = args.context.inbox
  

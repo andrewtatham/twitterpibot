@@ -2,6 +2,7 @@ from ScheduledTask import ScheduledTask
 from colorama import Fore, Style
 from itertools import cycle
 from apscheduler.triggers.interval import IntervalTrigger
+from MyTwitter import MyTwitter
 
 worldwide_WOEID = 1
 leeds_WOEID = 26042
@@ -15,16 +16,13 @@ class TrendsScheduledTask(ScheduledTask):
 
 
     def onRun(args):
-
-        #availtrends = twitter.get_available_trends()
-
-
-        worldwide_trends = args.context.twitter.get_place_trends(id = worldwide_WOEID)
-        args.printTrends('Worldwide Trends', worldwide_trends)
+        with MyTwitter() as twitter:
+            #availtrends = twitter.get_available_trends()
+            worldwide_trends = twitter.get_place_trends(id = worldwide_WOEID)
+            args.printTrends('Worldwide Trends', worldwide_trends)
     
-
-        leeds_trends = args.context.twitter.get_place_trends(id = leeds_WOEID)
-        args.printTrends('Leeds Trends', leeds_trends)
+            leeds_trends = twitter.get_place_trends(id = leeds_WOEID)
+            args.printTrends('Leeds Trends', leeds_trends)
 
     def printTrends(args, title, trends):
 
