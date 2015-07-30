@@ -39,5 +39,5 @@ class AstralScheduledTask(ScheduledTask):
     def GetTrigger(args):
         return DateTrigger(run_date = args.time)
     def onRun(args):        
-        args.context.outbox.append(OutgoingTweet(text=args.text))
+        args.context.outbox.put(OutgoingTweet(text=args.text))
     

@@ -47,13 +47,12 @@ class ExceptionHandler(object):
         
 
         try:
-            tokens = Authenticator().Authenticate()
-            twitter = MyTwitter(tokens[0], tokens[1], tokens[2], tokens[3])
-      
-            twitter.send_direct_message(               
-                text = str(exception),
-                screen_name = "andrewtatham", 
-                user_id = "19201332")
+       
+            with MyTwitter() as twitter:
+                twitter.send_direct_message(               
+                    text = str(exception),
+                    screen_name = "andrewtatham", 
+                    user_id = "19201332")
             
         except Exception as e:
             pass
