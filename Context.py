@@ -8,6 +8,7 @@ from Users import Users
 from RateLimits import RateLimits
 from MyBrightPi import MyBrightPi
 from Hardware import Hardware
+import psutil
 
 class Context(object):
     def __init__(self, *args, **kwargs):
@@ -44,10 +45,16 @@ class Context(object):
 
     def GetStatus(args):
 
+
+        
+
         status = Status()
         status.inboxCount = args.inbox.qsize()
         status.outboxCount = args.outbox.qsize()
         status.songCount = args.song.qsize()
+
+        status.cpu = psutil.cpu_percent()
+        status.memory = psutil.virtual_memory().percent
 
         return status
 
