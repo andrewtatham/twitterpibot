@@ -2,6 +2,8 @@ from HelpResponse import HelpResponse
 from SongResponse import SongResponse
 from PhotoResponse import PhotoResponse
 from Magic8BallResponse import Magic8BallResponse
+from FavouriteResponse import FavouriteResponse
+from RetweetResponse import RetweetResponse
 
 class ResponseFactory(object):
     def __init__(self, context, *args, **kwargs):
@@ -10,7 +12,9 @@ class ResponseFactory(object):
         self.responses = [HelpResponse(),
                           PhotoResponse(),
                           SongResponse(),
-                          Magic8BallResponse()]
+                          Magic8BallResponse(),
+                          FavouriteResponse(),
+                          RetweetResponse()]
 
         self.context = context
         for response in self.responses:

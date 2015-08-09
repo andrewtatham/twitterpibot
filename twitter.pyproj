@@ -1697,6 +1697,9 @@
     </Compile>
     <Compile Include="PiGlow\piglow.py" />
     <Compile Include="Responses.py" />
+    <Compile Include="responses\FavouriteResponse.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="responses\HelpResponse.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1707,6 +1710,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="responses\ResponseFactory.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="responses\RetweetResponse.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="responses\SongResponse.py">

@@ -74,3 +74,7 @@ class MyTwitter(object):
 
     def send_direct_message(self, **params):
         return self.twython.send_direct_message(**params)
+    def create_favourite(self, **params):
+        return self.twython.create_favorite(**params)
+    def retweet(self, **params):
+        return self.twython.retweet(**params)
