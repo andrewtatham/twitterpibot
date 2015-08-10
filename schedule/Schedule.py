@@ -30,7 +30,6 @@ class Schedule(object):
 
 
         self.jobs = [
-            PhotoScheduledTask(),
             Wikipedia(),
             EdBallsDay(),
             MonitorScheduledTask(),
@@ -39,6 +38,9 @@ class Schedule(object):
             RateLimitsScheduledTask(),
             MidnightScheduledTask()
             ]
+
+        if not context.hardware.iswindows:
+            self.jobs.append(PhotoScheduledTask())
 
 
 
