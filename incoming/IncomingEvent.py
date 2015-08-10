@@ -1,4 +1,16 @@
 from InboxItem import InboxItem
+from itertools import cycle
+from colorama import Fore, Style
+import os
+import logging
+
+
+eventcolours = cycle([
+            Fore.MAGENTA,
+            Fore.CYAN
+                   ])
+
+
 
 class IncomingEvent(InboxItem):
     def __init__(self, data, context):
@@ -17,12 +29,55 @@ class IncomingEvent(InboxItem):
         self.targetName = data["target"]["name"]
         self.targetScreenName = data["target"]["screen_name"]
 
+        self.targetObject = data["target_object"]
+
+        self.targetObjectID = data["target_object"]["id_str"]
+
+        self.targetObjectText = None
+        if "text" in data["target_object"]:
+            self.targetObjectText = data["target_object"]["text"]
+
+        self.isFavorite = self.event == "favorite"
+        self.isFollow = self.event == "follow"
+        self.isRetweet = self.event == "quoted_tweet"
+        
+        # favorited_retweet
+        # retweeted_retweet
+
+        self.from_me = self.sourceID == context.users.me["id"]
+        self.to_me = self.targetID == context.users.me["id"]
+
+
+        if self.isFavorite:
+            pass
+        elif self.isFollow:
+            pass
+        elif self.isRetweet:
+            pass
+
         
   
 
     def Display(args):
         
-        text = "* Event: " + args.event \
-                    + " Source: " + args.sourceName + " [" + args.sourceScreenName + "]" \
-                    + " Target: " + args.targetName + " [" + args.targetScreenName + "]"
-        print(text)
+        colour = eventcolours.next()
+
+        if args.to_me:
+            colour += Style.BRIGHT
+        elif args.from_me:
+            colour += Style.NORMAL
+        else:
+            colour += Style.DIM
+
+        
+        text = "* EVENT: Type: " + args.event + os.linesep \
+                    + " Source: " + args.sourceName + " [@" + args.sourceScreenName + "]" + os.linesep \
+                    + " Target: " + args.targetName + " [@" + args.targetScreenName + "]"
+
+        if args.targetObjectText:
+            text += os.linesep + " TargetObject: " + args.targetObjectText
+
+        print(colour + text)
+
+        logging.info(text)
+        logging.info(args.targetObject)
