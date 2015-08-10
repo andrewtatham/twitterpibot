@@ -29,13 +29,17 @@ class IncomingEvent(InboxItem):
         self.targetName = data["target"]["name"]
         self.targetScreenName = data["target"]["screen_name"]
 
-        self.targetObject = data["target_object"]
-
-        self.targetObjectID = data["target_object"]["id_str"]
-
+        self.targetObject = None
+        self.targetObjectID = None
         self.targetObjectText = None
-        if "text" in data["target_object"]:
-            self.targetObjectText = data["target_object"]["text"]
+        if "target_object" in data:
+            self.targetObject = data["target_object"]
+
+            if "id_str" in self.targetObject:
+                self.targetObjectID = self.targetObject["id_str"]
+
+            if "text" in self.targetObject:
+                self.targetObjectText = self.targetObject["text"]
 
         self.isFavorite = self.event == "favorite"
         self.isFollow = self.event == "follow"
