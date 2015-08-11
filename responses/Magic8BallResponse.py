@@ -1,5 +1,6 @@
 from Response import Response
 import random
+from MyTwitter import MyTwitter
 class Magic8BallResponse(Response):
     def __init__(self, *args, **kwargs):
 
@@ -42,11 +43,15 @@ class Magic8BallResponse(Response):
 
 
     def Condition(args, inboxItem):
-        return super(Magic8BallResponse, args).Condition(inboxItem) and inboxItem.text.find("?") != -1
+        #return super(Magic8BallResponse, args).Condition(inboxItem) and inboxItem.text.find("?") != -1
+        return not inboxItem.from_me and inboxItem.text.find("?") != -1 and random.randint(0,4) == 0
+
 
 
     def Respond(args, inboxItem):
 
+        with MyTwitter() as twitter:
+            twitter.create_favourite(id = inboxItem.status_id)
 
         response = random.choice(args.responses)
 
