@@ -54,7 +54,7 @@ class IncomingTweet(InboxTextItem):
             if "user_mentions" in entities:
                 mentions = entities["user_mentions"]
                 for mention in mentions:
-                    if mention["screen_name"] != context.users.me["id"] and mention["screen_name"] != self.sender_screen_name:
+                    if mention["screen_name"] != context.users.me["id"]: #and mention["screen_name"] != self.sender_screen_name:
                         self.targets.append(mention["screen_name"])
                       
                     if mention["id_str"] == context.users.me["id"]:
