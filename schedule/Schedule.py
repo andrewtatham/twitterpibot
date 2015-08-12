@@ -14,6 +14,7 @@ from TrendsScheduledTask import TrendsScheduledTask
 from RateLimitsScheduledTask import RateLimitsScheduledTask
 from SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
 from MidnightScheduledTask import MidnightScheduledTask
+from KatieHopkinsScheduledTask import KatieHopkinsScheduledTask
 
 
 
@@ -36,7 +37,8 @@ class Schedule(object):
             TrendsScheduledTask(),
             SuggestedUsersScheduledTask(),
             RateLimitsScheduledTask(),
-            MidnightScheduledTask()
+            MidnightScheduledTask(),
+            KatieHopkinsScheduledTask()
             ]
 
         if not context.hardware.iswindows:
