@@ -58,7 +58,7 @@ class Magic8BallResponse(Response):
         with MyTwitter() as twitter:
             twitter.create_favourite(id = inboxItem.status_id)
 
-        response = random.choice(args.responses)
+        response = random.choice(args.responses) +  " #Magic8Ball"
 
         return args.ReplyWith(
             inboxItem=inboxItem, 
