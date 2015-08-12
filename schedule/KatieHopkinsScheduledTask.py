@@ -256,7 +256,7 @@ class KatieHopkinsScheduledTask(ScheduledTask):
         return random.choice(message)
 
     def GetTrigger(args):
-        return CronTrigger(day_of_week="22-06", minute = "15/30")
+        return CronTrigger(day_of_week="22-24,00-06", minute = "15/30")
 
     def onRun(args):
         
