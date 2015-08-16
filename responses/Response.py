@@ -3,10 +3,8 @@ from OutgoingDirectMessage import OutgoingDirectMessage
 
 class Response(object):
     def Condition(args, inboxItem):
-        return ( 
-            (inboxItem.isTweet or inboxItem.isDirectMessage ) 
-            and not inboxItem.from_me and inboxItem.to_me
-            )
+        return (inboxItem.isTweet or inboxItem.isDirectMessage ) \
+            and not inboxItem.from_me 
 
 
 
@@ -26,12 +24,6 @@ class Response(object):
     
 
     def ReplyWith(self, inboxItem, text, asTweet = False, asDM = False, photos = None, *args, **kwargs):    
-
-
-
-
-
-
 
         replyAsTweet = asTweet or not asDM and inboxItem.isTweet
 

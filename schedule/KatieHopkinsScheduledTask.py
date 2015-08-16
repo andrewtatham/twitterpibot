@@ -256,10 +256,12 @@ class KatieHopkinsScheduledTask(ScheduledTask):
         return random.choice(message)
 
     def GetTrigger(args):
-        return CronTrigger(day_of_week="22-24,00-06", minute = "15/30")
+
+
+        return CronTrigger(hour="22-23,00-06", minute = "15/30")
 
     def onRun(args):
         
         text = args.tweet() + " #KatieHopkinsTweet"
         
-        args.context.outbox.put(OutgoingTweet(text=text))
+        #args.context.outbox.put(OutgoingTweet(text=text))

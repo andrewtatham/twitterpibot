@@ -8,6 +8,7 @@ class MyTwitter(object):
         authenticator = Authenticator()
         tokens = authenticator.Authenticate()
         self.twython = Twython(tokens[0],tokens[1],tokens[2],tokens[3])
+        
 
     def UploadMedia(args, photos):
         media_ids = []

@@ -15,7 +15,9 @@ class SongResponse(Response):
             self.songs[songname] = open(songsfolder + songfile, "rb").readlines()
 
     def Condition(args, inboxItem):
-        return super(SongResponse,args).Condition(inboxItem) and args.Contains(inboxItem.words, args.songNames)
+        return super(SongResponse,args).Condition(inboxItem) \
+            and inboxItem.to_me \
+            and args.Contains(inboxItem.words, args.songNames)
 
     def Contains(args, list_a, list_b):
         for item_a in list_a:

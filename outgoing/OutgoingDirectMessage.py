@@ -14,4 +14,4 @@ class OutgoingDirectMessage(OutboxTextItem):
         self.text = text
          
     def Display(args):
-        print("-> DM to @" + args.screen_name + ": " + args.text)
+        print("-> DM to @" + args.screen_name + ": " + args.text.encode('utf-8'))

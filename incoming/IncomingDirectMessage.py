@@ -29,6 +29,6 @@ class IncomingDirectMessage(InboxTextItem):
 
 
     def Display(args):
-        text = " * DM from @" + args.sender_screen_name + ": " + args.text
+        text = " * DM from @" + args.sender_screen_name + ": " + args.text.encode('utf-8')
         print(text)
         

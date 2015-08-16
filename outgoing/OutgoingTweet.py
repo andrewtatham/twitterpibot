@@ -37,4 +37,4 @@ class OutgoingTweet(OutboxTextItem):
     def Display(args):
         
         
-        print("-> Tweet: " + args.status)
+        print("-> Tweet: " + args.status.encode('utf-8'))

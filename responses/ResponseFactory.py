@@ -4,17 +4,22 @@ from PhotoResponse import PhotoResponse
 from Magic8BallResponse import Magic8BallResponse
 from FavouriteResponse import FavouriteResponse
 from RetweetResponse import RetweetResponse
+from FatherTedResponse import FatherTedResponse
+from MyTwitter import MyTwitter
+from LoveResponse import LoveResponse
 
 class ResponseFactory(object):
     def __init__(self, context, *args, **kwargs):
 
 
-        self.responses = [HelpResponse(),
-                          PhotoResponse(),
-                          SongResponse(),
-                          Magic8BallResponse(),
-                          FavouriteResponse(),
-                          RetweetResponse()]
+        self.responses = [
+            PhotoResponse(),
+            SongResponse(),
+            Magic8BallResponse(),
+            RetweetResponse(),
+            FatherTedResponse(),
+            LoveResponse()
+        ]
 
         self.context = context
         for response in self.responses:
@@ -27,7 +32,14 @@ class ResponseFactory(object):
         if inboxItem :
             for response in args.responses:
                 if response.Condition(inboxItem):
+
+                    if inboxItem.isTweet:
+                        with MyTwitter() as twitter:
+                            twitter.create_favourite(id = inboxItem.status_id)
+
                     return response.Respond(inboxItem)
+
+                    
 
         return None
         
