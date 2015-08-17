@@ -6,6 +6,8 @@ class Response(object):
         return (inboxItem.isTweet or inboxItem.isDirectMessage ) \
             and not inboxItem.from_me 
 
+    def Favourite(args, inboxItem):
+        return True
 
 
     def Contains(args, list, item):

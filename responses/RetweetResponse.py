@@ -7,6 +7,9 @@ class RetweetResponse(Response):
     def Condition(args, inboxItem):
         return inboxItem.isTweet and not inboxItem.from_me and random.randint(0,50) == 0
 
+    def Favourite(args, inboxItem):
+        return False
+
     def Respond(args, inboxItem):
 
         
