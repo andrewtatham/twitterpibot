@@ -34,11 +34,11 @@ class Schedule(object):
             Wikipedia(),
             EdBallsDay(),
             MonitorScheduledTask(),
-            TrendsScheduledTask(),
-            SuggestedUsersScheduledTask(),
-            RateLimitsScheduledTask(),
+            #TrendsScheduledTask(),
+            #SuggestedUsersScheduledTask(),
+            #RateLimitsScheduledTask(),
             MidnightScheduledTask(),
-            KatieHopkinsScheduledTask()
+            #KatieHopkinsScheduledTask(),
             ]
 
         if not context.hardware.iswindows:
