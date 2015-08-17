@@ -50,7 +50,7 @@ class IncomingEvent(InboxItem):
 
         self.from_me = self.sourceID == context.users.me["id"]
         self.to_me = self.targetID == context.users.me["id"]
-
+ 
 
         if self.isFavorite:
             pass

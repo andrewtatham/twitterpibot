@@ -1,4 +1,5 @@
 
+from User import User
 class Users(object):
     def __init__(self, *args, **kwargs):
         self.me ={
@@ -13,6 +14,18 @@ class Users(object):
             }
         ]
 
+        self.users = {}
+        self.lists = []
 
-        return super(Users, self).__init__(*args, **kwargs) 
+
     
+
+    def getUser(args, id):
+
+        if not args.users.has_key(id):
+            args.users[id] = User(id, args.lists)
+
+        return args.users[id]
+
+
+        

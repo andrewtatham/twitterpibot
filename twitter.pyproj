@@ -1751,6 +1751,9 @@
     <Compile Include="schedule\TrendsScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="schedule\UserListsScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="schedule\WeatherScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1797,6 +1800,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="twitter\MyStreamer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="users\User.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="users\UserList.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="users\Users.py">

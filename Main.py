@@ -35,7 +35,7 @@ from Tasks import Tasks
 
 import colorama
 
-colorama.init()
+#colorama.init()
 
 
 context = Context()

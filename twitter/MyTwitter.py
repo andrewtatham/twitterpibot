@@ -79,3 +79,10 @@ class MyTwitter(object):
         return self.twython.create_favorite(**params)
     def retweet(self, **params):
         return self.twython.retweet(**params)
+
+
+    def show_owned_lists(self, **params):
+        return self.twython.show_owned_lists(**params)
+
+    def get_list_members(self, **params):
+        return self.twython.get_list_members(**params)

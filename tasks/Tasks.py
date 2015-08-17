@@ -6,7 +6,6 @@ from ProcessInboxTask import ProcessInboxTask
 from Context import Context
 import logging
 from pprint import pprint
-from MonitorTask import MonitorTask
 import time
 from ProcessOutboxTask import ProcessOutboxTask
 from SongTask import SongTask
@@ -18,18 +17,10 @@ class Tasks(object):
     
     def __init__(self, context, *args, **kwargs):
 
-
-
-
-
-
-
-
-        self.taskList = [StreamTweetsTask(),
+        self.taskList = [SongTask(),
+                         ProcessOutboxTask(),
                          ProcessInboxTask(),
-                         MonitorTask(),     
-                         SongTask(),
-                         ProcessOutboxTask()]
+                         StreamTweetsTask()]
         
         if context.piglow:
             self.taskList.append(PiglowTask())

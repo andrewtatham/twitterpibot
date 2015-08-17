@@ -16,6 +16,9 @@ class IncomingDirectMessage(InboxTextItem):
 
         self.sender_id = data["direct_message"]["sender_id_str"]
         self.sender_screen_name = data["direct_message"]["sender_screen_name"]
+
+        self.sender = context.users.getUser(data["direct_message"]["sender_id_str"])
+
         self.text = data["direct_message"]["text"]
 
         self.words = self.text.split()

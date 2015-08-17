@@ -15,6 +15,7 @@ from RateLimitsScheduledTask import RateLimitsScheduledTask
 from SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
 from MidnightScheduledTask import MidnightScheduledTask
 from KatieHopkinsScheduledTask import KatieHopkinsScheduledTask
+from UserListsScheduledTask import UserListsScheduledTask
 
 
 
@@ -39,6 +40,7 @@ class Schedule(object):
             #RateLimitsScheduledTask(),
             MidnightScheduledTask(),
             #KatieHopkinsScheduledTask(),
+            UserListsScheduledTask()
             ]
 
         if not context.hardware.iswindows:
