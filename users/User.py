@@ -1,25 +1,44 @@
+import logging
+import datetime
 class User(object):
-    def __init__(self, id, lists, *args, **kwargs):
+    def __init__(self, id, *args, **kwargs):
 
-        self.isBot = False
-        self.isRetweetLess = False
-        self.IsRetweetMore = False
+        self.id = id
+        self.updated = None
+
+        self.isRetweetMore = False
+        self.isBot = False        
+        self.isFriend = False
 
         
 
 
 
+
+    def isStale(args):
+
+        if args.updated is None:
+            return True
+
+        delta = datetime.datetime.utcnow() - args.updated
+        mins = divmod(delta.days * 86400 + delta.seconds, 60)[0]
+        return mins > 45 
+
+
+
+    def update(args, lists):
+        
         for list in lists:
-            if id in list.members:
-                if list.name == "Retweet Less":
-                    self.isRetweetLess = True
-                elif list.name == "Retweet More":
-                    self.IsRetweetMore = True
+            if args.id in list.members:
+
+                if list.name == "Retweet More":
+                    self.isRetweetMore = True
                 elif list.name == "Awesome Bots":
-                    self.isBot = True
+                    self.isBot = True                
+                elif list.name == "Friends":
+                    self.isFriend = True
                 else:
-                    pass
-        
+                    logging.warn('Unknown list name: ' +  list.name)
 
 
-        return super(User, self).__init__(*args, **kwargs)
+        args.updated = datetime.datetime.utcnow()

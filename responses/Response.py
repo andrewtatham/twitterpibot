@@ -1,10 +1,24 @@
 from OutgoingTweet import OutgoingTweet
 from OutgoingDirectMessage import OutgoingDirectMessage
+import random
 
 class Response(object):
     def Condition(args, inboxItem):
-        return (inboxItem.isTweet or inboxItem.isDirectMessage ) \
-            and not inboxItem.from_me 
+        return not inboxItem.from_me \
+            and (
+                inboxItem.isDirectMessage 
+                or inboxItem.isTweet \
+                and (
+                    inboxItem.to_me \
+                    or inboxItem.sender.isBot \
+                    or (inboxItem.sender.isFriend and random.randint(0,3) == 0) \
+                    or (inboxItem.sender.isRetweetMore and random.randint(0,9) == 0)
+                    or random.randint(0,99) == 0
+                    )
+                )
+
+
+
 
     def Favourite(args, inboxItem):
         return True

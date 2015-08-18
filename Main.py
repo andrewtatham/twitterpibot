@@ -35,7 +35,7 @@ from Tasks import Tasks
 
 import colorama
 
-#colorama.init()
+colorama.init()
 
 
 context = Context()
@@ -55,6 +55,7 @@ top.mainloop()
 print("Exiting...")
 tasks.Stop();
 scheduler.Stop()
+context.Stop()
 print("Done")
 
 
