@@ -34,4 +34,4 @@ class UserListsScheduledTask(ScheduledTask):
                 newList = UserList(list = myList, members = members)
                 newLists.append(newList)
         
-        args.context.users.lists = newLists
+        args.context.users.updateLists(lists = newLists)

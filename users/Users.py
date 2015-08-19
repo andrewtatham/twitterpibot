@@ -23,17 +23,19 @@ class Users(object):
         if (exists):
             self.users = pickle.load(open("USERS.pkl", "rb"))
             self.lists = pickle.load(open("USER_LISTS.pkl", "rb"))
-    
+
+    def updateLists(args, lists):
+        args.lists = lists
 
     def getUser(args, id):
 
 
 
         if not args.users.has_key(id):
-            args.users[id] = User(id)
+            args.users[id] = User(id = id)
 
         if(args.users[id].isStale()):
-            args.users[id].update(args.lists)
+            args.users[id].update(lists = args.lists)
 
 
         return args.users[id]
