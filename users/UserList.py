@@ -1,9 +1,9 @@
 class UserList(object):
-    def __init__(self, list, members, *args, **kwargs):
-        self.name = list["name"] 
+    def __init__(self, listData, membersData, *args, **kwargs):
+        self.name = listData["name"] 
 
         self._members = set()
-        for member in members["users"]:
+        for member in membersData["users"]:
             self._members.add(member["id_str"])
 
     def ContainsUser(args, id):
