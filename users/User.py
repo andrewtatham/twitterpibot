@@ -25,7 +25,7 @@ class User(object):
     def update(args, lists):
         
         for list in lists:
-            if args.id in list.members:
+            if list.ContainsUser(id = args.id):
 
                 if list.name == "Retweet More":
                     self.isRetweetMore = True

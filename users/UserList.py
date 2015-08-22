@@ -6,5 +6,7 @@ class UserList(object):
         for member in members["users"]:
             self._members.add(member["id_str"])
 
+    def ContainsUser(args, id):
+        return id in args._members
 
 
