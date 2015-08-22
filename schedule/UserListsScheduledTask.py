@@ -19,19 +19,4 @@ class UserListsScheduledTask(ScheduledTask):
 
 
     def UpdateUserLists(args):
-        print("updating user lists")
-        logging.info("updating user lists")
-        with MyTwitter() as twitter:
-        
-            newLists = []
-            myLists = twitter.show_owned_lists()
-            for myList in myLists["lists"]:
-                text = "updating user list " + myList["id_str"] + " " + myList["name"]
-                print(text)
-                logging.info(text)
-                members = twitter.get_list_members(list_id = myList["id_str"])
-
-                newList = UserList(myList, members)
-                newLists.append(newList)
-        
-        args.context.users.updateLists(lists = newLists)
+        args.context.users.updateLists()
