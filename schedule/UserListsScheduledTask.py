@@ -31,7 +31,7 @@ class UserListsScheduledTask(ScheduledTask):
                 logging.info(text)
                 members = twitter.get_list_members(list_id = myList["id_str"])
 
-                newList = UserList(list = myList, members = members)
+                newList = UserList(myList, members)
                 newLists.append(newList)
         
         args.context.users.updateLists(lists = newLists)
