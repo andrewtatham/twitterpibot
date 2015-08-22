@@ -46,7 +46,8 @@ class Users(object):
                 
                     if not args._lists.has_key(key):
                         args._lists[key] = UserList(myList["name"])
-                    args._lists[key].UpdateMembers(members)
+                    list = args._lists[key]
+                    list.UpdateMembers(members)
 
 
     def getUser(args, id):
