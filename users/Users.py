@@ -30,19 +30,20 @@ class Users(object):
             self._lists = pickle.load(open("USER_LISTS.pkl", "rb"))
 
     def updateLists(args):
-        print("updating user lists")
-        logging.info("updating user lists")
-        with MyTwitter() as twitter:
-            myLists = twitter.show_owned_lists()
-            for myList in myLists["lists"]:
-                text = "updating user list " + myList["id_str"] + " " + myList["name"]
-                print(text)
-                logging.info(text)
-                members = twitter.get_list_members(list_id = myList["id_str"])
+        with args.lock:
+            print("updating user lists")
+            logging.info("updating user lists")
+            with MyTwitter() as twitter:
+                myLists = twitter.show_owned_lists()
+                for myList in myLists["lists"]:
+                    text = "updating user list " + myList["id_str"] + " " + myList["name"]
+                    print(text)
+                    logging.info(text)
+                    members = twitter.get_list_members(list_id = myList["id_str"])
 
 
-                key = myList["id_str"]
-                with args.lock:
+                    key = myList["id_str"]
+                
                     if not args._lists.has_key(key):
                         args._lists[key] = UserList(myList["name"])
                     args._lists[key].UpdateMembers(members)
