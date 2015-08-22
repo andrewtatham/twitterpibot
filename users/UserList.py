@@ -2,9 +2,9 @@ class UserList(object):
     def __init__(self, list, members, *args, **kwargs):
         self.name = list["name"] 
 
-        self.members = set()
+        self._members = set()
         for member in members["users"]:
-            self.members.add(member["id_str"])
+            self._members.add(member["id_str"])
 
 
 

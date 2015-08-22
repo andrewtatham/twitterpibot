@@ -10,10 +10,6 @@ class User(object):
         self.isBot = False        
         self.isFriend = False
 
-        
-
-
-
 
     def isStale(args):
 
@@ -39,6 +35,5 @@ class User(object):
                     self.isFriend = True
                 else:
                     logging.warn('Unknown list name: ' +  list.name)
-
 
         args.updated = datetime.datetime.utcnow()
