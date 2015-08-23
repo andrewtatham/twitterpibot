@@ -35,7 +35,7 @@ class Schedule(object):
             Wikipedia(),
             EdBallsDay(),
             MonitorScheduledTask(),
-            #TrendsScheduledTask(),
+            TrendsScheduledTask(),
             #SuggestedUsersScheduledTask(),
             #RateLimitsScheduledTask(),
             MidnightScheduledTask(),
