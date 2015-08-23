@@ -28,26 +28,28 @@ sys.path.append('users')
 
 sys.path.append('brightpi')
 
-import Tkinter
-from Schedule import Schedule
-from Context import Context
-from Tasks import Tasks
+import platform
+
 
 import colorama
+if platform.node() <> "ANDREWDESKTOP":
+    colorama.init()
 
-colorama.init()
 
-
+from Context import Context
 context = Context()
 
+from Tasks import Tasks
 tasks = Tasks(context=context)
 tasks.Init()
 tasks.Start()
 
+from Schedule import Schedule
 scheduler = Schedule(context=context)
 context.scheduler = scheduler
 scheduler.Start()
 
+import Tkinter
 top = Tkinter.Tk()
 top.mainloop()
 

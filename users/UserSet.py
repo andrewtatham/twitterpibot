@@ -1,5 +1,5 @@
 from multiprocessing import Lock
-class UserList(object):
+class UserSet(object):
     def __init__(self, name, *args, **kwargs):
         self.name = name
         self.lock = Lock()

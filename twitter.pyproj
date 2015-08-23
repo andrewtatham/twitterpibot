@@ -1805,7 +1805,7 @@
     <Compile Include="users\User.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="users\UserList.py">
+    <Compile Include="users\UserSet.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="users\Users.py">
