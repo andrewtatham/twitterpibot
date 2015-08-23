@@ -21,8 +21,8 @@ class TrendsScheduledTask(ScheduledTask):
 
 
 
-    #def GetTrigger(args):
-    #    return IntervalTrigger(minutes=2)
+    def GetTrigger(args):
+        return IntervalTrigger(minutes=5)
 
 
 
@@ -40,6 +40,8 @@ class TrendsScheduledTask(ScheduledTask):
             trends.add(trend['name'])
     
         for trend in trends:
+            colour = trendColours.next()
+            print("T: [" + trend + "]")
             args._trendsList.put(trend)
 
 
@@ -51,12 +53,9 @@ class TrendsScheduledTask(ScheduledTask):
                 args.UpdateTrends(twitter)
             try:
                 trend = args._trendsList.get()
-                colour = trendColours.next()
-                print (Style.NORMAL + colour + str(trend))
                 trendtweets = twitter.search(q = urllib.quote_plus(trend), result_type = "popular")
                 for trendtweet in trendtweets["statuses"]:
                     colour = trendColours.next()
-                    print (Style.NORMAL + colour + str(trend))
                     print("T: [" + trend + "] - " + trendtweet["text"].replace("\n", "   "))
 
 
