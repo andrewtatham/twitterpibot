@@ -29,12 +29,19 @@ class User(object):
                 if list.ContainsUser(args.id):
 
                     if list.name == "Retweet More":
-                        self.isRetweetMore = True
+                        args.isRetweetMore = True
+                        print("Is member of " + list.name)
+
                     elif list.name == "Awesome Bots":
-                        self.isBot = True                
+                        args.isBot = True                
+                        print("Is member of " + list.name)
+                  
                     elif list.name == "Friends":
-                        self.isFriend = True
+                        args.isFriend = True
+                        print("Is member of " + list.name)
+                    
                     else:
+                        
                         logging.warn('Unknown list name: ' +  list.name)
 
             args.updated = datetime.datetime.utcnow()

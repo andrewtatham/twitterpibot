@@ -5,7 +5,8 @@ from OutgoingTweet import OutgoingTweet
 from MyTwitter import MyTwitter
 class RetweetResponse(Response):
     def Condition(args, inboxItem):
-        return inboxItem.isTweet and not inboxItem.from_me and random.randint(0,50) == 0
+        return super(RetweetResponse, args).Condition(inboxItem) and inboxItem.isTweet
+
 
     def Favourite(args, inboxItem):
         return False

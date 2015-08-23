@@ -12,7 +12,7 @@ class FatherTedResponse(Response):
         responses = [
             "That would be an ecumenical matter",
             "Careful now",
-            "Down with this sort of thing",
+            "Down with this sort of thing!",
             "Is there anything to be said for another mass?",
             "That money was just resting in my account!",
             "as I said last time, it won't happen again",
