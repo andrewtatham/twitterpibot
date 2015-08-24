@@ -11,7 +11,7 @@ import urllib
 worldwide_WOEID = 1
 leeds_WOEID = 26042
 
-trendColours = cycle([Fore.MAGENTA, Fore.CYAN])
+trendColours = cycle([Fore.MAGENTA, Fore.WHITE])
 
 class TrendsScheduledTask(ScheduledTask):
     def __init__(self, *args, **kwargs):
@@ -56,7 +56,7 @@ class TrendsScheduledTask(ScheduledTask):
                 trendtweets = twitter.search(q = urllib.quote_plus(trend), result_type = "popular")
                 for trendtweet in trendtweets["statuses"]:
                     colour = trendColours.next()
-                    print("T: [" + trend + "] - " + trendtweet["text"].replace("\n", "   "))
+                    print(colour + "T: [" + trend + "] - " + trendtweet["text"].replace("\n", "   "))
 
 
 

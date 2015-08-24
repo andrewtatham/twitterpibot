@@ -36,7 +36,7 @@ class Schedule(object):
             EdBallsDay(),
             MonitorScheduledTask(),
             TrendsScheduledTask(),
-            #SuggestedUsersScheduledTask(),
+            SuggestedUsersScheduledTask(),
             #RateLimitsScheduledTask(),
             MidnightScheduledTask(),
             #KatieHopkinsScheduledTask(),
