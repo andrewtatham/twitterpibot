@@ -41,7 +41,7 @@ class TrendsScheduledTask(ScheduledTask):
     
         for trend in trends:
             colour = trendColours.next()
-            print("T: [" + trend + "]")
+            print(colour + "Trends: [" + trend + "]")
             args._trendsList.put(trend)
 
 
@@ -56,7 +56,7 @@ class TrendsScheduledTask(ScheduledTask):
                 trendtweets = twitter.search(q = urllib.quote_plus(trend), result_type = "popular")
                 for trendtweet in trendtweets["statuses"]:
                     colour = trendColours.next()
-                    print(colour + "T: [" + trend + "] - " + trendtweet["text"].replace("\n", "   "))
+                    #print(colour + "Trend: [" + trend + "] - " + trendtweet["text"].replace("\n", "   "))
 
 
 
