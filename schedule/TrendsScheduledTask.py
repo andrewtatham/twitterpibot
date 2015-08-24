@@ -56,7 +56,7 @@ class TrendsScheduledTask(ScheduledTask):
                 trendtweets = twitter.search(q = urllib.quote_plus(trend), result_type = "popular")
                 for trendtweet in trendtweets["statuses"]:
                     colour = trendColours.next()
-                    #print(colour + "Trend: [" + trend + "] - " + trendtweet["text"].replace("\n", "   "))
+                    print(colour + "Trend: [" + trend + "] - " + trendtweet["text"].replace("\n", "   "))
 
 
 

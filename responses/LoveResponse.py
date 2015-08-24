@@ -31,4 +31,4 @@ class LoveResponse(Response):
 
     def Respond(args, inboxItem):
         text = u"I " + random.choice(args.texts) + u" U"
-        return args.ReplyWith(inboxItem, text)
+        return args.ReplyWith(inboxItem, text.encode('utf-8'))
