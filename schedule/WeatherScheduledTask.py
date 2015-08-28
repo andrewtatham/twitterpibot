@@ -7,11 +7,5 @@ class WeatherScheduledTask(ScheduledTask):
     def GetTrigger(args):
         return CronTrigger(hour=7)
     
-    def onRun(args):
-        texts = [
-            "@BBCWeatherBot Leeds Today"
-        ]
-
-        text = random.choice()
-        
-        args.context.outbox.put(OutgoingTweet(text=text))
+    def onRun(args):      
+        args.context.outbox.put(OutgoingTweet(text= "@BBCWeatherBot Leeds Today"))

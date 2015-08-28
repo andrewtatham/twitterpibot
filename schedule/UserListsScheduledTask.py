@@ -11,7 +11,8 @@ class UserListsScheduledTask(ScheduledTask):
         return CronTrigger(minute="5/15")
 
     def onInit(args):
-        args.UpdateUserLists()
+        #args.UpdateUserLists()
+        pass
 
 
     def onRun(args):

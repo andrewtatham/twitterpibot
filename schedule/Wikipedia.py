@@ -10,8 +10,8 @@ from apscheduler.triggers.interval import IntervalTrigger
 
 class Wikipedia(ScheduledTask):
 
-    #def GetTrigger(args):
-    #    return IntervalTrigger(minutes=15)
+    def GetTrigger(args):
+        return IntervalTrigger(minutes=17)
     
 
     def onRun(args):
