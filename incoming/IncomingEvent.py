@@ -15,6 +15,8 @@ eventcolours = cycle([
 class IncomingEvent(InboxItem):
     def __init__(self, data, context):
         
+        logging.info(data)
+
         super(IncomingEvent, self).__init__(data)
 
         self.isEvent = True
@@ -55,11 +57,14 @@ class IncomingEvent(InboxItem):
         if self.isFavorite:
             pass
         elif self.isFollow:
+            self.followerName =  data["source"]["name"]
+            self.followerScreenName =  data["source"]["screen_name"]
+            self.followerDescription =  data["source"]["description"]
             pass
         elif self.isRetweet:
             pass
 
-        
+    
   
 
     def Display(args):

@@ -1697,6 +1697,9 @@
     </Compile>
     <Compile Include="PiGlow\piglow.py" />
     <Compile Include="Responses.py" />
+    <Compile Include="responses\BotBlocker.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="responses\FatherTedResponse.py">
       <SubType>Code</SubType>
     </Compile>
