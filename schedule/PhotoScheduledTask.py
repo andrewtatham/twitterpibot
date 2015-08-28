@@ -6,13 +6,8 @@ import time
 from apscheduler.triggers.cron import CronTrigger
 class PhotoScheduledTask(ScheduledTask):
 
-    def  __init__(self, *args, **kwargs):
-
-        return super(PhotoScheduledTask, self).__init__(*args, **kwargs)
-
     def GetTrigger(args):
-
-        return CronTrigger(hour='8-22', minute='*/20')
+        return IntervalTrigger(hour = 3)
 
 
     def onRun(args):

@@ -6,33 +6,27 @@ import wikipedia
 from wikipedia.wikipedia import WikipediaPage
 from wikipedia.exceptions import DisambiguationError
 import random
+from apscheduler.triggers.interval import IntervalTrigger
 
 class Wikipedia(ScheduledTask):
 
-    def onInit(args):
-
-
-        return super(Wikipedia, args).onInit()
-
-
-    def GetTrigger(args):
-        
-  
-        #return CronTrigger(second = datetime.datetime.now().second + 5)
-
-        return CronTrigger(hour = '8-22', minute = '*/15')
+    #def GetTrigger(args):
+    #    return IntervalTrigger(minutes=15)
     
 
     def onRun(args):
 
         # https://wikipedia.readthedocs.org/en/latest/quickstart.html
 
-
+        isDisambiguation = True
         rand = wikipedia.random(pages=1)
-        try:
-            page = wikipedia.page(title=rand)
-        except DisambiguationError as e:
-            page = WikipediaPage(title=random.choice(e.options))
+        while isDisambiguation:
+            try:
+                page = wikipedia.page(title=rand)
+                isDisambiguation = False
+            except DisambiguationError as e:
+                rand = title=random.choice(e.options)
+                isDisambiguation = True
 
 
         if page:
