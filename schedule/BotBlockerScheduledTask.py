@@ -28,15 +28,9 @@ class BotBlockerScheduledTask(ScheduledTask):
 
             if any(args.myFollowers):
                 follower = args.myFollowers.pop()
-                block = args.blocker.IsBot(
-                    user_id = follower["id_str"],
-                    username = follower["name"],
-                    screen_name = follower["screen_name"],
-                    description = follower["description"])
+                block = args.blocker.IsBot(user_id = follower["id_str"], username = follower["name"], screen_name = follower["screen_name"], description = follower["description"])
                 if block:
-                    twitter.create_block(
-                        user_id = follower["id_str"],
-                        screen_name = follower["screen_name"])
+                    twitter.create_block(user_id = follower["id_str"], screen_name = follower["screen_name"])
 
         
     
