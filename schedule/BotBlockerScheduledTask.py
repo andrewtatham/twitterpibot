@@ -15,9 +15,7 @@ class BotBlockerScheduledTask(ScheduledTask):
         return super(BotBlockerScheduledTask, args).onInit()
 
     def onRun(args):
-
         blockUsers = []
-
         with MyTwitter() as twitter:
             if not any(args.myFollowers):
                 response = twitter.get_followers_list(cursor = args.page)
@@ -30,11 +28,11 @@ class BotBlockerScheduledTask(ScheduledTask):
 
             if any(args.myFollowers):
                 follower = args.myFollowers.pop()
-                isBot = args.blocker.IsBot(                
-                    follower["id_str"],
-                    follower["name"],
-                    follower["screen_name"],
-                    follower["description"])
+                isBot = args.blocker.IsBot(
+                    user_id = follower["id_str"],
+                    username = follower["name"],
+                    screen_name = follower["screen_name"],
+                    description = follower["description"])
                 if isBot:
                     twitter.create_block(
                         user_id = follower["id_str"],

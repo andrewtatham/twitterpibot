@@ -12,11 +12,9 @@ class BotBlocker(object):
         businessRx = re.compile("|".join(businessWords))
         pornRx = re.compile("|".join(pornWords))
 
-        self.rxs = [(tooKeenRx, 5),
-            (pornRx, 4),
-            (businessRx, 1)]
+        self.rxs = [(tooKeenRx, 5), (pornRx, 4), (businessRx, 1)]
 
-    def IsBot(self, user_id, username, screen_name, description, *args, **kwargs):
+    def IsBot(self, user_id, username, screen_name, description):
 
         print("Botblocker checking: " +  username  + " [@" + screen_name + "] " +  description)
 
@@ -47,11 +45,8 @@ class BotBlocker(object):
                     searchText += tweet["text"]
 
                 for rx in self.rxs:
-        
                     matches = rx[0].findall(searchText)
                     if match:
-                        
-
                         score += rx[1] * len(matches)
 
         print("Botblocker score: " + str(score))

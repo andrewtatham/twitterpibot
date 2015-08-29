@@ -17,10 +17,10 @@ class BotBlockerResponse(Response):
         isNewFollower = inboxItem.isEvent and not inboxItem.from_me and inboxItem.to_me and inboxItem.isFollow
         if isNewFollower:
             return args.blocker.IsBot(
-                inboxItem.sourceID,
-                inboxItem.followerName,
-                inboxItem.followerScreenName,
-                inboxItem.followerDescription)
+                user_id = inboxItem.sourceID,
+                username = inboxItem.followerName,
+                screen_name =inboxItem.followerScreenName,
+                description =inboxItem.followerDescription)
         else:
             return False
 
