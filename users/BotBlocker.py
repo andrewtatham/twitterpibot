@@ -13,6 +13,10 @@ class BotBlocker(object):
         pornRx = re.compile("|".join(pornWords))
 
         self.rxs = [(tooKeenRx, 5), (pornRx, 4), (businessRx, 1)]
+        return super(BotBlocker, self).__init__(*args, **kwargs)
+
+
+
 
     def IsBot(self, user_id, username, screen_name, description):
 
