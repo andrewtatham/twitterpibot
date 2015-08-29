@@ -17,6 +17,7 @@ from MidnightScheduledTask import MidnightScheduledTask
 from KatieHopkinsScheduledTask import KatieHopkinsScheduledTask
 from UserListsScheduledTask import UserListsScheduledTask
 from WeatherScheduledTask import WeatherScheduledTask
+from BotBlockerScheduledTask import BotBlockerScheduledTask
 
 
 
@@ -42,7 +43,8 @@ class Schedule(object):
             MidnightScheduledTask(),
             #KatieHopkinsScheduledTask(),
             UserListsScheduledTask(),
-            WeatherScheduledTask()
+            WeatherScheduledTask(),
+            BotBlockerScheduledTask()
             ]
 
         if not context.hardware.iswindows:

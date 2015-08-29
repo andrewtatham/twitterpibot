@@ -5,14 +5,14 @@ from RetweetResponse import RetweetResponse
 from FatherTedResponse import FatherTedResponse
 from MyTwitter import MyTwitter
 from LoveResponse import LoveResponse
-from BotBlocker import BotBlocker
+from BotBlockerResponse import BotBlockerResponse
 
 class ResponseFactory(object):
     def __init__(self, context, *args, **kwargs):
 
 
         self.responses = [
-            BotBlocker(),
+            BotBlockerResponse(),
             PhotoResponse(),
             SongResponse(),
             Magic8BallResponse(),

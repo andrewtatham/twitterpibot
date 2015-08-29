@@ -15,7 +15,7 @@ eventcolours = cycle([
 class IncomingEvent(InboxItem):
     def __init__(self, data, context):
         
-        logging.info(data)
+        #logging.info(data)
 
         super(IncomingEvent, self).__init__(data)
 

@@ -1697,7 +1697,7 @@
     </Compile>
     <Compile Include="PiGlow\piglow.py" />
     <Compile Include="Responses.py" />
-    <Compile Include="responses\BotBlocker.py">
+    <Compile Include="responses\BotBlockerResponse.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="responses\FatherTedResponse.py">
@@ -1722,6 +1722,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="responses\LoveResponse.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="schedule\BotBlockerScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="schedule\EdBallsDay.py">
@@ -1803,6 +1806,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="twitter\MyStreamer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="users\BotBlocker.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="users\User.py">

@@ -66,7 +66,7 @@ class Tasks(object):
                     task.onRun()
             except Exception as e:
                 ExceptionHandler().Handle(e)
-                time.sleep(1)
+                #time.sleep(1)
 
     def Stop(args):
 

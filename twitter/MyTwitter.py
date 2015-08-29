@@ -88,4 +88,9 @@ class MyTwitter(object):
         return self.twython.get_list_members(**params)
     def get_list_members(self, **params):
         return self.twython.create_block(**params)
+    def get_user_timeline(self, **params):
+            return self.twython.get_user_timeline(**params)    
+    def get_followers_list(self, **params):
+            return self.twython.get_followers_list(**params)
 
+        
