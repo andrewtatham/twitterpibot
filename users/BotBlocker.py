@@ -18,9 +18,9 @@ class BotBlocker(object):
 
 
 
-    def IsBot(self, user_id, username, screen_name, description):
+    def IsUserBot(self, user_id, username, screen_name, description):
 
-        print("Botblocker checking: " +  username  + " [@" + screen_name + "] " +  description)
+        print("[Botblock] checking: " +  username  + " [@" + screen_name + "] " +  description)
 
         blockFollower = False
         score = 0
@@ -33,7 +33,7 @@ class BotBlocker(object):
             if match:
                 score += rx[1] * len(match)
         
-        print("Botblocker score: " + str(score))
+        print("[Botblock] Profile score: " + str(score))
         if score > 10:
             blockFollower = True
 
@@ -53,7 +53,7 @@ class BotBlocker(object):
                     if match:
                         score += rx[1] * len(matches)
 
-        print("Botblocker score: " + str(score))
+        print("[Botblock] Tweet score: " + str(score))
         if score > 10:
             blockFollower = True
 
