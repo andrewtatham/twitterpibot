@@ -9,13 +9,13 @@ import pickle
 #    pw = pickle.load(open(filename, "rb"))
 
 #else:
-#    pw = raw_input('Enter a password to eable remote debugging, or press enter to skip:')
+#    pw = raw_input('Enter a password to eable remote debugging, or press enter
+#    to skip:')
 #    if pw and pw <> '':
 #        pickle.dump(pw, open(filename, "wb"))
 
 #if pw and pw <> '':
 #    ptvsd.enable_attach(pw)
-
 import sys
 sys.path.append('tasks')
 sys.path.append('incoming')
@@ -53,9 +53,8 @@ import Tkinter
 top = Tkinter.Tk()
 top.mainloop()
 
-
 print("Exiting...")
-tasks.Stop();
+tasks.Stop()
 scheduler.Stop()
 context.Stop()
 print("Done")

@@ -29,7 +29,7 @@ class MyTwitter(object):
                         f = open(temp.name,'rb')
                         print('uploading')
                         media = args.twython.upload_media(media=f)
-                        media_id =  media["media_id_string"]
+                        media_id = media["media_id_string"]
                         if media_id :
                             print('media_id = ' + media_id)
                             media_ids.append(media_id)

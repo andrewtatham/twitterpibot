@@ -5,12 +5,7 @@ import datetime
 
 class EdBallsDay(ScheduledTask):
 
-
     def GetTrigger(args):
-
-
-        
-
         #return CronTrigger(second = datetime.datetime.now().second + 15)
 
         # 28th April 4:20 pm

@@ -3,8 +3,7 @@ import random
 class LoveResponse(Response):
     def __init__(self, *args, **kwargs):
         self.infatuations = ["andrewtatham"]
-        self.texts = [
-            u"\u2661", # U+2661 WHITE HEART SUIT
+        self.texts = [u"\u2661", # U+2661 WHITE HEART SUIT
             u"\u2665", # U+2665 BLACK HEART SUIT
             u"\u2764", # U+2764 HEAVY BLACK HEART
             u"\U0001F493", # U+1F493 BEATING HEART

@@ -1,6 +1,7 @@
 from ScheduledTask import ScheduledTask
 from BotBlocker import BotBlocker
 from MyTwitter import MyTwitter
+from apscheduler.triggers.interval import IntervalTrigger
 class BotBlockerScheduledTask(ScheduledTask):
     def __init__(self, *args, **kwargs):
         self.blocker = BotBlocker()
@@ -9,10 +10,7 @@ class BotBlockerScheduledTask(ScheduledTask):
 
 
     def GetTrigger(args):
-        return super(BotBlockerScheduledTask, args).GetTrigger()
-
-    def onInit(args):
-        return super(BotBlockerScheduledTask, args).onInit()
+        return IntervalTrigger(minutes=3)
 
     def onRun(args):
         blockUsers = []

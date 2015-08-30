@@ -25,7 +25,7 @@ class Wikipedia(ScheduledTask):
                 page = wikipedia.page(title=rand)
                 isDisambiguation = False
             except DisambiguationError as e:
-                rand = title=random.choice(e.options)
+                rand = random.choice(e.options)
                 isDisambiguation = True
 
 
@@ -37,4 +37,4 @@ class Wikipedia(ScheduledTask):
             args.context.outbox.put(tweet)
 
 def cap(s, l):
-    return s if len(s)<=l else s[0:l-3]+'...'
+    return s if len(s) <= l else s[0:l - 3] + '...'

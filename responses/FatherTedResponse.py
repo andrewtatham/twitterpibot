@@ -7,10 +7,11 @@ class FatherTedResponse(Response):
     def Respond(args, inboxItem):
 
 
-        #You'll have some tea... are you sure you don't want any? Aw go on, you'll have some. Go on go on go on go on go on go on go on go on GO ON!
+        #You'll have some tea...  are you sure you don't want any?  Aw go on,
+        #you'll have some.  Go on go on go on go on go on go on go on go on GO
+        #ON!
 
-        responses = [
-            "That would be an ecumenical matter",
+        responses = ["That would be an ecumenical matter",
             "Careful now",
             "Down with this sort of thing!",
             "Is there anything to be said for another mass?",
@@ -18,8 +19,7 @@ class FatherTedResponse(Response):
             "as I said last time, it won't happen again",
             "These are small... but the ones out there are far away.",
             "I love my brick!",
-            "Go away! I don't want to catch menopause!"
-            ]
+            "Go away! I don't want to catch menopause!"]
         response = random.choice(responses) + " #FatherTed"
         return args.ReplyWith(inboxItem, response)
 

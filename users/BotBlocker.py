@@ -12,6 +12,7 @@ class BotBlocker(object):
         pornRx = re.compile("|".join(pornWords))
         self.rxs = [(tooKeenRx, 5), (pornRx, 4), (businessRx, 1)]
         return super(BotBlocker, self).__init__(*args, **kwargs)
+
     def IsUserBot(self, user_id, username, screen_name, description):
         print("[Botblock] checking: " + username + " [@" + screen_name + "] " + description)
         blockFollower = False
@@ -45,8 +46,8 @@ class BotBlocker(object):
         print("[Botblock] Tweet score: " + str(score))
         if score > 10:
             blockFollower = True
-
         return blockFollower
+
     def BlockUser(self, user_id, screen_name):
         with MyTwitter() as twitter:
             twitter.create_block(user_id = user_id,

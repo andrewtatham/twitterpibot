@@ -4,14 +4,7 @@ import random
 import tempfile
 import os
 
-
-
-
-
 class PhotoResponse(Response):
-
-
-
     
     def Condition(args, inboxItem):
         return super(PhotoResponse, args).Condition(inboxItem) \
@@ -32,8 +25,7 @@ class PhotoResponse(Response):
         
             photomessages = ["cheese!", "smile!"]
 
-            return args.ReplyWith(
-                inboxItem=inboxItem, 
+            return args.ReplyWith(inboxItem=inboxItem, 
                 text=random.choice(photomessages), 
                 asTweet=True,
                 photos = photos)

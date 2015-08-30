@@ -8,23 +8,22 @@ from UserSet import UserSet
 from multiprocessing import Lock
 class Users(object):
     def __init__(self, *args, **kwargs):
-        self.me ={
+        self.me = {
             "name":"andrewtathampi",
             "id":"2935295111"
         }
 
-        self.ppl = [
-            {
+        self.ppl = [{
                 "name":"andrewtatham", 
                 "id": "19201332"
-            }
-        ]
+            }]
         self.lock = Lock()
 
         self._users = {}
         self._sets = {}
 
-        #exists = os.path.isfile("USERS.pkl") and os.path.isfile("USER_LISTS.pkl")
+        #exists = os.path.isfile("USERS.pkl") and
+        #os.path.isfile("USER_LISTS.pkl")
         #if (exists):
         #    self._users = pickle.load(open("USERS.pkl", "rb"))
         #    self._sets = pickle.load(open("USER_LISTS.pkl", "rb"))

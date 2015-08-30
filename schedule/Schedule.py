@@ -33,8 +33,7 @@ class Schedule(object):
 
 
 
-        self.jobs = [
-            Wikipedia(),
+        self.jobs = [Wikipedia(),
             EdBallsDay(),
             MonitorScheduledTask(),
             TrendsScheduledTask(),
@@ -44,8 +43,7 @@ class Schedule(object):
             #KatieHopkinsScheduledTask(),
             UserListsScheduledTask(),
             WeatherScheduledTask(),
-            BotBlockerScheduledTask()
-            ]
+            BotBlockerScheduledTask()]
 
         if not context.hardware.iswindows:
             self.jobs.append(PhotoScheduledTask())
@@ -64,10 +62,13 @@ class Schedule(object):
         #self.scheduler.add_job(self.tock, 'interval', seconds=7)
       
         ## Schedules job_function to be run on the third Friday
-        ## of June, July, August, November and December at 00:00, 01:00, 02:00 and 03:00
-        #sched.add_cron_job(job_function, month='6-8,11-12', day='3rd fri', hour='0-3')
+        ## of June, July, August, November and December at 00:00, 01:00, 02:00
+        ## and 03:00
+        #sched.add_cron_job(job_function, month='6-8,11-12', day='3rd fri',
+        #hour='0-3')
 
-        ## Initialization similar as above, the backup function defined elsewhere
+        ## Initialization similar as above, the backup function defined
+        ## elsewhere
 
         ## Schedule a backup to run once from Monday to Friday at 5:30 (am)
         #sched.add_cron_job(backup, day_of_week='mon-fri', hour=5, minute=30)

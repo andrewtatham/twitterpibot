@@ -7,15 +7,10 @@ from itertools import cycle
 from colorama import Fore, Style
 import random
 #import nltk
-
 h = HTMLParser.HTMLParser()
 
-tweetcolours = cycle([
-            Fore.GREEN,
-            Fore.YELLOW
-                   ])
-
-
+tweetcolours = cycle([Fore.GREEN,
+            Fore.YELLOW])
 
 
 class IncomingTweet(InboxTextItem):
@@ -61,13 +56,6 @@ class IncomingTweet(InboxTextItem):
                       
                     if mention["id_str"] == context.users.me["id"]:
                         self.to_me = True
-                
-
-
-
-
-    
-
 
         #self.tokens = nltk.word_tokenize(self.text)
 
@@ -78,22 +66,15 @@ class IncomingTweet(InboxTextItem):
 
     def Display(args):
         
-        text = "* " + args.sender_name + ' [@' + args.sender_screen_name+ '] ' + args.text
-        
-
-
-
+        text = "* " + args.sender_name + ' [@' + args.sender_screen_name + '] ' + args.text
         colour = tweetcolours.next()
-
-     
+    
         if args.to_me:
             colour += Style.BRIGHT
         elif args.from_me:
             colour += Style.NORMAL
         else:
             colour += Style.DIM
-
-
 
         print(colour + text.encode("utf-8"))
  

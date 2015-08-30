@@ -11,15 +11,13 @@ class ResponseFactory(object):
     def __init__(self, context, *args, **kwargs):
 
 
-        self.responses = [
-            BotBlockerResponse(),
+        self.responses = [BotBlockerResponse(),
             PhotoResponse(),
             SongResponse(),
             Magic8BallResponse(),
             RetweetResponse(),
             FatherTedResponse(),
-            LoveResponse()
-        ]
+            LoveResponse()]
 
         self.context = context
         for response in self.responses:

@@ -51,10 +51,9 @@ class Magic8BallResponse(Response):
 
     def Respond(args, inboxItem):
 
-        response = random.choice(args.responses) +  " #Magic8Ball"
+        response = random.choice(args.responses) + " #Magic8Ball"
 
-        return args.ReplyWith(
-            inboxItem=inboxItem, 
+        return args.ReplyWith(inboxItem=inboxItem, 
             text=response)
 
 

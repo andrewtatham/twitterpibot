@@ -37,8 +37,7 @@ class SongResponse(Response):
                         lyric = lyric.strip()
                         if lyric and lyric != lastlyric:
                             
-                            tweet = args.ReplyWith(
-                                inboxItem=inboxItem, 
+                            tweet = args.ReplyWith(inboxItem=inboxItem, 
                                 text=lyric)
                             args.context.song.put(tweet)
                             lastlyric = lyric

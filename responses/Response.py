@@ -5,17 +5,11 @@ import random
 class Response(object):
     def Condition(args, inboxItem):
         return not inboxItem.from_me \
-            and (
-                inboxItem.isDirectMessage 
-                or inboxItem.isTweet \
-                and (
-                    inboxItem.to_me \
+            and (inboxItem.isDirectMessage or inboxItem.isTweet \
+                and (inboxItem.to_me \
                     or inboxItem.sender.isBot \
                     or (inboxItem.sender.isFriend and random.randint(0,3) == 0) \
-                    or (inboxItem.sender.isRetweetMore and random.randint(0,9) == 0)
-                    or random.randint(0,99) == 0
-                    )
-                )
+                    or (inboxItem.sender.isRetweetMore and random.randint(0,9) == 0) or random.randint(0,99) == 0))
 
 
 
@@ -30,7 +24,7 @@ class Response(object):
                 if listItem.lower() == item.lower():
                     return True
 
-        return False;
+        return False
 
     def Respond(args, inboxItem):
         return None
@@ -39,7 +33,7 @@ class Response(object):
 
     
 
-    def ReplyWith(self, inboxItem, text, asTweet = False, asDM = False, photos = None, *args, **kwargs):    
+    def ReplyWith(self, inboxItem, text, asTweet=False, asDM=False, photos=None, *args, **kwargs):    
 
         replyAsTweet = asTweet or not asDM and inboxItem.isTweet
 
@@ -47,14 +41,12 @@ class Response(object):
 
 
         if replyAsTweet :
-            tweet = OutgoingTweet(
-                replyTo=inboxItem,
+            tweet = OutgoingTweet(replyTo=inboxItem,
                 text=text,                
                 photos = photos)
             return tweet
            
         if replyAsDM:
-            dm = OutgoingDirectMessage(   
-                replyTo=inboxItem,
+            dm = OutgoingDirectMessage(replyTo=inboxItem,
                 text=text)
             return dm

@@ -3,8 +3,6 @@ from InboxTextItem import InboxTextItem
 class IncomingDirectMessage(InboxTextItem):
 
 
-
-
     def __init__(self, data, context):
         super(IncomingDirectMessage, self).__init__(data)
 

@@ -40,8 +40,7 @@ class User(object):
                         args.isFriend = True
                         print("Is member of " + list.name)
                     
-                    else:
-                        
-                        logging.warn('Unknown list name: ' +  list.name)
+                    else:                    
+                        logging.warn('Unknown list name: ' + list.name)
 
             args.updated = datetime.datetime.utcnow()

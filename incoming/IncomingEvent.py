@@ -4,13 +4,8 @@ from colorama import Fore, Style
 import os
 import logging
 
-
-eventcolours = cycle([
-            Fore.MAGENTA,
-            Fore.CYAN
-                   ])
-
-
+eventcolours = cycle([Fore.MAGENTA,
+            Fore.CYAN])
 
 class IncomingEvent(InboxItem):
     def __init__(self, data, context):
@@ -57,9 +52,9 @@ class IncomingEvent(InboxItem):
         if self.isFavorite:
             pass
         elif self.isFollow:
-            self.followerName =  data["source"]["name"]
-            self.followerScreenName =  data["source"]["screen_name"]
-            self.followerDescription =  data["source"]["description"]
+            self.followerName = data["source"]["name"]
+            self.followerScreenName = data["source"]["screen_name"]
+            self.followerDescription = data["source"]["description"]
             pass
         elif self.isRetweet:
             pass
