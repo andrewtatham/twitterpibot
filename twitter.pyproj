@@ -1634,6 +1634,7 @@
     <Content Include="songs\jungle.txt" />
     <Content Include="songs\nighttrain.txt" />
     <Content Include="songs\paradise.txt" />
+    <Content Include="songs\rickroll.txt" />
     <Content Include="songs\sexy.txt" />
   </ItemGroup>
   <ItemGroup>
