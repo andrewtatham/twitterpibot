@@ -9,8 +9,8 @@ class BotBlockerScheduledTask(ScheduledTask):
         self.myFollowers = []     
 
 
-    def GetTrigger(args):
-        return IntervalTrigger(minutes=3)
+    #def GetTrigger(args):
+    #    return IntervalTrigger(minutes=3)
 
     def onRun(args):
         blockUsers = []
@@ -26,7 +26,7 @@ class BotBlockerScheduledTask(ScheduledTask):
 
             if any(args.myFollowers):
                 follower = args.myFollowers.pop()
-                block = args.blocker.IsUserBot(user_id = follower["id_str"], username = follower["name"], screen_name = follower["screen_name"], description = follower["description"])
+                block = args.blocker.IsUserBot(userid = follower["id_str"], username = follower["name"], screen_name = follower["screen_name"], description = follower["description"])
                 if block:
                     twitter.create_block(user_id = follower["id_str"], screen_name = follower["screen_name"])
 
