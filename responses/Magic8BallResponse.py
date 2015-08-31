@@ -44,7 +44,6 @@ class Magic8BallResponse(Response):
 
     def Condition(args, inboxItem):
         return super(Magic8BallResponse, args).Condition(inboxItem) \
-            and (inboxItem.to_me or random.randint(0,10) == 0) \
             and inboxItem.text.find("?") != -1
 
 

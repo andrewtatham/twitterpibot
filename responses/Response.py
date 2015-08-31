@@ -7,9 +7,10 @@ class Response(object):
         return not inboxItem.from_me \
             and (inboxItem.isDirectMessage or inboxItem.isTweet \
                 and (inboxItem.to_me \
-                    or inboxItem.sender.isBot \
-                    or (inboxItem.sender.isFriend and random.randint(0,3) == 0) \
-                    or (inboxItem.sender.isRetweetMore and random.randint(0,9) == 0) or random.randint(0,99) == 0))
+                    or (inboxItem.sender.isBot and random.randint(0,3) == 0) \
+                    or (inboxItem.sender.isFriend and random.randint(0,1) == 0) \
+                    or (inboxItem.sender.isRetweetMore and random.randint(0,9) == 0) \
+                    or random.randint(0,99) == 0))
 
 
 

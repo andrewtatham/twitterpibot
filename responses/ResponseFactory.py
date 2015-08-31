@@ -15,9 +15,9 @@ class ResponseFactory(object):
             PhotoResponse(),
             SongResponse(),
             Magic8BallResponse(),
-            RetweetResponse(),
             FatherTedResponse(),
-            LoveResponse()]
+            LoveResponse(),
+            RetweetResponse()]
 
         self.context = context
         for response in self.responses:

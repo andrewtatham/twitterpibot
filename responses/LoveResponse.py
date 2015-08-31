@@ -2,7 +2,6 @@ from Response import Response
 import random
 class LoveResponse(Response):
     def __init__(self, *args, **kwargs):
-        self.infatuations = ["andrewtatham"]
         self.texts = [u"\u2661", # U+2661 WHITE HEART SUIT
             u"\u2665", # U+2665 BLACK HEART SUIT
             u"\u2764", # U+2764 HEAVY BLACK HEART
@@ -19,9 +18,10 @@ class LoveResponse(Response):
 
 
     def Condition(args, inboxItem):
-        return super(LoveResponse, args).Condition(inboxItem) \
-            and inboxItem.to_me \
-            and inboxItem.sender_screen_name in args.infatuations
+        return False
+        #return super(LoveResponse, args).Condition(inboxItem) \
+        #    and inboxItem.to_me \
+        #    and inboxItem.sender_screen_name in args.infatuations
 
 
 

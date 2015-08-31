@@ -2,7 +2,9 @@ from Response import Response
 import random
 class FatherTedResponse(Response):
     def Condition(args, inboxItem):
-        return super(FatherTedResponse, args).Condition(inboxItem) and inboxItem.to_me
+        return super(FatherTedResponse, args).Condition(inboxItem) \
+            and inboxItem.to_me
+
 
     def Respond(args, inboxItem):
 
