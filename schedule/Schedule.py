@@ -18,6 +18,7 @@ from KatieHopkinsScheduledTask import KatieHopkinsScheduledTask
 from UserListsScheduledTask import UserListsScheduledTask
 from WeatherScheduledTask import WeatherScheduledTask
 from BotBlockerScheduledTask import BotBlockerScheduledTask
+from JokesScheduledTask import JokesScheduledTask
 
 
 
@@ -43,7 +44,8 @@ class Schedule(object):
             #KatieHopkinsScheduledTask(),
             UserListsScheduledTask(),
             WeatherScheduledTask(),
-            BotBlockerScheduledTask()]
+            BotBlockerScheduledTask(),
+            JokesScheduledTask()]
 
         if not context.hardware.iswindows:
             self.jobs.append(PhotoScheduledTask())
