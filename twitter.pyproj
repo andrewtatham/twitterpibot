@@ -1627,15 +1627,24 @@
     <Content Include="pics\will\P1010467.JPG" />
     <Content Include="pics\will\P1010493.JPG" />
     <Content Include="songs\500miles.txt" />
+    <Content Include="songs\believin.txt" />
+    <Content Include="songs\bird.txt" />
     <Content Include="songs\bohrap.txt" />
+    <Content Include="songs\common.txt" />
+    <Content Include="songs\forgot.txt" />
+    <Content Include="songs\gangsters.txt" />
     <Content Include="songs\ice.txt" />
+    <Content Include="songs\incredible.txt" />
     <Content Include="songs\japanese.txt" />
     <Content Include="songs\jingle.txt" />
     <Content Include="songs\jungle.txt" />
     <Content Include="songs\nighttrain.txt" />
     <Content Include="songs\paradise.txt" />
     <Content Include="songs\rickroll.txt" />
+    <Content Include="songs\rocklobster.txt" />
     <Content Include="songs\sexy.txt" />
+    <Content Include="songs\sweet.txt" />
+    <Content Include="songs\wonderwall.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="brightpi\BrightPILed.py" />
