@@ -29,14 +29,14 @@ class Users(object):
         #    self._sets = pickle.load(open("USER_LISTS.pkl", "rb"))
 
     def updateLists(args):
-        print("updating user lists")
-        logging.info("updating user lists")
+        #print("updating user lists")
+        #logging.info("updating user lists")
         with MyTwitter() as twitter:
             myLists = twitter.show_owned_lists()
             for myList in myLists["lists"]:
-                text = "updating user list " + myList["id_str"] + " " + myList["name"]
-                print(text)
-                logging.info(text)
+                #text = "updating user list " + myList["id_str"] + " " + myList["name"]
+                #print(text)
+                #logging.info(text)
                 members = twitter.get_list_members(list_id = myList["id_str"])
                 key = myList["id_str"]
                 with args.lock:
@@ -46,18 +46,26 @@ class Users(object):
                     set.UpdateMembers(members)
 
 
-    def getUser(args, id):
+    def getUser(args, id = None, data = None):
+        if not id and not data:
+            raise ValueError()
+
         with args.lock:
-            if not args._users.has_key(id):
-                args._users[id] = User(id = id)
 
-            if(args._users[id].isStale()):
-                args._users[id].update(args._sets)
+            if id and not data:
+                with MyTwitter() as twitter:
+                    data = twitter.lookup_user(user_id = id)[0]
 
-            return args._users[id]
+            if data:
+                id = data["id_str"]
 
-    def Save(args):
-        #if any(args._users) and any(args._sets):
-        #    pickle.dump(args._users, open("USERS.pkl", "wb"))
-        #    pickle.dump(args._sets, open("USER_LISTS.pkl", "wb"))
-        pass
+                if not args._users.has_key(id):
+                    args._users[id] = User(data)
+
+                if(args._users[id].isStale()):
+                    args._users[id].update(args._sets)
+
+                return args._users[id]
+
+
+

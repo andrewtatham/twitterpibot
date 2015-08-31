@@ -21,8 +21,8 @@ class OutgoingTweet(OutboxTextItem):
         if replyTo and replyTo.targets:
             for to_screen_name in replyTo.targets:
                 self.status = self.status + '@' + to_screen_name + ' '
-        elif replyTo and replyTo.sender_screen_name:
-                self.status = self.status + '@' + replyTo.sender_screen_name + ' '
+        elif replyTo and replyTo.sender.screen_name:
+                self.status = self.status + '@' + replyTo.sender.screen_name + ' '
 
         if text:
             self.status = self.status + text

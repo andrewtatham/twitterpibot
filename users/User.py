@@ -2,15 +2,42 @@ import logging
 import datetime
 from multiprocessing import Lock
 class User(object):
-    def __init__(self, id, *args, **kwargs):
+    def __init__(self, data, *args, **kwargs):
 
-        self.id = id
+
+        self.id = data["id_str"]
+
+        self.isMe = bool(self.id == "2935295111")
+
+        self.name = data["name"]
+        self.screen_name = data["screen_name"]
+        self.description = data["description"]
+
+        self.verified = bool(data["verified"])
+        self.location = data["location"]
+
+
+        self.friends_count = int(data["friends_count"])
+        self.followers_count = int(data["followers_count"])
+        self.statuses_count = int(data["statuses_count"])
+
+
+
+        
         self.updated = None
 
         self.isRetweetMore = False
         self.isBot = False        
         self.isFriend = False
         self.lock = Lock()
+
+
+
+
+
+
+
+
 
     def isStale(args):
         with args.lock:

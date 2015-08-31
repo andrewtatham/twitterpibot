@@ -58,8 +58,8 @@ class Context(object):
 
         return status
 
-    def Stop(args):
-        args.users.Save()
+    #def Stop(args):
+    #    args.users.Save()
 
 class Status(object):
     pass

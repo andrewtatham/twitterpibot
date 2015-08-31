@@ -5,7 +5,7 @@ from twython.exceptions import TwythonError
 
 
 import logging
-from colorama import Fore, Style
+from colorama import Fore, Style, Back
 
 logging.basicConfig(filename='twitter.log',level=logging.INFO)
 
@@ -20,22 +20,22 @@ class ExceptionHandler(object):
     def Handle(args, exception):
 
         if type(exception) is UnicodeEncodeError:
-            print(Style.DIM + Fore.RED + str(exception.message))
+            print(Style.DIM + Fore.WHITE + Back.YELLOW + str(exception.message))
             logging.warn(exception)
 
         elif type(exception) is TwythonError:
             if exception.message == "Twitter API returned a 403 (Forbidden), There was an error sending your message: Whoops! You already said that.":
-                print(Style.DIM + Fore.RED + str(exception))
+                print(Style.DIM + Fore.WHITE + Back.RED  + str(exception))
                 logging.warn(exception)
             else:
-                print(Style.BRIGHT + Fore.RED + str(exception))
+                print(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
                 logging.exception(exception)
 
                 args.TrySendException(exception)
 
 
         else:
-            print(Style.BRIGHT + Fore.RED + str(exception))
+            print(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
             logging.exception(exception)
 
             args.TrySendException(exception)

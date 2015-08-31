@@ -92,5 +92,9 @@ class MyTwitter(object):
         return self.twython.get_user_timeline(**params)    
     def get_followers_list(self, **params):
         return self.twython.get_followers_list(**params)
+    def get_followers_ids(self, **params):
+        return self.twython.get_followers_ids(**params)
 
+    def lookup_user(self, **params):
+        return self.twython.lookup_user(**params)
         

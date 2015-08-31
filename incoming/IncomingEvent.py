@@ -17,15 +17,20 @@ class IncomingEvent(InboxItem):
         self.isEvent = True
 
         # https://dev.twitter.com/streaming/overview/messages-types#Events_event
+
+
+        self.source = context.users.getUser(data = data["source"])
+        self.target = context.users.getUser(data = data["target"])
+
+        self.from_me = self.source.isMe
+        self.to_me = self.target.isMe
+
         self.event = data["event"]
-        self.sourceID = data["source"]["id_str"]
-        self.sourceName = data["source"]["name"]
-        self.sourceScreenName = data["source"]["screen_name"]
+        self.isFavorite = self.event == "favorite"
+        self.isFollow = self.event == "follow"
+        self.isRetweet = self.event == "quoted_tweet"
 
-        self.targetID = data["target"]["id_str"]
-        self.targetName = data["target"]["name"]
-        self.targetScreenName = data["target"]["screen_name"]
-
+    
         self.targetObject = None
         self.targetObjectID = None
         self.targetObjectText = None
@@ -37,29 +42,6 @@ class IncomingEvent(InboxItem):
 
             if "text" in self.targetObject:
                 self.targetObjectText = self.targetObject["text"]
-
-        self.isFavorite = self.event == "favorite"
-        self.isFollow = self.event == "follow"
-        self.isRetweet = self.event == "quoted_tweet"
-        
-        # favorited_retweet
-        # retweeted_retweet
-
-        self.from_me = self.sourceID == context.users.me["id"]
-        self.to_me = self.targetID == context.users.me["id"]
- 
-
-        if self.isFavorite:
-            pass
-        elif self.isFollow:
-            self.followerName = data["source"]["name"]
-            self.followerScreenName = data["source"]["screen_name"]
-            self.followerDescription = data["source"]["description"]
-            pass
-        elif self.isRetweet:
-            pass
-
-    
   
 
     def Display(args):
@@ -75,13 +57,13 @@ class IncomingEvent(InboxItem):
 
         
         text = "* EVENT: Type: " + args.event + os.linesep \
-                    + " Source: " + args.sourceName + " [@" + args.sourceScreenName + "]" + os.linesep \
-                    + " Target: " + args.targetName + " [@" + args.targetScreenName + "]"
+                    + " Source: " + args.source.name + " [@" + args.source.screen_name + "]" + os.linesep \
+                    + " Target: " + args.target.name + " [@" + args.target.screen_name + "]"
 
         if args.targetObjectText:
             text += os.linesep + " TargetObject: " + args.targetObjectText
 
         print(colour + text)
 
-        logging.info(text)
-        logging.info(args.targetObject)
+        #logging.info(text)
+        #logging.info(args.targetObject)

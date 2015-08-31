@@ -1,26 +1,28 @@
 import re
 from MyTwitter import MyTwitter
+from colorama import Fore, Style
 
 class BotBlocker(object):
-    def IsUserBot(self, userid, username, screen_name, description):
-        print("[Botblock] checking: " + username + " [@" + screen_name + "] " + description)
+    def IsUserBot(self, user):
+        #print("[Botblock] checking: " + user.name + " [@" + user.screen_name + "] " + user.description)
         blockFollower = False
         score = 0
-        if not description:
+        if not user.verified and not user.isFriend and not user.description:
             # description is blank
             score += 7
-        searchText = username + screen_name + description
+        searchText = user.name + user.screen_name + user.description
         for rx in self.rxs:
-            match = rx[0].findall(searchText)
-            print("[Botblock] Matches: " + str(match))
-            score += rx[1] * len(match)
-        print("[Botblock] Profile score: " + str(score))
+            matches = rx[0].findall(searchText)
+            if any(matches):
+                #print("[Botblock] Matches: " + str(matches))
+                score += rx[1] * len(matches)
+        #print("[Botblock] Profile score: " + str(score))
         if score > 10:
             blockFollower = True
         if not blockFollower:
             with MyTwitter() as twitter:
-                lastTweets = twitter.get_user_timeline(user_id = userid,
-                    screen_name = screen_name,
+                lastTweets = twitter.get_user_timeline(user_id = user.id,
+                    screen_name = user.screen_name,
                     trim_user = True,
                     count = 20)
                 searchText = ""
@@ -29,19 +31,20 @@ class BotBlocker(object):
 
                 for rx in self.rxs:
                     matches = rx[0].findall(searchText)
-                    print("[Botblock] Matches: " + str(matches))
-                    score += rx[1] * len(matches)
+                    if any(matches):
+                        #print("[Botblock] Matches: " + str(matches))
+                        score += rx[1] * len(matches)
 
-        print("[Botblock] Tweet score: " + str(score))
+        #print("[Botblock] Tweet score: " + str(score))
         if score > 10:
             blockFollower = True
         return blockFollower
 
-    def BlockUser(self, user_id, screen_name):
+    def BlockUser(self, user):
+        print(Fore.RED + Style.BRIGHT + "[Botblock] BLOCKED: " + user.name + " [@" + user.screen_name + "] " + user.description)
         with MyTwitter() as twitter:
-            twitter.create_block(user_id = user_id,
-                screen_name = screen_name)
-        print("BLOCKED")
+            twitter.create_block(user_id = user.id,
+                screen_name = user.screen_name)
 
     def __init__(self, *args, **kwargs):
         tooKeen = ["(follow|DM|join|retweet|contact) (me|us|back|now)"]

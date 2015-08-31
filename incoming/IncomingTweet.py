@@ -21,19 +21,9 @@ class IncomingTweet(InboxTextItem):
         super(IncomingTweet, self).__init__(data)
 
         self.isTweet = True
-        self.to_me = False
-
         self.status_id = data["id_str"]
-
-        self.sender_id = data["user"]["id_str"]
-        self.sender_name = data["user"]["name"]
-        self.sender_screen_name = data["user"]["screen_name"]
-        #self.sender_description = data["user"]["description"]
-        #self.sender_profile_image_url = data["user"]["profile_image_url"]
-        #self.sender_profile_banner_url = data["user"]["profile_banner_url"]
-
-        self.sender = context.users.getUser(id = data["id_str"])
-
+        self.sender = context.users.getUser(data = data["user"])
+        self.from_me = self.sender.isMe
 
         logging.debug(data["text"])
         self.text = h.unescape(data["text"])
@@ -41,17 +31,15 @@ class IncomingTweet(InboxTextItem):
 
         self.words = self.text.split()
         
-        self.from_me = self.sender_id == context.users.me["id"]
-        self.targets = []
-
-                   
+        self.to_me = False
+        self.targets = []                  
         if "entities" in data:
             entities = data["entities"]
                             
             if "user_mentions" in entities:
                 mentions = entities["user_mentions"]
                 for mention in mentions:
-                    if mention["screen_name"] != context.users.me["id"]: #and mention["screen_name"] != self.sender_screen_name:
+                    if mention["id_str"] != context.users.me["id"]: #and mention["screen_name"] != self.sender_screen_name:
                         self.targets.append(mention["screen_name"])
                       
                     if mention["id_str"] == context.users.me["id"]:
@@ -66,7 +54,7 @@ class IncomingTweet(InboxTextItem):
 
     def Display(args):
         
-        text = "* " + args.sender_name + ' [@' + args.sender_screen_name + '] ' + args.text
+        text = "* " + args.sender.name + ' [@' + args.sender.screen_name + '] ' + args.text
         colour = tweetcolours.next()
     
         if args.to_me:

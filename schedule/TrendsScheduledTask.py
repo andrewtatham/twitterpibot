@@ -9,6 +9,7 @@ import urllib
 
 
 worldwide_WOEID = 1
+UK_WOEID = 23424975
 leeds_WOEID = 26042
 
 trendColours = cycle([Fore.MAGENTA, Fore.WHITE])
@@ -30,11 +31,14 @@ class TrendsScheduledTask(ScheduledTask):
         print("Updating trends")
         
         #availtrends = twitter.get_available_trends()
-        worldwide_trends = twitter.get_place_trends(id = worldwide_WOEID)
+        #worldwide_trends = twitter.get_place_trends(id = worldwide_WOEID)
+        uk_trends = twitter.get_place_trends(id = UK_WOEID)
         leeds_trends = twitter.get_place_trends(id = leeds_WOEID)
         
         trends = set()
-        for trend in worldwide_trends[0].get('trends',[]):
+        #for trend in worldwide_trends[0].get('trends',[]):
+        #    trends.add(trend['name'])
+        for trend in uk_trends[0].get('trends',[]):
             trends.add(trend['name'])
         for trend in leeds_trends[0].get('trends',[]):
             trends.add(trend['name'])

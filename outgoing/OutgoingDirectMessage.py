@@ -6,8 +6,8 @@ class OutgoingDirectMessage(OutboxTextItem):
         
         super(OutgoingDirectMessage, self).__init__()
 
-        self.user_id = replyTo.sender_id
-        self.screen_name = replyTo.sender_screen_name
+        self.user_id = replyTo.sender.id
+        self.screen_name = replyTo.sender.screen_name
         self.text = text
          
     def Display(args):
