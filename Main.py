@@ -24,7 +24,7 @@ from Schedule import Schedule
 
 
 if platform.node() <> "ANDREWDESKTOP":
-    colorama.init()
+    colorama.init(autoreset = True)
 
 context = Context()
 
