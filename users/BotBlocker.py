@@ -25,10 +25,18 @@ class BotBlocker(object):
                     screen_name = user.screen_name,
                     trim_user = True,
                     count = 20)
+
+                # todo chec against bottweets
+
+
+                # todo check for similarities
+
+
+
+
                 searchText = ""
                 for tweet in lastTweets:
                     searchText += tweet["text"]
-
                 for rx in self.rxs:
                     matches = rx[0].findall(searchText)
                     if any(matches):
@@ -49,10 +57,10 @@ class BotBlocker(object):
     def __init__(self, *args, **kwargs):
         tooKeen = ["(follow|DM|join|retweet|contact) (me|us|back|now)"]
         pornWords = ["sexy","naughty","kinky","frisky","bored","cum","horny","housewi(fe|ves?)","teen","latina","ass","boobs?","tits?","puss(y|ies)",
-                     "milf","hoes?","boot(y|ies)","cam","18+","xxx","slut","babe","dirty","naked","bitch"]
+                     "milf","hoes?","boot(y|ies)","18+","xxx","slut","babe","dirty","naked","bitch"]
         businessWords = ["team","professionals ","Recruitment", "Training","Leadership","business","discount","cheap","betting","industry","casino",
                          "economic","entrepreneur","veture","capital","startup","angel","invest","enterprise","special", "offerring", "custom",
-                         "website","hosting","domain","cms","brand(ing)?","media","client","project"]
+                         "website","hosting","domain","cms","brand(ing)?","media","client","project","TweetBoss", "marketing", "promotion", "leverage", "influence","happylowuk[\\d]"]
         tooKeenRx = re.compile("|".join(tooKeen), re.IGNORECASE)
         businessRx = re.compile("|".join(businessWords), re.IGNORECASE)
         pornRx = re.compile("|".join(pornWords), re.IGNORECASE)
