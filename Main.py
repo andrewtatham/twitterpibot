@@ -6,10 +6,6 @@ import platform
 import colorama
 import Tkinter
 
-from Context import Context
-from Tasks import Tasks
-from Schedule import Schedule
-
 sys.path.append('tasks')
 sys.path.append('incoming')
 sys.path.append('responses')
@@ -20,6 +16,12 @@ sys.path.append('schedule')
 sys.path.append('users')
 
 sys.path.append('brightpi')
+
+
+from Context import Context
+from Tasks import Tasks
+from Schedule import Schedule
+
 
 if platform.node() <> "ANDREWDESKTOP":
     colorama.init()
