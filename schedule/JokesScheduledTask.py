@@ -6,7 +6,7 @@ from OutgoingTweet import OutgoingTweet
 class JokesScheduledTask(ScheduledTask):
 
     def GetTrigger(args):
-        return IntervalTrigger(minutes = 13)
+        return IntervalTrigger(hours = 1)
 
     def onRun(args):
         text = pyjokes.get_joke()

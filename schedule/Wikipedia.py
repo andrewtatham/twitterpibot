@@ -11,7 +11,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 class Wikipedia(ScheduledTask):
 
     def GetTrigger(args):
-        return IntervalTrigger(minutes=17)
+        return IntervalTrigger(minutes=34)
     
 
     def onRun(args):

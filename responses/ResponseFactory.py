@@ -6,6 +6,9 @@ from FatherTedResponse import FatherTedResponse
 from MyTwitter import MyTwitter
 from LoveResponse import LoveResponse
 from BotBlockerResponse import BotBlockerResponse
+from ThanksResponse import ThanksResponse
+from HelloResponse import HelloResponse
+
 
 class ResponseFactory(object):
     def __init__(self, context, *args, **kwargs):
@@ -14,6 +17,8 @@ class ResponseFactory(object):
         self.responses = [BotBlockerResponse(),
             PhotoResponse(),
             SongResponse(),
+            ThanksResponse(),
+            HelloResponse(),
             Magic8BallResponse(),
             FatherTedResponse(),
             LoveResponse(),
