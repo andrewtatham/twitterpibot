@@ -56,7 +56,7 @@ class MyPicam(Camera):
     def TakePhotoToDisk(args, dir, name, ext):
         if args.enabled:
             
-            args.mypicamera.capture(args.picamerastream, format='bgr')
+            args.mypicamera.capture(args.picamerastream, format='rgb')
             image = args.picamerastream.array
             args.picamerastream.truncate(0)
             filename = dir + os.path.sep + name + os.extsep + ext
