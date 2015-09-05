@@ -42,7 +42,7 @@ class Schedule(object):
             WeatherScheduledTask(),
             BotBlockerScheduledTask(),
             JokesScheduledTask(), 
-            TimelapseScheduledTask()
+            #TimelapseScheduledTask()
             ]
 
         if not context.hardware.iswindows:
