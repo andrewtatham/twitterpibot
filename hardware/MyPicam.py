@@ -58,6 +58,7 @@ class MyPicam(Camera):
             
             args.mypicamera.capture(args.picamerastream, format='bgr')
             image = args.picamerastream.array
+            args.picamerastream.truncate(0)
             filename = dir + os.path.sep + name + os.extsep + ext
             cv2.imwrite(filename, image)
                          
