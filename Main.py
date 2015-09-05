@@ -1,4 +1,3 @@
-import ptvsd
 import os
 import pickle
 import sys
@@ -24,7 +23,7 @@ from Tasks import Tasks
 from Schedule import Schedule
 
 
-if platform.node() <> "ANDREWDESKTOP":
+if platform.node() != "ANDREWDESKTOP":
     colorama.init(autoreset = True)
 
 context = Context()

@@ -4,7 +4,7 @@ from OutboxTextItem import OutboxTextItem
 class OutgoingTweet(OutboxTextItem):
     # https://dev.twitter.com/rest/reference/post/statuses/update
 
-    def __init__(self, replyTo=None, text=None , photos=None):
+    def __init__(self, replyTo=None, text=None , photos=None, media_id = None):
 
         super(OutgoingTweet, self).__init__()
 
@@ -13,8 +13,11 @@ class OutgoingTweet(OutboxTextItem):
      
         self.photos = None
         if photos and any(photos):
-
             self.photos = photos
+
+        if media_id:
+            self.media_ids = [ media_id ]
+
 
         self.status = ''
 

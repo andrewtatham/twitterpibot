@@ -44,6 +44,19 @@ class MyTwitter(object):
                             os.remove(temp.name)
         
         return media_ids
+
+
+
+    
+    def UploadMediaFromDisk(args, filePath):
+ 
+        f = open(filePath,'rb')
+        print('uploading')
+        media = args.twython.upload_media(media=f)
+        media_id = media["media_id_string"]
+        return media_id
+
+
     def __enter__(self, *args, **kwargs):
         return self
 

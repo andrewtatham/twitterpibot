@@ -11,7 +11,7 @@ class Cameras(object):
             self.cameras.append(picam)
             
 
-        for i in range(3):
+        for i in range(1):
             webcam = Webcam(i)
             if webcam.enabled:
                 self.cameras.append(webcam)
@@ -26,6 +26,18 @@ class Cameras(object):
                     photos.append(photo)
 
         return photos
+
+    def TakePhotoToDisk(args, dir, name, ext):
+        filenames=[]
+        i = 0
+        for camera in args.cameras:
+            if camera.enabled:
+                name += "_cam_" + "{0:05d}".format(i)
+                camera.TakePhotoToDisk(dir, name, ext)
+                if name:
+                    filenames.append(name)
+            i += 1
+        return filenames
 
 
     def Close(args):
