@@ -89,13 +89,13 @@ class TimelapseUploadScheduledTask(ScheduledTask):
         print("[Timelapse] Creating GIF")
         files = glob.glob(searchPath)
 
-        imagesBGR = [cv2.imread(file) for file in files]
-        imagesRGB = [cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB) for bgr in imagesBGR ]
+        images = [cv2.imread(file) for file in files]
+        #imagesRGB = [cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB) for bgr in imagesBGR ]
         filename = args.timelapse.dirPath + os.path.sep + args.timelapse.name + ".gif"
 
         images2gif.writeGif(
             filename, 
-            imagesRGB,
+            images,
             dither = True, 
             duration = 0.1, 
             repeat = True, 
