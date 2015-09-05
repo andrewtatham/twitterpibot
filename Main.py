@@ -18,6 +18,7 @@ sys.path.append('users')
 sys.path.append('brightpi')
 
 
+from Authenticator import Authenticator
 from Context import Context
 from Tasks import Tasks
 from Schedule import Schedule
@@ -25,6 +26,10 @@ from Schedule import Schedule
 
 if platform.node() <> "ANDREWDESKTOP":
     colorama.init(autoreset = True)
+
+
+auth = Authenticator()
+auth.Authenticate()
 
 context = Context()
 

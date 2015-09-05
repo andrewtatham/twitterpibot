@@ -1,5 +1,7 @@
 import os
 import pickle
+from twython.api import Twython
+import webbrowser
 class Authenticator(object):
 
     def Authenticate(args):
@@ -32,7 +34,13 @@ class Authenticator(object):
             OAUTH_TOKEN = auth["oauth_token"]
             OAUTH_TOKEN_SECRET = auth["oauth_token_secret"]
 
-            print(auth["auth_url"])
+
+
+
+            url = auth["auth_url"]
+            print(url)
+            webbrowser.open(url)
+
 
             oauth_verifier = raw_input("Enter your pin:")
 
