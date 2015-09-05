@@ -19,6 +19,7 @@ from UserListsScheduledTask import UserListsScheduledTask
 from WeatherScheduledTask import WeatherScheduledTask
 from BotBlockerScheduledTask import BotBlockerScheduledTask
 from JokesScheduledTask import JokesScheduledTask
+from TimelapseScheduledTask import TimelapseScheduledTask
 
 
 
@@ -40,7 +41,9 @@ class Schedule(object):
             UserListsScheduledTask(),
             WeatherScheduledTask(),
             BotBlockerScheduledTask(),
-            JokesScheduledTask()]
+            JokesScheduledTask(), 
+            TimelapseScheduledTask()
+            ]
 
         if not context.hardware.iswindows:
             self.jobs.append(PhotoScheduledTask())

@@ -1,4 +1,3 @@
-import ptvsd
 import os
 import pickle
 import sys
@@ -14,6 +13,7 @@ sys.path.append('hardware')
 sys.path.append('twitter')
 sys.path.append('schedule')
 sys.path.append('users')
+sys.path.append('processing')
 
 sys.path.append('brightpi')
 
@@ -24,7 +24,7 @@ from Tasks import Tasks
 from Schedule import Schedule
 
 
-if platform.node() <> "ANDREWDESKTOP":
+if platform.node() != "ANDREWDESKTOP":
     colorama.init(autoreset = True)
 
 

@@ -1,5 +1,6 @@
 from Camera import *
 from ExceptionHandler import ExceptionHandler
+import os
 
 enableWebcam = False
 try:
@@ -41,6 +42,17 @@ class Webcam(Camera):
         else:
             return None
 
+    def TakePhotoToDisk(args, dir, name, ext):
+        if args.enabled:
+            for i in range(5):
+                err,image = args.webcam.read()
+            filename = dir + os.path.sep + name + os.extsep + ext
+            cv2.imwrite(filename, image)
+                         
+            return filename
+
+        else:
+            return None
 
     def Close(args):
         args.webcam.release()
