@@ -18,12 +18,14 @@ class Context(object):
         self.song = Queue()
         self.users = Users()
         self.ratelimits = RateLimits()
-        self.cameras = Cameras()
         
         self.piglow = None
         self.brightpi = None
 
         self.hardware = Hardware()
+
+        self.cameras = Cameras(self.hardware)
+
 
         if self.hardware.piglowattached:
             self.piglow = MyPiglow()

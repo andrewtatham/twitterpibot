@@ -2,19 +2,18 @@
 from MyPicam import MyPicam
 from Webcam import Webcam
 class Cameras(object):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, hardware, *args, **kwargs):
         self.cameras = []
-
-
-        picam = MyPicam()
-        if picam.enabled:
-            self.cameras.append(picam)
             
-
-        for i in range(1):
-            webcam = Webcam(i)
-            if webcam.enabled:
-                self.cameras.append(webcam)
+        if hardware.iswindows:
+            for i in range(1):
+                webcam = Webcam(i)
+                if webcam.enabled:
+                    self.cameras.append(webcam)
+        else:
+            picam = MyPicam()
+            if picam.enabled:
+                self.cameras.append(picam)
 
     def TakePhotos(args):
         photos=[]
