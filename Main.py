@@ -14,6 +14,7 @@ sys.path.append('hardware')
 sys.path.append('twitter')
 sys.path.append('schedule')
 sys.path.append('users')
+sys.path.append('processing')
 
 sys.path.append('brightpi')
 

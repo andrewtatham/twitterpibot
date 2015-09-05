@@ -4,6 +4,7 @@ from apscheduler.triggers.date import DateTrigger
 from astral import Astral
 from OutgoingTweet import OutgoingTweet
 from apscheduler.triggers.cron import CronTrigger
+from Timelapse import Timelapse
 
 class MidnightScheduledTask(ScheduledTask):
     def GetTrigger(args):
@@ -25,6 +26,10 @@ class MidnightScheduledTask(ScheduledTask):
         tasks.append(AstralScheduledTask(text = "noon", time = sun['noon']))
         tasks.append(AstralScheduledTask(text = "sunset", time = sun['sunset']))
         tasks.append(AstralScheduledTask(text = "dusk", time = sun['dusk']))
+
+        timelapse = Timelapse(context)
+
+        tasks.extend(timelapse.GetScheduledTasks())
 
         for task in tasks:
             args.context.scheduler.add(task)
