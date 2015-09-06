@@ -1,14 +1,5 @@
-
-
 import subprocess
-
 import platform
-
-
-
-
-adresses = {"brightpi": 0x70, "piglow":0x54}
-
 
 class Hardware(object):
     def __init__(self, *args, **kwargs):
@@ -26,13 +17,10 @@ class Hardware(object):
             output = test.communicate()[0]
             print(str(output))
             
-            
-            # TODO
-            self.piglowattached = False
-            self.brightpiattached = True
+            self.piglowattached = True # bool(" 54 " in output)
+            self.brightpiattached = bool(" 70 " in output)
 
-            
-
-
-
-
+            if self.piglowattached:
+                print ("Detected 54 PiGlow")
+            if self.brightpiattached:
+                print ("Detected 70 BrightPi")
