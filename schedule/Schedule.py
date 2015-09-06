@@ -13,7 +13,6 @@ from MonitorScheduledTask import MonitorScheduledTask
 from TrendsScheduledTask import TrendsScheduledTask
 from RateLimitsScheduledTask import RateLimitsScheduledTask
 from SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
-from MidnightScheduledTask import MidnightScheduledTask
 from KatieHopkinsScheduledTask import KatieHopkinsScheduledTask
 from UserListsScheduledTask import UserListsScheduledTask
 from WeatherScheduledTask import WeatherScheduledTask
@@ -22,6 +21,8 @@ from JokesScheduledTask import JokesScheduledTask
 from TimelapseScheduledTask import TimelapseScheduledTask
 from SunriseTimelapseScheduledTask import SunriseTimelapseScheduledTask
 from SunsetTimelapseScheduledTask import SunsetTimelapseScheduledTask
+from NightTimelapseScheduledTask import NightTimelapseScheduledTask
+from SunTimelapseScheduledTask import SunTimelapseScheduledTask
 
 
 
@@ -44,7 +45,9 @@ class Schedule(object):
             JokesScheduledTask(), 
             #TimelapseScheduledTask(),
             SunriseTimelapseScheduledTask(),
-            SunsetTimelapseScheduledTask()
+            SunsetTimelapseScheduledTask(),
+            NightTimelapseScheduledTask(),
+            SunTimelapseScheduledTask()
             ]
 
 

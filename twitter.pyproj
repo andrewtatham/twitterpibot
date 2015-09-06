@@ -1763,6 +1763,9 @@
     <Compile Include="schedule\MonitorScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="schedule\NightTimelapseScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="schedule\PhotoScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1782,6 +1785,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="schedule\SunsetTimelapseScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="schedule\SunTimelapseScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="schedule\TimelapseScheduledTask.py">
