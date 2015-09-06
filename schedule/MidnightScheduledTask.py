@@ -18,6 +18,12 @@ class MidnightScheduledTask(ScheduledTask):
         city = astral['Leeds']
         sun = city.sun(date=datetime.date.today(), local = True)
 
+        print("dawn: " + str(sun['dawn']))
+        print("sunrise: " + str(sun['sunrise']))
+        print("noon: " + str(sun['noon']))
+        print("sunset: " + str(sun['sunset']))
+        print("dusk: " + str(sun['dusk']))
+
         timelapseSunrise = Timelapse(
             context = args.context, 
             name = 'sunrise',
