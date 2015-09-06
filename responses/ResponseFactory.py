@@ -13,9 +13,7 @@ from HelloResponse import HelloResponse
 class ResponseFactory(object):
     def __init__(self, context, *args, **kwargs):
 
-
-        self.responses = [BotBlockerResponse(),
-            PhotoResponse(),
+        self.responses = [PhotoResponse(),
             SongResponse(),
             ThanksResponse(),
             HelloResponse(),
@@ -23,6 +21,9 @@ class ResponseFactory(object):
             FatherTedResponse(),
             LoveResponse(),
             RetweetResponse()]
+
+        if context.hardware.iswindows:
+            self.responses.append(BotBlockerResponse())
 
         self.context = context
         for response in self.responses:

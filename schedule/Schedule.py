@@ -40,10 +40,14 @@ class Schedule(object):
             #KatieHopkinsScheduledTask(),
             UserListsScheduledTask(),
             WeatherScheduledTask(),
-            BotBlockerScheduledTask(),
             JokesScheduledTask(), 
             #TimelapseScheduledTask()
             ]
+
+
+        if context.hardware.iswindows:
+            self.jobs.append(BotBlockerScheduledTask())
+
 
         if not context.hardware.iswindows:
             self.jobs.append(PhotoScheduledTask())
