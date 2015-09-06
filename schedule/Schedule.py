@@ -20,6 +20,8 @@ from WeatherScheduledTask import WeatherScheduledTask
 from BotBlockerScheduledTask import BotBlockerScheduledTask
 from JokesScheduledTask import JokesScheduledTask
 from TimelapseScheduledTask import TimelapseScheduledTask
+from SunriseTimelapseScheduledTask import SunriseTimelapseScheduledTask
+from SunsetTimelapseScheduledTask import SunsetTimelapseScheduledTask
 
 
 
@@ -36,12 +38,13 @@ class Schedule(object):
             TrendsScheduledTask(),
             SuggestedUsersScheduledTask(),
             #RateLimitsScheduledTask(),
-            MidnightScheduledTask(),
             #KatieHopkinsScheduledTask(),
             UserListsScheduledTask(),
             WeatherScheduledTask(),
             JokesScheduledTask(), 
-            #TimelapseScheduledTask()
+            #TimelapseScheduledTask(),
+            SunriseTimelapseScheduledTask(),
+            SunsetTimelapseScheduledTask()
             ]
 
 

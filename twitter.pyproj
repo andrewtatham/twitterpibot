@@ -1708,6 +1708,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PiGlow\piglow.py" />
+    <Compile Include="processing\MyAstral.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="processing\Timelapse.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1757,9 +1760,6 @@
     <Compile Include="schedule\KatieHopkinsScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="schedule\MidnightScheduledTask.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="schedule\MonitorScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1776,6 +1776,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="schedule\SuggestedUsersScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="schedule\SunriseTimelapseScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="schedule\SunsetTimelapseScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="schedule\TimelapseScheduledTask.py">
