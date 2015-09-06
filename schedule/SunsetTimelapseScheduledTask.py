@@ -4,7 +4,7 @@ from apscheduler.triggers.cron import CronTrigger
 from Timelapse import Timelapse
 class SunsetTimelapseScheduledTask(ScheduledTask):
     def GetTrigger(args):
-        return CronTrigger(hour=18,minute=0)
+        return CronTrigger(hour=15,minute=0)
 
 
     def onRun(args):
