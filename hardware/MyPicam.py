@@ -42,7 +42,7 @@ class MyPicam(Camera):
         if args.enabled:
             print('taking photo')
             
-            args.mypicamera.capture(args.picamerastream, format='bgr')
+            args.mypicamera.capture(args.picamerastream, format='rgb')
 
             photo = MyPicamPhoto()
             photo.image = args.picamerastream.array
@@ -56,9 +56,11 @@ class MyPicam(Camera):
     def TakePhotoToDisk(args, dir, name, ext):
         if args.enabled:
             
+            args.picamerastream.truncate(0)
             args.mypicamera.capture(args.picamerastream, format='rgb')
             image = args.picamerastream.array
             args.picamerastream.truncate(0)
+
             filename = dir + os.path.sep + name + os.extsep + ext
             cv2.imwrite(filename, image)
                          
