@@ -24,7 +24,7 @@ class Timelapse(object):
         self.initTime = self.startTime + datetime.timedelta(seconds = -1), 
         self.uploadTime = self.endTime + datetime.timedelta(seconds = 1)       
 
-        self.tweetText = tweetText
+        self.tweetText = tweetText  + " from " + self.startTime.strftime("%X") + " to " + self.endTime.strftime("%X") + " #gif #timelapse"
 
     def GetScheduledTasks(self):
         tasks = [
@@ -90,7 +90,8 @@ class TimelapseUploadScheduledTask(ScheduledTask):
         files = glob.glob(searchPath)
 
         images = [cv2.imread(file) for file in files]
-        #imagesRGB = [cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB) for bgr in imagesBGR ]
+        if args.context.hardware.iswindows:
+            images = [cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB) for bgr in images ]
         filename = args.timelapse.dirPath + os.path.sep + args.timelapse.name + ".gif"
 
         images2gif.writeGif(
