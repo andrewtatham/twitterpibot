@@ -1,6 +1,7 @@
 import logging
 import datetime
-from multiprocessing import Lock
+import threading
+
 class User(object):
     def __init__(self, data, *args, **kwargs):
 
@@ -29,7 +30,7 @@ class User(object):
         self.isRetweetMore = False
         self.isBot = False        
         self.isFriend = False
-        self.lock = Lock()
+        self.lock = threading.Lock()
 
 
 

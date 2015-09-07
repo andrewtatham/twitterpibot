@@ -5,7 +5,7 @@ import os
 from MyTwitter import MyTwitter
 import logging
 from UserSet import UserSet
-from multiprocessing import Lock
+import threading
 class Users(object):
     def __init__(self, *args, **kwargs):
         self.me = {
@@ -17,7 +17,7 @@ class Users(object):
                 "name":"andrewtatham", 
                 "id": "19201332"
             }]
-        self.lock = Lock()
+        self.lock = threading.Lock()
 
         self._users = {}
         self._sets = {}

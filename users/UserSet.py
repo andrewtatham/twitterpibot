@@ -1,8 +1,8 @@
-from multiprocessing import Lock
+import threading
 class UserSet(object):
     def __init__(self, name, *args, **kwargs):
         self.name = name
-        self.lock = Lock()
+        self.lock = threading.Lock()
         self._members = set()
 
     def ContainsUser(args, id):

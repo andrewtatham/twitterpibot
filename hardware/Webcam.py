@@ -1,6 +1,7 @@
 from Camera import *
 from ExceptionHandler import ExceptionHandler
 import os
+import threading
 
 enableWebcam = False
 try:
@@ -15,9 +16,10 @@ except Exception as e:
 
 class Webcam(Camera):
     def __init__(self, *args, **kwargs):
+        
+        self.lock = threading.Lock()
 
         try:
-
             self.webcam = cv2.VideoCapture(args[0])
             #cv2.namedWindow("webcam" + str(args[0]))
             for i in range(5):
@@ -33,10 +35,11 @@ class Webcam(Camera):
 
     def TakePhoto(args):
         if args.enabled:
-            photo = WebcamPhoto()
-            for i in range(5):
-                err,image = args.webcam.read()
-            photo.image = image                      
+            with args.lock:
+                photo = WebcamPhoto()
+                for i in range(5):
+                    err,image = args.webcam.read()
+                photo.image = image                      
             return photo
 
         else:
@@ -44,10 +47,12 @@ class Webcam(Camera):
 
     def TakePhotoToDisk(args, dir, name, ext):
         if args.enabled:
-            for i in range(5):
-                err,image = args.webcam.read()
-            filename = dir + os.path.sep + name + os.extsep + ext
-            cv2.imwrite(filename, image)
+            with args.lock:
+
+                for i in range(5):
+                    err,image = args.webcam.read()
+                filename = dir + os.path.sep + name + os.extsep + ext
+                cv2.imwrite(filename, image)
                          
             return filename
 
@@ -55,7 +60,8 @@ class Webcam(Camera):
             return None
 
     def Close(args):
-        args.webcam.release()
+        with args.lock:
+            args.webcam.release()
 
 
 
