@@ -26,11 +26,7 @@ class MyPicam(Camera):
             with self.lock:
                 self.mypicamera = picamera.PiCamera()
                 self.mypicamera.resolution = (640,480)
-                #self.mypicamera.start_preview()
-                #time.sleep(2)
-                #self.mypicamera.stop_preview()
                 self.picamerastream = picamera.array.PiRGBArray(self.mypicamera) 
-                #picamerawindow = cv2.namedWindow("picamera")
                 self.enabled = True
 
         except Exception as e:
@@ -51,7 +47,6 @@ class MyPicam(Camera):
                 photo = MyPicamPhoto()
                 args.picamerastream.truncate(0)
                 photo.image = args.picamerastream.array
-                #cv2.imshow("picamera", image)
                 args.picamerastream.truncate(0)
                 return photo
         else:
@@ -61,14 +56,8 @@ class MyPicam(Camera):
         if args.enabled:
             
             with args.lock:
-                args.picamerastream.truncate(0)
-                args.mypicamera.capture(args.picamerastream, format='rgb')
-                image = args.picamerastream.array
-                args.picamerastream.truncate(0)
-
                 filename = dir + os.path.sep + name + os.extsep + ext
-                cv2.imwrite(filename, image)
-                         
+                self.mypicamera.capture(filename)
                 return filename
 
         else:
