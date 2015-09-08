@@ -6,7 +6,7 @@ from apscheduler.triggers.cron import CronTrigger
 class PhotoScheduledTask(ScheduledTask):
 
     def GetTrigger(args):
-        return CronTrigger(hours = "*/3")
+        return CronTrigger(hour = "*/3")
 
 
     def onRun(args):
