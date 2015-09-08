@@ -46,7 +46,7 @@ class MyPicam(Camera):
             with args.lock:
                 print('taking photo')
             
-                args.mypicamera.capture(args.picamerastream, format='rgb')
+                args.mypicamera.capture(args.picamerastream, format='grb')
 
                 photo = MyPicamPhoto()
                 args.picamerastream.truncate(0)
@@ -62,7 +62,7 @@ class MyPicam(Camera):
             
             with args.lock:
                 args.picamerastream.truncate(0)
-                args.mypicamera.capture(args.picamerastream, format='rgb')
+                args.mypicamera.capture(args.picamerastream, format='grb')
                 image = args.picamerastream.array
                 args.picamerastream.truncate(0)
 
