@@ -57,7 +57,7 @@ class MyPicam(Camera):
             
             with args.lock:
                 filename = dir + os.path.sep + name + os.extsep + ext
-                self.mypicamera.capture(filename)
+                args.mypicamera.capture(filename)
                 return filename
 
         else:
