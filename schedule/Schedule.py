@@ -43,7 +43,7 @@ class Schedule(object):
             UserListsScheduledTask(),
             WeatherScheduledTask(),
             JokesScheduledTask(), 
-            TimelapseScheduledTask(),
+            #TimelapseScheduledTask(),
             SunriseTimelapseScheduledTask(),
             SunsetTimelapseScheduledTask(),
             NightTimelapseScheduledTask(),
