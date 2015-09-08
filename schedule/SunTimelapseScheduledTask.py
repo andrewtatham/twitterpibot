@@ -13,8 +13,8 @@ class SunTimelapseScheduledTask(ScheduledTask):
 
         timelapse = Timelapse(context = args.context, 
             name = 'sun',
-            startTime = sun['dawn'] + datetime.timedelta(hours = -1), 
-            endTime = sun['dusk'] + datetime.timedelta(hours = +1),
+            startTime = sun['dawn'], 
+            endTime = sun['dusk'],
             intervalSeconds = 600,
             tweetText = "The cosmic ballet goes on...")
 

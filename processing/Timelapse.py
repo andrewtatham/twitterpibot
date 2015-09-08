@@ -61,7 +61,8 @@ class TimelapsePhotoScheduledTask(ScheduledTask):
             seconds = args.timelapse.intervalSeconds
             )
     def onRun(args):
-        print("[Timelapse] Photo " + str(args.i))
+
+        print("[Timelapse] " + args.timelapse.name + " Photo " + str(args.i))
 
         name = args.timelapse.name + "_img_"  + "{0:05d}".format(args.i)
 
@@ -86,7 +87,7 @@ class TimelapseUploadScheduledTask(ScheduledTask):
 
         searchPath = args.timelapse.dirPath + os.path.sep + args.timelapse.name + "*" + os.extsep + args.timelapse.imageExtension
 
-        print("[Timelapse] Creating GIF")
+        print("[Timelapse]" + args.timelapse.name + " Creating GIF")
         files = glob.glob(searchPath)
 
         images = [cv2.imread(file) for file in files]
@@ -103,7 +104,7 @@ class TimelapseUploadScheduledTask(ScheduledTask):
             subRectangles = None)
 
 
-        print("[Timelapse] Uploading")
+        print("[Timelapse]" + args.timelapse.name + " Uploading")
         with MyTwitter() as twitter:
             media_id = twitter.UploadMediaFromDisk(filename)
 

@@ -16,8 +16,8 @@ class NightTimelapseScheduledTask(ScheduledTask):
 
         timelapse = Timelapse(context = args.context, 
             name = 'night',
-            startTime = today['sunset'] + datetime.timedelta(hours = -1), 
-            endTime = tommorrow['sunrise'] + datetime.timedelta(hours = +1),
+            startTime = today['sunset'], 
+            endTime = tommorrow['sunrise'],
             intervalSeconds = 600,
             tweetText = "The cosmic ballet goes on...")
 

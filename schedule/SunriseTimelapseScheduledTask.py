@@ -13,9 +13,9 @@ class SunriseTimelapseScheduledTask(ScheduledTask):
 
         timelapse = Timelapse(context = args.context, 
             name = 'sunrise',
-            startTime = sun['dawn'] + datetime.timedelta(hours = -1), 
-            endTime = sun['sunrise'] + datetime.timedelta(hours = +1),
-            intervalSeconds = 30,
+            startTime = sun['dawn'] + datetime.timedelta(minutes = -20), 
+            endTime = sun['sunrise'] + datetime.timedelta(minutes = +20),
+            intervalSeconds = 90,
             tweetText = "Morning!")
 
         tasks = timelapse.GetScheduledTasks()

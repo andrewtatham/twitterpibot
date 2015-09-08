@@ -9,8 +9,8 @@ class BotBlockerScheduledTask(ScheduledTask):
         self.myFollowers = []     
 
 
-    #def GetTrigger(args):
-    #    return IntervalTrigger(minutes=3)
+    def GetTrigger(args):
+        return IntervalTrigger(minutes=3)
 
     def onRun(args):
         blockUsers = []

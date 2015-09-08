@@ -6,12 +6,11 @@ import wikipedia
 from wikipedia.wikipedia import WikipediaPage
 from wikipedia.exceptions import DisambiguationError
 import random
-from apscheduler.triggers.interval import IntervalTrigger
 
 class Wikipedia(ScheduledTask):
 
     def GetTrigger(args):
-        return IntervalTrigger(minutes=34)
+        return CronTrigger(hour="*")
     
 
     def onRun(args):
