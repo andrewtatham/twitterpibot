@@ -18,8 +18,8 @@ class ResponseFactory(object):
             ThanksResponse(),
             HelloResponse(),
             Magic8BallResponse(),
-            FatherTedResponse(),
             LoveResponse(),
+            FatherTedResponse(),           
             RetweetResponse()]
 
         if context.hardware.iswindows:

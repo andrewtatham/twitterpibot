@@ -6,12 +6,12 @@ class Response(object):
     def Condition(args, inboxItem):
         return not inboxItem.from_me \
             and (inboxItem.isDirectMessage or inboxItem.isTweet \
-                and (inboxItem.to_me \
+                and (
+                    inboxItem.to_me and (not args.inboxItem.sender.isReplyLess or random.randint(0,9) == 0)  \
                     or (inboxItem.sender.isBot and random.randint(0,3) == 0) \
                     or (inboxItem.sender.isFriend and random.randint(0,1) == 0) \
                     or (inboxItem.sender.isRetweetMore and random.randint(0,9) == 0) \
                     or random.randint(0,99) == 0))
-
 
 
 

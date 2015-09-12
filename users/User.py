@@ -17,19 +17,17 @@ class User(object):
         self.verified = bool(data["verified"])
         self.location = data["location"]
 
-
         self.friends_count = int(data["friends_count"])
         self.followers_count = int(data["followers_count"])
         self.statuses_count = int(data["statuses_count"])
-
-
-
         
         self.updated = None
 
         self.isRetweetMore = False
         self.isBot = False        
         self.isFriend = False
+        self.isReplyLess = False
+
         self.lock = threading.Lock()
 
 
@@ -56,17 +54,22 @@ class User(object):
             for list in lists.values():
                 if list.ContainsUser(args.id):
 
+                    if list.name == "Reply Less":
+                        args.isReplyLess = True
+                        print("Is member of " + list.name)
+
                     if list.name == "Retweet More":
                         args.isRetweetMore = True
                         print("Is member of " + list.name)
 
-                    elif list.name == "Awesome Bots":
+                    if list.name == "Awesome Bots":
                         args.isBot = True                
                         print("Is member of " + list.name)
                   
-                    elif list.name == "Friends":
+                    if list.name == "Friends":
                         args.isFriend = True
                         print("Is member of " + list.name)
+
                     
                     else:                    
                         logging.warn('Unknown list name: ' + list.name)

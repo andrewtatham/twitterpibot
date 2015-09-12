@@ -13,10 +13,6 @@ class Users(object):
             "id":"2935295111"
         }
 
-        self.ppl = [{
-                "name":"andrewtatham", 
-                "id": "19201332"
-            }]
         self.lock = threading.Lock()
 
         self._users = {}

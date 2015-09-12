@@ -6,7 +6,7 @@
     <ProjectGuid>{0d8a6f76-90c3-43e1-8e8f-d24c25a90e50}</ProjectGuid>
     <ProjectHome />
     <StartupFile>Main.py</StartupFile>
-    <SearchPath>tasks\;twitter\;incoming\;responses\;outgoing\;hardware\;schedule\;users\;brightpi\;processing\</SearchPath>
+    <SearchPath>tasks\;twitter\;incoming\;responses\;outgoing\;hardware\;schedule\;users\;brightpi\;processing\;ui\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
@@ -1745,7 +1745,7 @@
     <Compile Include="responses\PhotoResponse.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="responses\LoveResponse.py">
+    <Compile Include="responses\UnicodeResponse.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="schedule\BotBlockerScheduledTask.py">
@@ -1847,6 +1847,9 @@
     <Compile Include="twitter\MyStreamer.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ui\CameraSettingsUI.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="users\BotBlocker.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1864,6 +1867,7 @@
     <Folder Include="brightpi\" />
     <Folder Include="incoming\" />
     <Folder Include="hardware\" />
+    <Folder Include="ui\" />
     <Folder Include="processing\" />
     <Folder Include="PiGlow\" />
     <Folder Include="users\" />
