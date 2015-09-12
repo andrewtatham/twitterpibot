@@ -25,7 +25,7 @@ class MyPicam(Camera):
         try:
             with self.lock:
                 self.mypicamera = picamera.PiCamera()
-                self.mypicamera.resolution = (640,480)
+                self.mypicamera.resolution = (320,240)
                 self.picamerastream = picamera.array.PiRGBArray(self.mypicamera) 
                 self.enabled = True
 

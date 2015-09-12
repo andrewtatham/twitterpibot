@@ -93,11 +93,14 @@ class TimelapseUploadScheduledTask(ScheduledTask):
         images = [cv2.imread(file) for file in files]
         if args.context.hardware.iswindows:
             images = [cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB) for bgr in images ]
+        else:
+            images = [cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY) for bgr in images ]
+
         filename = args.timelapse.dirPath + os.path.sep + args.timelapse.name + ".gif"
 
         images2gif.writeGif(
             filename, 
-            images,
+            images.sort(),
             dither = True, 
             duration = 0.1, 
             repeat = True, 
