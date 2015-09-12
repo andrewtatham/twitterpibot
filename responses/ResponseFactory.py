@@ -4,7 +4,7 @@ from Magic8BallResponse import Magic8BallResponse
 from RetweetResponse import RetweetResponse
 from FatherTedResponse import FatherTedResponse
 from MyTwitter import MyTwitter
-from LoveResponse import LoveResponse
+from UnicodeResponse import UnicodeResponse
 from BotBlockerResponse import BotBlockerResponse
 from ThanksResponse import ThanksResponse
 from HelloResponse import HelloResponse
@@ -18,7 +18,7 @@ class ResponseFactory(object):
             ThanksResponse(),
             HelloResponse(),
             Magic8BallResponse(),
-            LoveResponse(),
+            UnicodeResponse(),
             FatherTedResponse(),           
             RetweetResponse()]
 
