@@ -1,5 +1,4 @@
 from ScheduledTask import ScheduledTask
-from apscheduler.triggers.interval import IntervalTrigger
 from apscheduler.triggers.cron import CronTrigger
 import random
 from OutgoingTweet import OutgoingTweet

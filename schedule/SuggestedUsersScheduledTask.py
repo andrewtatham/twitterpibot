@@ -13,7 +13,7 @@ class SuggestedUsersScheduledTask(ScheduledTask):
         self._slugList = Queue()       
 
     def GetTrigger(args):
-        return IntervalTrigger(minutes=7)
+        return IntervalTrigger(minutes=17)
     
     def onRun(args):
 

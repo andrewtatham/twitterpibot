@@ -110,4 +110,7 @@ class MyTwitter(object):
 
     def lookup_user(self, **params):
         return self.twython.lookup_user(**params)
+    def get_saved_searches(self, **params):
+        return self.twython.get_saved_searches(**params)
+
         

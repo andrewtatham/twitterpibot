@@ -10,7 +10,7 @@ class BotBlockerScheduledTask(ScheduledTask):
 
 
     def GetTrigger(args):
-        return IntervalTrigger(minutes=3)
+        return IntervalTrigger(minutes=13)
 
     def onRun(args):
         blockUsers = []

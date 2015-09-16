@@ -1772,6 +1772,9 @@
     <Compile Include="schedule\RateLimitsScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="schedule\SavedSearchScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="schedule\Schedule.py">
       <SubType>Code</SubType>
     </Compile>

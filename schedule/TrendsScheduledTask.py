@@ -21,7 +21,7 @@ class TrendsScheduledTask(ScheduledTask):
         self._trendsList = Queue()
 
     def GetTrigger(args):
-        return IntervalTrigger(minutes=5)
+        return IntervalTrigger(minutes=29)
 
     def UpdateTrends(args, twitter):
         print("Updating trends")
@@ -69,7 +69,8 @@ class TrendsScheduledTask(ScheduledTask):
                 text = ""
                 for word_count in word_counts:
                     text += word_count + " "
-                args.context.outbox.put(OutgoingTweet(text=text[:140]))
+                if text:
+                    args.context.outbox.put(OutgoingTweet(text=text[:140]))
 
             finally:
                 args._trendsList.task_done()

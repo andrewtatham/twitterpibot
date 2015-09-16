@@ -23,6 +23,7 @@ from SunriseTimelapseScheduledTask import SunriseTimelapseScheduledTask
 from SunsetTimelapseScheduledTask import SunsetTimelapseScheduledTask
 from NightTimelapseScheduledTask import NightTimelapseScheduledTask
 from SunTimelapseScheduledTask import SunTimelapseScheduledTask
+from SavedSearchScheduledTask import SavedSearchScheduledTask
 
 
 
@@ -47,7 +48,8 @@ class Schedule(object):
             SunriseTimelapseScheduledTask(),
             SunsetTimelapseScheduledTask(),
             NightTimelapseScheduledTask(),
-            SunTimelapseScheduledTask()
+            SunTimelapseScheduledTask(),
+            SavedSearchScheduledTask()
             ]
 
 
