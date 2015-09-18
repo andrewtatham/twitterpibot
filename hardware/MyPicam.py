@@ -5,6 +5,7 @@ from ExceptionHandler import ExceptionHandler
 import cv2
 import os
 import threading
+from fractions import Fraction
 
 
 try:
