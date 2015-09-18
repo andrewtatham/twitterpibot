@@ -11,7 +11,7 @@ class RestartResponse(Response):
         
         args.context.outbox.put(OutgoingDirectMessage(replyTo = inboxItem, text="Going down..."))
         time.sleep(2)
-        os.system("sh ~/twitter")
+        os.system("cd ~; ./twitter")
         
 
         
