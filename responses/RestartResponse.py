@@ -15,9 +15,8 @@ class RestartResponse(Response):
             replyTo = inboxItem, 
             text="Down... " + str(datetime.datetime.now())))
         time.sleep(2)
-        #call("sudo ./twitter")
-        os.system("sudo cd ~")
-        os.system("sudo ./twitter")
+        subprocess.call("sh twitter", shell=True)
+        #os.system("sh ./twitter")
         
 
         
