@@ -1748,9 +1748,6 @@
     <Compile Include="responses\PhotoResponse.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="responses\UnicodeResponse.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="schedule\BotBlockerScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>

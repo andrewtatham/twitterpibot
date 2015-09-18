@@ -1,5 +1,6 @@
 import re
 from Response import Response
+import random
 class ThanksResponse(Response):
 
     def __init__(self, *args, **kwargs):
@@ -13,7 +14,13 @@ class ThanksResponse(Response):
                 and bool(args.rx.match(inboxItem.text))
 
     def Respond(args, inboxItem):
-        return args.ReplyWith(inboxItem, "Thanks for the Thanks!")
+        thanks = [
+            "thx",
+            "thanks",
+            "thankyou",
+            "thank u",
+            ]
+        return args.ReplyWith(inboxItem, random.choice(thanks) + " for the " + random.choice(thanks))
 
 
 
