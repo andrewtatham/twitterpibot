@@ -1721,6 +1721,9 @@
     <Compile Include="responses\HelloResponse.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="responses\RestartResponse.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="responses\ThanksResponse.py">
       <SubType>Code</SubType>
     </Compile>

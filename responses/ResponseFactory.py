@@ -8,12 +8,15 @@ from UnicodeResponse import UnicodeResponse
 from BotBlockerResponse import BotBlockerResponse
 from ThanksResponse import ThanksResponse
 from HelloResponse import HelloResponse
+from RestartResponse import RestartResponse
 
 
 class ResponseFactory(object):
     def __init__(self, context, *args, **kwargs):
 
-        self.responses = [PhotoResponse(),
+        self.responses = [
+            RestartResponse(),
+            PhotoResponse(),
             SongResponse(),
             ThanksResponse(),
             HelloResponse(),
