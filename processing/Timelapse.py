@@ -70,7 +70,7 @@ class TimelapsePhotoScheduledTask(ScheduledTask):
             dir = args.timelapse.dirPath,
             name = name,
             ext = args.timelapse.imageExtension,
-            nightmode = True) 
+            nightmode = False) 
 
         args.i += 1
         
