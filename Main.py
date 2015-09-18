@@ -4,6 +4,7 @@ import sys
 import platform
 import colorama
 import Tkinter
+from OutgoingDirectMessage import OutgoingDirectMessage
 
 sys.path.append('tasks')
 sys.path.append('incoming')
@@ -40,6 +41,12 @@ tasks.Start()
 scheduler = Schedule(context=context)
 context.scheduler = scheduler
 scheduler.Start()
+
+context.outbox.put(OutgoingDirectMessage(
+    screen_name = "andrewtatham", 
+    user_id = "19201332", 
+    text="Coming up..."))
+
 
 top = Tkinter.Tk()
 top.mainloop()
