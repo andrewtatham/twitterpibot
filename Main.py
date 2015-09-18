@@ -41,7 +41,7 @@ scheduler.Start()
 context.outbox.put(OutgoingDirectMessage(
     screen_name = "andrewtatham", 
     user_id = "19201332", 
-    text="Coming up..."))
+    text="Up...." + str(datetime.datetime.now())))
 
 
 top = Tkinter.Tk()

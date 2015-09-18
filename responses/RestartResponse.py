@@ -9,7 +9,9 @@ class RestartResponse(Response):
             and "restart" in inboxItem.words and not args.context.hardware.iswindows
     def Respond(args, inboxItem):
         
-        args.context.outbox.put(OutgoingDirectMessage(replyTo = inboxItem, text="Going down..."))
+        args.context.outbox.put(OutgoingDirectMessage(
+            replyTo = inboxItem, 
+            text="Down... " + str(datetime.datetime.now())))
         time.sleep(2)
         os.system("cd ~; ./twitter")
         
