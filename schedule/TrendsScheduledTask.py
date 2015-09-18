@@ -24,8 +24,8 @@ class TrendsScheduledTask(ScheduledTask):
     def __init__(self, *args, **kwargs):
         self._trendsList = Queue()
 
-    #def GetTrigger(args):
-    #    return IntervalTrigger(minutes=29)
+    def GetTrigger(args):
+        return IntervalTrigger(minutes=29)
 
     def onRun(args):
         with MyTwitter() as twitter:
