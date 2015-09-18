@@ -52,11 +52,24 @@ class MyPicam(Camera):
         else:
             return None
 
-    def TakePhotoToDisk(args, dir, name, ext):
+    def TakePhotoToDisk(args, dir, name, ext, nightmode = False):
         if args.enabled:
             
             with args.lock:
                 filename = dir + os.path.sep + name + os.extsep + ext
+
+                if nightmode:
+                    # Set a framerate of 1/6fps, then set shutter
+                    # speed to 6s and ISO to 800
+                    args.mypicamera.framerate = Fraction(1, 6)
+                    args.mypicamera.shutter_speed = 6000000
+                    args.mypicamera.exposure_mode = 'off'
+                    args.mypicamera.iso = 800
+                    # Give the camera a good long time to measure AWB
+                    # (you may wish to use fixed AWB instead)
+                    time.sleep(10)
+
+
                 args.mypicamera.capture(filename)
                 return filename
 

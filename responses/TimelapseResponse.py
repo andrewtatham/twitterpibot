@@ -15,8 +15,8 @@ class TimelapseResponse(Response):
             context = args.context, 
             name = 'now',
             startTime = now + datetime.timedelta(seconds = 1), 
-            endTime = now + datetime.timedelta(seconds = 5),
-            intervalSeconds = 1,
+            endTime = now + datetime.timedelta(minutes = 2),
+            intervalSeconds = 30,
             tweetText = "")
 
 

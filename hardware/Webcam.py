@@ -45,7 +45,7 @@ class Webcam(Camera):
         else:
             return None
 
-    def TakePhotoToDisk(args, dir, name, ext):
+    def TakePhotoToDisk(args, dir, name, ext, nightmode):
         if args.enabled:
             with args.lock:
 

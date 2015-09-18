@@ -69,8 +69,8 @@ class TimelapsePhotoScheduledTask(ScheduledTask):
         args.context.cameras.TakePhotoToDisk(
             dir = args.timelapse.dirPath,
             name = name,
-            ext = args.timelapse.imageExtension
-            ) 
+            ext = args.timelapse.imageExtension,
+            nightmode = True) 
 
         args.i += 1
         

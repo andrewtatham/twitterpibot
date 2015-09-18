@@ -26,13 +26,13 @@ class Cameras(object):
 
         return photos
 
-    def TakePhotoToDisk(args, dir, name, ext):
+    def TakePhotoToDisk(args, dir, name, ext, nightmode):
         filenames=[]
         i = 0
         for camera in args.cameras:
             if camera.enabled:
                 name += "_cam_" + "{0:05d}".format(i)
-                camera.TakePhotoToDisk(dir, name, ext)
+                camera.TakePhotoToDisk(dir, name, ext, nightmode)
                 if name:
                     filenames.append(name)
             i += 1
