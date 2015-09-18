@@ -16,6 +16,7 @@ class RestartResponse(Response):
             text="Down... " + str(datetime.datetime.now())))
         time.sleep(2)
         #call("sudo ./twitter")
+        os.system("sudo cd ~")
         os.system("sudo ./twitter")
         
 
