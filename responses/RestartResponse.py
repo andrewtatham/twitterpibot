@@ -3,7 +3,7 @@ from OutgoingDirectMessage import OutgoingDirectMessage
 import time
 import datetime
 from subprocess import call
-
+import os
 class RestartResponse(Response):
     def Condition(args, inboxItem):
         return inboxItem.isDirectMessage and not inboxItem.from_me and inboxItem.to_me \
@@ -15,7 +15,8 @@ class RestartResponse(Response):
             replyTo = inboxItem, 
             text="Down... " + str(datetime.datetime.now())))
         time.sleep(2)
-        call("./twitter")
+        #call("sudo ./twitter")
+        os.system("sudo ./twitter")
         
 
         
