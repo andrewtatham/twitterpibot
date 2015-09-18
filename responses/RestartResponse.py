@@ -2,6 +2,7 @@ from Response import Response
 import os
 from OutgoingDirectMessage import OutgoingDirectMessage
 import time
+import datetime
 class RestartResponse(Response):
     def Condition(args, inboxItem):
         return inboxItem.isDirectMessage and not inboxItem.from_me and inboxItem.to_me \
