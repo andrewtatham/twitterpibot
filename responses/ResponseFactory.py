@@ -8,6 +8,7 @@ from BotBlockerResponse import BotBlockerResponse
 from ThanksResponse import ThanksResponse
 from HelloResponse import HelloResponse
 from RestartResponse import RestartResponse
+from TimelapseResponse import TimelapseResponse
 
 
 class ResponseFactory(object):
@@ -19,8 +20,8 @@ class ResponseFactory(object):
             SongResponse(),
             ThanksResponse(),
             HelloResponse(),
+            TimelapseResponse(),
             Magic8BallResponse(),
-          
             FatherTedResponse(),           
             RetweetResponse()]
 
