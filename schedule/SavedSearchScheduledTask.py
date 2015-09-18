@@ -33,10 +33,9 @@ class SavedSearchScheduledTask(ScheduledTask):
                         + searchTweet["text"].replace("\n", "   "))
 
                 searchTweet = random.choice(searchTweets["statuses"])
-                twitter.create_favourite(id = searchTweet["id_str"])
                 twitter.retweet(id = searchTweet["id_str"])
 
-                # reply?
+                # TODO reply?
             finally:
                 args._savedSearches.task_done()
 
