@@ -4,6 +4,7 @@ import time
 import datetime
 from subprocess import call
 import os
+import subprocess
 class RestartResponse(Response):
     def Condition(args, inboxItem):
         return inboxItem.isDirectMessage and not inboxItem.from_me and inboxItem.to_me \
