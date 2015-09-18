@@ -4,7 +4,6 @@ import sys
 import platform
 import colorama
 import Tkinter
-from OutgoingDirectMessage import OutgoingDirectMessage
 
 sys.path.append('tasks')
 sys.path.append('incoming')
@@ -15,19 +14,16 @@ sys.path.append('twitter')
 sys.path.append('schedule')
 sys.path.append('users')
 sys.path.append('processing')
-
 sys.path.append('brightpi')
-
 
 from Authenticator import Authenticator
 from Context import Context
 from Tasks import Tasks
 from Schedule import Schedule
-
+from OutgoingDirectMessage import OutgoingDirectMessage
 
 if platform.node() != "ANDREWDESKTOP":
     colorama.init(autoreset = True)
-
 
 auth = Authenticator()
 auth.Authenticate()
