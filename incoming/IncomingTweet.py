@@ -9,8 +9,9 @@ import random
 #import nltk
 h = HTMLParser.HTMLParser()
 
-tweetcolours = cycle([Fore.GREEN,
-            Fore.YELLOW])
+tweetcolours = cycle([Fore.GREEN, Fore.YELLOW])
+trendcolours = cycle([Fore.MAGENTA, Fore.WHITE])
+searchcolours = cycle([Fore.CYAN, Fore.WHITE])
 
 
 class IncomingTweet(InboxTextItem):
@@ -24,6 +25,9 @@ class IncomingTweet(InboxTextItem):
         self.status_id = data["id_str"]
         self.sender = context.users.getUser(data = data["user"])
         self.from_me = self.sender.isMe
+        self.source = None
+        if 'tweetsource' in data:
+            self.source = data['tweetsource']
 
         logging.debug(data["text"])
         self.text = h.unescape(data["text"])
@@ -53,9 +57,19 @@ class IncomingTweet(InboxTextItem):
 
 
     def Display(args):
-        
-        text = "* " + args.sender.name + ' [@' + args.sender.screen_name + '] ' + args.text
-        colour = tweetcolours.next()
+        colour = ""
+        text = ""
+        if args.source:
+            text += '['+ args.source + '] '
+            if 'trend' in args.source:
+                colour = trendcolours.next()
+            elif 'search' in args.source:
+                colour = searchcolours.next()
+        else:
+            colour = tweetcolours.next()
+            text += "* "
+
+        text += args.sender.name + ' [@' + args.sender.screen_name + '] ' + args.text.replace('\n',' ')
     
         if args.to_me:
             colour += Style.BRIGHT

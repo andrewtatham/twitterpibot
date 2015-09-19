@@ -24,7 +24,8 @@ class SavedSearchScheduledTask(ScheduledTask):
                 search = args._savedSearches.get()
                 searchTweets = twitter.search(q = search['query'])
                 for searchTweet in searchTweets["statuses"]:
-                    args.context.inbox.put(IncomingTweet(searchTweet, context, source))
+                    searchTweet['tweetsource'] = "search:" + search["name"]
+                    args.context.inbox.put(searchTweet)
 
             finally:
                 args._savedSearches.task_done()

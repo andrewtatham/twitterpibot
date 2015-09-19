@@ -36,6 +36,7 @@ class TrendsScheduledTask(ScheduledTask):
                 trend = args._trendsList.get()
                 trendtweets = twitter.search(q = urllib.quote_plus(trend["name"]), result_type = "popular")
                 for trendtweet in trendtweets["statuses"]:
+                    trendtweet['tweetsource'] = "trend:" + trend["name"]
                     args.context.inbox.put(trendtweet)
             finally:
                 args._trendsList.task_done()
