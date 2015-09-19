@@ -26,8 +26,14 @@ class IncomingTweet(InboxTextItem):
         self.sender = context.users.getUser(data = data["user"])
         self.from_me = self.sender.isMe
         self.source = None
+        self.sourceIsTrend = False
+        self.sourceIsSearch = False
         if 'tweetsource' in data:
             self.source = data['tweetsource']
+            if 'trend' in args.source:
+                self.sourceIsTrend = True
+            elif 'search' in args.source:
+                self.sourceIsSearch = True
 
         logging.debug(data["text"])
         self.text = h.unescape(data["text"])
@@ -61,9 +67,9 @@ class IncomingTweet(InboxTextItem):
         text = ""
         if args.source:
             text += '['+ args.source + '] '
-            if 'trend' in args.source:
+            if args.sourceIsTrend:
                 colour = trendcolours.next()
-            elif 'search' in args.source:
+            elif args.sourceIsSearch:
                 colour = searchcolours.next()
         else:
             colour = tweetcolours.next()
