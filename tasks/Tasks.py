@@ -69,24 +69,12 @@ class Tasks(object):
                 #time.sleep(1)
 
     def Stop(args):
-
         args.running = False
-
-
-
+       
         stopThreads = map(lambda task : threading.Thread(target=task.onStop), args.taskList)
-
-        #print("stopping")
         for thread in stopThreads:
-            #print(".")
             thread.start()
-
-        #print("wait 1")
         for thread in stopThreads:
-            #print(".")
             thread.join()
-
-        #print("wait 2")
-        #for thread in args.runThreads:
-        #    print(".")
-        #    thread.join() 
+        for thread in args.runThreads:
+            thread.join()

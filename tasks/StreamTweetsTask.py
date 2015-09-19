@@ -3,6 +3,7 @@ from twython.api import Twython
 from MyStreamer import MyStreamer
 from Task import Task
 from MyTwitter import MyTwitter
+import sys
 
 class StreamTweetsTask(Task):
 

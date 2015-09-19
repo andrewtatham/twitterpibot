@@ -46,11 +46,18 @@ context.outbox.put(OutgoingDirectMessage(
 
 
 top = Tkinter.Tk()
+context.top = top
+
 top.mainloop()
 
-print("Exiting...")
+context.outbox.put(OutgoingDirectMessage(
+    screen_name = "andrewtatham", 
+    user_id = "19201332", 
+    text="Down...." + str(datetime.datetime.now())))
+
 tasks.Stop()
 scheduler.Stop()
 #context.Stop()
 print("Done")
 sys.exit(0)
+print("Exited")
