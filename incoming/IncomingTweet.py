@@ -30,9 +30,9 @@ class IncomingTweet(InboxTextItem):
         self.sourceIsSearch = False
         if 'tweetsource' in data:
             self.source = data['tweetsource']
-            if 'trend' in args.source:
+            if 'trend' in self.source:
                 self.sourceIsTrend = True
-            elif 'search' in args.source:
+            elif 'search' in self.source:
                 self.sourceIsSearch = True
 
         logging.debug(data["text"])
