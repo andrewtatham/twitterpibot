@@ -25,6 +25,8 @@ class IncomingTweet(InboxTextItem):
         self.status_id = data["id_str"]
         self.sender = context.users.getUser(data = data["user"])
         self.from_me = self.sender.isMe
+        self.favorited = bool(data["favorited"])
+        self.retweeted = bool(data["retweeted"])       
         self.source = None
         self.sourceIsTrend = False
         self.sourceIsSearch = False
