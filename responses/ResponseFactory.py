@@ -9,6 +9,7 @@ from ThanksResponse import ThanksResponse
 from HelloResponse import HelloResponse
 from RestartResponse import RestartResponse
 from TimelapseResponse import TimelapseResponse
+from TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
 
 
 class ResponseFactory(object):
@@ -18,9 +19,10 @@ class ResponseFactory(object):
             RestartResponse(),
             PhotoResponse(),
             SongResponse(),
+            TimelapseResponse(),
+            TalkLikeAPirateDayResponse(),
             ThanksResponse(),
             HelloResponse(),
-            TimelapseResponse(),
             Magic8BallResponse(),
             FatherTedResponse(),           
             RetweetResponse()]
