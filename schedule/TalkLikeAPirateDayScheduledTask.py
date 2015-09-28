@@ -7,6 +7,7 @@ import random
 
 piracy = [
     # TODO Piraty things
+    "Arrr"
 ] 
 class TalkLikeAPirateDayScheduledTask(ScheduledTask):
         

@@ -3,6 +3,7 @@ import random
 
 from OutgoingTweet import OutgoingTweet
 from MyTwitter import MyTwitter
+import re
 class RetweetResponse(Response):
 
     def __init__(self, *args, **kwargs):
