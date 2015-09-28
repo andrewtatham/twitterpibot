@@ -24,6 +24,7 @@ from SunsetTimelapseScheduledTask import SunsetTimelapseScheduledTask
 from NightTimelapseScheduledTask import NightTimelapseScheduledTask
 from SunTimelapseScheduledTask import SunTimelapseScheduledTask
 from SavedSearchScheduledTask import SavedSearchScheduledTask
+from TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
 
 
 
@@ -36,6 +37,7 @@ class Schedule(object):
         self.scheduler = BackgroundScheduler()
         self.jobs = [Wikipedia(),
             EdBallsDay(),
+            TalkLikeAPirateDayScheduledTask(),
             MonitorScheduledTask(),
             TrendsScheduledTask(),
             SuggestedUsersScheduledTask(),

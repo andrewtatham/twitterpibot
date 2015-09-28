@@ -1796,6 +1796,9 @@
     <Compile Include="schedule\SunTimelapseScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="schedule\TalkLikeAPirateDayScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="schedule\TimelapseScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
