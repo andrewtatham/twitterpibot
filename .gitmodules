@@ -10,3 +10,9 @@
 [submodule "brightpi"]
 	path = brightpi
 	url = https://github.com/andrewtatham/brightpi.git
+[submodule "mcpipy"]
+	path = mcpipy
+	url = https://github.com/brooksc/mcpipy.git
+[submodule "raspi2png"]
+	path = raspi2png
+	url = https://github.com/AndrewFromMelbourne/raspi2png.git

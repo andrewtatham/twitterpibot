@@ -5,8 +5,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0d8a6f76-90c3-43e1-8e8f-d24c25a90e50}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>Main.py</StartupFile>
-    <SearchPath>tasks\;twitter\;incoming\;responses\;outgoing\;hardware\;schedule\;users\;brightpi\;processing\;PiGlow\;PyGlow\</SearchPath>
+    <StartupFile>minecraft\MyMinecraft.py</StartupFile>
+    <SearchPath>tasks\;twitter\;incoming\;responses\;outgoing\;hardware\;schedule\;users\;brightpi\;processing\;PiGlow\;PyGlow\;mcpipy\;mcpipy\mcpi\;mcpipy\mcpi\examples\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
@@ -23,6 +23,14 @@
   <ItemGroup>
     <Content Include=".gitignore" />
     <Content Include=".gitmodules" />
+    <Content Include="mcpipy\git_update" />
+    <Content Include="mcpipy\Martin O%27Hanlon - Blocks into bombs using events" />
+    <Content Include="mcpipy\mcpi\mcpi_protocol_spec.txt" />
+    <Content Include="mcpipy\README.md" />
+    <Content Include="mcpipy\git_update" />
+    <Content Include="mcpipy\Martin O%27Hanlon - Blocks into bombs using events" />
+    <Content Include="mcpipy\mcpi\mcpi_protocol_spec.txt" />
+    <Content Include="mcpipy\README.md" />
     <Content Include="pics\.picasa.ini" />
     <Content Include="pics\andrew\.picasa.ini" />
     <Content Include="pics\andrew\000_0002.JPG" />
@@ -1718,6 +1726,51 @@
     <Compile Include="MyUI.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="mcpipy\gf_drawMandelbrot.py" />
+    <Compile Include="mcpipy\mcpi\block.py" />
+    <Compile Include="mcpipy\mcpi\connection.py" />
+    <Compile Include="mcpipy\mcpi\event.py" />
+    <Compile Include="mcpipy\mcpi\examples\astrotutor_magic.py" />
+    <Compile Include="mcpipy\mcpi\examples\brooksc_findpos.py" />
+    <Compile Include="mcpipy\mcpi\examples\brooksc_flatmap50.py" />
+    <Compile Include="mcpipy\mcpi\examples\brooksc_teleport_pad.py" />
+    <Compile Include="mcpipy\mcpi\examples\brooksc_template.py" />
+    <Compile Include="mcpipy\mcpi\examples\brooksc_tntsnake.py" />
+    <Compile Include="mcpipy\mcpi\examples\burnaron_bunkermatic.py" />
+    <Compile Include="mcpipy\mcpi\examples\burnaron_bunkermatic2.py" />
+    <Compile Include="mcpipy\mcpi\examples\danielbates_minecraft_basic.py" />
+    <Compile Include="mcpipy\mcpi\examples\danielbates_setblockdemo.py" />
+    <Compile Include="mcpipy\mcpi\examples\davef21370_maze.py" />
+    <Compile Include="mcpipy\mcpi\examples\daviewales_minesweeper.py" />
+    <Compile Include="mcpipy\mcpi\examples\fleap_railgen.py" />
+    <Compile Include="mcpipy\mcpi\examples\gf_clearZone.py" />
+    <Compile Include="mcpipy\mcpi\examples\gf_drawbuilding.py" />
+    <Compile Include="mcpipy\mcpi\examples\gf_helloworld.py" />
+    <Compile Include="mcpipy\mcpi\examples\jjinux_sierpinski_triangle.py" />
+    <Compile Include="mcpipy\mcpi\examples\nt7s_sphere.py" />
+    <Compile Include="mcpipy\mcpi\examples\obsidz_teleport.py" />
+    <Compile Include="mcpipy\mcpi\examples\sleepyoz_analogclock.py" />
+    <Compile Include="mcpipy\mcpi\examples\sleepyoz_digitalclock.py" />
+    <Compile Include="mcpipy\mcpi\examples\sleepyoz_digitalclock2.py" />
+    <Compile Include="mcpipy\mcpi\examples\sleepyoz_digitalclock3.py" />
+    <Compile Include="mcpipy\mcpi\examples\snowbound_flatmap.py" />
+    <Compile Include="mcpipy\mcpi\examples\stuffaboutcode_basics.py" />
+    <Compile Include="mcpipy\mcpi\examples\stuffaboutcode_bridge.py" />
+    <Compile Include="mcpipy\mcpi\examples\stuffaboutcode_clock.py" />
+    <Compile Include="mcpipy\mcpi\examples\stuffaboutcode_hideandseek.py" />
+    <Compile Include="mcpipy\mcpi\examples\stuffaboutcode_snake.py" />
+    <Compile Include="mcpipy\mcpi\examples\zhuowei_ejectcd.py" />
+    <Compile Include="mcpipy\mcpi\examples\zhuowei_rainbow.py" />
+    <Compile Include="mcpipy\mcpi\examples\__init__.py" />
+    <Compile Include="mcpipy\mcpi\minecraft.py" />
+    <Compile Include="mcpipy\mcpi\util.py" />
+    <Compile Include="mcpipy\mcpi\vec3.py" />
+    <Compile Include="mcpipy\mcpi\__init__.py" />
+    <Compile Include="mcpipy\server.py" />
+    <Compile Include="mcpipy\setup.py" />
+    <Compile Include="minecraft\MyMinecraft.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="outgoing\OutboxItem.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1740,6 +1793,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="responses\HelloResponse.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="responses\MinecraftResponse.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="responses\RestartResponse.py">
@@ -1891,6 +1947,10 @@
   <ItemGroup>
     <Folder Include="incoming\" />
     <Folder Include="hardware\" />
+    <Folder Include="mcpipy\" />
+    <Folder Include="mcpipy\mcpi\" />
+    <Folder Include="mcpipy\mcpi\examples\" />
+    <Folder Include="minecraft\" />
     <Folder Include="processing\" />
     <Folder Include="users\" />
     <Folder Include="schedule\" />
