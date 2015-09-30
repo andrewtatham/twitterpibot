@@ -50,7 +50,7 @@ class FatherTedResponse(Response):
             "Dont have a cow man!",
              
             # Robot Noises
-            "BEEP BOOP."
+            "BEEP BOOP.",
             
             # father ted
             "That would be an ecumenical matter. #FatherTed",
