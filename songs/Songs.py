@@ -92,6 +92,13 @@ class Songs(object):
                 "lyrics" : "gangsters.txt",
                 "video" : "https://youtu.be/cpGbzYlnz7c"
             },
+            "hammertime" : {
+                "artist" : "MC Hammer",
+                "screen_name" : "@MCHammer",
+                "title" : "U Can't Touch This",
+                "lyrics" : "hammertime.txt",
+                "video" : "https://youtu.be/otCpCn0l4Wo"
+            },
             "icebaby" : {
                 "artist" : "",
                 "screen_name" : None,

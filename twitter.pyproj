@@ -1637,6 +1637,7 @@
     <Content Include="songs\freshprince.txt" />
     <Content Include="songs\gangsters.txt" />
     <Content Include="songs\compton.txt" />
+    <Content Include="songs\hammertime.txt" />
     <Content Include="songs\ice.txt" />
     <Content Include="songs\incredible.txt" />
     <Content Include="songs\informer.txt" />
