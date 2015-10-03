@@ -1774,6 +1774,9 @@
     <Compile Include="schedule\KatieHopkinsScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="schedule\MidnightScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="schedule\MonitorScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1831,7 +1834,7 @@
     <Compile Include="songs\Songs.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="tasks\DisplayImagesTask.py">
+    <Compile Include="Statistics.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tasks\PiglowTask.py">
@@ -1841,9 +1844,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tasks\ProcessOutboxTask.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="tasks\RateLimits.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tasks\SongTask.py">
@@ -1856,9 +1856,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tasks\Tasks.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="tasks\WebcamTask.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="twitter\MyTwitter.py">

@@ -13,49 +13,35 @@ logging.basicConfig(filename='twitter.log',level=logging.INFO)
 # "Twitter API returned a 403 (Forbidden), There was an error sending your message: Whoops! You already said that."
 class ExceptionHandler(object):
 
-
     def HandleSilently(args, exception):
-        logging.warn(exception)
+        args._RecordWarning(exception, None)
 
-    def Handle(args, exception):
-
+    def Handle(args, exception, context):
         if type(exception) is UnicodeEncodeError:
-            print(Style.DIM + Fore.WHITE + Back.YELLOW + str(exception.message))
-            logging.warn(exception)
-
-        elif type(exception) is TwythonError:
-            if exception.message == "Twitter API returned a 403 (Forbidden), There was an error sending your message: Whoops! You already said that.":
-                print(Style.DIM + Fore.WHITE + Back.RED  + str(exception))
-                logging.warn(exception)
-            else:
-                print(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
-                logging.exception(exception)
-
-                args.TrySendException(exception)
-
-
+            args._RecordWarning(exception, context)
         else:
-            print(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
-            logging.exception(exception)
-
-            args.TrySendException(exception)
+            args._RecordError(exception, context)
 
 
+    def _RecordWarning(args, exception, context):
+        print(Style.DIM + Fore.WHITE + Back.YELLOW + str(exception.message))
+        logging.warn(exception)    
+        if context:
+            context.statistics.RecordWarning()
 
+    def _RecordError(args, exception, context):
+        print(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
+        logging.exception(exception)
+        if context:
+            context.statistics.RecordError()
+        args._TrySendException(exception)
 
-    def TrySendException(args, exception):
-        
-
+    def _TrySendException(args, exception):
         try:
-       
             with MyTwitter() as twitter:
                 twitter.send_direct_message(               
                     text = str(exception),
                     screen_name = "andrewtatham", 
                     user_id = "19201332")
-            
         except Exception as e:
             pass
-
-        
-

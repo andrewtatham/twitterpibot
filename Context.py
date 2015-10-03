@@ -9,6 +9,7 @@ from RateLimits import RateLimits
 from MyBrightPi import MyBrightPi
 from Hardware import Hardware
 import psutil
+from Statistics import Statistics
 
 class Context(object):
     def __init__(self, *args, **kwargs):
@@ -31,6 +32,8 @@ class Context(object):
             self.piglow = MyPiglow()
         if self.hardware.brightpiattached:
             self.brightpi = MyBrightPi()
+        
+        self.statistics = Statistics()
 
     def CameraFlash(args, on):
 

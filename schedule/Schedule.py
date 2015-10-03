@@ -25,6 +25,7 @@ from NightTimelapseScheduledTask import NightTimelapseScheduledTask
 from SunTimelapseScheduledTask import SunTimelapseScheduledTask
 from SavedSearchScheduledTask import SavedSearchScheduledTask
 from TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
+from MidnightScheduledTask import MidnightScheduledTask
 
 
 
@@ -51,7 +52,8 @@ class Schedule(object):
             SunsetTimelapseScheduledTask(),
             NightTimelapseScheduledTask(),
             SunTimelapseScheduledTask(),
-            SavedSearchScheduledTask()
+            SavedSearchScheduledTask(),
+            MidnightScheduledTask()
             ]
 
 
@@ -73,7 +75,7 @@ class Schedule(object):
         try:   
             task.onRun()
         except Exception as e:
-            ExceptionHandler().Handle(e)
+            ExceptionHandler().Handle(e, args.context)
 
     def Start(args):
         args.scheduler.start()

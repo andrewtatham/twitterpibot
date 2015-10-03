@@ -20,12 +20,13 @@ class ProcessOutboxTask(Task):
                             status = outboxItem.status,
                             in_reply_to_status_id = outboxItem.in_reply_to_status_id,
                             media_ids = outboxItem.media_ids)
+                        args.context.statistics.RecordOutgoingTweet()
                     if type(outboxItem) is OutgoingDirectMessage:
                         twitter.send_direct_message(
                             text = outboxItem.text, 
                             screen_name = outboxItem.screen_name, 
                             user_id = outboxItem.user_id)
-
+                        args.context.statistics.RecordOutgoingDirectMessage()
                     # todo catch 403 error when same text sent
 
         finally:

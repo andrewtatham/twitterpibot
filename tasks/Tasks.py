@@ -65,7 +65,7 @@ class Tasks(object):
                 if task.enabled:
                     task.onRun()
             except Exception as e:
-                ExceptionHandler().Handle(e)
+                ExceptionHandler().Handle(e, task.context)
                 #time.sleep(1)
 
     def Stop(args):

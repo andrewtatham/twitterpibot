@@ -3,6 +3,8 @@ from Task import Task
 from InboxItemFactory import InboxItemFactory
 from ResponseFactory import ResponseFactory
 import sys
+from IncomingDirectMessage import IncomingDirectMessage
+from IncomingTweet import IncomingTweet
 
 
 
@@ -19,6 +21,10 @@ class ProcessInboxTask(Task):
             if data:
                 inboxItem = args.factory.Create(data)
                 if inboxItem :
+                    if type(inboxItem) is IncomingTweet:
+                        args.context.statistics.RecordIncomingTweet()
+                    if type(inboxItem) is IncomingDirectMessage:
+                        args.context.statistics.RecordIncomingDirectMessage()
                     ProcessInboxItem(args, inboxItem)
         finally:
             args.context.inbox.task_done()
