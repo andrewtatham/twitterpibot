@@ -13,7 +13,7 @@ class SongTask(Task):
                 args.context.outbox.put(tweet)
         finally:
             args.context.song.task_done()
-            time.sleep(5)
+            time.sleep(1)
 
     def onStop(args):
         args.context.song.put(None)

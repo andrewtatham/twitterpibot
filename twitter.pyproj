@@ -1629,22 +1629,30 @@
     <Content Include="songs\500miles.txt" />
     <Content Include="songs\believin.txt" />
     <Content Include="songs\bird.txt" />
+    <Content Include="songs\bluemonday.txt" />
     <Content Include="songs\bohrap.txt" />
+    <Content Include="songs\boomshackalack.txt" />
     <Content Include="songs\common.txt" />
     <Content Include="songs\forgot.txt" />
+    <Content Include="songs\freshprince.txt" />
     <Content Include="songs\gangsters.txt" />
     <Content Include="songs\compton.txt" />
     <Content Include="songs\ice.txt" />
     <Content Include="songs\incredible.txt" />
+    <Content Include="songs\informer.txt" />
     <Content Include="songs\japanese.txt" />
     <Content Include="songs\jingle.txt" />
     <Content Include="songs\jungle.txt" />
     <Content Include="songs\nighttrain.txt" />
+    <Content Include="songs\novemberrain.txt" />
     <Content Include="songs\paradise.txt" />
     <Content Include="songs\rickroll.txt" />
     <Content Include="songs\rocklobster.txt" />
     <Content Include="songs\police.txt" />
     <Content Include="songs\sexy.txt" />
+    <Content Include="songs\spinmeround.txt" />
+    <Content Include="songs\stilldre.txt" />
+    <Content Include="songs\stuckinthemiddle.txt" />
     <Content Include="songs\sweet.txt" />
     <Content Include="songs\wonderwall.txt" />
   </ItemGroup>
@@ -1818,6 +1826,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Context.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="songs\Songs.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tasks\DisplayImagesTask.py">

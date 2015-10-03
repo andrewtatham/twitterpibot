@@ -16,6 +16,7 @@ sys.path.append('schedule')
 sys.path.append('users')
 sys.path.append('processing')
 sys.path.append('brightpi')
+sys.path.append('songs')
 
 from Authenticator import Authenticator
 from Context import Context

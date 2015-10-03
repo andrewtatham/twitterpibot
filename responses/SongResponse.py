@@ -1,23 +1,19 @@
 from Response import Response
 from OutgoingTweet import OutgoingTweet
 import os
+from Songs import Songs
+import random
 class SongResponse(Response):
     def __init__(self, *args, **kwargs):
-        songsfolder = "songs/"
-        self.songNames = []
-        self.songs = {}
-        songfiles = os.listdir(songsfolder)
-        for songfile in songfiles:
-            songname = songfile.lower()
-            if songname.endswith('.txt'):
-                songname = songname[:-4]
-            self.songNames.append(songname)
-            self.songs[songname] = open(songsfolder + songfile, "rb").readlines()
+        self.songsfolder = "songs/"
+        self.songs = Songs()
+        self.songnames = self.songs.songs.keys()
+        self.mutation = [",", ".", " *", " `", " ", " -", "_"]
 
     def Condition(args, inboxItem):
         return super(SongResponse,args).Condition(inboxItem) \
             and inboxItem.to_me \
-            and args.Contains(inboxItem.words, args.songNames)
+            and args.Contains(inboxItem.words, args.songnames)
 
     def Contains(args, list_a, list_b):
         for item_a in list_a:
@@ -27,18 +23,33 @@ class SongResponse(Response):
         return False
 
     def Respond(args, inboxItem):
-
         for word in inboxItem.words:
-            for songname in args.songNames:
+            for songname in args.songnames:
                 if word.lower() == songname.lower():
-                    lyrics = args.songs[songname.lower()]
-                    lastlyric = ""
+                    song = args.songs.songs[songname]
+
+
+
+                    if "video" in song and song["video"]:
+                        tweet = args.ReplyWith(inboxItem=inboxItem, 
+                            text=song["video"])
+                        args.context.song.put(tweet)
+
+
+                    lyricsfile = song["lyrics"]
+                    lyrics = open(args.songsfolder + lyricsfile, "rb").readlines()
+                    lastlyrics = []
                     for lyric in lyrics:
                         lyric = lyric.strip()
-                        if lyric and lyric != lastlyric:
+                        if lyric:
+
+                            ## prevent duplicate lines
+                            while lyric in lastlyrics:
+                                lyric += random.choice(args.mutation)
+                                print("[Songs] mutating" + lyric)
                             
                             tweet = args.ReplyWith(inboxItem=inboxItem, 
                                 text=lyric)
                             args.context.song.put(tweet)
-                            lastlyric = lyric
+                            lastlyrics.append(lyric)
 
