@@ -4,7 +4,7 @@ import random
 class Songs(object):
     def __init__(self, *args, **kwargs):
         self.songsfolder = "songs/"
-        self.mutation = [",", ".", " *", " `", " ", " -", "_"]
+        self.mutation = [" ,", " .", " *", " `", " -", " _"]
         self._songs = CaseInsensitiveDict(
             {
             "500miles" : {
