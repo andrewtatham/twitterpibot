@@ -11,7 +11,7 @@ class SongScheduledTask(ScheduledTask):
         self.songs = Songs()
         
     def GetTrigger(args):
-        return CronTrigger(minute = "*/5")
+        return CronTrigger(hour = "*/5")
     def onRun(args):
 
         songKey = random.choice(args.songs.Keys())
