@@ -1798,6 +1798,9 @@
     <Compile Include="schedule\ScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="schedule\SongScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="schedule\SuggestedUsersScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>

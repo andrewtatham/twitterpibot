@@ -26,6 +26,7 @@ from SunTimelapseScheduledTask import SunTimelapseScheduledTask
 from SavedSearchScheduledTask import SavedSearchScheduledTask
 from TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
 from MidnightScheduledTask import MidnightScheduledTask
+from SongScheduledTask import SongScheduledTask
 
 
 
@@ -53,7 +54,8 @@ class Schedule(object):
             NightTimelapseScheduledTask(),
             SunTimelapseScheduledTask(),
             SavedSearchScheduledTask(),
-            MidnightScheduledTask()
+            MidnightScheduledTask(),
+            SongScheduledTask()
             ]
 
 
