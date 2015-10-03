@@ -23,6 +23,7 @@ class User(object):
         
         self.updated = None
 
+        self.isArsehole = False        
         self.isRetweetMore = False
         self.isBot = False        
         self.isFriend = False
@@ -53,6 +54,10 @@ class User(object):
         with args.lock:
             for list in lists.values():
                 if list.ContainsUser(args.id):
+
+                    if list.name == "Arseholes":
+                        args.isArsehole = True # This is my favourite line in this code
+                        print("Is member of " + list.name)
 
                     if list.name == "Reply Less":
                         args.isReplyLess = True
