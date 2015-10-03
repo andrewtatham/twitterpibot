@@ -9,12 +9,19 @@ class RetweetResponse(Response):
     def __init__(self, *args, **kwargs):
 
         self.bannedTopics = [
-            "(RT|Retweet) ?(to|2) ?win",
+            # RT to Win
+            "(RT|Retweet|chance|follow).*(to|2).*win",
+
+            # RT/Fav voting
+            "(RT|Retweet).*(Fav)",
+            "(Fav).*(RT|Retweet)",
+
             # Football
 
             # Job Adverts
-
-            
+            "is.*(looking for|hiring)",
+            "Jobs available",          
+            "Apply now"
             ]
 
         self.rx = re.compile("|".join(self.bannedTopics), re.IGNORECASE)
