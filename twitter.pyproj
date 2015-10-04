@@ -21,6 +21,8 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include=".gitignore" />
+    <Content Include=".gitmodules" />
     <Content Include="pics\.picasa.ini" />
     <Content Include="pics\andrew\.picasa.ini" />
     <Content Include="pics\andrew\000_0002.JPG" />
@@ -1626,6 +1628,7 @@
     <Content Include="pics\will\n650836710_491283_8022.JPG" />
     <Content Include="pics\will\P1010467.JPG" />
     <Content Include="pics\will\P1010493.JPG" />
+    <Content Include="README.md" />
     <Content Include="songs\500miles.txt" />
     <Content Include="songs\believin.txt" />
     <Content Include="songs\bird.txt" />
