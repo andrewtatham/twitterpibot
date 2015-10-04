@@ -37,7 +37,7 @@ def ProcessInboxItem(args, inboxItem):
         args.context.OnInboxItemRecieved(inboxItem=inboxItem)
         response = args.responseFactory.Create(inboxItem)
         if response :
-            args.context.outbox.put(response)
+            args.context.send(response)
             
 
 

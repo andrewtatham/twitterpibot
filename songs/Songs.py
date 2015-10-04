@@ -239,32 +239,29 @@ class Songs(object):
 
         if "video" in song and song["video"]:
             text = "Sing along! " + song["video"]
-            tweet = args._getResponse(inboxItem, text, response, target)
-            context.song.put(tweet)
+            args._send(inboxItem, text, response, target)
 
         lyricsfile = song["lyrics"]
         lyrics = open(args.songsfolder + lyricsfile, "rb").readlines()
-        lastlyrics = []
+        lastlyrics = set([])
         for lyric in lyrics:
             lyric = lyric.strip()
             if lyric:
-
                 ## prevent duplicate lines
                 while lyric in lastlyrics:
                     lyric += random.choice(args.mutation)
-                    print("[Songs] mutating" + lyric)
-        
-                tweet = args._getResponse(inboxItem, lyric, response, target)
+                lastlyrics.add(lyric)
+                args._send(inboxItem, lyric, response, target)
 
-                if tweet: 
-                    context.song.put(tweet)
-                    lastlyrics.append(lyric)
+  
+                   
+                    
 
       
               
-    def _getResponse(args, inboxItem, lyric, response, target):
+    def _send(args, inboxItem, lyric, response, target):
         if response and inboxItem:
-            tweet = response.ReplyWith(
+            Response.ReplyWith(response,
                 inboxItem=inboxItem, 
                 text=lyric)
         else:
@@ -273,7 +270,8 @@ class Songs(object):
                 text = "@" + target.screen_name + " "
             text += lyric
             tweet = OutgoingTweet(text = text)
-        return tweet     
+            args.context.send(tweet)
+       
 
 
 

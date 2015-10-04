@@ -17,9 +17,7 @@ class Tasks(object):
     
     def __init__(self, context, *args, **kwargs):
 
-        self.taskList = [SongTask(),
-                         ProcessOutboxTask(),
-                         ProcessInboxTask(),
+        self.taskList = [ProcessInboxTask(),
                          StreamTweetsTask()]
         
         if context.piglow:

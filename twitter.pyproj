@@ -1726,7 +1726,6 @@
     <Compile Include="processing\Timelapse.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Responses.py" />
     <Compile Include="responses\BotBlockerResponse.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1848,12 +1847,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tasks\ProcessInboxTask.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="tasks\ProcessOutboxTask.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="tasks\SongTask.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tasks\StreamTweetsTask.py">

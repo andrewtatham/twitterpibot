@@ -46,9 +46,9 @@ class Response(object):
             tweet = OutgoingTweet(replyTo=inboxItem,
                 text=text,                
                 photos = photos)
-            self.context.outbox.put(tweet)
+            self.context.send(tweet)
            
         if replyAsDM:
             dm = OutgoingDirectMessage(replyTo=inboxItem,
                 text=text)
-            self.context.outbox.put(dm)
+            self.context.send(dm)

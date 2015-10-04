@@ -17,5 +17,5 @@ class MidnightScheduledTask(ScheduledTask):
             text=stats,
             screen_name = "andrewtatham", 
             user_id = "19201332")
-        args.context.outbox.put(tweet)
+        args.context.send(tweet)
         args.context.statistics.Reset()

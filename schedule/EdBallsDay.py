@@ -13,4 +13,4 @@ class EdBallsDay(ScheduledTask):
         year = str(datetime.date.today().year)
         text = "@edballs ED BALLS #EdBallsDay #EdBallsDay" + year
         tweet = OutgoingTweet(text=text)
-        args.context.outbox.put(tweet)
+        args.context.send(tweet)

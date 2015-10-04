@@ -22,4 +22,4 @@ class PhotoScheduledTask(ScheduledTask):
 
         if any(photos):
             tweet = OutgoingTweet(photos=photos)
-            args.context.outbox.put(tweet)
+            args.context.send(tweet)

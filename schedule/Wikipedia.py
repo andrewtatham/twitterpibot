@@ -33,7 +33,7 @@ class Wikipedia(ScheduledTask):
             
             text = cap(page.summary, 100) + page.url
             tweet = OutgoingTweet(text=text)
-            args.context.outbox.put(tweet)
+            args.context.send(tweet)
 
 def cap(s, l):
     return s if len(s) <= l else s[0:l - 3] + '...'

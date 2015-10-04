@@ -41,7 +41,7 @@ context.scheduler = scheduler
 scheduler.Start()
 
 if not context.hardware.iswindows:
-    context.outbox.put(OutgoingDirectMessage(
+    context.send(OutgoingDirectMessage(
         screen_name = "andrewtatham", 
         user_id = "19201332", 
         text="Up...." + str(datetime.datetime.now())))
@@ -53,7 +53,7 @@ context.top = top
 top.mainloop()
 
 if not context.hardware.iswindows:
-    context.outbox.put(OutgoingDirectMessage(
+    context.send(OutgoingDirectMessage(
         screen_name = "andrewtatham", 
         user_id = "19201332", 
         text="Down...." + str(datetime.datetime.now())))

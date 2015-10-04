@@ -111,7 +111,7 @@ class TimelapseUploadScheduledTask(ScheduledTask):
         with MyTwitter() as twitter:
             media_id = twitter.UploadMediaFromDisk(filename)
 
-            args.context.outbox.put(OutgoingTweet(
+            args.context.send(OutgoingTweet(
                 text = args.timelapse.tweetText,
                 media_id = media_id))
 

@@ -15,21 +15,14 @@ class MonitorScheduledTask(ScheduledTask):
 
     def onRun(args):
         text = datetime.datetime.now().strftime("%c")
-
-
         
         status = args.context.GetStatus()
-        
-        text += os.linesep + 'cpu = ' + str(status.cpu) \
+        text += os.linesep \
+            + 'cpu = ' + str(status.cpu) \
             + ' memory = ' + str(status.memory)  
-
-
-        if(status.inboxCount + status.songCount + status.outboxCount > 0):
-            text += os.linesep + 'inbox = ' + str(status.inboxCount) \
-                  + 'songs = ' + str(status.songCount) \
-                  + 'outbox = ' + str(status.outboxCount)
-
-
+        text += os.linesep \
+                + 'inbox = ' + str(status.inboxCount)
+               
 
         print(Style.BRIGHT + Fore.BLUE + text)
         logging.info(text)
