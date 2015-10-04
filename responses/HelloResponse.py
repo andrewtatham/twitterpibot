@@ -26,7 +26,7 @@ class HelloResponse(Response):
                 and bool(args.rx.match(inboxItem.text))
 
     def Respond(args, inboxItem):
-        return args.ReplyWith(inboxItem, random.choice(args.HelloWords))
+        args.ReplyWith(inboxItem, random.choice(args.HelloWords))
 
 
 

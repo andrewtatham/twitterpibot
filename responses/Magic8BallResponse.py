@@ -52,7 +52,7 @@ class Magic8BallResponse(Response):
 
         response = random.choice(args.responses) + " #Magic8Ball"
 
-        return args.ReplyWith(inboxItem=inboxItem, 
+        args.ReplyWith(inboxItem=inboxItem, 
             text=response)
 
 

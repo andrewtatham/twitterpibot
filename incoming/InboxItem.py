@@ -8,6 +8,7 @@ class InboxItem(object):
         self.isDirectMessage = False
         self.isEvent = False
 
+        self.isRespondedTo = False
 
 
 

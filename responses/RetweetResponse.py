@@ -33,7 +33,7 @@ class RetweetResponse(Response):
             and not inboxItem.from_me \
             and not inboxItem.to_me \
             and not inboxItem.retweeted \
-            and not inboxItem.isArsehole \
+            and not inboxItem.sender.isArsehole \
             and not bool(args.rx.match(inboxItem.text)) \
             and (
             (inboxItem.sender.isBot and random.randint(0,50) == 0) \

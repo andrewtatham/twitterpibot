@@ -25,7 +25,7 @@ class PhotoResponse(Response):
         
             photomessages = ["cheese!", "smile!"]
 
-            return args.ReplyWith(inboxItem=inboxItem, 
+            args.ReplyWith(inboxItem=inboxItem, 
                 text=random.choice(photomessages), 
                 asTweet=True,
                 photos = photos)

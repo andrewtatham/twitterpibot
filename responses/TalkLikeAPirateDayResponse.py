@@ -11,6 +11,6 @@ class TalkLikeAPirateDayResponse(Response):
 
     def Respond(args, inboxItem):
         response = random.choice(piracy) + " #TalkLikeAPirateDay" 
-        return args.ReplyWith(inboxItem, response)
+        args.ReplyWith(inboxItem, response)
 
         

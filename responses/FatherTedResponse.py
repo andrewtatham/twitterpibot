@@ -3,7 +3,8 @@ import random
 class FatherTedResponse(Response):
     def Condition(args, inboxItem):
         return super(FatherTedResponse, args).Condition(inboxItem) \
-            and inboxItem.to_me
+            and inboxItem.to_me \
+            and not inboxItem.isRespondedTo
 
 
     def Respond(args, inboxItem):
@@ -68,6 +69,6 @@ class FatherTedResponse(Response):
             
             ]
         response = random.choice(responses) 
-        return args.ReplyWith(inboxItem, response)
+        args.ReplyWith(inboxItem, response)
 
         

@@ -2,7 +2,8 @@ from OutgoingTweet import OutgoingTweet
 from OutgoingDirectMessage import OutgoingDirectMessage
 import random
 
-class Response(object):
+class Response(object):   
+    
     def Condition(args, inboxItem):
         return not inboxItem.from_me \
             and (inboxItem.isDirectMessage or inboxItem.isTweet \
@@ -45,9 +46,9 @@ class Response(object):
             tweet = OutgoingTweet(replyTo=inboxItem,
                 text=text,                
                 photos = photos)
-            return tweet
+            self.context.outbox.put(tweet)
            
         if replyAsDM:
             dm = OutgoingDirectMessage(replyTo=inboxItem,
                 text=text)
-            return dm
+            self.context.outbox.put(dm)

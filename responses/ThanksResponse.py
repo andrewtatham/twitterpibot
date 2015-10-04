@@ -20,7 +20,7 @@ class ThanksResponse(Response):
             "thankyou",
             "thank u",
             ]
-        return args.ReplyWith(inboxItem, random.choice(thanks) + " for the " + random.choice(thanks))
+        args.ReplyWith(inboxItem, random.choice(thanks) + " for the " + random.choice(thanks))
 
 
 
