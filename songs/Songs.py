@@ -237,9 +237,8 @@ class Songs(object):
     def Send(args, context, songKey, target = None, inboxItem = None, response = None ):
         song = args._songs[songKey]
 
-        if "video" in song and song["video"]:
-            text = "Sing along! " + song["video"]
-            args._send(inboxItem, text, response, target)
+        text = "Sing along! " + song["video"]
+        in_reply_to_status_id = args._send(inboxItem, text, response, target, None)
 
         lyricsfile = song["lyrics"]
         lyrics = open(args.songsfolder + lyricsfile, "rb").readlines()
@@ -251,25 +250,30 @@ class Songs(object):
                 while lyric in lastlyrics:
                     lyric += random.choice(args.mutation)
                 lastlyrics.add(lyric)
-                args._send(inboxItem, lyric, response, target)
-
-  
-                   
-                    
+                print (in_reply_to_status_id)
+                in_reply_to_status_id = args._send(
+                    inboxItem, 
+                    lyric, 
+                    response, 
+                    target, 
+                    in_reply_to_status_id)
 
       
               
-    def _send(args, inboxItem, lyric, response, target):
+    def _send(args, inboxItem, lyric, response, target, in_reply_to_status_id):
         if response and inboxItem:
             Response.ReplyWith(response,
                 inboxItem=inboxItem, 
-                text=lyric)
+                text=lyric,
+                in_reply_to_status_id = in_reply_to_status_id)
         else:
             text = ""
             if target:
                 text = "@" + target.screen_name + " "
             text += lyric
-            tweet = OutgoingTweet(text = text)
+            tweet = OutgoingTweet(
+                text = text, 
+                in_reply_to_status_id = in_reply_to_status_id)
             args.context.send(tweet)
        
 

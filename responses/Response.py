@@ -35,20 +35,22 @@ class Response(object):
 
     
 
-    def ReplyWith(self, inboxItem, text, asTweet=False, asDM=False, photos=None, *args, **kwargs):    
+    def ReplyWith(self, inboxItem, text, asTweet=False, asDM=False, photos=None, in_reply_to_status_id = None, *args, **kwargs):    
 
         replyAsTweet = asTweet or not asDM and inboxItem.isTweet
 
         replyAsDM = asDM or not asTweet and inboxItem.isDirectMessage
 
-
         if replyAsTweet :
-            tweet = OutgoingTweet(replyTo=inboxItem,
+            tweet = OutgoingTweet(
+                replyTo=inboxItem,
                 text=text,                
-                photos = photos)
+                photos = photos,
+                in_reply_to_status_id = in_reply_to_status_id)
             self.context.send(tweet)
            
         if replyAsDM:
-            dm = OutgoingDirectMessage(replyTo=inboxItem,
+            dm = OutgoingDirectMessage(
+                replyTo=inboxItem,
                 text=text)
             self.context.send(dm)

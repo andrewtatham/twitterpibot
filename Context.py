@@ -58,34 +58,26 @@ class Context(object):
 
         return status
 
-    #def Stop(args):
-    #    args.users.Save()
-
-
     def send(args, outboxItem):
-        if outboxItem:
-            outboxItem.Display()
-
-            with MyTwitter() as twitter:
-                if type(outboxItem) is OutgoingTweet:
-                    if outboxItem.photos and any(outboxItem.photos):
-                        outboxItem.media_ids = twitter.UploadMedia(outboxItem.photos)
-                    twitter.update_status(
-                        status = outboxItem.status,
-                        in_reply_to_status_id = outboxItem.in_reply_to_status_id,
-                        media_ids = outboxItem.media_ids)
-                    args.statistics.RecordOutgoingTweet()
-                if type(outboxItem) is OutgoingDirectMessage:
-                    twitter.send_direct_message(
-                        text = outboxItem.text, 
-                        screen_name = outboxItem.screen_name, 
-                        user_id = outboxItem.user_id)
-                    args.statistics.RecordOutgoingDirectMessage()                    
-
-
-
-
-
+        outboxItem.Display()
+        response = None
+        with MyTwitter() as twitter:
+            if type(outboxItem) is OutgoingTweet:
+                args.statistics.RecordOutgoingTweet()
+                if outboxItem.photos and any(outboxItem.photos):
+                    outboxItem.media_ids = twitter.UploadMedia(outboxItem.photos)
+                response = twitter.update_status(
+                    status = outboxItem.status,
+                    in_reply_to_status_id = outboxItem.in_reply_to_status_id,
+                    media_ids = outboxItem.media_ids)
+            if type(outboxItem) is OutgoingDirectMessage:
+                args.statistics.RecordOutgoingDirectMessage()                    
+                response = twitter.send_direct_message(
+                    text = outboxItem.text, 
+                    screen_name = outboxItem.screen_name, 
+                    user_id = outboxItem.user_id)
+        id_str = response["id_str"]
+        return id_str
 
 class Status(object):
     pass
