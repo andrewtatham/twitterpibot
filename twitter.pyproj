@@ -1636,6 +1636,7 @@
     <Content Include="songs\bohrap.txt" />
     <Content Include="songs\boomshackalack.txt" />
     <Content Include="songs\common.txt" />
+    <Content Include="songs\endoftheworld.txt" />
     <Content Include="songs\forgot.txt" />
     <Content Include="songs\freshprince.txt" />
     <Content Include="songs\gangsters.txt" />

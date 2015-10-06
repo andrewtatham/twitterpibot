@@ -72,6 +72,13 @@ class Songs(object):
             ##    "lyrics" : "dodgeball.txt",
             ##    "video" : ""
             ##},
+            "endoftheworld" : {
+                "artist" : "R.E.M.",
+                "screen_name" : None,
+                "title" : "It's The End Of The World As We Know It (And I Feel Fine)",
+                "lyrics" : "endoftheworld.txt",
+                "video" : "https://youtu.be/Z0GFRcFm-aY"
+            },
             "forgotaboutdre" : {
                 "artist" : "",
                 "screen_name" : None,
@@ -225,6 +232,13 @@ class Songs(object):
                 "title" : "",
                 "lyrics" : "wonderwall.txt",
                 "video" : "https://youtu.be/6hzrDeceEKc"
+            },
+            "wedidntstartthefire" : {
+                "artist" : "",
+                "screen_name" : None,
+                "title" : "",
+                "lyrics" : "wedidntstartthefire.txt",
+                "video" : "https://youtu.be/eFTLKWw542g"
             }
         }
     )
