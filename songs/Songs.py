@@ -1,6 +1,7 @@
 from Response import Response
 from OutgoingTweet import OutgoingTweet
 import random
+import time
 class Songs(object):
     def __init__(self, *args, **kwargs):
         self.songsfolder = "songs/"
@@ -257,12 +258,13 @@ class Songs(object):
                     response, 
                     target, 
                     in_reply_to_status_id)
+                time.sleep(2)
 
       
               
     def _send(args, inboxItem, lyric, response, target, in_reply_to_status_id):
         if response and inboxItem:
-            Response.ReplyWith(response,
+            return Response.ReplyWith(response,
                 inboxItem=inboxItem, 
                 text=lyric,
                 in_reply_to_status_id = in_reply_to_status_id)
@@ -274,7 +276,7 @@ class Songs(object):
             tweet = OutgoingTweet(
                 text = text, 
                 in_reply_to_status_id = in_reply_to_status_id)
-            args.context.send(tweet)
+            return args.context.send(tweet)
        
 
 

@@ -47,10 +47,10 @@ class Response(object):
                 text=text,                
                 photos = photos,
                 in_reply_to_status_id = in_reply_to_status_id)
-            self.context.send(tweet)
+            return self.context.send(tweet)
            
         if replyAsDM:
             dm = OutgoingDirectMessage(
                 replyTo=inboxItem,
                 text=text)
-            self.context.send(dm)
+            return self.context.send(dm)
