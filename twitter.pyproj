@@ -1659,6 +1659,7 @@
     <Content Include="songs\stilldre.txt" />
     <Content Include="songs\stuckinthemiddle.txt" />
     <Content Include="songs\sweet.txt" />
+    <Content Include="songs\wedidntstartthefire.txt" />
     <Content Include="songs\wonderwall.txt" />
   </ItemGroup>
   <ItemGroup>
