@@ -17,7 +17,7 @@ class Response(object):
 
 
     def Favourite(args, inboxItem):
-        return True
+        return False
 
 
     def Contains(args, list, item):
