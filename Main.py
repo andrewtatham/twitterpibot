@@ -3,8 +3,11 @@ import pickle
 import sys
 import platform
 import colorama
-import Tkinter
 import datetime
+try:
+    from Tkinter import * 
+except ImportError:
+    from tkinter import * 
 
 sys.path.append('tasks')
 sys.path.append('incoming')
@@ -47,7 +50,7 @@ if not context.hardware.iswindows:
         text="Up...." + str(datetime.datetime.now())))
 
 
-top = Tkinter.Tk()
+top = Tk()
 context.top = top
 
 top.mainloop()
