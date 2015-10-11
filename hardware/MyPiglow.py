@@ -1,13 +1,13 @@
 import math
 import time
 import random
-from ExceptionHandler import ExceptionHandler
+from ExceptionHandler import HandleSilently
 try:    
     from piglow import PiGlow
     #from PyGlow import PyGlow
     enablePiglow = True
 except Exception as e:
-    ExceptionHandler().HandleSilently(e)
+    HandleSilently(e)
     enablePiglow = False
 
 

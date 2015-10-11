@@ -47,12 +47,8 @@ class Magic8BallResponse(Response):
             and inboxItem.text.find("?") != -1
 
 
-
     def Respond(args, inboxItem):
-
         response = random.choice(args.responses) + " #Magic8Ball"
-
-        args.ReplyWith(inboxItem=inboxItem, 
-            text=response)
+        ReplyWith(inboxItem=inboxItem, text=response)
 
 

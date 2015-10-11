@@ -12,7 +12,6 @@ class TimelapseResponse(Response):
         
         now = datetime.datetime.now()
         timelapse = Timelapse(
-            context = args.context, 
             name = 'now',
             startTime = now + datetime.timedelta(seconds = 1), 
             endTime = now + datetime.timedelta(minutes = 2),
@@ -22,7 +21,7 @@ class TimelapseResponse(Response):
 
         tasks = timelapse.GetScheduledTasks()
         for task in tasks:
-            args.context.scheduler.add(task)
+            scheduler.add(task)
 
     
 

@@ -10,8 +10,8 @@ class SongScheduledTask(ScheduledTask):
     def __init__(self, *args, **kwargs):
         self.songs = Songs()
         
-    def GetTrigger(args):
-        return CronTrigger(hour = "*/5")
+    #def GetTrigger(args):
+    #    return CronTrigger(hour = "8-22/3")
     def onRun(args):
 
         songKey = random.choice(args.songs.Keys())
@@ -25,7 +25,6 @@ class SongScheduledTask(ScheduledTask):
                 target = User(random.choice(members["users"]))
 
             args.songs.Send(
-                context = args.context, 
                 songKey = songKey, 
                 target = target)
 

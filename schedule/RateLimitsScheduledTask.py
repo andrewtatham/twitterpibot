@@ -22,18 +22,18 @@ class RateLimitsScheduledTask(ScheduledTask):
 
         with MyTwitter() as twitter:
             rates = twitter.get_application_rate_limit_status()
-            args.context.ratelimits.UpdateRateLimits(rates)
+            ratelimits.UpdateRateLimits(rates)
 
 
     def onInit(args):
 
         if os.path.isfile(filename):
-            args.context.ratelimits = pickle.load(open(filename, "rb"))
+            ratelimits = pickle.load(open(filename, "rb"))
         else:
             args.onRun()
 
     def onStop(args):
-        if args.context.ratelimits:
-            pickle.dump(args.context.ratelimits, open(filename, "wb"))
+        if ratelimits:
+            pickle.dump(ratelimits, open(filename, "wb"))
 
         

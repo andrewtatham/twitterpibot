@@ -14,7 +14,7 @@ class NightTimelapseScheduledTask(ScheduledTask):
         today = astral.GetTimes()
         tommorrow = astral.GetTommorrowTimes()
 
-        timelapse = Timelapse(context = args.context, 
+        timelapse = Timelapse(
             name = 'night',
             startTime = today['sunset'], 
             endTime = tommorrow['sunrise'],
@@ -23,6 +23,6 @@ class NightTimelapseScheduledTask(ScheduledTask):
 
         tasks = timelapse.GetScheduledTasks()
         for task in tasks:
-            args.context.scheduler.add(task)
+            scheduler.add(task)
 
 

@@ -11,7 +11,7 @@ class SunTimelapseScheduledTask(ScheduledTask):
 
         sun = MyAstral().GetTimes()
 
-        timelapse = Timelapse(context = args.context, 
+        timelapse = Timelapse(
             name = 'sun',
             startTime = sun['dawn'], 
             endTime = sun['dusk'],
@@ -20,6 +20,6 @@ class SunTimelapseScheduledTask(ScheduledTask):
 
         tasks = timelapse.GetScheduledTasks()
         for task in tasks:
-            args.context.scheduler.add(task)
+            scheduler.add(task)
 
 

@@ -6,7 +6,7 @@ import os
 from apscheduler.schedulers.background import BackgroundScheduler
 from PhotoScheduledTask import PhotoScheduledTask
 import logging
-from ExceptionHandler import ExceptionHandler
+from ExceptionHandler import Handle
 from EdBallsDay import EdBallsDay
 from Wikipedia import Wikipedia
 from MonitorScheduledTask import MonitorScheduledTask
@@ -28,15 +28,15 @@ from TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
 from MidnightScheduledTask import MidnightScheduledTask
 from SongScheduledTask import SongScheduledTask
 
+global hardware
 
 
 
 
 class Schedule(object):
-    def __init__(self, context, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
 
-        self.context = context
-        self.scheduler = BackgroundScheduler()
+        self._scheduler = BackgroundScheduler()
         self.jobs = [Wikipedia(),
             EdBallsDay(),
             TalkLikeAPirateDayScheduledTask(),
@@ -59,17 +59,15 @@ class Schedule(object):
             ]
 
 
-        if context.hardware.iswindows:
+        if hardware.iswindows:
             self.jobs.append(BotBlockerScheduledTask())
 
-
-        if not context.hardware.iswindows:
+        if not hardware.iswindows:
             self.jobs.append(PhotoScheduledTask())
 
         for job in self.jobs:
-            job.context = context
             job.onInit()
-            self.scheduler.add_job(self.RunWrapper, args=[job], trigger = job.GetTrigger())
+            self._scheduler.add_job(self.RunWrapper, args=[job], trigger = job.GetTrigger())
 
         return super(Schedule, self).__init__(*args, **kwargs)
 
@@ -77,16 +75,15 @@ class Schedule(object):
         try:   
             task.onRun()
         except Exception as e:
-            ExceptionHandler().Handle(e, args.context)
+            Handle(e)
 
     def Start(args):
-        args.scheduler.start()
+        args._scheduler.start()
     def Stop(args):
-        args.scheduler.shutdown()
+        args._scheduler.shutdown()
         for job in args.jobs:
             job.onStop()
         
     def add(args, job):
-        job.context = args.context
         job.onInit()
-        args.scheduler.add_job(args.RunWrapper, args=[job], trigger = job.GetTrigger())
+        args._scheduler.add_job(args.RunWrapper, args=[job], trigger = job.GetTrigger())

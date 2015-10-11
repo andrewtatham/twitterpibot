@@ -25,7 +25,6 @@ class SongResponse(Response):
             for songname in args.songnames:
                 if word.lower() == songname.lower():
                     args.songs.Send(
-                        context = args.context, 
                         songKey = songname,
                         inboxItem = inboxItem, 
                         response = args)

@@ -1836,9 +1836,6 @@
     <Compile Include="schedule\Wikipedia.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Context.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="songs\Songs.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1867,6 +1864,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="twitter\MyStreamer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="twitter\TwitterHelper.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ui\CameraSettingsUI.py">

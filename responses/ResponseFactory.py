@@ -11,9 +11,10 @@ from RestartResponse import RestartResponse
 from TimelapseResponse import TimelapseResponse
 from TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
 
+global hardware
 
 class ResponseFactory(object):
-    def __init__(self, context, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
 
         self.responses = [
             RestartResponse(),
@@ -27,10 +28,9 @@ class ResponseFactory(object):
             FatherTedResponse(),           
             RetweetResponse()]
 
-        if context.hardware.iswindows:
+        if hardware.iswindows:
             self.responses.append(BotBlockerResponse())
 
-        self.context = context
         for response in self.responses:
             response.context = self.context
 

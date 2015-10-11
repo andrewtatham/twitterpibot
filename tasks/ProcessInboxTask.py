@@ -5,39 +5,46 @@ from ResponseFactory import ResponseFactory
 import sys
 from IncomingDirectMessage import IncomingDirectMessage
 from IncomingTweet import IncomingTweet
+from Statistics import RecordIncomingTweet, RecordIncomingDirectMessage
+from TwitterHelper import Send
 
+global hardware
 
 
 class ProcessInboxTask(Task):
 
     def onInit(args):
-        args.factory = InboxItemFactory(args.context)
-        args.responseFactory = ResponseFactory(args.context)
+        args.factory = InboxItemFactory()
+        args.responseFactory = ResponseFactory()
     
 
     def onRun(args):
+        global inbox
         try:
-            data = args.context.inbox.get()
+            data = inbox.get()
             if data:
                 inboxItem = args.factory.Create(data)
                 if inboxItem :
                     if type(inboxItem) is IncomingTweet:
-                        args.context.statistics.RecordIncomingTweet()
+                        RecordIncomingTweet()
                     if type(inboxItem) is IncomingDirectMessage:
-                        args.context.statistics.RecordIncomingDirectMessage()
+                        RecordIncomingDirectMessage()
                     ProcessInboxItem(args, inboxItem)
         finally:
-            args.context.inbox.task_done()
+            inbox.task_done()
 
     def onStop(args):
-        args.context.inbox.put(None)
+        inbox.put(None)
 
 def ProcessInboxItem(args, inboxItem):
         inboxItem.Display()
-        args.context.OnInboxItemRecieved(inboxItem=inboxItem)
+
+        if hardware.piglowattached:
+            piglow.OnInboxItemRecieved(inboxItem)
+
         response = args.responseFactory.Create(inboxItem)
         if response :
-            args.context.send(response)
+            Send(response)
             
 
 

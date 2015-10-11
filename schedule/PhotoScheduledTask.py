@@ -11,15 +11,15 @@ class PhotoScheduledTask(ScheduledTask):
 
     def onRun(args):
 
-        args.context.CameraFlash(True)
+        CameraFlash(True)
         time.sleep(1)
-        photos = args.context.cameras.TakePhotos()
+        photos = cameras.TakePhotos()
 
-        args.context.CameraFlash(False)
+        CameraFlash(False)
 
 
 
 
         if any(photos):
             tweet = OutgoingTweet(photos=photos)
-            args.context.send(tweet)
+            Send(tweet)

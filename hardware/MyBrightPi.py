@@ -1,4 +1,4 @@
-from ExceptionHandler import ExceptionHandler
+from ExceptionHandler import HandleSilently 
 import time
 
 try:    
@@ -6,7 +6,7 @@ try:
     from BrightPILed import BrightPI
     enableBrightPi = True
 except Exception as e:
-    ExceptionHandler().HandleSilently(e)
+    HandleSilently(e)
     enableBrightPi = False
 
 class MyBrightPi(object):

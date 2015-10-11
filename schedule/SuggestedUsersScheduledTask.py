@@ -28,8 +28,8 @@ class SuggestedUsersScheduledTask(ScheduledTask):
 
             try:
                 category = args._slugList.get()
-                users = twitter.get_user_suggestions_by_slug(slug = category["slug"])
-                for user in users["users"]:
+                suggestedUsers = twitter.get_user_suggestions_by_slug(slug = category["slug"])
+                for user in suggestedUsers["users"]:
                     colour = suggestedUserColours.next()
                     print(colour + "User: [" + category["name"] + "] - " + user["name"] +  " [@" + user["screen_name"] + "] - " + user["description"].replace("\n", "   "))
 

@@ -15,7 +15,6 @@ class TimelapseScheduledTask(ScheduledTask):
 
         now = datetime.datetime.now()
         timelapse = Timelapse(
-            context = args.context, 
             name = 'now',
             startTime = now + datetime.timedelta(seconds = 1), 
             endTime = now + datetime.timedelta(seconds = 5),
@@ -25,7 +24,7 @@ class TimelapseScheduledTask(ScheduledTask):
 
         tasks = timelapse.GetScheduledTasks()
         for task in tasks:
-            args.context.scheduler.add(task)
+            scheduler.add(task)
 
 
 

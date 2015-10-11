@@ -7,4 +7,4 @@ class WeatherScheduledTask(ScheduledTask):
         return CronTrigger(hour=7)
     
     def onRun(args):      
-        args.context.send(OutgoingTweet(text= "@BBCWeatherBot Leeds Today"))
+        Send(OutgoingTweet(text= "@BBCWeatherBot Leeds Today"))

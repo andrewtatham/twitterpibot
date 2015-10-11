@@ -11,7 +11,7 @@ class SunriseTimelapseScheduledTask(ScheduledTask):
 
         sun = MyAstral().GetTimes()
 
-        timelapse = Timelapse(context = args.context, 
+        timelapse = Timelapse(
             name = 'sunrise',
             startTime = sun['dawn'] + datetime.timedelta(minutes = -20), 
             endTime = sun['sunrise'] + datetime.timedelta(minutes = +20),
@@ -20,6 +20,6 @@ class SunriseTimelapseScheduledTask(ScheduledTask):
 
         tasks = timelapse.GetScheduledTasks()
         for task in tasks:
-            args.context.scheduler.add(task)
+            scheduler.add(task)
 
 

@@ -6,33 +6,20 @@ from MyTwitter import MyTwitter
 import logging
 from UserSet import UserSet
 import threading
+
+
 class Users(object):
     def __init__(self, *args, **kwargs):
-        self.me = {
-            "name":"andrewtathampi",
-            "id":"2935295111"
-        }
 
         self.lock = threading.Lock()
 
         self._users = {}
         self._sets = {}
 
-        #exists = os.path.isfile("USERS.pkl") and
-        #os.path.isfile("USER_LISTS.pkl")
-        #if (exists):
-        #    self._users = pickle.load(open("USERS.pkl", "rb"))
-        #    self._sets = pickle.load(open("USER_LISTS.pkl", "rb"))
-
     def updateLists(args):
-        #print("updating user lists")
-        #logging.info("updating user lists")
         with MyTwitter() as twitter:
             myLists = twitter.show_owned_lists()
             for myList in myLists["lists"]:
-                #text = "updating user list " + myList["id_str"] + " " + myList["name"]
-                #print(text)
-                #logging.info(text)
                 members = twitter.get_list_members(list_id = myList["id_str"])
                 key = myList["id_str"]
                 with args.lock:
