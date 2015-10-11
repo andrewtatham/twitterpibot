@@ -1,4 +1,4 @@
-from Queue import Queue
+
 from Cameras import Cameras
 from MyPiglow import MyPiglow
 import cv2
@@ -13,6 +13,11 @@ from Statistics import Statistics
 from MyTwitter import MyTwitter
 from OutgoingTweet import OutgoingTweet
 from OutgoingDirectMessage import OutgoingDirectMessage
+
+try:
+    from queue import Queue
+except ImportError:
+    from Queue import Queue
 
 class Context(object):
     def __init__(self, *args, **kwargs):
