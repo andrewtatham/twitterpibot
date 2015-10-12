@@ -2,7 +2,7 @@ from Response import Response
 from OutgoingTweet import OutgoingTweet
 import random
 import time
-from TwitterHelper import Send
+from TwitterHelper import Send, ReplyWith
 class Songs(object):
     def __init__(self, *args, **kwargs):
         self.songsfolder = "songs/"
@@ -278,8 +278,8 @@ class Songs(object):
       
               
     def _send(args, inboxItem, lyric, response, target, in_reply_to_status_id):
-        if response and inboxItem:
-            return ReplyWith(response,
+        if inboxItem:
+            return ReplyWith(
                 inboxItem=inboxItem, 
                 text=lyric,
                 in_reply_to_status_id = in_reply_to_status_id)

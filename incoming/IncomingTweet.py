@@ -6,6 +6,8 @@ import logging
 from itertools import cycle
 from colorama import Fore, Style
 import random
+import Users
+import Identity
 
 #import nltk
 h = HTMLParser.HTMLParser()
@@ -14,18 +16,18 @@ tweetcolours = cycle([Fore.GREEN, Fore.YELLOW])
 trendcolours = cycle([Fore.MAGENTA, Fore.WHITE])
 searchcolours = cycle([Fore.CYAN, Fore.WHITE])
 
-global users
+
 
 class IncomingTweet(InboxTextItem):
     def __init__(self, data):
         # https://dev.twitter.com/overview/api/tweets
-        #logging.info(data)
+        # logging.info(data)
 
         super(IncomingTweet, self).__init__(data)
 
         self.isTweet = True
         self.status_id = data["id_str"]
-        self.sender = users.getUser(data = data["user"])
+        self.sender = Users.getUser(data = data["user"])
         self.from_me = self.sender.isMe
         self.favorited = bool(data["favorited"])
         self.retweeted = bool(data["retweeted"])       
@@ -53,10 +55,10 @@ class IncomingTweet(InboxTextItem):
             if "user_mentions" in entities:
                 mentions = entities["user_mentions"]
                 for mention in mentions:
-                    if mention["id_str"] != users.me["id"]: #and mention["screen_name"] != self.sender_screen_name:
+                    if mention["id_str"] != Identity.id: #and mention["screen_name"] != self.sender_screen_name:
                         self.targets.append(mention["screen_name"])
                       
-                    if mention["id_str"] == users.me["id"]:
+                    if mention["id_str"] == Identity.id:
                         self.to_me = True
 
         #self.tokens = nltk.word_tokenize(self.text)

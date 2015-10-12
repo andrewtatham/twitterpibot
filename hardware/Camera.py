@@ -3,7 +3,7 @@ class Camera(object):
     def TakePhoto(args):
         pass
 
-    def TakePhotoToDisk(args, dir, name, ext, nightmode):
+    def TakePhotoToDisk(args, dir, name, ext):
         pass
 
     def Close(args):

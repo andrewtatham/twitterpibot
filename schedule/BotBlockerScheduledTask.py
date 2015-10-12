@@ -2,7 +2,8 @@ from ScheduledTask import ScheduledTask
 from BotBlocker import BotBlocker
 from MyTwitter import MyTwitter
 from apscheduler.triggers.interval import IntervalTrigger
-global users
+import Users
+
 
 
 class BotBlockerScheduledTask(ScheduledTask):
@@ -36,7 +37,7 @@ class BotBlockerScheduledTask(ScheduledTask):
             if any(args._myFollowers):
                 follower = args._myFollowers.pop()
 
-                user = users.getUser(id = follower)
+                user = Users.getUser(id = follower)
 
                 block = args._blocker.IsUserBot(user)
                 if block:

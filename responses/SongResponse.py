@@ -3,6 +3,9 @@ from OutgoingTweet import OutgoingTweet
 import os
 from Songs import Songs
 import random
+from TwitterHelper import Send
+
+
 class SongResponse(Response):
     def __init__(self, *args, **kwargs):
         self.songs = Songs()

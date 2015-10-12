@@ -11,8 +11,8 @@
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <InterpreterId />
-    <InterpreterVersion />
+    <InterpreterId>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</InterpreterId>
+    <InterpreterVersion>2.7</InterpreterVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
@@ -1670,10 +1670,7 @@
     <Compile Include="hardware\Camera.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="hardware\Cameras.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="hardware\Hardware.py">
+    <Compile Include="hardware\hardware.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="hardware\MyBrightPi.py">
@@ -1685,7 +1682,13 @@
     <Compile Include="hardware\MyPiglow.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="hardware\Webcam.py">
+    <Compile Include="hardware\myunicornhat.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hardware\MyWebcam.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Identity.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="incoming\InboxItem.py">
@@ -1707,6 +1710,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Main.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MyQueues.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="outgoing\OutboxItem.py">
@@ -1797,7 +1803,7 @@
     <Compile Include="schedule\SavedSearchScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="schedule\Schedule.py">
+    <Compile Include="schedule\MySchedule.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="schedule\ScheduledTask.py">
@@ -1908,6 +1914,11 @@
     <Folder Include="pics\markr" />
     <Folder Include="pics\will" />
     <Folder Include="songs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
+    <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\3.4" />
+    <InterpreterReference Include="{9a7a9026-48c1-4688-9d5d-e5699d47d074}\2.7" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />

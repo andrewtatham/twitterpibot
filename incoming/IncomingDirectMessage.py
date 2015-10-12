@@ -1,5 +1,5 @@
 from InboxTextItem import InboxTextItem
-global users
+import Users
 
 class IncomingDirectMessage(InboxTextItem):
 
@@ -14,8 +14,8 @@ class IncomingDirectMessage(InboxTextItem):
         # https://dev.twitter.com/rest/reference/get/direct_messages
 
 
-        self.sender = users.getUser(data = data["direct_message"]["sender"])
-        self.recipient = users.getUser(data = data["direct_message"]["recipient"])
+        self.sender = Users.getUser(data = data["direct_message"]["sender"])
+        self.recipient = Users.getUser(data = data["direct_message"]["recipient"])
         self.from_me = self.sender.isMe
         self.to_me = self.recipient.isMe
         self.targets = [self.sender.screen_name]

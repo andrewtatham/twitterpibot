@@ -8,47 +8,53 @@ from UserSet import UserSet
 import threading
 
 
-class Users(object):
-    def __init__(self, *args, **kwargs):
-
-        self.lock = threading.Lock()
-
-        self._users = {}
-        self._sets = {}
-
-    def updateLists(args):
-        with MyTwitter() as twitter:
-            myLists = twitter.show_owned_lists()
-            for myList in myLists["lists"]:
-                members = twitter.get_list_members(list_id = myList["id_str"])
-                key = myList["id_str"]
-                with args.lock:
-                    if not args._sets.has_key(key):
-                        args._sets[key] = UserSet(myList["name"])
-                    set = args._sets[key]
-                    set.UpdateMembers(members)
 
 
-    def getUser(args, id = None, data = None):
-        if not id and not data:
-            raise ValueError()
+_lock = threading.Lock()
+_users = {}
+_sets = {}
 
-        with args.lock:
 
-            if id and not data:
-                with MyTwitter() as twitter:
-                    data = twitter.lookup_user(user_id = id)[0]
 
-            if data:
-                id = data["id_str"]
 
-                if not args._users.has_key(id):
-                    args._users[id] = User(data)
 
-                if(args._users[id].isStale()):
-                    args._users[id].update(args._sets)
 
-                return args._users[id]
+
+
+
+def updateLists():
+    with MyTwitter() as twitter:
+        myLists = twitter.show_owned_lists()
+        for myList in myLists["lists"]:
+            members = twitter.get_list_members(list_id = myList["id_str"])
+            key = myList["id_str"]
+            with _lock:
+                if not _sets.has_key(key):
+                    _sets[key] = UserSet(myList["name"])
+                set = _sets[key]
+                set.UpdateMembers(members)
+
+
+def getUser(id = None, data = None):
+    if not id and not data:
+        raise ValueError()
+
+    with _lock:
+
+        if id and not data:
+            with MyTwitter() as twitter:
+                data = twitter.lookup_user(user_id = id)[0]
+
+        if data:
+            id = data["id_str"]
+
+            if not _users.has_key(id):
+                _users[id] = User(data)
+
+            if(_users[id].isStale()):
+                _users[id].update(_sets)
+
+            return _users[id]
 
 
 

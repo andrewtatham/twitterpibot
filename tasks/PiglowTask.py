@@ -1,9 +1,9 @@
 
 from Task import Task
 import time
-import sys
+import hardware
 class PiglowTask(Task):
     def onRun(args):
-        if piglow:
-            piglow.Fade()
+
+        hardware.piglow.Fade()
         time.sleep(1)

@@ -1,6 +1,7 @@
 from OutgoingTweet import OutgoingTweet
 from OutgoingDirectMessage import OutgoingDirectMessage
 import random
+from TwitterHelper import Send, ReplyWith
 
 class Response(object):   
     

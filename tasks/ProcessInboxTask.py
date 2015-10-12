@@ -2,14 +2,13 @@
 from Task import Task
 from InboxItemFactory import InboxItemFactory
 from ResponseFactory import ResponseFactory
-import sys
 from IncomingDirectMessage import IncomingDirectMessage
 from IncomingTweet import IncomingTweet
 from Statistics import RecordIncomingTweet, RecordIncomingDirectMessage
 from TwitterHelper import Send
 
-global hardware
-
+import hardware
+import MyQueues
 
 class ProcessInboxTask(Task):
 
@@ -19,9 +18,8 @@ class ProcessInboxTask(Task):
     
 
     def onRun(args):
-        global inbox
         try:
-            data = inbox.get()
+            data = MyQueues.inbox.get()
             if data:
                 inboxItem = args.factory.Create(data)
                 if inboxItem :
@@ -31,16 +29,16 @@ class ProcessInboxTask(Task):
                         RecordIncomingDirectMessage()
                     ProcessInboxItem(args, inboxItem)
         finally:
-            inbox.task_done()
+            MyQueues.inbox.task_done()
 
     def onStop(args):
-        inbox.put(None)
+        MyQueues.inbox.put(None)
 
 def ProcessInboxItem(args, inboxItem):
         inboxItem.Display()
 
-        if hardware.piglowattached:
-            piglow.OnInboxItemRecieved(inboxItem)
+        if hardware.ispiglowattached:
+            hardware.piglow.OnInboxItemRecieved(inboxItem)
 
         response = args.responseFactory.Create(inboxItem)
         if response :

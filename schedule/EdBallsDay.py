@@ -2,6 +2,7 @@
 from ScheduledTask import ScheduledTask
 from apscheduler.triggers.cron import CronTrigger
 from OutgoingTweet import OutgoingTweet
+
 import datetime
 
 class EdBallsDay(ScheduledTask):

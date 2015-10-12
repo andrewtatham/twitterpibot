@@ -1,8 +1,7 @@
 from ScheduledTask import ScheduledTask
 from Timelapse import Timelapse
 import datetime 
-from apscheduler.triggers.interval import IntervalTrigger
-from apscheduler.triggers.date import DateTrigger
+
 
 
 class TimelapseScheduledTask(ScheduledTask):
@@ -22,9 +21,10 @@ class TimelapseScheduledTask(ScheduledTask):
             tweetText = "")
 
 
+        from MySchedule import add
         tasks = timelapse.GetScheduledTasks()
         for task in tasks:
-            scheduler.add(task)
+            add(task)
 
 
 

@@ -3,7 +3,7 @@ from itertools import cycle
 from colorama import Fore, Style
 import os
 import logging
-global users
+import Users
 
 eventcolours = cycle([Fore.MAGENTA,
             Fore.CYAN])
@@ -20,8 +20,8 @@ class IncomingEvent(InboxItem):
         # https://dev.twitter.com/streaming/overview/messages-types#Events_event
 
 
-        self.source = users.getUser(data = data["source"])
-        self.target = users.getUser(data = data["target"])
+        self.source = Users.getUser(data = data["source"])
+        self.target = Users.getUser(data = data["target"])
 
         self.from_me = self.source.isMe
         self.to_me = self.target.isMe

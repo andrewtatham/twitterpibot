@@ -10,6 +10,7 @@ import cv2
 from MyTwitter import MyTwitter
 from OutgoingTweet import OutgoingTweet
 from TwitterHelper import Send
+import hardware
 
 class Timelapse(object):
     def __init__(self, name, startTime, endTime, intervalSeconds = 1, tweetText = ''):
@@ -66,11 +67,10 @@ class TimelapsePhotoScheduledTask(ScheduledTask):
 
         name = args.timelapse.name + "_img_"  + "{0:05d}".format(args.i)
 
-        cameras.TakePhotoToDisk(
+        hardware.TakePhotoToDisk(
             dir = args.timelapse.dirPath,
             name = name,
-            ext = args.timelapse.imageExtension,
-            nightmode = False) 
+            ext = args.timelapse.imageExtension) 
 
         args.i += 1
         

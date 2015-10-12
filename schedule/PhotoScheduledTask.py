@@ -3,6 +3,8 @@ from OutgoingTweet import OutgoingTweet
 import random
 import time
 from apscheduler.triggers.cron import CronTrigger
+import hardware
+
 class PhotoScheduledTask(ScheduledTask):
 
     def GetTrigger(args):
@@ -10,16 +12,7 @@ class PhotoScheduledTask(ScheduledTask):
 
 
     def onRun(args):
-
-        CameraFlash(True)
-        time.sleep(1)
-        photos = cameras.TakePhotos()
-
-        CameraFlash(False)
-
-
-
-
+        photos = hardware.TakePhotos()
         if any(photos):
             tweet = OutgoingTweet(photos=photos)
             Send(tweet)

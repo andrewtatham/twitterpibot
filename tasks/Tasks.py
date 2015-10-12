@@ -5,8 +5,9 @@ from ProcessInboxTask import ProcessInboxTask
 from PiglowTask import PiglowTask
 from ExceptionHandler import Handle
 from exceptions import Exception
+import hardware
 
-global hardware
+
 
 class Tasks(object):
     
@@ -14,7 +15,7 @@ class Tasks(object):
 
         self.taskList = [ProcessInboxTask(),
                          StreamTweetsTask()]
-        if hardware.piglowattached:
+        if hardware.ispiglowattached:
             self.taskList.append(PiglowTask())
 
         self.running = False
@@ -51,8 +52,7 @@ class Tasks(object):
     def RunWrapper(args, task):
         while args.running:           
             try:   
-                if task.enabled:
-                    task.onRun()
+                task.onRun()
             except Exception as e:                
                 Handle(e)
 

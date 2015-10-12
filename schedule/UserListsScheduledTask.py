@@ -1,7 +1,7 @@
 from ScheduledTask import ScheduledTask
 from apscheduler.triggers.cron import CronTrigger
 
-global users
+import Users
 
 
 class UserListsScheduledTask(ScheduledTask):
@@ -10,6 +10,6 @@ class UserListsScheduledTask(ScheduledTask):
 
 
     def onRun(args):
-        users.updateLists()
+        Users.updateLists()
 
        

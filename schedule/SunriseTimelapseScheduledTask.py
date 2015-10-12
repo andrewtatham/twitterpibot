@@ -3,6 +3,7 @@ from MyAstral import MyAstral
 from apscheduler.triggers.cron import CronTrigger
 from Timelapse import Timelapse
 import datetime
+
 class SunriseTimelapseScheduledTask(ScheduledTask):
     def GetTrigger(args):
         return CronTrigger(hour = 3,minute = 0)
@@ -18,8 +19,9 @@ class SunriseTimelapseScheduledTask(ScheduledTask):
             intervalSeconds = 90,
             tweetText = "Morning!")
 
+        from MySchedule import add
         tasks = timelapse.GetScheduledTasks()
         for task in tasks:
-            scheduler.add(task)
+            add(task)
 
 

@@ -1,3 +1,4 @@
+
 import logging
 from MyTwitter import MyTwitter
 from Authenticator import Authenticator
@@ -6,6 +7,8 @@ import logging
 from colorama import Fore, Style, Back
 from TwitterHelper import Send
 from Statistics import RecordWarning, RecordError
+import hardware
+
 
 logging.basicConfig(filename='twitter.log',level=logging.INFO)
 
@@ -35,10 +38,12 @@ def _RecordError(exception):
     _TrySendException(exception)
 
 def _TrySendException(exception):
+
     try:
-        Send(
-            text = str(exception),
-            screen_name = "andrewtatham", 
-            user_id = "19201332")
+        if hardware.isRaspbian:
+            Send(
+                text = str(exception),
+                screen_name = "andrewtatham", 
+                user_id = "19201332")
     except Exception as e:
         pass

@@ -9,7 +9,7 @@ import numpy as np
 class Webcam(Camera):
     def __init__(self, *args, **kwargs):        
         self.lock = threading.Lock()
-        self.webcam = cv2.VideoCapture(args[0])
+        self.webcam = cv2.VideoCapture(0)
         for i in range(5):
             err,image = self.webcam.read()
 
@@ -22,7 +22,7 @@ class Webcam(Camera):
         return photo
 
 
-    def TakePhotoToDisk(args, dir, name, ext, nightmode):
+    def TakePhotoToDisk(args, dir, name, ext):
         with args.lock:
             for i in range(5):
                 err,image = args.webcam.read()

@@ -6,6 +6,7 @@ import wikipedia
 from wikipedia.wikipedia import WikipediaPage
 from wikipedia.exceptions import DisambiguationError
 import random
+from TwitterHelper import Send
 
 class Wikipedia(ScheduledTask):
 
