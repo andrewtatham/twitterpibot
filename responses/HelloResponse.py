@@ -1,6 +1,7 @@
 import re
 from Response import Response
 import random
+from TwitterHelper import ReplyWith
 class HelloResponse(Response):
 
     def __init__(self, *args, **kwargs):
@@ -26,7 +27,7 @@ class HelloResponse(Response):
                 and bool(args.rx.match(inboxItem.text))
 
     def Respond(args, inboxItem):
-        args.ReplyWith(inboxItem, random.choice(args.HelloWords))
+        ReplyWith(inboxItem, random.choice(args.HelloWords))
 
 
 

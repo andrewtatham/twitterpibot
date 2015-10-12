@@ -1,5 +1,6 @@
 from Response import Response
 import random
+from TwitterHelper import ReplyWith
 class FatherTedResponse(Response):
     def Condition(args, inboxItem):
         return super(FatherTedResponse, args).Condition(inboxItem) \
@@ -69,6 +70,6 @@ class FatherTedResponse(Response):
             
             ]
         response = random.choice(responses) 
-        args.ReplyWith(inboxItem, response)
+        ReplyWith(inboxItem, response)
 
         

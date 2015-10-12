@@ -3,6 +3,7 @@ import cv2
 import random
 import tempfile
 import os
+import hardware
 
 class PhotoResponse(Response):
     
@@ -12,20 +13,10 @@ class PhotoResponse(Response):
             and args.Contains(inboxItem.words, "photo")
 
     def Respond(args, inboxItem):
-
-        
-        args.context.CameraFlash(True)
-
-        photos = args.context.cameras.TakePhotos()
-
-        args.context.CameraFlash(False)
-
-        
+        photos = hardware.TakePhotos()
         if any(photos):
-        
             photomessages = ["cheese!", "smile!"]
-
-            args.ReplyWith(inboxItem=inboxItem, 
+            ReplyWith(inboxItem=inboxItem, 
                 text=random.choice(photomessages), 
                 asTweet=True,
                 photos = photos)

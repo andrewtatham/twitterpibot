@@ -264,4 +264,4 @@ class KatieHopkinsScheduledTask(ScheduledTask):
         
         text = args.tweet() + " #KatieHopkinsTweet"
         
-        args.context.send(OutgoingTweet(text=text))
+        send(OutgoingTweet(text=text))

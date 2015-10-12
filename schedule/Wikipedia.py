@@ -6,6 +6,7 @@ import wikipedia
 from wikipedia.wikipedia import WikipediaPage
 from wikipedia.exceptions import DisambiguationError
 import random
+from TwitterHelper import Send
 
 class Wikipedia(ScheduledTask):
 
@@ -33,7 +34,7 @@ class Wikipedia(ScheduledTask):
             
             text = cap(page.summary, 100) + page.url
             tweet = OutgoingTweet(text=text)
-            args.context.send(tweet)
+            Send(tweet)
 
 def cap(s, l):
     return s if len(s) <= l else s[0:l - 3] + '...'

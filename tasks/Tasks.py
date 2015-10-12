@@ -1,33 +1,25 @@
 import threading
 from StreamTweetsTask import StreamTweetsTask
-
-from Queue import Queue
 from ProcessInboxTask import ProcessInboxTask
-from Context import Context
-import logging
-from pprint import pprint
-import time
-from ProcessOutboxTask import ProcessOutboxTask
-from SongTask import SongTask
+
 from PiglowTask import PiglowTask
-from ExceptionHandler import ExceptionHandler
+from ExceptionHandler import Handle
+from exceptions import Exception
+import hardware
+
 
 
 class Tasks(object):
     
-    def __init__(self, context, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
 
         self.taskList = [ProcessInboxTask(),
                          StreamTweetsTask()]
-        
-        if context.piglow:
+        if hardware.ispiglowattached:
             self.taskList.append(PiglowTask())
-
 
         self.running = False
 
-        for task in self.taskList:
-            task.context = context
 
     def Init(args):
 
@@ -60,11 +52,9 @@ class Tasks(object):
     def RunWrapper(args, task):
         while args.running:           
             try:   
-                if task.enabled:
-                    task.onRun()
-            except Exception as e:
-                ExceptionHandler().Handle(e, task.context)
-                #time.sleep(1)
+                task.onRun()
+            except Exception as e:                
+                Handle(e)
 
     def Stop(args):
         args.running = False

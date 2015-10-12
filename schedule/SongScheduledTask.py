@@ -2,8 +2,8 @@ from ScheduledTask import ScheduledTask
 from Songs import Songs
 from MyTwitter import MyTwitter
 import random
-from OutgoingTweet import OutgoingTweet
-from User import User
+import Users
+
 from apscheduler.triggers.cron import CronTrigger
 
 class SongScheduledTask(ScheduledTask):
@@ -11,7 +11,7 @@ class SongScheduledTask(ScheduledTask):
         self.songs = Songs()
         
     def GetTrigger(args):
-        return CronTrigger(hour = "*/5")
+        return CronTrigger(hour = "8-22/3")
     def onRun(args):
 
         songKey = random.choice(args.songs.Keys())
@@ -22,10 +22,9 @@ class SongScheduledTask(ScheduledTask):
                 lists = twitter.show_owned_lists()
                 songUsersList = filter(lambda l: l["name"] == "Song People", lists["lists"])[0]
                 members = twitter.get_list_members(list_id = songUsersList["id_str"])
-                target = User(random.choice(members["users"]))
+                target = Users.getUser(data = random.choice(members["users"]))
 
             args.songs.Send(
-                context = args.context, 
                 songKey = songKey, 
                 target = target)
 

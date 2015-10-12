@@ -10,7 +10,7 @@ class JokesScheduledTask(ScheduledTask):
 
     def onRun(args):
         text = pyjokes.get_joke()
-        args.context.send(OutgoingTweet(text = text))
+        Send(OutgoingTweet(text = text))
 
 
     

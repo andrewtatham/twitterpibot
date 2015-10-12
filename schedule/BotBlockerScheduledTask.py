@@ -2,11 +2,15 @@ from ScheduledTask import ScheduledTask
 from BotBlocker import BotBlocker
 from MyTwitter import MyTwitter
 from apscheduler.triggers.interval import IntervalTrigger
+import Users
+
+
+
 class BotBlockerScheduledTask(ScheduledTask):
     def __init__(self, *args, **kwargs):
-        self.blocker = BotBlocker()
-        self.page = "-1"
-        self.myFollowers = []     
+        self._blocker = BotBlocker()
+        self._page = "-1"
+        self._myFollowers = []     
 
 
     def GetTrigger(args):
@@ -15,29 +19,29 @@ class BotBlockerScheduledTask(ScheduledTask):
     def onRun(args):
         blockUsers = []
         with MyTwitter() as twitter:
-            if not any(args.myFollowers):
+            if not any(args._myFollowers):
 
 
                 #response = twitter.get_followers_list(cursor = args.page)
                 #args.myFollowers.extend(response["users"])
 
-                response = twitter.get_followers_ids(cursor = args.page,stringify_ids=True)
-                args.myFollowers.extend(response["ids"])
+                response = twitter.get_followers_ids(cursor = args._page,stringify_ids=True)
+                args._myFollowers.extend(response["ids"])
 
                 nextPage = response["next_cursor_str"]
                 if nextPage == "0":
-                    args.page = "-1"
+                    args._page = "-1"
                 else:
-                    args.page = nextPage
+                    args._page = nextPage
 
-            if any(args.myFollowers):
-                follower = args.myFollowers.pop()
+            if any(args._myFollowers):
+                follower = args._myFollowers.pop()
 
-                user = args.context.users.getUser(id = follower)
+                user = Users.getUser(id = follower)
 
-                block = args.blocker.IsUserBot(user)
+                block = args._blocker.IsUserBot(user)
                 if block:
-                     args.blocker.BlockUser(user)
+                     args._blocker.BlockUser(user)
 
         
     

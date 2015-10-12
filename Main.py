@@ -1,9 +1,4 @@
-import os
-import pickle
 import sys
-import platform
-import colorama
-import datetime
 try:
     from Tkinter import * 
 except ImportError:
@@ -21,49 +16,66 @@ sys.path.append('processing')
 sys.path.append('brightpi')
 sys.path.append('songs')
 
+import colorama
+
+
+import datetime
+
+
+
+
+
+
+
+
 from Authenticator import Authenticator
-from Context import Context
-from Tasks import Tasks
-from Schedule import Schedule
-from OutgoingDirectMessage import OutgoingDirectMessage
-
-if platform.node() != "ANDREWDESKTOP":
-    colorama.init(autoreset = True)
-
 auth = Authenticator()
 auth.Authenticate()
 
-context = Context()
+import hardware
+if not hardware.isAndrewDesktop:
+    colorama.init(autoreset = True)
 
-tasks = Tasks(context=context)
+
+
+
+from Tasks import Tasks
+
+tasks = Tasks()
 tasks.Init()
 tasks.Start()
 
-scheduler = Schedule(context=context)
-context.scheduler = scheduler
-scheduler.Start()
+import MySchedule
+MySchedule.Start()
 
-if not context.hardware.iswindows:
-    context.send(OutgoingDirectMessage(
+
+from OutgoingDirectMessage import OutgoingDirectMessage
+
+
+if not hardware.iswindows:
+    Send(OutgoingDirectMessage(
         screen_name = "andrewtatham", 
         user_id = "19201332", 
         text="Up...." + str(datetime.datetime.now())))
 
 
-top = Tk()
-context.top = top
+try:
+    from tkinter import Tk
+except ImportError:
+    from Tkinter import Tk
 
+top = Tk()
 top.mainloop()
 
-if not context.hardware.iswindows:
-    context.send(OutgoingDirectMessage(
+if not hardware.iswindows:
+    Send(OutgoingDirectMessage(
         screen_name = "andrewtatham", 
         user_id = "19201332", 
         text="Down...." + str(datetime.datetime.now())))
 
 tasks.Stop()
-scheduler.Stop()
-#context.Stop()
+MySchedule.Stop()
+hardware.Stop()
 print("Done")
 sys.exit(0)
 print("Exited")

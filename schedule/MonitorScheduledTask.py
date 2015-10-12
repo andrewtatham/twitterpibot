@@ -5,6 +5,8 @@ import datetime
 from colorama import Style, Fore
 import logging
 import os
+import MyQueues
+import psutil
 
 class MonitorScheduledTask(ScheduledTask):
 
@@ -15,14 +17,11 @@ class MonitorScheduledTask(ScheduledTask):
 
     def onRun(args):
         text = datetime.datetime.now().strftime("%c")
-        
-        status = args.context.GetStatus()
         text += os.linesep \
-            + 'cpu = ' + str(status.cpu) \
-            + ' memory = ' + str(status.memory)  
+            + 'cpu = ' + str(psutil.cpu_percent()) \
+            + ' memory = ' + str(psutil.virtual_memory().percent)  
         text += os.linesep \
-                + 'inbox = ' + str(status.inboxCount)
-               
+                + 'inbox = ' + str(MyQueues.inbox.qsize())
 
         print(Style.BRIGHT + Fore.BLUE + text)
         logging.info(text)

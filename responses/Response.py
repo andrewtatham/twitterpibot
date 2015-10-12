@@ -1,6 +1,7 @@
 from OutgoingTweet import OutgoingTweet
 from OutgoingDirectMessage import OutgoingDirectMessage
 import random
+from TwitterHelper import Send, ReplyWith
 
 class Response(object):   
     
@@ -35,22 +36,3 @@ class Response(object):
 
     
 
-    def ReplyWith(self, inboxItem, text, asTweet=False, asDM=False, photos=None, in_reply_to_status_id = None, *args, **kwargs):    
-
-        replyAsTweet = asTweet or not asDM and inboxItem.isTweet
-
-        replyAsDM = asDM or not asTweet and inboxItem.isDirectMessage
-
-        if replyAsTweet :
-            tweet = OutgoingTweet(
-                replyTo=inboxItem,
-                text=text,                
-                photos = photos,
-                in_reply_to_status_id = in_reply_to_status_id)
-            return self.context.send(tweet)
-           
-        if replyAsDM:
-            dm = OutgoingDirectMessage(
-                replyTo=inboxItem,
-                text=text)
-            return self.context.send(dm)

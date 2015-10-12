@@ -5,18 +5,13 @@ import logging
 
 
 class InboxItemFactory(object):
-    def __init__(self, context, *args, **kwargs):
-        self.context = context    
-
-
-
     def Create(self, data):
         if "text" in data:
-            return IncomingTweet(data, self.context)
+            return IncomingTweet(data)
         elif "direct_message" in data:
-            return IncomingDirectMessage(data, self.context)        
+            return IncomingDirectMessage(data)        
         elif "event" in data:
-            return IncomingEvent(data, self.context)
+            return IncomingEvent(data)
         elif "friends" in data:
             print("Connected...")
         elif "delete" in data:

@@ -1,53 +1,80 @@
 from multiprocessing import Lock
 import os
 import datetime
-class Statistics(object):
-    def __init__(self, *args, **kwargs):
-        self.lock = Lock()
-        self.Reset()
+
+
+_statsLock = Lock()
+with _statsLock:
+    IncomingTweets = 0
+    IncomingDirectMessages = 0
+    OutgoingTweets = 0
+    OutgoingDirectMessages = 0
+    Warnings = 0
+    Errors = 0
+
         
-    def Reset(args):
-        with args.lock:
-            args.IncomingTweets = 0
-            args.IncomingDirectMessages = 0
-            args.OutgoingTweets = 0
-            args.OutgoingDirectMessages = 0
-            args.Warnings = 0
-            args.Errors = 0
+def Reset():
+    with _statsLock:
+        global IncomingTweets
+        global IncomingDirectMessages
+        global OutgoingTweets
+        global OutgoingDirectMessages
+        global Warnings
+        global Errors
 
-    def GetStatistics(args):
-        text = "Stats at " + datetime.datetime.now().strftime("%x %X") + os.linesep
+        IncomingTweets = 0
+        IncomingDirectMessages = 0
+        OutgoingTweets = 0
+        OutgoingDirectMessages = 0
+        Warnings = 0
+        Errors = 0
+
+def GetStatistics():
+    text = "Stats at " + datetime.datetime.now().strftime("%x %X") + os.linesep
             
-        with args.lock:
-            text += str(args.IncomingTweets) + " IncomingTweets" + os.linesep
-            text += str(args.IncomingDirectMessages) + " IncomingDirectMessages" + os.linesep
-            text += str(args.OutgoingTweets) + " OutgoingTweets: " + os.linesep
-            text += str(args.OutgoingDirectMessages) + " OutgoingDirectMessages" +  os.linesep
-            text += str(args.Warnings) + " Warnings" + os.linesep
-            text += str(args.Errors) + " Errors" + os.linesep
+    with _statsLock:
+        global IncomingTweets
+        global IncomingDirectMessages
+        global OutgoingTweets
+        global OutgoingDirectMessages
+        global Warnings
+        global Errors
 
-        return text
+        text += str(IncomingTweets) + " IncomingTweets" + os.linesep
+        text += str(IncomingDirectMessages) + " IncomingDirectMessages" + os.linesep
+        text += str(OutgoingTweets) + " OutgoingTweets: " + os.linesep
+        text += str(OutgoingDirectMessages) + " OutgoingDirectMessages" +  os.linesep
+        text += str(Warnings) + " Warnings" + os.linesep
+        text += str(Errors) + " Errors" + os.linesep
 
-    def RecordIncomingTweet(args):
-        with args.lock:
-            args.IncomingTweets += 1
+    return text
 
-    def RecordIncomingDirectMessage(args):
-        with args.lock:
-            args.IncomingDirectMessages += 1
+def RecordIncomingTweet():
+    with _statsLock:
+        global IncomingTweets
+        IncomingTweets += 1
 
-    def RecordOutgoingTweet(args):
-        with args.lock:
-            args.OutgoingTweets += 1
+def RecordIncomingDirectMessage():
+    with _statsLock:
+        global IncomingDirectMessages
+        IncomingDirectMessages += 1
 
-    def RecordOutgoingDirectMessage(args):
-        with args.lock:
-            args.OutgoingDirectMessages += 1
+def RecordOutgoingTweet():
+    with _statsLock:
+        global OutgoingTweets
+        OutgoingTweets += 1
 
-    def RecordWarning(args):
-        with args.lock:
-            args.Warnings += 1
+def RecordOutgoingDirectMessage():
+    with _statsLock:
+        global OutgoingDirectMessages
+        OutgoingDirectMessages += 1
 
-    def RecordError(args):
-        with args.lock:
-            args.Errors += 1
+def RecordWarning():
+    with _statsLock:
+        global Warnings
+        Warnings += 1
+
+def RecordError():
+    with _statsLock:
+        global Errors
+        Errors += 1

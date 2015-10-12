@@ -1,41 +1,10 @@
-from SongResponse import SongResponse
-from PhotoResponse import PhotoResponse
-from Magic8BallResponse import Magic8BallResponse
-from RetweetResponse import RetweetResponse
-from FatherTedResponse import FatherTedResponse
-from MyTwitter import MyTwitter
-from BotBlockerResponse import BotBlockerResponse
-from ThanksResponse import ThanksResponse
-from HelloResponse import HelloResponse
-from RestartResponse import RestartResponse
-from TimelapseResponse import TimelapseResponse
-from TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
 
+import hardware
+import Identity
 
 class ResponseFactory(object):
-    def __init__(self, context, *args, **kwargs):
-
-        self.responses = [
-            RestartResponse(),
-            PhotoResponse(),
-            SongResponse(),
-            TimelapseResponse(),
-            TalkLikeAPirateDayResponse(),
-            ThanksResponse(),
-            HelloResponse(),
-            Magic8BallResponse(),
-            FatherTedResponse(),           
-            RetweetResponse()]
-
-        if context.hardware.iswindows:
-            self.responses.append(BotBlockerResponse())
-
-        self.context = context
-        for response in self.responses:
-            response.context = self.context
-
-
-
+    def __init__(self, *args, **kwargs):
+        self.responses = Identity.responses
 
     def Create(args, inboxItem):
         if inboxItem :
@@ -49,8 +18,5 @@ class ResponseFactory(object):
                             twitter.create_favourite(id = inboxItem.status_id)
 
                     response.Respond(inboxItem)
-                    
-                    
-
         return None
         

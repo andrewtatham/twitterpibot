@@ -5,7 +5,7 @@ from itertools import cycle
 from apscheduler.triggers.interval import IntervalTrigger
 from Queue import Queue
 import random
-
+import MyQueues
 
 class SavedSearchScheduledTask(ScheduledTask):
     def __init__(self, *args, **kwargs):
@@ -25,7 +25,7 @@ class SavedSearchScheduledTask(ScheduledTask):
                 searchTweets = twitter.search(q = search['query'])
                 for searchTweet in searchTweets["statuses"]:
                     searchTweet['tweetsource'] = "search:" + search["name"]
-                    args.context.inbox.put(searchTweet)
+                    MyQueues.inbox.put(searchTweet)
 
             finally:
                 args._savedSearches.task_done()

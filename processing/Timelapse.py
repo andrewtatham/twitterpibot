@@ -9,10 +9,11 @@ import images2gif
 import cv2 
 from MyTwitter import MyTwitter
 from OutgoingTweet import OutgoingTweet
+from TwitterHelper import Send
+import hardware
 
 class Timelapse(object):
-    def __init__(self, context, name, startTime, endTime, intervalSeconds = 1, tweetText = ''):
-        self._context = context
+    def __init__(self, name, startTime, endTime, intervalSeconds = 1, tweetText = ''):
         self.name = name
         self.imageExtension = 'jpg'
         self.folderName = "temp" + os.path.sep + 'timelapse' + os.path.sep + self.name
@@ -66,11 +67,10 @@ class TimelapsePhotoScheduledTask(ScheduledTask):
 
         name = args.timelapse.name + "_img_"  + "{0:05d}".format(args.i)
 
-        args.context.cameras.TakePhotoToDisk(
+        hardware.TakePhotoToDisk(
             dir = args.timelapse.dirPath,
             name = name,
-            ext = args.timelapse.imageExtension,
-            nightmode = False) 
+            ext = args.timelapse.imageExtension) 
 
         args.i += 1
         
@@ -91,7 +91,7 @@ class TimelapseUploadScheduledTask(ScheduledTask):
         files = glob.glob(searchPath)
         files.sort()
         images = [cv2.imread(file) for file in files]
-        if args.context.hardware.iswindows:
+        if hardware.iswindows:
             images = [cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB) for bgr in images ]
         else:
             images = [cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY) for bgr in images ]
@@ -111,7 +111,7 @@ class TimelapseUploadScheduledTask(ScheduledTask):
         with MyTwitter() as twitter:
             media_id = twitter.UploadMediaFromDisk(filename)
 
-            args.context.send(OutgoingTweet(
+            Send(OutgoingTweet(
                 text = args.timelapse.tweetText,
                 media_id = media_id))
 

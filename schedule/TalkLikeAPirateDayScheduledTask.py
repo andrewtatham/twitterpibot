@@ -22,4 +22,4 @@ class TalkLikeAPirateDayScheduledTask(ScheduledTask):
     def onRun(args):
         text = random.choice(piracy) + " #TalkLikeAPirateDay"
         tweet = OutgoingTweet(text=text)
-        args.context.send(tweet)
+        Send(tweet)

@@ -2,6 +2,7 @@
 from ScheduledTask import ScheduledTask
 from apscheduler.triggers.cron import CronTrigger
 from OutgoingTweet import OutgoingTweet
+
 import datetime
 
 class EdBallsDay(ScheduledTask):
@@ -13,4 +14,4 @@ class EdBallsDay(ScheduledTask):
         year = str(datetime.date.today().year)
         text = "@edballs ED BALLS #EdBallsDay #EdBallsDay" + year
         tweet = OutgoingTweet(text=text)
-        args.context.send(tweet)
+        Send(tweet)

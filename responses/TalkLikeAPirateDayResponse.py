@@ -2,6 +2,7 @@ from Response import Response
 import random
 import datetime
 from TalkLikeAPirateDayScheduledTask import piracy
+from TwitterHelper import ReplyWith
 class TalkLikeAPirateDayResponse(Response):
     def Condition(args, inboxItem):
         today = datetime.date.today()
@@ -11,6 +12,6 @@ class TalkLikeAPirateDayResponse(Response):
 
     def Respond(args, inboxItem):
         response = random.choice(piracy) + " #TalkLikeAPirateDay" 
-        args.ReplyWith(inboxItem, response)
+        ReplyWith(inboxItem, response)
 
         

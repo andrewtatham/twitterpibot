@@ -3,12 +3,13 @@ from itertools import cycle
 from colorama import Fore, Style
 import os
 import logging
+import Users
 
 eventcolours = cycle([Fore.MAGENTA,
             Fore.CYAN])
 
 class IncomingEvent(InboxItem):
-    def __init__(self, data, context):
+    def __init__(self, data):
         
         #logging.info(data)
 
@@ -19,8 +20,8 @@ class IncomingEvent(InboxItem):
         # https://dev.twitter.com/streaming/overview/messages-types#Events_event
 
 
-        self.source = context.users.getUser(data = data["source"])
-        self.target = context.users.getUser(data = data["target"])
+        self.source = Users.getUser(data = data["source"])
+        self.target = Users.getUser(data = data["target"])
 
         self.from_me = self.source.isMe
         self.to_me = self.target.isMe

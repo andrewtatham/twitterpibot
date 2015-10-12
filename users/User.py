@@ -1,6 +1,7 @@
 import logging
 import datetime
 import threading
+from Identity import id
 
 class User(object):
     def __init__(self, data, *args, **kwargs):
@@ -8,7 +9,7 @@ class User(object):
 
         self.id = data["id_str"]
 
-        self.isMe = bool(self.id == "2935295111")
+        self.isMe = bool(self.id == id)
 
         self.name = data["name"]
         self.screen_name = data["screen_name"]
