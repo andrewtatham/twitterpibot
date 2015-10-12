@@ -4,6 +4,7 @@ import random
 import time
 from apscheduler.triggers.cron import CronTrigger
 import hardware
+from TwitterHelper import Send
 
 class PhotoScheduledTask(ScheduledTask):
 

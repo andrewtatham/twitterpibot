@@ -1,8 +1,4 @@
 import sys
-try:
-    from Tkinter import * 
-except ImportError:
-    from tkinter import * 
 
 sys.path.append('tasks')
 sys.path.append('incoming')
@@ -16,31 +12,16 @@ sys.path.append('processing')
 sys.path.append('brightpi')
 sys.path.append('songs')
 
-import colorama
-
-
-import datetime
-
-
-
-
-
-
-
-
 from Authenticator import Authenticator
 auth = Authenticator()
 auth.Authenticate()
 
 import hardware
+import colorama
 if not hardware.isAndrewDesktop:
     colorama.init(autoreset = True)
 
-
-
-
 from Tasks import Tasks
-
 tasks = Tasks()
 tasks.Init()
 tasks.Start()
@@ -48,16 +29,14 @@ tasks.Start()
 import MySchedule
 MySchedule.Start()
 
-
+import datetime
+from TwitterHelper import Send
 from OutgoingDirectMessage import OutgoingDirectMessage
-
-
 if not hardware.iswindows:
     Send(OutgoingDirectMessage(
         screen_name = "andrewtatham", 
         user_id = "19201332", 
         text="Up...." + str(datetime.datetime.now())))
-
 
 try:
     from tkinter import Tk

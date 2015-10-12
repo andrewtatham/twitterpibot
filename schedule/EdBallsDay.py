@@ -4,6 +4,7 @@ from apscheduler.triggers.cron import CronTrigger
 from OutgoingTweet import OutgoingTweet
 
 import datetime
+from TwitterHelper import Send
 
 class EdBallsDay(ScheduledTask):
 

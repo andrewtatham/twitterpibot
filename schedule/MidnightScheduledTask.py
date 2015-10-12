@@ -6,6 +6,7 @@ import datetime
 from OutgoingDirectMessage import OutgoingDirectMessage
 
 from Statistics import GetStatistics, Reset
+from TwitterHelper import Send
 
 class MidnightScheduledTask(ScheduledTask):
 

@@ -2,6 +2,7 @@ from ScheduledTask import ScheduledTask
 import random
 from OutgoingTweet import OutgoingTweet
 from apscheduler.triggers.cron import CronTrigger
+from TwitterHelper import Send
 
 
 
@@ -264,4 +265,4 @@ class KatieHopkinsScheduledTask(ScheduledTask):
         
         text = args.tweet() + " #KatieHopkinsTweet"
         
-        send(OutgoingTweet(text=text))
+        Send(OutgoingTweet(text=text))

@@ -4,6 +4,7 @@ from apscheduler.triggers.cron import CronTrigger
 from OutgoingTweet import OutgoingTweet
 import datetime
 import random
+from TwitterHelper import Send
 
 piracy = [
     "You can always trust the untrustworthy because you can always trust that they will be untrustworthy. Its the trustworthy you can't trust.",
