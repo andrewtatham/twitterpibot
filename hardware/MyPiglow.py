@@ -105,3 +105,6 @@ class MyPiglow(object):
                 args.piglow.white(1)
             else:
                 args.WriteAll()
+
+    def Close(args):
+        pass
