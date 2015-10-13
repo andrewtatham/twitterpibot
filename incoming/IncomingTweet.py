@@ -1,22 +1,22 @@
 
 from InboxTextItem import InboxTextItem
 
-import HTMLParser
+try:
+    import html.parser 
+    h = html.parser.HTMLParser()
+except ImportError:
+    import HTMLParser
+    h = HTMLParser.HTMLParser()
+
 import logging
 from itertools import cycle
 from colorama import Fore, Style
-import random
 import Users
 import Identity
-
-#import nltk
-h = HTMLParser.HTMLParser()
 
 tweetcolours = cycle([Fore.GREEN, Fore.YELLOW])
 trendcolours = cycle([Fore.MAGENTA, Fore.WHITE])
 searchcolours = cycle([Fore.CYAN, Fore.WHITE])
-
-
 
 class IncomingTweet(InboxTextItem):
     def __init__(self, data):
@@ -61,12 +61,6 @@ class IncomingTweet(InboxTextItem):
                     if mention["id_str"] == Identity.id:
                         self.to_me = True
 
-        #self.tokens = nltk.word_tokenize(self.text)
-
-        #self.tags = nltk.pos_tag(self.tokens)
-
-        #self.entities =nltk.chunk.ne_chunk(self.tags)
-
 
     def Display(args):
         colour = ""
@@ -92,8 +86,5 @@ class IncomingTweet(InboxTextItem):
 
         print(colour + text.encode("utf-8"))
  
-        #print(Fore.MAGENTA + str(args.tokens))
-        #print(Fore.CYAN + str(args.tags))
-        #print(Fore.WHITE + str(args.entities))
  
         
