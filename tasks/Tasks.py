@@ -52,7 +52,7 @@ class Tasks(object):
         while args.running:           
             try:   
                 task.onRun()
-            except Exception:                
+            except Exception as e:                
                 Handle(e)
 
     def Stop(args):
