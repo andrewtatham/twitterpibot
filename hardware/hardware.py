@@ -51,7 +51,7 @@ elif isRaspbian:
         ispiglowattached = True # bool(" 54 " in output)
         isbrightpiattached = bool(" 70 " in output)
     elif isRaspberryPi2:
-        iswebcamattached = False
+        iswebcamattached = True
         isunicornhatattached = True
            
         
