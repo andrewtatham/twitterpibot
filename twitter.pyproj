@@ -1629,6 +1629,7 @@
     <Content Include="pics\will\P1010467.JPG" />
     <Content Include="pics\will\P1010493.JPG" />
     <Content Include="README.md" />
+    <Content Include="requirements.txt" />
     <Content Include="songs\500miles.txt" />
     <Content Include="songs\believin.txt" />
     <Content Include="songs\bird.txt" />
