@@ -9,7 +9,7 @@ from TwitterHelper import Send
 class SongResponse(Response):
     def __init__(self, *args, **kwargs):
         self.songs = Songs()
-        self.songnames = self.songs.ViewKeys()
+        self.songnames = self.songs.Keys()
 
     def Condition(args, inboxItem):
         return super(SongResponse,args).Condition(inboxItem) \
