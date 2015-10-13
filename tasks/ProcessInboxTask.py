@@ -37,8 +37,7 @@ class ProcessInboxTask(Task):
 def ProcessInboxItem(args, inboxItem):
         inboxItem.Display()
 
-        if hardware.ispiglowattached:
-            hardware.piglow.OnInboxItemRecieved(inboxItem)
+        hardware.OnInboxItemRecieved(inboxItem)
 
         response = args.responseFactory.Create(inboxItem)
         if response :

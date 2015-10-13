@@ -5,5 +5,8 @@ import hardware
 class PiglowTask(Task):
     def onRun(args):
 
-        hardware.piglow.Fade()
+        if hardware.isunicornhatattached:
+            hardware.unicornhat.Fade()
+        if hardware.ispiglowattached:
+            hardware.piglow.Fade()
         time.sleep(1)

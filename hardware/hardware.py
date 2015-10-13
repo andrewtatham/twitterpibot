@@ -104,7 +104,11 @@ def CameraFlash(on):
     if isbrightpiattached and brightpi:
         brightpi.CameraFlash(on)
 
-
+def OnInboxItemRecieved(inboxItem):
+    if isunicornhatattached and unicornhat:
+        unicornhat.OnInboxItemRecieved(inboxItem)
+    if ispiglowattached and piglow:
+        piglow.OnInboxItemRecieved(inboxItem)
 
 def Stop():
     if iswebcamattached and webcam:
