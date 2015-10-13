@@ -4,7 +4,6 @@ from ProcessInboxTask import ProcessInboxTask
 
 from PiglowTask import PiglowTask
 from ExceptionHandler import Handle
-from exceptions import Exception
 import hardware
 
 
@@ -53,7 +52,7 @@ class Tasks(object):
         while args.running:           
             try:   
                 task.onRun()
-            except Exception as e:                
+            except Exception:                
                 Handle(e)
 
     def Stop(args):
