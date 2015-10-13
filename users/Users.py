@@ -48,7 +48,7 @@ def getUser(id = None, data = None):
         if data:
             id = data["id_str"]
 
-            if not _users.has_key(id):
+            if not id in _users:
                 _users[id] = User(data)
 
             if(_users[id].isStale()):
