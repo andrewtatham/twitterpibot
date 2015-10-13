@@ -20,7 +20,7 @@ class TrendsScheduledTask(ScheduledTask):
     def onRun(args):
         with MyTwitter() as twitter:
             if not args._trendsList:
-                woeid = woeids.next()
+                woeid = next(woeids)
                 trends = twitter.get_place_trends(id = woeid)[0].get('trends',[])   
                 args._trendsList.extend(trends)
 

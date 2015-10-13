@@ -47,7 +47,7 @@ class IncomingEvent(InboxItem):
 
     def Display(args):
         
-        colour = eventcolours.next()
+        colour = next(eventcolours)
 
         if args.to_me:
             colour += Style.BRIGHT

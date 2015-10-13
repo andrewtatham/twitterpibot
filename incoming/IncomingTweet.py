@@ -68,11 +68,11 @@ class IncomingTweet(InboxTextItem):
         if args.source:
             text += '['+ args.source + '] '
             if args.sourceIsTrend:
-                colour = trendcolours.next()
+                colour = next(trendcolours)
             elif args.sourceIsSearch:
-                colour = searchcolours.next()
+                colour = next(searchcolours)
         else:
-            colour = tweetcolours.next()
+            colour = next(tweetcolours)
             text += "* "
 
         text += args.sender.name + ' [@' + args.sender.screen_name + '] ' + args.text.replace('\n',' ')
