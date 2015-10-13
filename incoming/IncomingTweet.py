@@ -84,7 +84,7 @@ class IncomingTweet(InboxTextItem):
         else:
             colour += Style.DIM
 
-        print(colour + text.encode("utf-8"))
+        print(colour + text)
  
  
         
