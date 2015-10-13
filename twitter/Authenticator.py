@@ -2,6 +2,11 @@ import os
 import pickle
 from twython.api import Twython
 import webbrowser
+
+
+try: input = raw_input
+except NameError: pass
+
 class Authenticator(object):
 
     def Authenticate(args):
@@ -12,8 +17,8 @@ class Authenticator(object):
             APP_KEY = pickle.load(open("APP_KEY.pkl", "rb"))
             APP_SECRET = pickle.load(open("APP_SECRET.pkl", "rb"))
         else:
-            APP_KEY = raw_input("Enter your APP_KEY:")
-            APP_SECRET = raw_input("Enter your APP_SECRET:")
+            APP_KEY = input("Enter your APP_KEY:")
+            APP_SECRET = input("Enter your APP_SECRET:")
         
             pickle.dump(APP_KEY, open("APP_KEY.pkl", "wb"))
             pickle.dump(APP_SECRET, open("APP_SECRET.pkl", "wb"))
@@ -42,7 +47,7 @@ class Authenticator(object):
             webbrowser.open(url)
 
 
-            oauth_verifier = raw_input("Enter your pin:")
+            oauth_verifier = input("Enter your pin:")
 
             twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
 
