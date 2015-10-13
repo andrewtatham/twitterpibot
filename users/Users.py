@@ -29,7 +29,7 @@ def updateLists():
             members = twitter.get_list_members(list_id = myList["id_str"])
             key = myList["id_str"]
             with _lock:
-                if not _sets.has_key(key):
+                if not key in _sets:
                     _sets[key] = UserSet(myList["name"])
                 set = _sets[key]
                 set.UpdateMembers(members)
