@@ -1,6 +1,6 @@
 [submodule "PyGlow"]
 	path = PyGlow
-	url = https://github.com/benleb/PyGlow
+	url = https://github.com/benleb/PyGlow.git
 [submodule "PiGlow"]
 	path = PiGlow
 	url = https://github.com/Boeeerb/PiGlow.git

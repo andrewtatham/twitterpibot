@@ -6,7 +6,7 @@
     <ProjectGuid>{0d8a6f76-90c3-43e1-8e8f-d24c25a90e50}</ProjectGuid>
     <ProjectHome />
     <StartupFile>Main.py</StartupFile>
-    <SearchPath>tasks\;twitter\;incoming\;responses\;outgoing\;hardware\;schedule\;users\;brightpi\;processing\;ui\</SearchPath>
+    <SearchPath>tasks\;twitter\;incoming\;responses\;outgoing\;hardware\;schedule\;users\;brightpi\;processing\;PiGlow\;PyGlow\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>

@@ -11,6 +11,8 @@ sys.path.append('users')
 sys.path.append('processing')
 sys.path.append('brightpi')
 sys.path.append('songs')
+#sys.path.append('PiGlow')
+sys.path.append('PyGlow')
 
 
 import hardware

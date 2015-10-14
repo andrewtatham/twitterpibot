@@ -1,7 +1,8 @@
 import math
 import time
 import random
-from piglow import PiGlow
+
+from PyGlow import PyGlow()
 
 t = 0;
 maxbright = 255
@@ -29,17 +30,17 @@ def Fade():
 
 def WriteAll():
     for led in range(18):
-        args.WriteLed(led)
+        WriteLed(led)
 
 def WriteLed( led):
     bright = max(0, min(buffer[led], 255))
-    args.piglow.led(led + 1, bright)
+    piglow.led(led + 1, bright)
 
-def CameraFlash( on):
+def CameraFlash(on):
     if on:
         piglow.white(255)
     else:
         WriteAll()
 
-def Close(args):    
+def Close():    
     piglow = None
