@@ -116,9 +116,9 @@ def GetScheduledJobs():
 def GetTasks():
     from ProcessInboxTask import ProcessInboxTask
     from StreamTweetsTask import StreamTweetsTask
-    from PiglowTask import PiglowTask
+    from FadeTask import FadeTask
     tasks = [ProcessInboxTask(),
             StreamTweetsTask(TwitterHelper.GetStreamer(Identity.screen_name))]
-    if hardware.ispiglowattached:
-        tasks.append(PiglowTask())
+    if hardware.ispiglowattached or hardware.isunicornhatattached:
+        tasks.append(FadeTask())
     return tasks

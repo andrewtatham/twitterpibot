@@ -1848,7 +1848,7 @@
     <Compile Include="Statistics.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="tasks\PiglowTask.py">
+    <Compile Include="tasks\FadeTask.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tasks\ProcessInboxTask.py">

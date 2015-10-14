@@ -91,6 +91,12 @@ def CameraFlash(on):
     if isbrightpiattached and brightpi:
         brightpi.CameraFlash(on)
 
+def Fade():
+    if hardware.isunicornhatattached and unicornhat:
+        unicornhat.Fade()
+    if hardware.ispiglowattached:
+        MyPiglow.Fade()
+
 def OnInboxItemRecieved(inboxItem):
     if isunicornhatattached and unicornhat:
         unicornhat.OnInboxItemRecieved(inboxItem)
