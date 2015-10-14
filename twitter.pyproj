@@ -1716,6 +1716,9 @@
     <Compile Include="MyQueues.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MyUI.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="outgoing\OutboxItem.py">
       <SubType>Code</SubType>
     </Compile>

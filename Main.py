@@ -38,13 +38,9 @@ if not hardware.iswindows:
         user_id = "19201332", 
         text="Up...." + str(datetime.datetime.now())))
 
-try:
-    from tkinter import Tk
-except ImportError:
-    from Tkinter import Tk
+import MyUI
+MyUI.Start()
 
-top = Tk()
-top.mainloop()
 
 if not hardware.iswindows:
     Send(OutgoingDirectMessage(
