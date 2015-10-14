@@ -1728,7 +1728,6 @@
     <Compile Include="outgoing\OutgoingTweet.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PiGlow\piglow.py" />
     <Compile Include="processing\MyAstral.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1892,7 +1891,6 @@
     <Folder Include="incoming\" />
     <Folder Include="hardware\" />
     <Folder Include="processing\" />
-    <Folder Include="PiGlow\" />
     <Folder Include="users\" />
     <Folder Include="schedule\" />
     <Folder Include="outgoing\" />

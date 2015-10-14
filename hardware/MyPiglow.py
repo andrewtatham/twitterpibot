@@ -42,4 +42,4 @@ def CameraFlash( on):
         WriteAll()
 
 def Close(args):    
-    pass
+    piglow = None
