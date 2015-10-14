@@ -13,8 +13,8 @@ class OutgoingTweet(OutboxTextItem):
         elif replyTo and replyTo.isTweet and replyTo.status_id :
             self.in_reply_to_status_id = replyTo.status_id
 
-        if filePaths:
-            self.filePaths = filePaths
+  
+        self.filePaths = filePaths
 
         self.status = ''
 
