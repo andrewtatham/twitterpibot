@@ -107,9 +107,15 @@ class TimelapseUploadScheduledTask(ScheduledTask):
             repeat = True, 
             subRectangles = None)
 
+        size = os.path.getsize(filename)
+
+        if size == 0:
+            raise ValueError("file size is zero")
+        if size >= 4 * 1024 * 1024:
+            raise ValueError("file size is too big")
+
 
         print("[Timelapse]" + args.timelapse.name + " Sending")
-
         Send(OutgoingTweet(
             text = args.timelapse.tweetText,
             filePaths = [ filename ]))
