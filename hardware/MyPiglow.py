@@ -2,11 +2,11 @@ import math
 import time
 import random
 
-from PyGlow import PyGlow()
+from PyGlow import PyGlow
 
 t = 0;
 maxbright = 255
-piglow = PiGlow()
+piglow = PyGlow()
 piglow.all(0)
 buffer = [0 for led in range(18)]
 
