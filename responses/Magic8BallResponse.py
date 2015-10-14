@@ -1,6 +1,7 @@
 from Response import Response
 import random
 from MyTwitter import MyTwitter
+from TwitterHelper import ReplyWith
 class Magic8BallResponse(Response):
     def __init__(self, *args, **kwargs):
 

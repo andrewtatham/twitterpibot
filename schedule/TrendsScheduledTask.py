@@ -2,7 +2,11 @@ from ScheduledTask import ScheduledTask
 from itertools import cycle
 from apscheduler.triggers.interval import IntervalTrigger
 from MyTwitter import MyTwitter
-import urllib
+
+try:
+    from urllib.parse import quote_plus
+except ImportError:
+    from urllib import quote_plus
 import MyQueues
 
 
@@ -24,10 +28,11 @@ class TrendsScheduledTask(ScheduledTask):
                 trends = twitter.get_place_trends(id = woeid)[0].get('trends',[])   
                 args._trendsList.extend(trends)
 
-            trend = args._trendsList.pop()
-            trendtweets = twitter.search(q = urllib.quote_plus(trend["name"]), result_type = "popular")
-            for trendtweet in trendtweets["statuses"]:
-                trendtweet['tweetsource'] = "trend:" + trend["name"]
-                MyQueues.inbox.put(trendtweet)
+            if args._trendsList:
+                trend = args._trendsList.pop()
+                trendtweets = twitter.search(q = quote_plus(trend["name"]), result_type = "popular")
+                for trendtweet in trendtweets["statuses"]:
+                    trendtweet['tweetsource'] = "trend:" + trend["name"]
+                    MyQueues.inbox.put(trendtweet)
 
     

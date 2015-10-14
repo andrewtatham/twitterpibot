@@ -1,6 +1,7 @@
 import re
 from Response import Response
 import random
+from TwitterHelper import ReplyWith
 class ThanksResponse(Response):
 
     def __init__(self, *args, **kwargs):
