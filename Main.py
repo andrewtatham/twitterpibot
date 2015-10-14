@@ -48,7 +48,7 @@ if not hardware.iswindows:
         user_id = "19201332", 
         text="Down...." + str(datetime.datetime.now())))
 
-tasks.Stop()
+Tasks.Stop()
 MySchedule.Stop()
 hardware.Stop()
 print("Done")
