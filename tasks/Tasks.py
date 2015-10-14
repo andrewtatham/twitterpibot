@@ -29,7 +29,7 @@ def RunWrapper(task):
         except Exception as e:                
             Handle(e)
 
-def Stop(args):
+def Stop():
     global _running
     _running = False
        
