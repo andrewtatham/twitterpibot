@@ -15,7 +15,6 @@ iswebcamattached = False
 isbrightpiattached = False
 isunicornhatattached = False
 
-piglow= None
 picam = None
 webcam = None
 brightpi = None
@@ -66,7 +65,6 @@ if isunicornhatattached:
     unicornhat = myunicornhat.MyUnicornHat()
 if ispiglowattached:
     import MyPiglow
-    piglow = MyPiglow.MyPiglow()
 if isbrightpiattached:
     import MyBrightPi
     brightpi = MyBrightPi.BrightPI()
@@ -88,16 +86,16 @@ def TakePhotoToDisk(dir, name, ext):
 def CameraFlash(on):
     if isunicornhatattached and unicornhat:
         unicornhat.CameraFlash(on)
-    if ispiglowattached and piglow:
-        piglow.CameraFlash(on)
+    if ispiglowattached:
+        MyPiglow.CameraFlash(on)
     if isbrightpiattached and brightpi:
         brightpi.CameraFlash(on)
 
 def OnInboxItemRecieved(inboxItem):
     if isunicornhatattached and unicornhat:
         unicornhat.OnInboxItemRecieved(inboxItem)
-    if ispiglowattached and piglow:
-        piglow.OnInboxItemRecieved(inboxItem)
+    if ispiglowattached:
+        MyPiglow.OnInboxItemRecieved(inboxItem)
 
 def Stop():
     if iswebcamattached and webcam:
@@ -106,7 +104,7 @@ def Stop():
         picam.Close()
     if isunicornhatattached and unicornhat:
         unicornhat.Close()
-    if ispiglowattached and piglow:
-        piglow.Close()
+    if ispiglowattached:
+        MyPiglow.Close()
     if isbrightpiattached and brightpi:
         brightpi.Close()
