@@ -1,110 +1,45 @@
 import math
 import time
 import random
-from ExceptionHandler import HandleSilently
-try:    
-    from piglow import PiGlow
-    #from PyGlow import PyGlow
-    enablePiglow = True
-except Exception as e:
-    HandleSilently(e)
-    enablePiglow = False
+from piglow import PiGlow
+
+t = 0;
+maxbright = 255
+piglow = PiGlow()
+piglow.all(0)
+buffer = [0 for led in range(18)]
+
+def getLed(arm, colour):
+    return int(6 * arm + colour)
+
+def getBright(factor):
+    return max(0, min(int(-0.5 * maxbright + maxbright * factor),255))
 
 
-class MyPiglow(object):
-    def __init__(self, *args, **kwargs):
+def OnInboxItemRecieved(inboxItem):
+    led = random.randint(0,17)
+    buffer[led] = max(0, min((buffer[led] + 1), 255))
+    WriteLed(led)
 
-        self.t = 0;
+def Fade():
+    for led in range(18):
+        if buffer[led] > 1:
+            buffer[led] = max(0,buffer[led] - 5)        
+    WriteAll()
 
-        self.piglow = None
-        if enablePiglow:
-            self.piglow = PiGlow()
-            #self.piglow = PyGlow()
-            self.maxbright = 255
-            self.piglow.all(0)
+def WriteAll():
+    for led in range(18):
+        args.WriteLed(led)
 
+def WriteLed( led):
+    bright = max(0, min(buffer[led], 255))
+    args.piglow.led(led + 1, bright)
 
-            #print('piglow init buffer')
-            self.buffer = [0 for led in range(18)]
+def CameraFlash( on):
+    if on:
+        piglow.white(255)
+    else:
+        WriteAll()
 
-            self.InitPatterns()
-
-
-        return super(MyPiglow, self).__init__(*args, **kwargs)
-
-    def getLed(args, arm, colour):
-        return int(6 * arm + colour)
-    def getBright(args, factor):
-        return max(0, min(int(-0.5 * args.maxbright + args.maxbright * factor),255))
-
-
-
-    def InitPatterns(args):
-        args.tweetMentionPattern = [[0 for x in range(360)]for y in range(18)]
-        args.directMessagePattern = [[0 for x in range(360)]for y in range(18)]
-
-
-        for t in range(360):
-            for colour in range(6):
-                for arm in range(3):
-
-                    led = args.getLed(arm,colour)
-
-                    b1 = math.sin(math.radians(t + arm * 15 + colour * 30))
-                    args.tweetMentionPattern[led][t] = args.getBright(b1)
-
-                    b2 = math.sin(math.radians(t - arm * 30 - colour * 15))
-                    args.directMessagePattern[led][t] = args.getBright(b2)
-
-    def DisplayPattern(args, pattern):
-        if enablePiglow:
-            for t in range(0, 360):               
-                for led in range(18):
-                    args.piglow.led(led + 1, pattern[led][args.t])
-                time.sleep(0.05) 
-
-
-    def OnInboxItemRecieved(args, inboxItem):
-        if enablePiglow:
-            if inboxItem.isTweet:
-                if not inboxItem.from_me and inboxItem.to_me:
-                    #args.DisplayPattern(args.tweetMentionPattern)
-                    pass
-                else:
-                    led = random.randint(0,17)
-                    args.buffer[led] = max(0, min((args.buffer[led] + 1), 255))
-                    args.WriteLed(led)
-            elif inboxItem.isDirectMessage:
-                if not inboxItem.from_me and inboxItem.to_me:
-                    #args.DisplayPattern(args.directMessagePattern)
-                    pass
-
-
-
-    def Fade(args):
-        if enablePiglow:
-            for led in range(18):
-                if args.buffer[led] > 1:
-                    args.buffer[led] = max(0,args.buffer[led] - 5)        
-            args.WriteAll()
-
-    def WriteAll(args):
-        if enablePiglow:
-            for led in range(18):
-                args.WriteLed(led)
-                
-
-    def WriteLed(args, led):
-        if enablePiglow:
-            bright = max(0, min(args.buffer[led], 255))
-            args.piglow.led(led + 1, bright)
-
-    def CameraFlash(args, on):
-        if enablePiglow:
-            if on:
-                args.piglow.white(1)
-            else:
-                args.WriteAll()
-
-    def Close(args):
-        pass
+def Close(args):    
+    pass
