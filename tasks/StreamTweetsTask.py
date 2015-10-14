@@ -1,14 +1,10 @@
-from Authenticator import Authenticator
-from MyStreamer import MyStreamer
 from Task import Task
+import TwitterHelper
+import Identity
 
 class StreamTweetsTask(Task):
-
-    def onInit(args):
-
-        authenticator = Authenticator()
-        tokens = authenticator.Authenticate()                        
-        args.streamer = MyStreamer(tokens[0],tokens[1],tokens[2],tokens[3])
+    def __init__(self, streamer):
+        self.streamer = streamer
  
     def onRun(args):
         print("starting stream")

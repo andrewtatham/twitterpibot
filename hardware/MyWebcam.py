@@ -1,38 +1,23 @@
-from Camera import *
-from ExceptionHandler import HandleSilently
 import os
 import threading
 import cv2
-import urllib
-import numpy as np
 
-class Webcam(Camera):
+class Webcam(object):
     def __init__(self, *args, **kwargs):        
-        self.lock = threading.Lock()
-        self.webcam = cv2.VideoCapture(0)
-        for i in range(5):
-            err,image = self.webcam.read()
-
-    def TakePhoto(args):
-        with args.lock:
-            photo = WebcamPhoto()
+        self._lock = threading.Lock()
+        with self._lock:
+            self._webcam = cv2.VideoCapture(0)
             for i in range(5):
-                err,image = args.webcam.read()
-            photo.image = image                      
-        return photo
-
+                err,image = self._webcam.read()
 
     def TakePhotoToDisk(args, dir, name, ext):
-        with args.lock:
+        with args._lock:
             for i in range(5):
-                err,image = args.webcam.read()
+                err,image = args._webcam.read()
             filename = dir + os.path.sep + name + os.extsep + ext
             cv2.imwrite(filename, image)
         return filename
 
     def Close(args):
-        with args.lock:
-            args.webcam.release()
-
-class WebcamPhoto(Photo):
-    pass
+        with args._lock:
+            args._webcam.release()

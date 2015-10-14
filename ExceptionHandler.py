@@ -1,8 +1,5 @@
 
 import logging
-from MyTwitter import MyTwitter
-from Authenticator import Authenticator
-from twython.exceptions import TwythonError
 import logging
 from colorama import Fore, Style, Back
 from TwitterHelper import Send

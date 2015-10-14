@@ -7,7 +7,7 @@ import shutil
 import glob
 import images2gif
 import cv2 
-from MyTwitter import MyTwitter
+
 from OutgoingTweet import OutgoingTweet
 from TwitterHelper import Send
 import hardware
@@ -98,6 +98,7 @@ class TimelapseUploadScheduledTask(ScheduledTask):
 
         filename = args.timelapse.dirPath + os.path.sep + args.timelapse.name + ".gif"
 
+        print("[Timelapse]" + args.timelapse.name + " writing gif")
         images2gif.writeGif(
             filename, 
             images,
@@ -107,13 +108,11 @@ class TimelapseUploadScheduledTask(ScheduledTask):
             subRectangles = None)
 
 
-        print("[Timelapse]" + args.timelapse.name + " Uploading")
-        with MyTwitter() as twitter:
-            media_id = twitter.UploadMediaFromDisk(filename)
+        print("[Timelapse]" + args.timelapse.name + " Sending")
 
-            Send(OutgoingTweet(
-                text = args.timelapse.tweetText,
-                media_id = media_id))
+        Send(OutgoingTweet(
+            text = args.timelapse.tweetText,
+            filePaths = [ filename ]))
 
         if os.path.exists(args.timelapse.dirPath):
             print("[Timelapse] Removing " + args.timelapse.dirPath)

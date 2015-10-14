@@ -13,7 +13,7 @@ class PhotoScheduledTask(ScheduledTask):
 
 
     def onRun(args):
-        photos = hardware.TakePhotos()
+        photos = hardware.TakePhotoToDisk("temp", "PhotoScheduledTask", "jpg")
         if any(photos):
             tweet = OutgoingTweet(photos=photos)
             Send(tweet)

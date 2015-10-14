@@ -1,8 +1,5 @@
 from Response import Response
-import cv2
 import random
-import tempfile
-import os
 import hardware
 from TwitterHelper import ReplyWith
 
@@ -14,12 +11,12 @@ class PhotoResponse(Response):
             and args.Contains(inboxItem.words, "photo")
 
     def Respond(args, inboxItem):
-        photos = hardware.TakePhotos()
+        photos = hardware.TakePhotoToDisk("temp", "PhotoResponse", "jpg")
         if any(photos):
             photomessages = ["cheese!", "smile!"]
             ReplyWith(inboxItem=inboxItem, 
                 text=random.choice(photomessages), 
                 asTweet=True,
-                photos = photos)
+                filePaths = photos)
 
 

@@ -1,6 +1,7 @@
 from Response import Response
 from Timelapse import Timelapse
 import datetime
+import MySchedule
 class TimelapseResponse(Response):
     def Condition(args, inboxItem):
         return inboxItem.isDirectMessage and not inboxItem.from_me and inboxItem.to_me \
@@ -21,7 +22,7 @@ class TimelapseResponse(Response):
 
         tasks = timelapse.GetScheduledTasks()
         for task in tasks:
-            scheduler.add(task)
+            MySchedule.add(task)
 
     
 

@@ -1,6 +1,7 @@
 from ScheduledTask import ScheduledTask
 from Timelapse import Timelapse
 import datetime 
+import MySchedule
 
 
 
@@ -24,7 +25,8 @@ class TimelapseScheduledTask(ScheduledTask):
         from MySchedule import add
         tasks = timelapse.GetScheduledTasks()
         for task in tasks:
-            add(task)
+            MySchedule.add(task)
+     
 
 
 

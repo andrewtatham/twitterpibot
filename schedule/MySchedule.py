@@ -19,19 +19,17 @@ def Stop():
     _scheduler.shutdown()
     for job in _jobs:
         job.onStop()
-        
+
 def add(job):
-    job.onInit()
     _scheduler.add_job(RunWrapper, args=[job], trigger = job.GetTrigger())
 
 
 
 
 _scheduler = BackgroundScheduler()
-_jobs = Identity.scheduledjobs
+_jobs = Identity.GetScheduledJobs()
 
 for job in _jobs:
-    job.onInit()
     _scheduler.add_job(RunWrapper, args=[job], trigger = job.GetTrigger())
 
 

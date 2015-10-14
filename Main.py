@@ -12,19 +12,19 @@ sys.path.append('processing')
 sys.path.append('brightpi')
 sys.path.append('songs')
 
-from Authenticator import Authenticator
-auth = Authenticator()
-auth.Authenticate()
 
 import hardware
+import Identity
+import TwitterHelper
+TwitterHelper.Init(Identity.screen_name)
+
 import colorama
+
 if not hardware.isAndrewDesktop:
     colorama.init(autoreset = True)
 
-from Tasks import Tasks
-tasks = Tasks()
-tasks.Init()
-tasks.Start()
+import Tasks
+Tasks.Start()
 
 import MySchedule
 MySchedule.Start()

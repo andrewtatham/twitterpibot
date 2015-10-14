@@ -1,67 +1,44 @@
 import threading
-from StreamTweetsTask import StreamTweetsTask
-from ProcessInboxTask import ProcessInboxTask
-
-from PiglowTask import PiglowTask
 from ExceptionHandler import Handle
-import hardware
+import Identity
+
+_taskList = Identity.GetTasks()
+_running = False
+_runThreads = []
 
 
+def Start():
+    global _running
+    _running = True
 
-class Tasks(object):
-    
-    def __init__(self, *args, **kwargs):
+    global _taskList
+    global _runThreads
+    for task in _taskList:
 
-        self.taskList = [ProcessInboxTask(),
-                         StreamTweetsTask()]
-        if hardware.ispiglowattached:
-            self.taskList.append(PiglowTask())
+        runThread = threading.Thread(target=RunWrapper, args=[task])
+        _runThreads.append(runThread)
 
-        self.running = False
+    for thread in _runThreads:
+        thread.start()
 
+def RunWrapper(task):
+    global _running
+    while _running:           
+        try:   
+            task.onRun()
+        except Exception as e:                
+            Handle(e)
 
-    def Init(args):
-
-        initThreads = []
-        for task in args.taskList:
-            initThreads.append(threading.Thread(target=task.onInit))
-
-        for thread in initThreads:
-            thread.start()
-
-        for thread in initThreads:
-            thread.join()
-
-
-
-    def Start(args):
-
-        args.running = True
-
-        args.runThreads = []
-        for task in args.taskList:
-
-            runThread = threading.Thread(target=args.RunWrapper, args=[task])
-            #runThread.setDaemon(True)
-            args.runThreads.append(runThread)
-
-        for thread in args.runThreads:
-            thread.start()
-
-    def RunWrapper(args, task):
-        while args.running:           
-            try:   
-                task.onRun()
-            except Exception as e:                
-                Handle(e)
-
-    def Stop(args):
-        args.running = False
+def Stop(args):
+    global _running
+    _running = False
        
-        stopThreads = map(lambda task : threading.Thread(target=task.onStop), args.taskList)
-        for thread in stopThreads:
-            thread.start()
-        for thread in stopThreads:
-            thread.join()
-        for thread in args.runThreads:
-            thread.join()
+    global _taskList
+    global _runThreads
+    stopThreads = map(lambda task : threading.Thread(target=task.onStop), _taskList)
+    for thread in stopThreads:
+        thread.start()
+    for thread in stopThreads:
+        thread.join()
+    for thread in _runThreads:
+        thread.join()

@@ -4,7 +4,7 @@ import Identity
 
 class ResponseFactory(object):
     def __init__(self, *args, **kwargs):
-        self.responses = Identity.responses
+        self.responses = Identity.GetResponses()
 
     def Create(args, inboxItem):
         if inboxItem :

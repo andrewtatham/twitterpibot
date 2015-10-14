@@ -11,11 +11,9 @@ import hardware
 import MyQueues
 
 class ProcessInboxTask(Task):
-
-    def onInit(args):
-        args.factory = InboxItemFactory()
-        args.responseFactory = ResponseFactory()
-    
+    def __init__(self, *args, **kwargs):
+        self.factory = InboxItemFactory()
+        self.responseFactory = ResponseFactory()
 
     def onRun(args):
         try:
@@ -40,7 +38,7 @@ def ProcessInboxItem(args, inboxItem):
         hardware.OnInboxItemRecieved(inboxItem)
 
         response = args.responseFactory.Create(inboxItem)
-        if response :
+        if response:
             Send(response)
             
 
