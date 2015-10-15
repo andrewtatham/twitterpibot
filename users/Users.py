@@ -1,25 +1,13 @@
 
 from User import User
-import pickle
-import os
 from MyTwitter import MyTwitter
-import logging
 from UserSet import UserSet
 import threading
-
-
 
 
 _lock = threading.Lock()
 _users = {}
 _sets = {}
-
-
-
-
-
-
-
 
 
 def updateLists():

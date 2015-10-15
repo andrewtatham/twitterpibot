@@ -1,4 +1,3 @@
-import logging
 import datetime
 import threading
 from Identity import id
@@ -31,13 +30,6 @@ class User(object):
         self.isReplyLess = False
 
         self.lock = threading.Lock()
-
-
-
-
-
-
-
 
 
     def isStale(args):

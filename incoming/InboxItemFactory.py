@@ -1,7 +1,7 @@
 from IncomingTweet import IncomingTweet
 from IncomingDirectMessage import IncomingDirectMessage
 from IncomingEvent import IncomingEvent
-import logging
+
 
 
 class InboxItemFactory(object):
@@ -17,5 +17,4 @@ class InboxItemFactory(object):
         elif "delete" in data:
             pass
         else:
-            print("other...")
-            logging.info(data)
+            pass

@@ -1,13 +1,10 @@
 
-import logging
-import logging
 from colorama import Fore, Style, Back
 from TwitterHelper import Send
 from Statistics import RecordWarning, RecordError
 import hardware
-
-
-logging.basicConfig(filename='twitter.log',level=logging.INFO)
+import logging
+logger = logging.getLogger(__name__)
 
 # "Twitter API returned a 429 (Too Many Requests), Rate limit exceeded"
 # "Twitter API returned a 403 (Forbidden), There was an error sending your message: Whoops! You already said that."
@@ -25,12 +22,12 @@ def Handle(exception):
 
 def _RecordWarning(exception):
     print(Style.DIM + Fore.WHITE + Back.YELLOW + str(exception.message))
-    logging.warn(exception) 
+    logger.warn(exception) 
     RecordWarning()
 
 def _RecordError(exception):
     print(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
-    logging.exception(exception)
+    logger.exception(exception)
     RecordError()
     _TrySendException(exception)
 
@@ -43,4 +40,4 @@ def _TrySendException(exception):
                 screen_name = "andrewtatham", 
                 user_id = "19201332")
     except Exception as e:
-        pass
+        logger.exception(e) 

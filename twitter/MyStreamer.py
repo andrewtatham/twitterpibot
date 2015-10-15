@@ -1,8 +1,8 @@
 from twython.streaming.api import TwythonStreamer
-import logging
 import MyQueues
 import Authenticator
-
+import logging
+logger = logging.getLogger(__name__)
 
 _tokens = None
 
@@ -20,7 +20,7 @@ class MyStreamer(TwythonStreamer):
             
     def on_error(self, status_code, data):
         msg = str(status_code) + " " + str(data)
-        logging.error(msg)
+        logger.error(msg)
         print(msg)
 
         

@@ -14,12 +14,16 @@ sys.path.append('songs')
 #sys.path.append('PiGlow')
 sys.path.append('PyGlow')
 
+import MyLogging
+import logging
+logger = logging.getLogger(__name__)
+
+
 
 import hardware
 import Identity
 import TwitterHelper
 TwitterHelper.Init(Identity.screen_name)
-
 import colorama
 
 if not hardware.isAndrewDesktop:

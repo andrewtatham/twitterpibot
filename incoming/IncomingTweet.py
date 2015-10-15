@@ -8,7 +8,6 @@ except ImportError:
     import HTMLParser
     h = HTMLParser.HTMLParser()
 
-import logging
 from itertools import cycle
 from colorama import Fore, Style
 import Users
@@ -21,7 +20,6 @@ searchcolours = cycle([Fore.CYAN, Fore.WHITE])
 class IncomingTweet(InboxTextItem):
     def __init__(self, data):
         # https://dev.twitter.com/overview/api/tweets
-        # logging.info(data)
 
         super(IncomingTweet, self).__init__(data)
 
@@ -41,12 +39,9 @@ class IncomingTweet(InboxTextItem):
             elif 'search' in self.source:
                 self.sourceIsSearch = True
 
-        logging.debug(data["text"])
         self.text = h.unescape(data["text"])
-
-
         self.words = self.text.split()
-        
+       
         self.to_me = False
         self.targets = []                  
         if "entities" in data:
@@ -55,7 +50,7 @@ class IncomingTweet(InboxTextItem):
             if "user_mentions" in entities:
                 mentions = entities["user_mentions"]
                 for mention in mentions:
-                    if mention["id_str"] != Identity.id: #and mention["screen_name"] != self.sender_screen_name:
+                    if mention["id_str"] != Identity.id:
                         self.targets.append(mention["screen_name"])
                       
                     if mention["id_str"] == Identity.id:

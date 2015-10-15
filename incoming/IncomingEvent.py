@@ -2,23 +2,18 @@ from InboxItem import InboxItem
 from itertools import cycle
 from colorama import Fore, Style
 import os
-import logging
 import Users
 
-eventcolours = cycle([Fore.MAGENTA,
-            Fore.CYAN])
+eventcolours = cycle([Fore.MAGENTA, Fore.CYAN])
 
 class IncomingEvent(InboxItem):
     def __init__(self, data):
-        
-        #logging.info(data)
 
         super(IncomingEvent, self).__init__(data)
 
         self.isEvent = True
 
         # https://dev.twitter.com/streaming/overview/messages-types#Events_event
-
 
         self.source = Users.getUser(data = data["source"])
         self.target = Users.getUser(data = data["target"])
@@ -30,7 +25,6 @@ class IncomingEvent(InboxItem):
         self.isFavorite = self.event == "favorite"
         self.isFollow = self.event == "follow"
         self.isRetweet = self.event == "quoted_tweet"
-
     
         self.targetObject = None
         self.targetObjectID = None
@@ -43,7 +37,6 @@ class IncomingEvent(InboxItem):
 
             if "text" in self.targetObject:
                 self.targetObjectText = self.targetObject["text"]
-  
 
     def Display(args):
         
@@ -65,6 +58,3 @@ class IncomingEvent(InboxItem):
             text += os.linesep + " TargetObject: " + args.targetObjectText
 
         print(colour + text)
-
-        #logging.info(text)
-        #logging.info(args.targetObject)

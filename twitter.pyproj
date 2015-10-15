@@ -1709,6 +1709,9 @@
     <Compile Include="Main.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MyLogging.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MyQueues.py">
       <SubType>Code</SubType>
     </Compile>
