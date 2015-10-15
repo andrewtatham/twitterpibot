@@ -28,13 +28,17 @@ def GetResponses():
     from TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
 
     responses = [    
-        RestartResponse(),
-        SongResponse(),
-        TalkLikeAPirateDayResponse(),
-        ThanksResponse(),
-        HelloResponse(),
-        Magic8BallResponse(),
+        RestartResponse()
     ]
+
+    if hardware.isRaspberryPi:
+        responses.extend([
+            SongResponse(),
+            TalkLikeAPirateDayResponse(),
+            ThanksResponse(),
+            HelloResponse(),
+            Magic8BallResponse()
+        ])
         
     if hardware.ispicamattached or hardware.iswebcamattached:
         responses.extend([
@@ -42,14 +46,14 @@ def GetResponses():
             TimelapseResponse()
         ])
         
-        
     if hardware.iswindows:
         responses.append(BotBlockerResponse())
         
-    responses.extend([
-        FatherTedResponse(),           
-        RetweetResponse()
-    ])
+    if hardware.isRaspberryPi:
+        responses.extend([
+            FatherTedResponse(),           
+            RetweetResponse()
+        ])
     return responses
 
 def GetScheduledJobs():
@@ -77,23 +81,31 @@ def GetScheduledJobs():
     
     from PhotoScheduledTask import PhotoScheduledTask
 
+
+
+
+
+
     scheduledjobs = [
-        Wikipedia(),
-        EdBallsDay(),
-        TalkLikeAPirateDayScheduledTask(),
         MonitorScheduledTask(),
         TrendsScheduledTask(),
         SuggestedUsersScheduledTask(),
-        #RateLimitsScheduledTask(),
-        #KatieHopkinsScheduledTask(),
         UserListsScheduledTask(),
-        WeatherScheduledTask(),
-        JokesScheduledTask(), 
+        #RateLimitsScheduledTask(),
         SavedSearchScheduledTask(),
         MidnightScheduledTask(),
-        SongScheduledTask()
     ]
-    
+
+    if hardware.isRaspberryPi:
+        scheduledjobs.extend([
+            Wikipedia(),
+            EdBallsDay(),
+            TalkLikeAPirateDayScheduledTask(),
+            #KatieHopkinsScheduledTask(),
+            WeatherScheduledTask(),
+            JokesScheduledTask(), 
+            SongScheduledTask()
+        ])
     
     if hardware.iswebcamattached or hardware.ispicamattached:
         scheduledjobs.extend([
@@ -106,8 +118,6 @@ def GetScheduledJobs():
     
         if not hardware.iswindows :
             scheduledjobs.append(PhotoScheduledTask())
-    
-    
         
     if hardware.iswindows:
         scheduledjobs.append(BotBlockerScheduledTask())
