@@ -5,6 +5,8 @@ import Identity
 class ResponseFactory(object):
     def __init__(self, *args, **kwargs):
         self.responses = Identity.GetResponses()
+        for response in self.responses:
+            print("[ResponseFactory] adding " + str(type(response)))
 
     def Create(args, inboxItem):
         if inboxItem :
