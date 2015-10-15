@@ -25,7 +25,27 @@ class Timelapse(object):
         self.initTime = self.startTime + datetime.timedelta(seconds = -1), 
         self.uploadTime = self.endTime + datetime.timedelta(seconds = 1)       
 
-        self.tweetText = tweetText  + " from " + self.startTime.strftime("%X") + " to " + self.endTime.strftime("%X") + " #gif #timelapse"
+        self.tweetText = tweetText  + " from " + self.startTime.strftime("%X") + " to " + self.endTime.strftime("%X") + " #timelapse"
+        self.targetExtension = "gif" # "mp4" / "gif"
+        self.fps = 10
+        self.frameDuration = 1.0 / self.fps
+
+
+        # calculate nuber of frames captured
+        duration = self.endTime - self.startTime
+        noFrames = duration.total_seconds() / self.intervalSeconds
+
+        ## expected duration of output video
+        durationSeconds = noFrames / self.fps
+        
+        print("[Timelapse] " + self.name + " Expected duration = " + str(durationSeconds))
+
+        if self.targetExtension == "mp4":
+            if durationSeconds < 0.5:
+                raise Exception("Video will be too short")
+            if durationSeconds > 30:
+                raise Exception("Video is too long")
+                
 
     def GetScheduledTasks(self):
         tasks = [
@@ -83,36 +103,73 @@ class TimelapseUploadScheduledTask(ScheduledTask):
     def onRun(args):
 
 
-        # TODO handle multiple cameras
+
 
         searchPath = args.timelapse.dirPath + os.path.sep + args.timelapse.name + "*" + os.extsep + args.timelapse.imageExtension
 
-        print("[Timelapse]" + args.timelapse.name + " Creating GIF")
         files = glob.glob(searchPath)
         files.sort()
         images = [cv2.imread(file) for file in files]
-        if hardware.iswindows:
-            images = [cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB) for bgr in images ]
+
+        filename = args.timelapse.dirPath + os.path.sep + args.timelapse.name + os.extsep + args.timelapse.targetExtension
+
+        if args.timelapse.targetExtension == "gif":
+
+            if hardware.iswebcamattached:
+                images = [cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB) for bgr in images ]
+            if hardware.ispicamattached:
+                images = [cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY) for bgr in images ]
+
+            images2gif.writeGif(
+                filename, 
+                images,
+                dither = True, 
+                duration = args.timelapse.frameDuration, 
+                repeat = True, 
+                subRectangles = None)
+
+        elif args.timelapse.targetExtension == "mp4":
+            #height , width , layers =  images[0].shape
+            width = 640
+            height = 480
+
+            filenametemp = args.timelapse.dirPath + os.path.sep + args.timelapse.name + os.extsep + "avi"
+
+
+            print("[Timelapse] Opening video")
+            fourcc = cv2.cv.CV_FOURCC(*'MPG4')
+            video = cv2.VideoWriter(
+                filenametemp,
+                fourcc = fourcc,
+                fps = args.timelapse.fps,
+                frameSize = (width,height))
+
+            for image in images:
+                print("[Timelapse] Writing image to video")
+                video.write(image)
+
+            print("[Timelapse] Closing video")
+            video.release()
+
+            print("[Timelapse] Renaming video")
+            os.rename(filenametemp,filename)
+
         else:
-            images = [cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY) for bgr in images ]
+            raise Exception("Not implemented extension " + args.timelapse.targetExtension)
 
-        filename = args.timelapse.dirPath + os.path.sep + args.timelapse.name + ".gif"
+        print("[Timelapse]" + args.timelapse.name + " Checking")
 
-        print("[Timelapse]" + args.timelapse.name + " writing gif")
-        images2gif.writeGif(
-            filename, 
-            images,
-            dither = True, 
-            duration = 0.1, 
-            repeat = True, 
-            subRectangles = None)
+        if not os.path.isfile(filename):
+            raise Exception("File does not exist")    
 
-        size = os.path.getsize(filename)
+        fileSize = os.path.getsize(filename)
+        if fileSize == 0:
+            raise Exception("File size is zero ")
 
-        if size == 0:
-            raise ValueError("file size is zero")
-        if size >= 4 * 1024 * 1024:
-            raise ValueError("file size is too big")
+
+        if (args.timelapse.targetExtension == "gif" and fileSize > (4 * 1024 * 1024)) \
+            or (args.timelapse.targetExtension == "mp4" and fileSize > (15 * 1024 * 1024)):
+            raise Exception("File size is too big ")
 
 
         print("[Timelapse]" + args.timelapse.name + " Sending")

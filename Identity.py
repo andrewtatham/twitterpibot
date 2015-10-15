@@ -87,8 +87,7 @@ def GetScheduledJobs():
 
 
     scheduledjobs = [
-        MonitorScheduledTask(),
-        TrendsScheduledTask(),
+        MonitorScheduledTask(),        
         SuggestedUsersScheduledTask(),
         UserListsScheduledTask(),
         #RateLimitsScheduledTask(),
@@ -98,6 +97,7 @@ def GetScheduledJobs():
 
     if hardware.isRaspberryPi:
         scheduledjobs.extend([
+            TrendsScheduledTask(),
             Wikipedia(),
             EdBallsDay(),
             TalkLikeAPirateDayScheduledTask(),

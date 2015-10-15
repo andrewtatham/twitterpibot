@@ -24,12 +24,12 @@ class MyTwitter(object):
             global _screen_name
             _tokens = Authenticator.GetTokens(_screen_name)
 
-        self.instance = Twython(_tokens[0], _tokens[1], _tokens[2], _tokens[3])
-        return self.instance
+        instance = Twython(_tokens[0], _tokens[1], _tokens[2], _tokens[3])
+        return instance
 
     def __exit__(self, *args, **kwargs):
 
-        self.instance = None
+        pass
 
 
 

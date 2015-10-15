@@ -17,7 +17,7 @@ class TimelapseScheduledTask(ScheduledTask):
         timelapse = Timelapse(
             name = 'now',
             startTime = now + datetime.timedelta(seconds = 1), 
-            endTime = now + datetime.timedelta(seconds = 5),
+            endTime = now + datetime.timedelta(seconds = 8),
             intervalSeconds = 1,
             tweetText = "")
 
