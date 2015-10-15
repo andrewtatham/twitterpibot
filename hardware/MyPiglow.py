@@ -38,7 +38,7 @@ def WriteLed( led):
 
 def CameraFlash(on):
     if on:
-        piglow.white(255)
+        piglow.color("white", brightness = 255)
     else:
         WriteAll()
 
