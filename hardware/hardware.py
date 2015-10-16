@@ -35,7 +35,7 @@ isRaspberryPi2 = _node == "raspberrypi2"
 if iswindows:
 
     if isAndrewDesktop:
-        iswebcamattached = True
+        iswebcamattached = False
     elif isAndrewLaptop:
         iswebcamattached = True
 
@@ -46,11 +46,12 @@ elif isRaspbian:
     print(str(output))
 
     if isRaspberryPi:
-        ispicamattached = True
+        iswebcamattached = True
+        ispicamattached = False
         ispiglowattached = True # bool(" 54 " in output)
         isbrightpiattached = bool(" 70 " in output)
     elif isRaspberryPi2:
-        iswebcamattached = True
+        iswebcamattached = False
         isunicornhatattached = True
            
         
@@ -70,9 +71,11 @@ if isbrightpiattached:
     brightpi = MyBrightPi.BrightPI()
 
 
-def TakePhotoToDisk(dir, name, ext):
+def TakePhotoToDisk(dir, name, ext, useFlash = False):
+    
     try:
-        CameraFlash(True)
+        if useFlash:
+            CameraFlash(True)
         photos = []
         if iswebcamattached and webcam:
             photos.append(webcam.TakePhotoToDisk(dir, name, ext))
@@ -80,7 +83,8 @@ def TakePhotoToDisk(dir, name, ext):
             photos.append(picam.TakePhotoToDisk(dir, name, ext))
         return photos
     finally:
-        CameraFlash(False)
+        if useFlash:
+            CameraFlash(False)
 
 
 def CameraFlash(on):
