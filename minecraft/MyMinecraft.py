@@ -5,8 +5,14 @@ import time
 import hardware
 import random
 
-def TakeScreenshot():
-    if iswindows:
+
+def ArrangeScreenshot(mc):
+    pass
+
+
+
+def TakeScreenshot(filename):
+    if hardware.iswindows:
         WindowsScreenShot(filename)
     else:
         RaspPiScreenShot(filename)
@@ -65,18 +71,52 @@ def Rain(mc, duration, intensity, area, blockType):
             mc.setBlock(x,y,z,blockType)
 
             time.sleep(wait)
-         
+        
 
+def Pyramid(mc, x, z, height):
+    for y in range(height):
+        
+        n = (height - y) - 1
+        
+        s = "PYRAMID {} {} ".format(y, n)
+        print(s)
+        mc.postToChat(s)
+
+        mc.setBlocks(x-n, y, z-n, x+n, y, z+n, block.TNT, 1)
+        
+
+
+
+
+def Clear():
+    mc.setBlocks(-100,0,-100,100,100,100, block.AIR)
 
 if __name__ == "__main__":
     mc = Connect()
+ 
 
-    for n in range(3):
-        Rain(mc, duration = 3, intensity = 3, area = 20, blockType = block.TNT)
-        time.sleep(2)
+
+    Clear()
+
+    Pyramid(mc, 0, 0, 10)
+
+
+    Rain(mc, duration = 3, intensity = 3, area = 20, blockType = block.LAVA_FLOWING)
     
 
+    #ids = mc.getPlayerEntityIds()
+    #for id in ids:
+    #    print(id)
 
-    
+
+    #pos = mc.player.getTilePos()
+
+    #print(pos.x,pos.y,pos.z)
+    #ArrangeScreenshot(mc)
+    #TakeScreenshot("temp/mc.png")
+
+    time.sleep(10)
+
+   
     
  
