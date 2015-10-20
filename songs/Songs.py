@@ -5,6 +5,7 @@ import time
 from TwitterHelper import Send, ReplyWith
 import itertools
 import User
+import datetime
 class Songs(object):
     def __init__(self, *args, **kwargs):
         self.songsfolder = "songs/"
@@ -143,7 +144,8 @@ class Songs(object):
                 "screen_name" : None,
                 "title" : "",
                 "lyrics" : "jingle.txt",
-                "video" : "https://youtu.be/FVJskPa2a3s"
+                "video" : "https://youtu.be/FVJskPa2a3s",
+                "christmas" : "true"
             },
             "welcometothejungle" : {
                 "artist" : "Guns N' Roses",
@@ -311,11 +313,15 @@ class Songs(object):
         random.shuffle(self._birthdaySongKeys)
         self._birthdaySongKeys = itertools.cycle(self._birthdaySongKeys)
 
-    def Keys(args):
+    def AllKeys(args):
+        # always returs all keys
         return args._songs.keys()   
 
-    def ViewKeys(args):
-        return args._songs.viewkeys()
+    def Keys(args):
+        today = datetime.date.today()
+        isChristmas = today.month == 12 and 24 <= today.day <= 26
+        keys = [k for k,v in args._songs.iteritems() if "birthday" not in v and isChristmas and "christmas" in v]
+        return keys
 
     def SingBirthdaySong(self, screen_name):
         songKey = self._birthdaySongKeys.next()
