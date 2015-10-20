@@ -15,7 +15,7 @@ class ResponseFactory(object):
 
                     inboxItem.isRespondedTo = True
 
-                    if inboxItem.isTweet and not inboxItem.favorited and response.Favourite(inboxItem):
+                    if inboxItem.isTweet and not inboxItem.favorited and not inboxItem.from_me and response.Favourite(inboxItem):
                         with MyTwitter() as twitter:
                             twitter.create_favourite(id = inboxItem.status_id)
 
