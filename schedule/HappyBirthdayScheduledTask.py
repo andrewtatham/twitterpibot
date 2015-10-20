@@ -4,8 +4,8 @@ import Birthdays
 
 class HappyBirthdayScheduledTask(ScheduledTask):
 
-    #def GetTrigger(args):
-    #    return CronTrigger(hour = "8-20/2")
+    def GetTrigger(args):
+        return CronTrigger(hour = "8-20/2")
 
     def onRun(args):
         birthdayUsers = Birthdays.GetBirthdayUsers()
