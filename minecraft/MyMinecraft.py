@@ -73,7 +73,7 @@ def Rain(mc, duration, intensity, area, blockType):
             time.sleep(wait)
         
 
-def Pyramid(mc, x, z, height):
+def Pyramid(mc, x, z, height, block, data = None):
     for y in range(height):
         
         n = (height - y) - 1
@@ -81,15 +81,22 @@ def Pyramid(mc, x, z, height):
         s = "PYRAMID {} {} ".format(y, n)
         print(s)
         mc.postToChat(s)
-
-        mc.setBlocks(x-n, y, z-n, x+n, y, z+n, block.TNT, 1)
+        if data:
+            mc.setBlocks(x-n, y, z-n, x+n, y, z+n, block, data )
+        else:
+            mc.setBlocks(x-n, y, z-n, x+n, y, z+n, block )
         
 
 
 
 
 def Clear():
+
+    # clear above surface 
     mc.setBlocks(-100,0,-100,100,100,100, block.AIR)
+    # mc.setBlocks(-100,-1,-100,100,-1, 100, block.GRASS)
+    mc.setBlocks(-100,0,-100,100,-100,100, block.AIR)
+
 
 if __name__ == "__main__":
     mc = Connect()
@@ -98,10 +105,16 @@ if __name__ == "__main__":
 
     Clear()
 
-    Pyramid(mc, 0, 0, 10)
+   
+
+    #Pyramid(mc, 0, 0, 10, block.TNT, 1)
+
+    #Pyramid(mc, 100, 100, 48, block.LAVA)
+
+    #Pyramid(mc, 100, 100, 50, block.ICE)
 
 
-    Rain(mc, duration = 3, intensity = 3, area = 20, blockType = block.LAVA_FLOWING)
+    # Rain(mc, duration = 3, intensity = 10, area = 100, blockType = block.WATER_FLOWING)
     
 
     #ids = mc.getPlayerEntityIds()
@@ -115,7 +128,7 @@ if __name__ == "__main__":
     #ArrangeScreenshot(mc)
     #TakeScreenshot("temp/mc.png")
 
-    time.sleep(10)
+    #time.sleep(10)
 
    
     
