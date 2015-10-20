@@ -319,13 +319,19 @@ class Songs(object):
 
     def SingBirthdaySong(self, screen_name):
         songKey = self._birthdaySongKeys.next()
-        self.Send(songKey, screen_name)
+        self.Send(songKey, screen_name, text = "Happy Birthday @" + screen_name + " !!!", hashtag = "#HappyBirthday")
 
-    def Send(args, songKey, target = None, inboxItem = None, response = None ):
+    def Send(args, songKey, target = None, inboxItem = None, response = None, text = None, hashtag = None):
         song = args._songs[songKey]
 
-        text = "Sing along! " + song["video"]
+        if not text:
+            text = random.choice(["All together now!", "Sing along!"])
+        text += ' ' + song["video"]
+        if hashtag:
+            text += ' ' + hashtag 
+
         in_reply_to_status_id = args._send(inboxItem, text, response, target, None)
+        time.sleep(5)
 
         lyricsfile = song["lyrics"]
         lyrics = open(args.songsfolder + lyricsfile, "rb").readlines()
@@ -335,6 +341,9 @@ class Songs(object):
             if lyric:
                 if "<<screen_name>>" in lyric:
                     lyric = lyric.replace("<<screen_name>>", "@" + target)  
+
+                if hashtag:
+                    lyric += ' ' + hashtag 
 
                 ## prevent duplicate lines
                 while lyric in lastlyrics:
@@ -360,11 +369,11 @@ class Songs(object):
         else:
             text = ""
             if target:
-                if target is str:
-                    text = "@" + target + " "
-                if target is User.User:
-                    text = "@" + target.screen_name + " "
-            text += lyric
+                if isinstance(target, basestring):
+                    text = "@" + target 
+                elif isinstance(target, User.User):
+                    text = "@" + target.screen_name
+            text += " " + lyric
             tweet = OutgoingTweet(
                 text = text, 
                 in_reply_to_status_id = in_reply_to_status_id)
