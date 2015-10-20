@@ -16,6 +16,7 @@ class User(object):
 
         self.verified = bool(data["verified"])
         self.location = data["location"]
+        self.protected = bool(data["protected"])
 
         self.friends_count = int(data["friends_count"])
         self.followers_count = int(data["followers_count"])
