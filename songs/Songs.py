@@ -3,6 +3,8 @@ from OutgoingTweet import OutgoingTweet
 import random
 import time
 from TwitterHelper import Send, ReplyWith
+import itertools
+import User
 class Songs(object):
     def __init__(self, *args, **kwargs):
         self.songsfolder = "songs/"
@@ -240,15 +242,84 @@ class Songs(object):
                 "title" : "",
                 "lyrics" : "wedidntstartthefire.txt",
                 "video" : "https://youtu.be/eFTLKWw542g"
-            }
-        }
-    )
+            },
+            # Birthday songs
+            "indaclub" : {
+                "artist" : "50 Cent",
+                "screen_name" : None,
+                "title" : "In Da Club",
+                "lyrics" : "indaclub.txt",
+                "video" : "https://youtu.be/5qm8PH4xAss",
+                "birthday" : "true"
+
+            },
+            "jollygoodfellow" : {
+                "artist" : "",
+                "screen_name" : None,
+                "title" : "For He's a Jolly Good Fellow",
+                "lyrics" : "jollygoodfellow.txt",
+                "video" : "https://youtu.be/RYLtBFQDAGE",
+                "birthday" : "true"
+            },
+            "happybirthdaytoya" : {
+                "artist" : "Stevie Wonder",
+                "screen_name" : None,
+                "title" : "Happy Birthday",
+                "lyrics" : "happybirthdaytoya.txt",
+                "video" : "https://youtu.be/inS9gAgSENE",
+                "birthday" : "true"
+            },
+            "happybirthdaytoyou_minions" : {
+                "artist" : "",
+                "screen_name" : None,
+                "title" : "",
+                "lyrics" : "happybirthdaytoyou.txt",
+                "video" : "https://youtu.be/xxOviBI-8fc",
+                "birthday" : "true"
+            },
+            "happybirthdayhendrix" : {
+                "artist" : "Jimmi Hendrix",
+                "screen_name" : None,
+                "title" : "Happy Birthday",
+                "lyrics" : "happybirthdayhendrix.txt",
+                "video" : "https://youtu.be/USip2Phpy60",
+                "birthday" : "true"
+            },            
+            "happybirthdaybeatles" : {
+                "artist" : "The Beatles",
+                "screen_name" : None,
+                "title" : "Happy Birthday",
+                "lyrics" : "happybirthdaybeatles.txt",
+                "video" : "https://youtu.be/wNcJ3jYOQGg",
+                "birthday" : "true"
+            },
+            "birthdaykatyperry" : {
+                "artist" : "Katy Perry",
+                "screen_name" : None,
+                "title" : "Birthday",
+                "lyrics" : "birthdaykatyperry.txt",
+                "video" : "https://youtu.be/jqYxyd1iSNk",
+                "birthday" : "true"
+            },
+            
+        })
+
+        self._birthdaySongKeys = []
+        for k,v in self._songs.iteritems():
+            if "birthday" in v and v["birthday"]:
+                self._birthdaySongKeys.append(k)
+        random.shuffle(self._birthdaySongKeys)
+        self._birthdaySongKeys = itertools.cycle(self._birthdaySongKeys)
 
     def Keys(args):
         return args._songs.keys()   
+
     def ViewKeys(args):
         return args._songs.viewkeys()
 
+    def SingBirthdaySong(self, screen_name):
+        songKey = self._birthdaySongKeys.next()
+        self.Send(songKey, screen_name)
 
     def Send(args, songKey, target = None, inboxItem = None, response = None ):
         song = args._songs[songKey]
@@ -262,6 +333,9 @@ class Songs(object):
         for lyric in lyrics:
             lyric = lyric.strip()
             if lyric:
+                if "<<screen_name>>" in lyric:
+                    lyric = lyric.replace("<<screen_name>>", "@" + target)  
+
                 ## prevent duplicate lines
                 while lyric in lastlyrics:
                     lyric += random.choice(args.mutation)
@@ -286,7 +360,10 @@ class Songs(object):
         else:
             text = ""
             if target:
-                text = "@" + target.screen_name + " "
+                if target is str:
+                    text = "@" + target + " "
+                if target is User.User:
+                    text = "@" + target.screen_name + " "
             text += lyric
             tweet = OutgoingTweet(
                 text = text, 

@@ -2,6 +2,7 @@ import hardware
 import Identity
 
 
+
 screen_name = ""
 if hardware.isRaspberryPi:
     screen_name = "andrewtathampi"
@@ -77,10 +78,9 @@ def GetScheduledJobs():
     from SavedSearchScheduledTask import SavedSearchScheduledTask
     from TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
     from MidnightScheduledTask import MidnightScheduledTask
-    from SongScheduledTask import SongScheduledTask
-    
+    from SongScheduledTask import SongScheduledTask    
     from PhotoScheduledTask import PhotoScheduledTask
-
+    from HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
 
 
 
@@ -92,7 +92,7 @@ def GetScheduledJobs():
         UserListsScheduledTask(),
         #RateLimitsScheduledTask(),
         SavedSearchScheduledTask(),
-        MidnightScheduledTask(),
+        MidnightScheduledTask()
     ]
 
     if hardware.isRaspberryPi:
@@ -104,7 +104,8 @@ def GetScheduledJobs():
             #KatieHopkinsScheduledTask(),
             WeatherScheduledTask(),
             JokesScheduledTask(), 
-            SongScheduledTask()
+            SongScheduledTask(),
+            HappyBirthdayScheduledTask()
         ])
     
     if hardware.iswebcamattached or hardware.ispicamattached:

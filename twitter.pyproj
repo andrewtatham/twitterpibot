@@ -1633,6 +1633,7 @@
     <Content Include="songs\500miles.txt" />
     <Content Include="songs\believin.txt" />
     <Content Include="songs\bird.txt" />
+    <Content Include="songs\birthdaykatyperry.txt" />
     <Content Include="songs\bluemonday.txt" />
     <Content Include="songs\bohrap.txt" />
     <Content Include="songs\boomshackalack.txt" />
@@ -1643,11 +1644,16 @@
     <Content Include="songs\gangsters.txt" />
     <Content Include="songs\compton.txt" />
     <Content Include="songs\hammertime.txt" />
+    <Content Include="songs\happybirthdayhendrix.txt" />
+    <Content Include="songs\happybirthdaytoya.txt" />
+    <Content Include="songs\happybirthdaytoyou.txt" />
     <Content Include="songs\ice.txt" />
     <Content Include="songs\incredible.txt" />
+    <Content Include="songs\indaclub.txt" />
     <Content Include="songs\informer.txt" />
     <Content Include="songs\japanese.txt" />
     <Content Include="songs\jingle.txt" />
+    <Content Include="songs\jollygoodfellow.txt" />
     <Content Include="songs\jungle.txt" />
     <Content Include="songs\nighttrain.txt" />
     <Content Include="songs\novemberrain.txt" />
@@ -1664,6 +1670,9 @@
     <Content Include="songs\wonderwall.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="processing\Birthdays.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ExceptionHandler.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1781,6 +1790,9 @@
     <Compile Include="schedule\EdBallsDay.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="schedule\HappyBirthdayScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="schedule\JokesScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1842,6 +1854,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="schedule\Wikipedia.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="songs\happybirthdaybeatles.txt">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="songs\Songs.py">
