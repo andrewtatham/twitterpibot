@@ -154,7 +154,7 @@ class Rain(object):
         for r in self._raindrops:
             if self._direction == "down":
                 r._y -= 1
-                if r.y < 0:
+                if r._y < 0:
                     self._raindrops.remove(r)
 
 class Raindrop(object):
