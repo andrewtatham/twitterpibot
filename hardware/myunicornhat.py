@@ -6,7 +6,7 @@ from LightsMode import LightsMode
 
 
 _buffer = [[(0,0,0) for x in range(8)] for y in range(8)]
-_modes = itertools.Cycle([
+_modes = itertools.cycle([
     DotsMode(),
     FlashMode()
     ])

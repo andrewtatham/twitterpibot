@@ -13,7 +13,7 @@ _piglow.all(0)
 _buffer = [0 for led in range(18)]
 _lock = Lock()
 
-_modes = itertools.Cycle([
+_modes = itertools.cycle([
     DotsMode(),
     FlashMode()
     ])
