@@ -6,6 +6,31 @@ from PyGlow import PyGlow
 from multiprocessing import Lock
 import itertools
 
+
+
+
+
+
+
+def _getLed(arm, colour):
+    return int(6 * arm + colour)
+
+def _getBright(factor):
+    return max(0, min(int(-0.5 * _maxbright + _maxbright * factor),255))
+
+def _WriteAll():
+    for led in range(18):
+        _WriteLed(led)
+
+def _WriteLed( led):
+    bright = max(0, min(_buffer[led], 255))
+    _piglow.led(led + 1, bright)
+
+
+
+
+
+
 class PiglowMode(object):
 
     def CameraFlash(self, on):
@@ -86,19 +111,7 @@ _modes = itertools.cycle([
 _mode = next(_modes)
 
 
-def _getLed(arm, colour):
-    return int(6 * arm + colour)
 
-def _getBright(factor):
-    return max(0, min(int(-0.5 * _maxbright + _maxbright * factor),255))
-
-def _WriteAll():
-    for led in range(18):
-        _WriteLed(led)
-
-def _WriteLed( led):
-    bright = max(0, min(_buffer[led], 255))
-    _piglow.led(led + 1, bright)
 
 
 
