@@ -86,7 +86,7 @@ class FlashMode(UnicornHatMode):
                 g = 0
                 b = 0
             
-            print("rgb = " + r + ", " + g + ", " + b)
+            
 
             for y in range(8):
                 for x in range(8):
