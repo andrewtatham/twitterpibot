@@ -6,8 +6,6 @@ class LightsMode(object):
         pass
     def CameraFlash(self, on):
         pass
-    def OnLightsScheduledTask(self):
-        pass
     def Fade(self):
         pass
     def Close(self):

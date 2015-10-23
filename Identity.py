@@ -29,7 +29,8 @@ def GetResponses():
     from TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
 
     responses = [    
-        RestartResponse()
+        RestartResponse(),
+        BotBlockerResponse()
     ]
 
     if hardware.isRaspberryPi:
@@ -40,21 +41,23 @@ def GetResponses():
             HelloResponse(),
             Magic8BallResponse()
         ])
+    elif(hardware.isRaspberryPi2):
+        pass
         
     if hardware.ispicamattached or hardware.iswebcamattached:
         responses.extend([
             PhotoResponse(),
             TimelapseResponse()
         ])
-        
-    if hardware.iswindows:
-        responses.append(BotBlockerResponse())
-        
+
     if hardware.isRaspberryPi:
         responses.extend([
             FatherTedResponse(),           
             RetweetResponse()
         ])
+    elif(hardware.isRaspberryPi2):
+        pass
+    
     return responses
 
 def GetScheduledJobs():
