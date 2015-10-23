@@ -149,7 +149,7 @@ class Rain(object):
         if iterate:
             for r in self._raindrops:
                 _buffer[r._x][r._y] = (0,0,10)
-            self._rain.Iterate()
+            self.Iterate()
 
         for r in self._raindrops:
             _buffer[r._x][r._y] = r._rgb
