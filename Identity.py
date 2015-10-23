@@ -81,7 +81,7 @@ def GetScheduledJobs():
     from SongScheduledTask import SongScheduledTask    
     from PhotoScheduledTask import PhotoScheduledTask
     from HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
-
+    from LightsScheduledTask import LightsScheduledTask
 
 
 
@@ -119,15 +119,22 @@ def GetScheduledJobs():
         ])   
         if not hardware.iswindows :
             scheduledjobs.append(PhotoScheduledTask())
-        
+    if hardware.ispiglowattached or hardware.isunicornhatattached:
+        scheduledjobs.extend([
+            LightsScheduledTask()
+        ])
     return scheduledjobs
 
 def GetTasks():
     from ProcessInboxTask import ProcessInboxTask
     from StreamTweetsTask import StreamTweetsTask
     from FadeTask import FadeTask
+    from LightsTask import LightsTask
     tasks = [ProcessInboxTask(),
             StreamTweetsTask(TwitterHelper.GetStreamer(Identity.screen_name))]
     if hardware.ispiglowattached or hardware.isunicornhatattached:
-        tasks.append(FadeTask())
+        tasks.extend([
+            LightsTask(),
+            FadeTask()
+        ])
     return tasks

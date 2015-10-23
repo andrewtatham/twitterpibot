@@ -1670,6 +1670,9 @@
     <Content Include="songs\wonderwall.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="hardware\LightsMode.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="processing\Birthdays.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1799,6 +1802,9 @@
     <Compile Include="schedule\KatieHopkinsScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="schedule\LightsScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="schedule\MidnightScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
@@ -1866,6 +1872,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tasks\FadeTask.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tasks\LightsTask.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tasks\ProcessInboxTask.py">

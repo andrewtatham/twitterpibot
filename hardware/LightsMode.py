@@ -1,0 +1,13 @@
+class LightsMode(object):
+    def Lights(self):
+        time.sleep(1)
+    def OnInboxItemRecieved(self, inboxItem):
+        pass
+    def CameraFlash(self, on):
+        pass
+    def OnLightsScheduledTask(self):
+        pass
+    def Fade(self):
+        pass
+    def Close(self):
+        pass
