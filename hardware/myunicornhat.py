@@ -9,7 +9,6 @@ class UnicornHatMode(object):
         print("UnicornHatMode.Lights")
         time.sleep(3)
 
-
     def CameraFlash(self, on):
         with _lock:
             for y in range(8):
@@ -26,7 +25,6 @@ class UnicornHatMode(object):
                     unicornhat.set_pixel(x,y,r,g,b)
             unicornhat.show()
 
-
     def Fade(self):
         with _lock:
             for y in range(8):
@@ -39,7 +37,6 @@ class UnicornHatMode(object):
                     unicornhat.set_pixel(x,y,r,g,b)
             unicornhat.show()
 
-
     def Close(self):
         with _lock:
             r = 0
@@ -49,9 +46,20 @@ class UnicornHatMode(object):
                 for x in range(8):
                     unicornhat.set_pixel(x,y,r,g,b)
             unicornhat.show()
-    
 
 class DotsMode(UnicornHatMode):
+    def Lights(self):
+        with _lock:
+            x = random.randint(0,7)
+            y = random.randint(0,7)
+            r = random.randint(1,255)
+            g = random.randint(1,255)
+            b = random.randint(1,255)
+            _buffer[x][y] = (r,g,b)
+            unicornhat.set_pixel(x,y,r,g,b)
+            unicornhat.show()
+        return super(DotsMode, self).Lights()
+
     def OnInboxItemRecieved(self, inboxItem):
         with _lock:
             x = random.randint(0,7)
@@ -92,6 +100,7 @@ class FlashMode(UnicornHatMode):
                     b = pixel[2]
                     unicornhat.set_pixel(x,y,r,g,b)
             unicornhat.show()
+        super(DotsMode, self).Lights()
 
         time.sleep(0.25)
 
@@ -105,6 +114,8 @@ _mode = next(_modes)
 _lock = Lock()
 
 def Lights():
+
+    FlashMode.Lights(_mode)
     _mode.Lights()
 
 def CameraFlash(on):
