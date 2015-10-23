@@ -131,6 +131,7 @@ def OnInboxItemRecieved(inboxItem):
 
 def OnLightsScheduledTask():
     with _lock:
+        global _mode
         _mode = next(_modes)
 
 def Fade():
