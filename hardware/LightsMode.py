@@ -1,3 +1,4 @@
+import time
 class LightsMode(object):
     def Lights(self):
         time.sleep(1)
