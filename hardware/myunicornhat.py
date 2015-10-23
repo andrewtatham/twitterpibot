@@ -5,17 +5,17 @@ import itertools
 from multiprocessing import Lock
 
 
-def _WritePixel(self, x, y):
+def _WritePixel(x, y):
     pixel = _buffer[x][y]
     r = pixel[0]
     g = pixel[1]
     b = pixel[2]
     unicornhat.set_pixel(x,y,r,g,b)
 
-def _WriteAll(self):
+def _WriteAll():
     for y in range(8):
         for x in range(8):
-            self._WritePixel(x, y)
+            _WritePixel(x, y)
     unicornhat.show()
 
 class UnicornHatMode(object):

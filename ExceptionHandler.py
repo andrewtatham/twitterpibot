@@ -45,5 +45,6 @@ def _TrySendException(exception):
                 user_id = "19201332"))
     except Exception as e:
         logger.exception(e) 
+        global backoff
         time.sleep(backoff)
         backoff *= 2
