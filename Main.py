@@ -41,22 +41,22 @@ time.sleep(1)
 import datetime
 from TwitterHelper import Send
 from OutgoingDirectMessage import OutgoingDirectMessage
-if not hardware.iswindows:
-    Send(OutgoingDirectMessage(
-        screen_name = "andrewtatham", 
-        user_id = "19201332", 
-        text="Up...." + str(datetime.datetime.now())))
-    time.sleep(1)
+#if not hardware.iswindows:
+#    Send(OutgoingDirectMessage(
+#        screen_name = "andrewtatham", 
+#        user_id = "19201332", 
+#        text="Up...." + str(datetime.datetime.now())))
+#    time.sleep(1)
 
 import MyUI
 MyUI.Start()
 
 
-if not hardware.iswindows:
-    Send(OutgoingDirectMessage(
-        screen_name = "andrewtatham", 
-        user_id = "19201332", 
-        text="Down...." + str(datetime.datetime.now())))
+#if not hardware.iswindows:
+#    Send(OutgoingDirectMessage(
+#        screen_name = "andrewtatham", 
+#        user_id = "19201332", 
+#        text="Down...." + str(datetime.datetime.now())))
 
 Tasks.Stop()
 MySchedule.Stop()
