@@ -10,7 +10,7 @@ _modes = itertools.Cycle([
     DotsMode(),
     FlashMode()
     ])
-_mode = _modes.next()
+_mode = next(_modes)
 _lock = Lock()
 
 def Lights():
@@ -23,7 +23,7 @@ def OnInboxItemRecieved(inboxItem):
     _mode.OnInboxItemRecieved(inboxItem)
 
 def OnLightsScheduledTask():
-    mode = _modes.next()
+    _mode = next(_modes)
 
 def Fade():
     _mode.Fade();

@@ -16,7 +16,7 @@ _modes = itertools.Cycle([
     DotsMode(),
     FlashMode()
     ])
-_mode = _modes.next()
+_mode = next(_modes)
 
 
 def _getLed(arm, colour):
@@ -45,7 +45,7 @@ def OnInboxItemRecieved(inboxItem):
     _mode.OnInboxItemRecieved(inboxItem)
 
 def OnLightsScheduledTask():
-    mode = _modes.next()
+    _mode = next(_modes)
 
 def Fade():
     _mode.Fade();
@@ -101,30 +101,3 @@ class FlashMode(PiglowMode):
             _WriteAll()
 
         time.sleep(0.25)
-
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def CameraFlash(on):
-
-
-def Close():    
-    with _lock:
-        _piglow.all(0)
-        piglow = None
