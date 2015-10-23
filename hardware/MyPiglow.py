@@ -7,6 +7,29 @@ from multiprocessing import Lock
 from LightsMode import LightsMode
 import itertools
 
+class PiglowMode(LightsMode):
+    def CameraFlash(self, on):
+        with _lock:
+            if on:
+                _piglow.color("white", brightness = 255)
+            else:
+                _WriteAll()
+
+
+    def Fade(self):
+        with _lock:
+            for led in range(18):
+                if _buffer[led] > 1:
+                    _buffer[led] = max(0,_buffer[led] - 5)        
+            _WriteAll()
+
+
+    def Close(self):
+        with _lock:
+            for led in range(18):
+                _buffer[led] = 0
+            _WriteAll()
+
 class DotsMode(PiglowMode):
     def OnInboxItemRecieved(self, inboxItem):
         with _lock:
@@ -80,28 +103,7 @@ def Fade():
 def Close():
     _mode.Close()
 
-class PiglowMode(LightsMode):
-    def CameraFlash(self, on):
-        with _lock:
-            if on:
-                _piglow.color("white", brightness = 255)
-            else:
-                _WriteAll()
 
-
-    def Fade(self):
-        with _lock:
-            for led in range(18):
-                if _buffer[led] > 1:
-                    _buffer[led] = max(0,_buffer[led] - 5)        
-            _WriteAll()
-
-
-    def Close(self):
-        with _lock:
-            for led in range(18):
-                _buffer[led] = 0
-            _WriteAll()
 
 
 

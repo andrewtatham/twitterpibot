@@ -4,6 +4,48 @@ import time
 import itertools
 from LightsMode import LightsMode
 
+class UnicornHatMode(LightsMode):
+    def CameraFlash(self, on):
+        with _lock:
+            for y in range(8):
+                for x in range(8):
+                    if on:
+                        r = 255
+                        g = 255
+                        b = 255
+                    else:
+                        pixel = _buffer[x][y]
+                        r = pixel[0]
+                        g = pixel[1]
+                        b = pixel[2]
+                    unicornhat.set_pixel(x,y,r,g,b)
+            unicornhat.show()
+
+
+    def Fade(self):
+        with _lock:
+            for y in range(8):
+                for x in range(8):
+                    pixel = _buffer[x][y]
+                    r = max(pixel[0] - 1, 0)
+                    g = max(pixel[1] - 1, 0)
+                    b = max(pixel[2] - 1, 0)
+                    _buffer[x][y] = (r,g,b)
+                    unicornhat.set_pixel(x,y,r,g,b)
+            unicornhat.show()
+
+
+    def Close(self):
+        with _lock:
+            r = 0
+            g = 0
+            b = 0
+            for y in range(8):
+                for x in range(8):
+                    unicornhat.set_pixel(x,y,r,g,b)
+            unicornhat.show()
+    
+
 class DotsMode(UnicornHatMode):
     def OnInboxItemRecieved(self, inboxItem):
         with _lock:
@@ -89,47 +131,7 @@ def Close():
     _mode.Close()
 
 
-class UnicornHatMode(LightsMode):
-    def CameraFlash(self, on):
-        with _lock:
-            for y in range(8):
-                for x in range(8):
-                    if on:
-                        r = 255
-                        g = 255
-                        b = 255
-                    else:
-                        pixel = _buffer[x][y]
-                        r = pixel[0]
-                        g = pixel[1]
-                        b = pixel[2]
-                    unicornhat.set_pixel(x,y,r,g,b)
-            unicornhat.show()
 
-
-    def Fade(self):
-        with _lock:
-            for y in range(8):
-                for x in range(8):
-                    pixel = _buffer[x][y]
-                    r = max(pixel[0] - 1, 0)
-                    g = max(pixel[1] - 1, 0)
-                    b = max(pixel[2] - 1, 0)
-                    _buffer[x][y] = (r,g,b)
-                    unicornhat.set_pixel(x,y,r,g,b)
-            unicornhat.show()
-
-
-    def Close(self):
-        with _lock:
-            r = 0
-            g = 0
-            b = 0
-            for y in range(8):
-                for x in range(8):
-                    unicornhat.set_pixel(x,y,r,g,b)
-            unicornhat.show()
-    
 
 
 
