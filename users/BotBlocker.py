@@ -16,19 +16,15 @@ class BotBlocker(object):
         self.rxs = [(tooKeenRx, 5), (pornRx, 4), (businessRx, 1)]
 
     def IsUserBot(self, user):
-        #print("[Botblock] checking: " + user.name + " [@" + user.screen_name + "] " + user.description)
         blockFollower = False
         score = 0
         if not user.verified and not user.isFriend and not user.description:
-            # description is blank
             score += 7
         searchText = user.name + user.screen_name + user.description
         for rx in self.rxs:
             matches = rx[0].findall(searchText)
             if any(matches):
-                #print("[Botblock] Matches: " + str(matches))
                 score += rx[1] * len(matches)
-        #print("[Botblock] Profile score: " + str(score))
         if score > 10:
             blockFollower = True
         if not blockFollower:
@@ -37,25 +33,13 @@ class BotBlocker(object):
                     screen_name = user.screen_name,
                     trim_user = True,
                     count = 20)
-
-                # todo chec against bottweets
-
-
-                # todo check for similarities
-
-
-
-
                 searchText = ""
                 for tweet in lastTweets:
                     searchText += tweet["text"]
                 for rx in self.rxs:
                     matches = rx[0].findall(searchText)
                     if any(matches):
-                        #print("[Botblock] Matches: " + str(matches))
                         score += rx[1] * len(matches)
-
-        #print("[Botblock] Tweet score: " + str(score))
         if score > 10:
             blockFollower = True
         return blockFollower

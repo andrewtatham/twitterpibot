@@ -35,13 +35,13 @@ class BotBlockerScheduledTask(ScheduledTask):
                     args._page = nextPage
 
             if any(args._myFollowers):
-                follower = args._myFollowers.pop()
+                followerId = args._myFollowers.pop()
 
-                user = Users.getUser(id = follower)
+                usr = Users.getUser(id = followerId)
 
-                block = args._blocker.IsUserBot(user)
+                block = args._blocker.IsUserBot(usr)
                 if block:
-                     args._blocker.BlockUser(user)
+                     args._blocker.BlockUser(usr)
 
         
     
