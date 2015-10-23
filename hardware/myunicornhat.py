@@ -4,6 +4,63 @@ import time
 import itertools
 from LightsMode import LightsMode
 
+class DotsMode(UnicornHatMode):
+    def OnInboxItemRecieved(self, inboxItem):
+        with _lock:
+            x = random.randint(0,7)
+            y = random.randint(0,7)
+            r = random.randint(1,255)
+            g = random.randint(1,255)
+            b = random.randint(1,255)
+            _buffer[x][y] = (r,g,b)
+            unicornhat.set_pixel(x,y,r,g,b)
+            unicornhat.show()
+
+class FlashMode(UnicornHatMode):
+    def __init__(self):
+        self.state = False
+
+    def Lights(self):
+
+        with _lock:
+            self.state = not self.state
+            if self.state:
+                r = random.randint(1,255)
+                g = random.randint(1,255)
+                b = random.randint(1,255)
+            else:
+                r = 0
+                g = 0
+                b = 0
+
+            for y in range(8):
+                for x in range(8):
+                    _buffer[x][y] = (r,g,b)
+
+            for y in range(8):
+                for x in range(8):
+                    pixel = _buffer[x][y]
+                    r = pixel[0]
+                    g = pixel[1]
+                    b = pixel[2]
+                    unicornhat.set_pixel(x,y,r,g,b)
+            unicornhat.show()
+
+        time.sleep(0.25)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 _buffer = [[(0,0,0) for x in range(8)] for y in range(8)]
 _modes = itertools.cycle([
@@ -75,50 +132,7 @@ class UnicornHatMode(LightsMode):
     
 
 
-class DotsMode(UnicornHatMode):
-    def OnInboxItemRecieved(self, inboxItem):
-        with _lock:
-            x = random.randint(0,7)
-            y = random.randint(0,7)
-            r = random.randint(1,255)
-            g = random.randint(1,255)
-            b = random.randint(1,255)
-            _buffer[x][y] = (r,g,b)
-            unicornhat.set_pixel(x,y,r,g,b)
-            unicornhat.show()
 
-class FlashMode(UnicornHatMode):
-    def __init__(self):
-        self.state = False
-        
-
-    def Lights(self):
-
-        with _lock:
-            self.state = not self.state
-            if self.state:
-                r = random.randint(1,255)
-                g = random.randint(1,255)
-                b = random.randint(1,255)
-            else:
-                r = 0
-                g = 0
-                b = 0
-
-            for y in range(8):
-                for x in range(8):
-                    _buffer[x][y] = (r,g,b)
-
-            for y in range(8):
-                for x in range(8):
-                    pixel = _buffer[x][y]
-                    r = pixel[0]
-                    g = pixel[1]
-                    b = pixel[2]
-                    unicornhat.set_pixel(x,y,r,g,b)
-            unicornhat.show()
-
-        time.sleep(0.25)
 
 
     
