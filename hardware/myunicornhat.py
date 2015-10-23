@@ -63,6 +63,7 @@ class FlashMode(UnicornHatMode):
     def __init__(self):
         self.state = False
 
+    
     def Lights(self):
 
         with _lock:
@@ -75,6 +76,8 @@ class FlashMode(UnicornHatMode):
                 r = 0
                 g = 0
                 b = 0
+            
+            print("rgb = " + r + ", " + g + ", " + b)
 
             for y in range(8):
                 for x in range(8):

@@ -1,6 +1,7 @@
 import time
 class LightsMode(object):
     def Lights(self):
+        print("LightsMode.Lights") 
         time.sleep(1)
     def OnInboxItemRecieved(self, inboxItem):
         pass
