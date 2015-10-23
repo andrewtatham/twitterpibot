@@ -136,7 +136,7 @@ class RainMode(UnicornHatMode):
 class MatrixMode(UnicornHatMode):
 
     def __init__(self):
-        self._rain = Rain(direction = "left")
+        self._rain = Rain(direction = "right")
   
 
     def Lights(self):
@@ -152,6 +152,28 @@ class MatrixMode(UnicornHatMode):
         _WriteAll()
 
 
+class FireMode(UnicornHatMode):
+
+    def __init__(self):
+        self._rain = Rain(direction = "up")
+  
+
+    def Lights(self):
+        with _lock:
+            self._rain.WriteToBuffer(True)
+            _WriteAll()
+        time.sleep(2)
+
+    def OnInboxItemRecieved(self, inboxItem):
+
+        r = random.randint(100,255)
+        g = random.randint(0,150)
+        b = 0
+        rgb = (r,g,b)
+        self._rain.AddRaindrop(rgb)
+        self._rain.WriteToBuffer(False)
+        _WriteAll()
+
 
 class Rain(object):
     def __init__(self, direction = "down"):
@@ -160,10 +182,16 @@ class Rain(object):
 
 
     def AddRaindrop(self, rgb):
-        if self._direction == "down":
+        if self._direction == "up":
+            x = random.randint(0,7)
+            y = 0
+        elif self._direction == "down":
             x = random.randint(0,7)
             y = 7
         elif self._direction == "left":
+            x = 0
+            y = random.randint(0,7)
+        elif self._direction == "right":
             x = 7
             y = random.randint(0,7)
         self._raindrops.append(Raindrop(x,y,rgb))
@@ -171,7 +199,7 @@ class Rain(object):
     def WriteToBuffer(self, iterate):
         if iterate:
             for r in self._raindrops:
-                _buffer[r._x][r._y] = (0,0,10)
+                _buffer[r._x][r._y] = (0,0,0)
             self.Iterate()
 
         for r in self._raindrops:
@@ -179,13 +207,19 @@ class Rain(object):
 
     def Iterate(self):
         for r in self._raindrops:
-            if self._direction == "down":
+            if self._direction == "up":
+                r._y += 1           
+            elif self._direction == "down":
                 r._y -= 1
-                if r._y < 0:
-                    self._raindrops.remove(r)
             elif self._direction == "left":
+                r._x += 1
+            elif self._direction == "right":
                 r._x -= 1
-                if r._x < 0:
+
+            if self._direction == "up" and r._y > 7 \
+                or self._direction == "down" and r._y < 0 \
+                or self._direction == "left" and r._x > 7 \
+                or self._direction == "right" and r._x < 0 :
                     self._raindrops.remove(r)
 
 class Raindrop(object):
@@ -201,6 +235,7 @@ _buffer = [[(0,0,0) for x in range(8)] for y in range(8)]
 _modes = itertools.cycle([
     #DotsMode(),
     #FlashMode(),
+    FireMode(),
     MatrixMode(),
     RainMode()
 
