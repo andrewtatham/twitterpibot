@@ -58,7 +58,7 @@ class DotsMode(UnicornHatMode):
             _buffer[x][y] = (r,g,b)
             unicornhat.set_pixel(x,y,r,g,b)
             unicornhat.show()
-        return super(DotsMode, self).Lights()
+        time.sleep(5)
 
     def OnInboxItemRecieved(self, inboxItem):
         with _lock:
@@ -73,36 +73,40 @@ class DotsMode(UnicornHatMode):
 
 class FlashMode(UnicornHatMode):
     
+    def _WritePixel(self, x, y):
+        pixel = _buffer[x][y]
+        r = pixel[0]
+        g = pixel[1]
+        b = pixel[2]
+        unicornhat.set_pixel(x,y,r,g,b)
+
+    def _WriteAll(self):
+        for y in range(8):
+            for x in range(8):
+                self._WritePixel(x, y)
+        unicornhat.show()
+
     def Lights(self):
 
         with _lock:
-            
-            if random.randint(0,1) == 0:
-                r = random.randint(1,255)
-                g = random.randint(1,255)
-                b = random.randint(1,255)
-            else:
-                r = 0
-                g = 0
-                b = 0
-            
-            
-
+            r = random.randint(1,255)
+            g = random.randint(1,255)
+            b = random.randint(1,255)
             for y in range(8):
                 for x in range(8):
                     _buffer[x][y] = (r,g,b)
+            self._WriteAll()
+        time.sleep(2)
 
+    def OnInboxItemRecieved(self, inboxItem):
+        with _lock:
+            r = random.randint(1,255)
+            g = random.randint(1,255)
+            b = random.randint(1,255)
             for y in range(8):
                 for x in range(8):
-                    pixel = _buffer[x][y]
-                    r = pixel[0]
-                    g = pixel[1]
-                    b = pixel[2]
-                    unicornhat.set_pixel(x,y,r,g,b)
-            unicornhat.show()
-        super(DotsMode, self).Lights()
-
-        time.sleep(0.25)
+                    _buffer[x][y] = (r,g,b)
+            self._WriteAll()
 
 
 _buffer = [[(0,0,0) for x in range(8)] for y in range(8)]
@@ -114,8 +118,6 @@ _mode = next(_modes)
 _lock = Lock()
 
 def Lights():
-
-    FlashMode.Lights(_mode)
     _mode.Lights()
 
 def CameraFlash(on):
