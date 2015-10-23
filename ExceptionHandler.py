@@ -36,15 +36,15 @@ def _RecordError(exception):
     _TrySendException(exception)
 
 def _TrySendException(exception):
-
-    try:
-        if hardware.isRaspbian:
-            Send(OutgoingDirectMessage(
-                text = traceback.format_exc(),
-                screen_name = "andrewtatham", 
-                user_id = "19201332"))
-    except Exception as e:
-        logger.exception(e) 
-        global backoff
-        time.sleep(backoff)
-        backoff *= 2
+    pass
+    #try:
+    #    if hardware.isRaspbian:
+    #        Send(OutgoingDirectMessage(
+    #            text = traceback.format_exc(),
+    #            screen_name = "andrewtatham", 
+    #            user_id = "19201332"))
+    #except Exception as e:
+    #    logger.exception(e) 
+    #    global backoff
+    #    time.sleep(backoff)
+    #    backoff *= 2
