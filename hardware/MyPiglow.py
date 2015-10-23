@@ -7,10 +7,6 @@ from multiprocessing import Lock
 import itertools
 
 class PiglowMode(object):
-    def Lights(self):
-        print("PiglowMode.Lights")
-        time.sleep(3)
-
 
     def CameraFlash(self, on):
         with _lock:
@@ -35,6 +31,15 @@ class PiglowMode(object):
             _WriteAll()
 
 class DotsMode(PiglowMode):
+    def Lights(self):
+
+        with _lock:
+            led = random.randint(0,17)
+            _buffer[led] = max(0, min((_buffer[led] + 1), 255))
+            _WriteLed(led)
+
+        time.sleep(2)
+
     def OnInboxItemRecieved(self, inboxItem):
         with _lock:
             led = random.randint(0,17)
@@ -57,6 +62,16 @@ class FlashMode(PiglowMode):
 
         time.sleep(0.25)
 
+
+    def OnInboxItemRecieved(self, inboxItem):
+        with _lock:
+            for led in range(18):
+                if _buffer[led] > 1:
+                    if random.randint(0,1) == 0:
+                        _buffer[led] = 255        
+                    else:
+                        _buffer[led] = 0
+            _WriteAll()
 
 _maxbright = 255
 _piglow = PyGlow()

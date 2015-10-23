@@ -58,7 +58,7 @@ class DotsMode(UnicornHatMode):
             _buffer[x][y] = (r,g,b)
             unicornhat.set_pixel(x,y,r,g,b)
             unicornhat.show()
-        time.sleep(5)
+        time.sleep(2)
 
     def OnInboxItemRecieved(self, inboxItem):
         with _lock:
