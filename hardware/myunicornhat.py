@@ -3,7 +3,6 @@ import unicornhat
 import time
 import itertools
 from multiprocessing import Lock
-from myunicornhat import Rain
 
 
 def _WritePixel(x, y):
