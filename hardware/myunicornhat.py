@@ -121,15 +121,14 @@ class RainMode(UnicornHatMode):
 
     def Lights(self):
         with _lock:
-            self._rain.WriteToBuffer()
+            self._rain.WriteToBuffer(True)
             _WriteAll()
-            self._rain.Iterate()
         time.sleep(2)
 
     def OnInboxItemRecieved(self, inboxItem):
         rgb = (0,0,255)
         self._rain.AddRaindrop(rgb)
-        self._rain.WriteToBuffer()
+        self._rain.WriteToBuffer(False)
         _WriteAll()
 
 
@@ -146,7 +145,12 @@ class Rain(object):
             y = 7
         self._raindrops.append(Raindrop(x,y,rgb))
 
-    def WriteToBuffer(self):
+    def WriteToBuffer(self, iterate):
+        if iterate:
+            for r in self._raindrops:
+                _buffer[r._x][r._y] = (0,0,10)
+            self._rain.Iterate()
+
         for r in self._raindrops:
             _buffer[r._x][r._y] = r._rgb
 
