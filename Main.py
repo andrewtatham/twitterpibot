@@ -1,4 +1,5 @@
 import sys
+import time
 
 sys.path.append('tasks')
 sys.path.append('incoming')
@@ -31,9 +32,11 @@ if not hardware.isAndrewDesktop:
 
 import Tasks
 Tasks.Start()
+time.sleep(1)
 
 import MySchedule
 MySchedule.Start()
+time.sleep(1)
 
 import datetime
 from TwitterHelper import Send
@@ -43,6 +46,7 @@ if not hardware.iswindows:
         screen_name = "andrewtatham", 
         user_id = "19201332", 
         text="Up...." + str(datetime.datetime.now())))
+    time.sleep(1)
 
 import MyUI
 MyUI.Start()
