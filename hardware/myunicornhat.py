@@ -123,7 +123,7 @@ class RainMode(UnicornHatMode):
         with _lock:
             self._rain.WriteToBuffer(True)
             _WriteAll()
-        time.sleep(2)
+        time.sleep(0.25)
 
     def OnInboxItemRecieved(self, inboxItem):
         rgb = (0,0,255)
@@ -143,7 +143,7 @@ class MatrixMode(UnicornHatMode):
         with _lock:
             self._rain.WriteToBuffer(True)
             _WriteAll()
-        time.sleep(2)
+        time.sleep(0.5)
 
     def OnInboxItemRecieved(self, inboxItem):
         rgb = (0,255,0)
@@ -162,7 +162,7 @@ class FireMode(UnicornHatMode):
         with _lock:
             self._rain.WriteToBuffer(True)
             _WriteAll()
-        time.sleep(2)
+        time.sleep(0.4)
 
     def OnInboxItemRecieved(self, inboxItem):
 
@@ -174,6 +174,23 @@ class FireMode(UnicornHatMode):
         self._rain.WriteToBuffer(False)
         _WriteAll()
 
+class SnowMode(UnicornHatMode):
+
+    def __init__(self):
+        self._rain = Rain()
+  
+
+    def Lights(self):
+        with _lock:
+            self._rain.WriteToBuffer(True)
+            _WriteAll()
+        time.sleep(2)
+
+    def OnInboxItemRecieved(self, inboxItem):
+        rgb = (255,255,255)
+        self._rain.AddRaindrop(rgb)
+        self._rain.WriteToBuffer(False)
+        _WriteAll()
 
 class Rain(object):
     def __init__(self, direction = "down"):
@@ -235,9 +252,11 @@ _buffer = [[(0,0,0) for x in range(8)] for y in range(8)]
 _modes = itertools.cycle([
     #DotsMode(),
     #FlashMode(),
+    SnowMode(),
+    RainMode(),
     FireMode(),
     MatrixMode(),
-    RainMode()
+
 
 
     #TODO
