@@ -3,6 +3,7 @@ import unicornhat
 import time
 import itertools
 from multiprocessing import Lock
+from myunicornhat import Rain
 
 
 def _WritePixel(x, y):
@@ -111,10 +112,93 @@ class FlashMode(UnicornHatMode):
             _WriteAll()
 
 
+
+
+class RainMode(UnicornHatMode):
+
+    def __init__(self):
+        self._rain = Rain()
+  
+
+    def Lights(self):
+        with _lock:
+            self._rain.WriteToBuffer(_buffer)
+            _WriteAll()
+            self._rain.Iterate()
+        time.sleep(2)
+
+    def OnInboxItemRecieved(self, inboxItem):
+        rgb = (0,0,255)
+        self._rain.AddRaindrop(rgb)
+        self._rain.WriteToBuffer()
+        _WriteAll()
+
+
+
+class Rain(object):
+    def __init__(self, direction = "down"):
+        self._direction = direction
+        self._raindrops = []
+
+
+    def AddRaindrop(self, rgb):
+        if self._direction == "down":
+            x = random.randint(0,7)
+            y = 7
+        self._raindrops.add(Raindrop(x,y,rgb))
+
+    def WriteToBuffer(self):
+        for r in self._raindrops:
+            _buffer[r._x][r._y] = r._rgb
+
+    def Iterate(self):
+        for r in self._raindrops:
+            if direction == "down":
+                r._y -= 1
+                if r.y < 0:
+                    self._raindrops.remove(r)
+
+class Raindrop(object):
+    def __init__(self, x, y, rgb):
+        self._x = x
+        self._y = y
+        self._rgb = rgb
+
+            
+
+
 _buffer = [[(0,0,0) for x in range(8)] for y in range(8)]
 _modes = itertools.cycle([
-    DotsMode(),
-    FlashMode()
+    #DotsMode(),
+    #FlashMode(),
+    RainMode()
+
+
+    #TODO
+    # Rain
+    # matrix
+    # Fire
+    # bubbles
+    #Fireworks
+    # Sin Wave
+    # Swipes
+    # graphic equalizer
+    # starfield
+    
+    # bouncing ball/line
+
+    # snake
+    # game of life
+    # battleships
+    # chess/draughts
+
+    # strobe
+    # lifts?
+    # text/numbers
+    # emoticons
+    # graphs
+    # random/noise
+    # images / video / gifs
     ])
 _mode = next(_modes)
 
