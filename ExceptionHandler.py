@@ -6,11 +6,13 @@ import hardware
 import logging
 from OutgoingDirectMessage import OutgoingDirectMessage
 import traceback
+import time
 logger = logging.getLogger(__name__)
 
 # "Twitter API returned a 429 (Too Many Requests), Rate limit exceeded"
 # "Twitter API returned a 403 (Forbidden), There was an error sending your message: Whoops! You already said that."
 
+backoff = 15
 
 def HandleSilently(exception):
     _RecordWarning(exception)
@@ -43,3 +45,5 @@ def _TrySendException(exception):
                 user_id = "19201332"))
     except Exception as e:
         logger.exception(e) 
+        time.sleep(backoff)
+        backoff *= 2
