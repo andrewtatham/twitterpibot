@@ -121,7 +121,7 @@ class RainMode(UnicornHatMode):
 
     def Lights(self):
         with _lock:
-            self._rain.WriteToBuffer(_buffer)
+            self._rain.WriteToBuffer()
             _WriteAll()
             self._rain.Iterate()
         time.sleep(2)
