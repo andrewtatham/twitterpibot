@@ -59,6 +59,8 @@ class UnicornHatMode(object):
             unicornhat.show()
 
 class DotsMode(UnicornHatMode):
+
+
     def Lights(self):
         with _lock:
             x = random.randint(0,7)
@@ -95,7 +97,7 @@ class FlashMode(UnicornHatMode):
             for y in range(8):
                 for x in range(8):
                     _buffer[x][y] = (r,g,b)
-            self._WriteAll()
+            _WriteAll()
         time.sleep(2)
 
     def OnInboxItemRecieved(self, inboxItem):
@@ -106,7 +108,7 @@ class FlashMode(UnicornHatMode):
             for y in range(8):
                 for x in range(8):
                     _buffer[x][y] = (r,g,b)
-            self._WriteAll()
+            _WriteAll()
 
 
 _buffer = [[(0,0,0) for x in range(8)] for y in range(8)]
@@ -115,11 +117,10 @@ _modes = itertools.cycle([
     FlashMode()
     ])
 _mode = next(_modes)
-_mode = next(_modes)
+
 _lock = Lock()
 
 def Lights():
-    print("calling Lights() on " + _mode) 
     _mode.Lights()
 
 def CameraFlash(on):
@@ -131,7 +132,6 @@ def OnInboxItemRecieved(inboxItem):
 def OnLightsScheduledTask():
     with _lock:
         _mode = next(_modes)
-        print(_mode)
 
 def Fade():
     _mode.Fade();
