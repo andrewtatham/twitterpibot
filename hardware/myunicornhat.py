@@ -3,6 +3,7 @@ import unicornhat
 import time
 import itertools
 from LightsMode import LightsMode
+from multiprocessing import Lock
 
 class UnicornHatMode(LightsMode):
     def CameraFlash(self, on):
@@ -89,19 +90,6 @@ class FlashMode(UnicornHatMode):
             unicornhat.show()
 
         time.sleep(0.25)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 _buffer = [[(0,0,0) for x in range(8)] for y in range(8)]

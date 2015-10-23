@@ -4,7 +4,7 @@ import hardware
 
 class LightsScheduledTask(ScheduledTask):
     def GetTrigger(args):
-        return IntervalTrigger(min = 3)
+        return IntervalTrigger(minutes = 3)
     def onRun(args):
         hardware.OnLightsScheduledTask()
        
