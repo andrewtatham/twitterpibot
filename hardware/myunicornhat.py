@@ -144,7 +144,7 @@ class Rain(object):
         if self._direction == "down":
             x = random.randint(0,7)
             y = 7
-        self._raindrops.add(Raindrop(x,y,rgb))
+        self._raindrops.append(Raindrop(x,y,rgb))
 
     def WriteToBuffer(self):
         for r in self._raindrops:
