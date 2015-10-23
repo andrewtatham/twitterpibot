@@ -133,6 +133,26 @@ class RainMode(UnicornHatMode):
 
 
 
+class MatrixMode(UnicornHatMode):
+
+    def __init__(self):
+        self._rain = Rain(direction = "left")
+  
+
+    def Lights(self):
+        with _lock:
+            self._rain.WriteToBuffer(True)
+            _WriteAll()
+        time.sleep(2)
+
+    def OnInboxItemRecieved(self, inboxItem):
+        rgb = (0,255,0)
+        self._rain.AddRaindrop(rgb)
+        self._rain.WriteToBuffer(False)
+        _WriteAll()
+
+
+
 class Rain(object):
     def __init__(self, direction = "down"):
         self._direction = direction
@@ -143,6 +163,9 @@ class Rain(object):
         if self._direction == "down":
             x = random.randint(0,7)
             y = 7
+        elif self._direction == "left":
+            x = 7
+            y = random.randint(0,7)
         self._raindrops.append(Raindrop(x,y,rgb))
 
     def WriteToBuffer(self, iterate):
@@ -160,6 +183,10 @@ class Rain(object):
                 r._y -= 1
                 if r._y < 0:
                     self._raindrops.remove(r)
+            elif self._direction == "left":
+                r._x -= 1
+                if r._x < 0:
+                    self._raindrops.remove(r)
 
 class Raindrop(object):
     def __init__(self, x, y, rgb):
@@ -174,6 +201,7 @@ _buffer = [[(0,0,0) for x in range(8)] for y in range(8)]
 _modes = itertools.cycle([
     #DotsMode(),
     #FlashMode(),
+    MatrixMode(),
     RainMode()
 
 
