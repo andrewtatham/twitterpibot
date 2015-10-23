@@ -92,7 +92,8 @@ def GetScheduledJobs():
         UserListsScheduledTask(),
         #RateLimitsScheduledTask(),
         SavedSearchScheduledTask(),
-        MidnightScheduledTask()
+        MidnightScheduledTask(),
+        BotBlockerScheduledTask()
     ]
 
     if hardware.isRaspberryPi:
@@ -115,13 +116,10 @@ def GetScheduledJobs():
             SunsetTimelapseScheduledTask(),
             NightTimelapseScheduledTask(),
             SunTimelapseScheduledTask()
-        ])
-    
+        ])   
         if not hardware.iswindows :
             scheduledjobs.append(PhotoScheduledTask())
         
-    if hardware.iswindows:
-        scheduledjobs.append(BotBlockerScheduledTask())
     return scheduledjobs
 
 def GetTasks():

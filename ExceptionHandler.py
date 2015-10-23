@@ -5,6 +5,7 @@ from Statistics import RecordWarning, RecordError
 import hardware
 import logging
 from OutgoingDirectMessage import OutgoingDirectMessage
+import traceback
 logger = logging.getLogger(__name__)
 
 # "Twitter API returned a 429 (Too Many Requests), Rate limit exceeded"
@@ -37,7 +38,7 @@ def _TrySendException(exception):
     try:
         if hardware.isRaspbian:
             Send(OutgoingDirectMessage(
-                text = str(exception),
+                text = traceback.format_exc(),
                 screen_name = "andrewtatham", 
                 user_id = "19201332"))
     except Exception as e:
