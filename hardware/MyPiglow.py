@@ -97,6 +97,7 @@ def OnInboxItemRecieved(inboxItem):
 def OnLightsScheduledTask():
     with _lock:
         _mode = next(_modes)
+        print(_mode)
 
 def Fade():
     _mode.Fade();
