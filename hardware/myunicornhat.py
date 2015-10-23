@@ -2,10 +2,14 @@ import random
 import unicornhat
 import time
 import itertools
-from LightsMode import LightsMode
 from multiprocessing import Lock
 
-class UnicornHatMode(LightsMode):
+class UnicornHatMode(object):
+    def Lights(self):
+        print("UnicornHatMode.Lights")
+        time.sleep(3)
+
+
     def CameraFlash(self, on):
         with _lock:
             for y in range(8):

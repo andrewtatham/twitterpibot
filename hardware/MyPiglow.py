@@ -4,10 +4,14 @@ import random
 
 from PyGlow import PyGlow
 from multiprocessing import Lock
-from LightsMode import LightsMode
 import itertools
 
-class PiglowMode(LightsMode):
+class PiglowMode(object):
+    def Lights(self):
+        print("PiglowMode.Lights")
+        time.sleep(3)
+
+
     def CameraFlash(self, on):
         with _lock:
             if on:
