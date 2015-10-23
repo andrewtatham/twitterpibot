@@ -4,10 +4,21 @@ import time
 import itertools
 from multiprocessing import Lock
 
+
+def _WritePixel(self, x, y):
+    pixel = _buffer[x][y]
+    r = pixel[0]
+    g = pixel[1]
+    b = pixel[2]
+    unicornhat.set_pixel(x,y,r,g,b)
+
+def _WriteAll(self):
+    for y in range(8):
+        for x in range(8):
+            self._WritePixel(x, y)
+    unicornhat.show()
+
 class UnicornHatMode(object):
-    def Lights(self):
-        print("UnicornHatMode.Lights")
-        time.sleep(3)
 
     def CameraFlash(self, on):
         with _lock:
@@ -73,18 +84,7 @@ class DotsMode(UnicornHatMode):
 
 class FlashMode(UnicornHatMode):
     
-    def _WritePixel(self, x, y):
-        pixel = _buffer[x][y]
-        r = pixel[0]
-        g = pixel[1]
-        b = pixel[2]
-        unicornhat.set_pixel(x,y,r,g,b)
 
-    def _WriteAll(self):
-        for y in range(8):
-            for x in range(8):
-                self._WritePixel(x, y)
-        unicornhat.show()
 
     def Lights(self):
 
@@ -115,9 +115,11 @@ _modes = itertools.cycle([
     FlashMode()
     ])
 _mode = next(_modes)
+_mode = next(_modes)
 _lock = Lock()
 
 def Lights():
+    print("calling Lights() on " + _mode) 
     _mode.Lights()
 
 def CameraFlash(on):
