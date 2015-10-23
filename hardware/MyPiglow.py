@@ -43,15 +43,13 @@ class DotsMode(PiglowMode):
 
 
 class FlashMode(PiglowMode):
-    def __init__(self):
-        self.state = False
 
     def Lights(self):
 
         with _lock:
             for led in range(18):
                 if _buffer[led] > 1:
-                    if state:
+                    if random.randint(0,1) == 0:
                         _buffer[led] = 255        
                     else:
                         _buffer[led] = 0

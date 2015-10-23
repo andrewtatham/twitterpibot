@@ -64,15 +64,12 @@ class DotsMode(UnicornHatMode):
             unicornhat.show()
 
 class FlashMode(UnicornHatMode):
-    def __init__(self):
-        self.state = False
-
     
     def Lights(self):
 
         with _lock:
-            self.state = not self.state
-            if self.state:
+            
+            if random.randint(0,1) == 0:
                 r = random.randint(1,255)
                 g = random.randint(1,255)
                 b = random.randint(1,255)
