@@ -5,6 +5,7 @@ import random
 from PyGlow import PyGlow
 from multiprocessing import Lock
 from LightsMode import LightsMode
+import itertools
 
 _maxbright = 255
 _piglow = PyGlow()
