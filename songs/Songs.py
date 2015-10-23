@@ -307,7 +307,7 @@ class Songs(object):
         })
 
         self._birthdaySongKeys = []
-        for k,v in self._songs.iteritems():
+        for k,v in self._songs.items():
             if "birthday" in v and v["birthday"]:
                 self._birthdaySongKeys.append(k)
         random.shuffle(self._birthdaySongKeys)
