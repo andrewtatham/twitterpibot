@@ -73,7 +73,7 @@ class DotsMode(UnicornHatMode):
             unicornhat.show()
         time.sleep(2)
 
-    def Oninbox_itemRecieved(self):
+    def inbox_item_received(self, inbox_item):
         with _lock:
             x = random.randint(0, 7)
             y = random.randint(0, 7)
@@ -98,7 +98,7 @@ class FlashMode(UnicornHatMode):
             _WriteAll()
         time.sleep(2)
 
-    def Oninbox_itemRecieved(self):
+    def inbox_item_received(self, inbox_item):
         with _lock:
             r = random.randint(1, 255)
             g = random.randint(1, 255)
@@ -119,7 +119,7 @@ class RainMode(UnicornHatMode):
             _WriteAll()
         time.sleep(0.25)
 
-    def Oninbox_itemRecieved(self):
+    def inbox_item_received(self, inbox_item):
         rgb = (0, 0, 255)
         self._rain.AddRaindrop(rgb)
         self._rain.WriteToBuffer(False)
@@ -136,7 +136,7 @@ class MatrixMode(UnicornHatMode):
             _WriteAll()
         time.sleep(0.5)
 
-    def Oninbox_itemRecieved(self):
+    def inbox_item_received(self, inbox_item):
         rgb = (0, 255, 0)
         self._rain.AddRaindrop(rgb)
         self._rain.WriteToBuffer(False)
@@ -153,7 +153,7 @@ class FireMode(UnicornHatMode):
             _WriteAll()
         time.sleep(0.4)
 
-    def Oninbox_itemRecieved(self):
+    def inbox_item_received(self, inbox_item):
         r = random.randint(100, 255)
         g = random.randint(0, 150)
         b = 0
@@ -173,7 +173,7 @@ class SnowMode(UnicornHatMode):
             _WriteAll()
         time.sleep(2)
 
-    def Oninbox_itemRecieved(self):
+    def inbox_item_received(self, inbox_item):
         rgb = (255, 255, 255)
         self._rain.AddRaindrop(rgb)
         self._rain.WriteToBuffer(False)
@@ -284,8 +284,8 @@ def CameraFlash(on):
     _mode.CameraFlash(on)
 
 
-def Oninbox_itemRecieved(inbox_item):
-    _mode.Oninbox_itemRecieved(inbox_item)
+def inbox_item_received(inbox_item):
+    _mode.inbox_item_received(inbox_item)
 
 
 def OnLightsScheduledTask():

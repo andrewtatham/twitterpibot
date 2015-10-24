@@ -108,9 +108,9 @@ def Fade():
         MyPiglow.Fade()
 
 
-def Oninbox_itemRecieved(inbox_item):
+def inbox_item_received(inbox_item):
     if isunicornhatattached:
-        myunicornhat.Oninbox_itemRecieved(inbox_item)
+        myunicornhat.inbox_item_received(inbox_item)
     if ispiglowattached:
         MyPiglow.Oninbox_itemRecieved(inbox_item)
 

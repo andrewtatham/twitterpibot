@@ -25,7 +25,7 @@ class ProcessInboxTask(Task):
                         RecordIncomingTweet()
                     if type(inbox_item) is IncomingDirectMessage:
                         RecordIncomingDirectMessage()
-                    Processinbox_item(self, inbox_item)
+                    _process_inbox_item(self, inbox_item)
         finally:
             twitterpibot.MyQueues.inbox.task_done()
 
@@ -33,10 +33,10 @@ class ProcessInboxTask(Task):
         twitterpibot.MyQueues.inbox.put(None)
 
 
-def Processinbox_item(args, inbox_item):
+def _process_inbox_item(args, inbox_item):
     inbox_item.Display()
 
-    hardware.Oninbox_itemRecieved(inbox_item)
+    hardware.inbox_item_received(inbox_item)
 
     response = args.responseFactory.Create(inbox_item)
     if response:

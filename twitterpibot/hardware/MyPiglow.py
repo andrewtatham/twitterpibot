@@ -55,7 +55,7 @@ class DotsMode(PiglowMode):
 
         time.sleep(2)
 
-    def Oninbox_itemRecieved(self):
+    def inbox_item_received(self, inbox_item):
         with _lock:
             led = random.randint(0, 17)
             _buffer[led] = max(0, min((_buffer[led] + 1), 255))
@@ -76,7 +76,7 @@ class FlashMode(PiglowMode):
 
         time.sleep(0.25)
 
-    def Oninbox_itemRecieved(self):
+    def inbox_item_received(self, inbox_item):
         with _lock:
             for led in range(18):
                 if _buffer[led] > 1:
@@ -109,7 +109,7 @@ def CameraFlash(on):
 
 
 def Oninbox_itemRecieved(inbox_item):
-    _mode.Oninbox_itemRecieved(inbox_item)
+    _mode.inbox_item_received(inbox_item)
 
 
 def OnLightsScheduledTask():
