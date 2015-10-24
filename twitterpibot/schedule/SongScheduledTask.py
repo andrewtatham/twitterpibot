@@ -9,6 +9,7 @@ from twitterpibot.users import Users
 
 class SongScheduledTask(ScheduledTask):
     def __init__(self):
+        super(SongScheduledTask, self).__init__()
         self.songs = Songs()
 
     def GetTrigger(self):
@@ -21,7 +22,7 @@ class SongScheduledTask(ScheduledTask):
             target = None
             if random.randint(0, 9) == 0:
                 lists = twitter.show_owned_lists()
-                songUsersList = filter(lambda l: l["name"] == "Song People", lists["lists"])[0]
+                songUsersList = [filter(lambda l: l["name"] == "Song People", lists["lists"])][0]
                 listId = songUsersList["id_str"]
                 members = twitter.get_list_members(list_id=listId)
                 target = Users.getUser(data=random.choice(members["users"]))

@@ -10,6 +10,7 @@ suggestedUserColours = cycle([Fore.WHITE, Fore.CYAN])
 
 class SuggestedUsersScheduledTask(ScheduledTask):
     def __init__(self):
+        super(SuggestedUsersScheduledTask, self).__init__()
         self._slugList = []
 
     def GetTrigger(self):
@@ -30,9 +31,10 @@ class SuggestedUsersScheduledTask(ScheduledTask):
             suggestedUsers = twitter.get_user_suggestions_by_slug(slug=category["slug"])["users"]
             for user in suggestedUsers:
                 colour = next(suggestedUserColours)
-                print(colour + "User: [" + category["name"] + "] - " + user["name"] + " [@" + user["screen_name"] + "] - " + user["description"].replace("\n", "   "))
+                print(colour + "User: [" + category["name"] + "] - " + user["name"] + " [@" + user[
+                    "screen_name"] + "] - " + user["description"].replace("\n", "   "))
 
-            if random.randint(0,2) == 0:
+            if random.randint(0, 2) == 0:
                 user = random.choice(suggestedUsers)
                 print("[SuggestedUsersScheduledTask] following " + user["name"] + " [@" + user["screen_name"] + "]")
-                twitter.create_friendship(id = user["id_str"])
+                twitter.create_friendship(id=user["id_str"])

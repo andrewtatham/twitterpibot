@@ -16,6 +16,7 @@ woeids = cycle([UK_WOEID, US_WOEID])
 
 class TrendsScheduledTask(ScheduledTask):
     def __init__(self):
+        super(TrendsScheduledTask, self).__init__()
         self._trendsList = []
 
     def GetTrigger(self):

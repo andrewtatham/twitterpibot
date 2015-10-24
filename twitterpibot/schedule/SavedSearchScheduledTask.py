@@ -6,6 +6,7 @@ import twitterpibot.MyQueues as MyQueues
 
 class SavedSearchScheduledTask(ScheduledTask):
     def __init__(self):
+        super(SavedSearchScheduledTask, self).__init__()
         self._savedSearches = []
 
     def GetTrigger(self):

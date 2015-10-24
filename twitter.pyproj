@@ -223,6 +223,9 @@
     <Compile Include="twitterpibot\schedule\SongScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="twitterpibot\schedule\StreamSavedTrendsScheduledTask.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="twitterpibot\schedule\SuggestedUsersScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>

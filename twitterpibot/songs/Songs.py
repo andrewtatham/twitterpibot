@@ -351,7 +351,7 @@ class Songs(object):
                 while lyric in lastlyrics:
                     lyric += random.choice(self.mutation)
                 lastlyrics.add(lyric)
-                print (in_reply_to_status_id)
+                print(in_reply_to_status_id)
                 in_reply_to_status_id = self._send(
                     inbox_item,
                     lyric,

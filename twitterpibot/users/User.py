@@ -34,12 +34,12 @@ class User(object):
 
     def isStale(self):
         with self.lock:
-            if self.updated is None:
+            if self.updated:
+                delta = datetime.datetime.utcnow() - self.updated
+                mins = divmod(delta.days * 86400 + delta.seconds, 60)[0]
+                return mins > 45
+            else:
                 return True
-
-            delta = datetime.datetime.utcnow() - self.updated
-            mins = divmod(delta.days * 86400 + delta.seconds, 60)[0]
-            return mins > 45
 
     def update(self, lists):
         with self.lock:

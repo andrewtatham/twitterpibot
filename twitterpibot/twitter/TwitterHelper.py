@@ -88,8 +88,8 @@ def _UploadMedia(twitter, filePath):
             file.close()
 
 
-def GetStreamer(screen_name):
-    return MyStreamer(screen_name)
+def GetStreamer():
+    return MyStreamer(_screen_name)
 
 
 def _UploadVideo(filePath):

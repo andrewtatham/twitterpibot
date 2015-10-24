@@ -27,12 +27,12 @@ class BotBlocker(object):
             score += 7
 
         searchText = ""
-        if user.name: 
+        if user.name:
             searchText += user.name
-        if user.screen_name: 
+        if user.screen_name:
             searchText += user.screen_name
-        if user.description: 
-            description += user.description
+        if user.description:
+            searchText += user.description
 
         for rx in self.rxs:
             matches = rx[0].findall(searchText)

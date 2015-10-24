@@ -1,6 +1,6 @@
 from twitterpibot.responses.ResponseFactory import ResponseFactory
 from twitterpibot.tasks.Task import Task
-from twitterpibot.incoming.InboxItemFactory  import InboxItemFactory
+from twitterpibot.incoming.InboxItemFactory import InboxItemFactory
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.Statistics import RecordIncomingTweet, RecordIncomingDirectMessage
@@ -12,6 +12,8 @@ import twitterpibot.MyQueues
 
 class ProcessInboxTask(Task):
     def __init__(self):
+        Task.__init__(self)
+        self.core = True
         self.factory = InboxItemFactory()
         self.responseFactory = ResponseFactory()
 

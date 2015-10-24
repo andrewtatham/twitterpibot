@@ -8,6 +8,7 @@ import twitterpibot.users.Users as Users
 
 class BotBlockerScheduledTask(ScheduledTask):
     def __init__(self):
+        super(BotBlockerScheduledTask, self).__init__()
         self._blocker = BotBlocker()
         self._page = "-1"
         self._myFollowers = []
