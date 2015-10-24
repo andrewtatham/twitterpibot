@@ -25,7 +25,15 @@ class BotBlocker(object):
         score = 0
         if not user.verified and not user.isFriend and not user.description:
             score += 7
-        searchText = user.name + user.screen_name + user.description
+
+        searchText = ""
+        if user.name: 
+            searchText += user.name
+        if user.screen_name: 
+            searchText += user.screen_name
+        if user.description: 
+            description += user.description
+
         for rx in self.rxs:
             matches = rx[0].findall(searchText)
             if any(matches):
