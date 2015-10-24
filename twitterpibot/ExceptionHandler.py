@@ -2,7 +2,7 @@ import logging
 
 from colorama import Fore, Style, Back
 
-from Statistics import RecordWarning, RecordError
+from twitterpibot.Statistics import RecordWarning, RecordError
 
 logger = logging.getLogger(__name__)
 
