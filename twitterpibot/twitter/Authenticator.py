@@ -12,6 +12,10 @@ from twython.api import Twython
 
 def get_tokens(screen_name):
     dir = "temp" + os.sep + "tokens" + os.sep
+
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
     app_key_path = dir + "APP_KEY.pkl"
     app_secret_path = dir + "APP_SECRET.pkl"
     final_oauth_token_path = dir +  screen_name + "_FINAL_OAUTH_TOKEN.pkl"
