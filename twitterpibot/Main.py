@@ -1,20 +1,5 @@
 import sys
 import time
-
-sys.path.append('tasks')
-sys.path.append('incoming')
-sys.path.append('responses')
-sys.path.append('outgoing')
-sys.path.append('hardware')
-sys.path.append('twitter')
-sys.path.append('schedule')
-sys.path.append('users')
-sys.path.append('processing')
-sys.path.append('brightpi')
-sys.path.append('songs')
-#sys.path.append('PiGlow')
-sys.path.append('PyGlow')
-
 import MyLogging
 import logging
 logger = logging.getLogger(__name__)
