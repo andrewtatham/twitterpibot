@@ -33,9 +33,9 @@ def _RecordError(exception):
     print(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
     logger.exception(exception)
     RecordError()
-    _TrySendException(exception)
+    _TrySendException()
 
-def _TrySendException(exception):
+def _TrySendException():
     pass
     #try:
     #    if hardware.isRaspbian:

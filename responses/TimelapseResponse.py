@@ -3,11 +3,11 @@ from Timelapse import Timelapse
 import datetime
 import MySchedule
 class TimelapseResponse(Response):
-    def Condition(args, inboxItem):
+    def Condition(self, inboxItem):
         return inboxItem.isDirectMessage and not inboxItem.from_me and inboxItem.to_me \
             and "timelapse" in inboxItem.words 
 
-    def Respond(args, inboxItem):
+    def Respond(self, inboxItem):
         
         
         

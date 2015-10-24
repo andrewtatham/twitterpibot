@@ -11,7 +11,7 @@ class TimelapseScheduledTask(ScheduledTask):
     #    return IntervalTrigger(minutes = 1)
 
 
-    def onRun(args):
+    def onRun(self):
 
         now = datetime.datetime.now()
         timelapse = Timelapse(

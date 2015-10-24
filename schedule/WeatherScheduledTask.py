@@ -4,8 +4,8 @@ import random
 from OutgoingTweet import OutgoingTweet
 from TwitterHelper import Send
 class WeatherScheduledTask(ScheduledTask):
-    def GetTrigger(args):
+    def GetTrigger(self):
         return CronTrigger(hour=7)
     
-    def onRun(args):      
+    def onRun(self):
         Send(OutgoingTweet(text= "@BBCWeatherBot Leeds Today"))

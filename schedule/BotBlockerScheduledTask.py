@@ -7,41 +7,40 @@ import Users
 
 
 class BotBlockerScheduledTask(ScheduledTask):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self._blocker = BotBlocker()
         self._page = "-1"
         self._myFollowers = []     
 
 
-    def GetTrigger(args):
+    def GetTrigger(self):
         return IntervalTrigger(minutes=13)
 
-    def onRun(args):
-        blockUsers = []
+    def onRun(self):
         with MyTwitter() as twitter:
-            if not any(args._myFollowers):
+            if not any(self._myFollowers):
 
 
                 #response = twitter.get_followers_list(cursor = args.page)
                 #args.myFollowers.extend(response["users"])
 
-                response = twitter.get_followers_ids(cursor = args._page,stringify_ids=True)
-                args._myFollowers.extend(response["ids"])
+                response = twitter.get_followers_ids(cursor = self._page,stringify_ids=True)
+                self._myFollowers.extend(response["ids"])
 
                 nextPage = response["next_cursor_str"]
                 if nextPage == "0":
-                    args._page = "-1"
+                    self._page = "-1"
                 else:
-                    args._page = nextPage
+                    self._page = nextPage
 
-            if any(args._myFollowers):
-                followerId = args._myFollowers.pop()
+            if any(self._myFollowers):
+                followerId = self._myFollowers.pop()
 
                 usr = Users.getUser(id = followerId)
 
-                block = args._blocker.IsUserBot(usr)
+                block = self._blocker.IsUserBot(usr)
                 if block:
-                     args._blocker.BlockUser(usr)
+                     self._blocker.BlockUser(usr)
 
         
     

@@ -3,19 +3,19 @@ from MyTwitter import MyTwitter
 from BotBlocker import BotBlocker
 
 class BotBlockerResponse(Response):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self.blocker = BotBlocker()
 
 
-    def Condition(args, inboxItem):
+    def Condition(self, inboxItem):
         isNewFollower = inboxItem.isEvent and not inboxItem.from_me and inboxItem.to_me and inboxItem.isFollow
         if isNewFollower:
-            return args.blocker.IsUserBot(inboxItem.source)
+            return self.blocker.IsUserBot(inboxItem.source)
         else:
             return False
 
-    def Respond(args, inboxItem):
-        args.blocker.BlockUser(inboxItem.source)
+    def Respond(self, inboxItem):
+        self.blocker.BlockUser(inboxItem.source)
 
         
 

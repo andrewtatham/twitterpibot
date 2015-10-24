@@ -13,11 +13,11 @@ _tokens = None
 _screen_name = None
 
 class MyTwitter(object):
-    def __init__(self, screen_name = None, *args, **kwargs):
+    def __init__(self, screen_name = None):
         global _screen_name
         _screen_name = screen_name
 
-    def __enter__(self,  *args, **kwargs):
+    def __enter__(self):
         global _tokens
 
         if not _tokens:

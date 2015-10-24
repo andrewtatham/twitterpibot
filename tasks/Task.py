@@ -1,7 +1,7 @@
 class Task(object):
 
-    def onRun(args):
+    def onRun(self):
         pass
 
-    def onStop(args):
+    def onStop(self):
         pass

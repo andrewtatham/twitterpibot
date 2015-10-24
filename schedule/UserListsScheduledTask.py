@@ -5,11 +5,11 @@ import Users
 
 
 class UserListsScheduledTask(ScheduledTask):
-    def GetTrigger(args):
+    def GetTrigger(self):
         return CronTrigger(minute="5/15")
 
 
-    def onRun(args):
+    def onRun(self):
         Users.updateLists()
 
        

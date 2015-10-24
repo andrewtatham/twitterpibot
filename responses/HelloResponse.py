@@ -4,7 +4,7 @@ import random
 from TwitterHelper import ReplyWith
 class HelloResponse(Response):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
 
         self.HelloWords = [
             "Hi",
@@ -20,14 +20,14 @@ class HelloResponse(Response):
 
         self.rx = re.compile("|".join(self.HelloWords), re.IGNORECASE)
 
-    def Condition(args, inboxItem):
+    def Condition(self, inboxItem):
         return not inboxItem.from_me \
             and (inboxItem.isDirectMessage or inboxItem.isTweet) \
                 and inboxItem.to_me \
-                and bool(args.rx.match(inboxItem.text))
+                and bool(self.rx.match(inboxItem.text))
 
-    def Respond(args, inboxItem):
-        ReplyWith(inboxItem, random.choice(args.HelloWords))
+    def Respond(self, inboxItem):
+        ReplyWith(inboxItem, random.choice(self.HelloWords))
 
 
 

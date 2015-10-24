@@ -15,21 +15,21 @@ US_WOEID = 23424977
 woeids = cycle([UK_WOEID, US_WOEID])
 
 class TrendsScheduledTask(ScheduledTask):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self._trendsList = []
 
-    def GetTrigger(args):
+    def GetTrigger(self):
         return IntervalTrigger(minutes=29)
 
-    def onRun(args):
+    def onRun(self):
         with MyTwitter() as twitter:
-            if not args._trendsList:
+            if not self._trendsList:
                 woeid = next(woeids)
                 trends = twitter.get_place_trends(id = woeid)[0].get('trends',[])   
-                args._trendsList.extend(trends)
+                self._trendsList.extend(trends)
 
-            if args._trendsList:
-                trend = args._trendsList.pop()
+            if self._trendsList:
+                trend = self._trendsList.pop()
                 trendtweets = twitter.search(q = quote_plus(trend["name"]), result_type = "popular")
                 for trendtweet in trendtweets["statuses"]:
                     trendtweet['tweetsource'] = "trend:" + trend["name"]

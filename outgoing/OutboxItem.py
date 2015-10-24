@@ -1,5 +1,5 @@
 class OutboxItem(object):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
 
         self.isTweet = False
         self.isDirectMessage = False
@@ -18,5 +18,5 @@ class OutboxItem(object):
         self.text = None
 
         
-    def Display(args):
+    def Display(self):
         pass

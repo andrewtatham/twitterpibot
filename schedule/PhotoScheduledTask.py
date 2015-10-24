@@ -8,11 +8,11 @@ from TwitterHelper import Send
 
 class PhotoScheduledTask(ScheduledTask):
 
-    def GetTrigger(args):
+    def GetTrigger(self):
         return CronTrigger(hour = "*/3")
 
 
-    def onRun(args):
+    def onRun(self):
         photos = hardware.TakePhotoToDisk("temp", "PhotoScheduledTask", "jpg")
         if any(photos):
             tweet = OutgoingTweet(filePaths=photos)

@@ -5,7 +5,7 @@ class IncomingDirectMessage(InboxTextItem):
 
 
     def __init__(self, data):
-        super(IncomingDirectMessage, self).__init__(data)
+        super(IncomingDirectMessage, self).__init__()
 
         self.isDirectMessage = True
 
@@ -26,7 +26,7 @@ class IncomingDirectMessage(InboxTextItem):
 
 
 
-    def Display(args):
-        text = u" * DM from @" + args.sender.screen_name + u" to @" + args.recipient.screen_name + u": " + args.text
+    def Display(self):
+        text = u" * DM from @" + self.sender.screen_name + u" to @" + self.recipient.screen_name + u": " + self.text
         print(text)
         

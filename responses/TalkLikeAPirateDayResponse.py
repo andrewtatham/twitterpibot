@@ -4,13 +4,13 @@ import datetime
 from TalkLikeAPirateDayScheduledTask import piracy
 from TwitterHelper import ReplyWith
 class TalkLikeAPirateDayResponse(Response):
-    def Condition(args, inboxItem):
+    def Condition(self, inboxItem):
         today = datetime.date.today()
         isTalkLikeAPirateDay = bool(today.month == 9 and today.day == 19)
-        return super(TalkLikeAPirateDayResponse, args).Condition(inboxItem) and isTalkLikeAPirateDay
+        return super(TalkLikeAPirateDayResponse, self).Condition(inboxItem) and isTalkLikeAPirateDay
 
 
-    def Respond(args, inboxItem):
+    def Respond(self, inboxItem):
         response = random.choice(piracy) + " #TalkLikeAPirateDay" 
         ReplyWith(inboxItem, response)
 

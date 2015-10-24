@@ -3,14 +3,14 @@ import hardware
 import Identity
 
 class ResponseFactory(object):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self.responses = Identity.GetResponses()
         for response in self.responses:
             print("[ResponseFactory] adding " + str(type(response)))
 
-    def Create(args, inboxItem):
+    def Create(self, inboxItem):
         if inboxItem :
-            for response in args.responses:
+            for response in self.responses:
                 if response.Condition(inboxItem):
 
                     inboxItem.isRespondedTo = True

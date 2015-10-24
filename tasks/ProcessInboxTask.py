@@ -11,25 +11,25 @@ import hardware
 import MyQueues
 
 class ProcessInboxTask(Task):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self.factory = InboxItemFactory()
         self.responseFactory = ResponseFactory()
 
-    def onRun(args):
+    def onRun(self):
         try:
             data = MyQueues.inbox.get()
             if data:
-                inboxItem = args.factory.Create(data)
+                inboxItem = self.factory.Create(data)
                 if inboxItem :
                     if type(inboxItem) is IncomingTweet:
                         RecordIncomingTweet()
                     if type(inboxItem) is IncomingDirectMessage:
                         RecordIncomingDirectMessage()
-                    ProcessInboxItem(args, inboxItem)
+                    ProcessInboxItem(self, inboxItem)
         finally:
             MyQueues.inbox.task_done()
 
-    def onStop(args):
+    def onStop(self):
         MyQueues.inbox.put(None)
 
 def ProcessInboxItem(args, inboxItem):

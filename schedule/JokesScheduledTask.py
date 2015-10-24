@@ -6,10 +6,10 @@ from TwitterHelper import Send
 
 class JokesScheduledTask(ScheduledTask):
 
-    def GetTrigger(args):
+    def GetTrigger(self):
         return CronTrigger(hour = "*/2")
 
-    def onRun(args):
+    def onRun(self):
         text = pyjokes.get_joke()
         Send(OutgoingTweet(text = text))
 

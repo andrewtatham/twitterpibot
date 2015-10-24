@@ -20,7 +20,7 @@ except ImportError:
     from Queue import Queue
 
 class Context(object):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
 
         self.inbox = Queue()
         self.users = Users()
@@ -40,35 +40,35 @@ class Context(object):
         
         self.statistics = Statistics()
 
-    def CameraFlash(args, on):
+    def CameraFlash(self, on):
 
-        if args.hardware.piglowattached:
-            args.piglow.CameraFlash(on)
+        if self.hardware.piglowattached:
+            self.piglow.CameraFlash(on)
 
-        if args.hardware.brightpiattached:
-            args.brightpi.CameraFlash(on)
+        if self.hardware.brightpiattached:
+            self.brightpi.CameraFlash(on)
 
-    def OnInboxItemRecieved(args, inboxItem):
-        if args.hardware.piglowattached:
-            args.piglow.OnInboxItemRecieved(inboxItem)
+    def OnInboxItemRecieved(self, inboxItem):
+        if self.hardware.piglowattached:
+            self.piglow.OnInboxItemRecieved(inboxItem)
 
 
-    def GetStatus(args):
+    def GetStatus(self):
 
         status = Status()
-        status.inboxCount = args.inbox.qsize()
+        status.inboxCount = self.inbox.qsize()
 
         status.cpu = psutil.cpu_percent()
         status.memory = psutil.virtual_memory().percent
 
         return status
 
-    def send(args, outboxItem):
+    def send(self, outboxItem):
         outboxItem.Display()
         response = None
         with MyTwitter() as twitter:
             if type(outboxItem) is OutgoingTweet:
-                args.statistics.RecordOutgoingTweet()
+                self.statistics.RecordOutgoingTweet()
                 if outboxItem.photos and any(outboxItem.photos):
                     outboxItem.media_ids = twitter.UploadMedia(outboxItem.photos)
                 response = twitter.update_status(
@@ -76,7 +76,7 @@ class Context(object):
                     in_reply_to_status_id = outboxItem.in_reply_to_status_id,
                     media_ids = outboxItem.media_ids)
             if type(outboxItem) is OutgoingDirectMessage:
-                args.statistics.RecordOutgoingDirectMessage()                    
+                self.statistics.RecordOutgoingDirectMessage()
                 response = twitter.send_direct_message(
                     text = outboxItem.text, 
                     screen_name = outboxItem.screen_name, 

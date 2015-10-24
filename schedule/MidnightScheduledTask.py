@@ -10,10 +10,10 @@ from TwitterHelper import Send
 
 class MidnightScheduledTask(ScheduledTask):
 
-    def GetTrigger(args):
+    def GetTrigger(self):
         return CronTrigger(hour = 0)
  
-    def onRun(args):
+    def onRun(self):
 
         stats = GetStatistics()
         tweet = OutgoingDirectMessage(

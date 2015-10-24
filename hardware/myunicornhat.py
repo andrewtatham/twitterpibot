@@ -73,7 +73,7 @@ class DotsMode(UnicornHatMode):
             unicornhat.show()
         time.sleep(2)
 
-    def OnInboxItemRecieved(self, inboxItem):
+    def OnInboxItemRecieved(self):
         with _lock:
             x = random.randint(0,7)
             y = random.randint(0,7)
@@ -100,7 +100,7 @@ class FlashMode(UnicornHatMode):
             _WriteAll()
         time.sleep(2)
 
-    def OnInboxItemRecieved(self, inboxItem):
+    def OnInboxItemRecieved(self):
         with _lock:
             r = random.randint(1,255)
             g = random.randint(1,255)
@@ -125,7 +125,7 @@ class RainMode(UnicornHatMode):
             _WriteAll()
         time.sleep(0.25)
 
-    def OnInboxItemRecieved(self, inboxItem):
+    def OnInboxItemRecieved(self):
         rgb = (0,0,255)
         self._rain.AddRaindrop(rgb)
         self._rain.WriteToBuffer(False)
@@ -145,7 +145,7 @@ class MatrixMode(UnicornHatMode):
             _WriteAll()
         time.sleep(0.5)
 
-    def OnInboxItemRecieved(self, inboxItem):
+    def OnInboxItemRecieved(self):
         rgb = (0,255,0)
         self._rain.AddRaindrop(rgb)
         self._rain.WriteToBuffer(False)
@@ -164,7 +164,7 @@ class FireMode(UnicornHatMode):
             _WriteAll()
         time.sleep(0.4)
 
-    def OnInboxItemRecieved(self, inboxItem):
+    def OnInboxItemRecieved(self):
 
         r = random.randint(100,255)
         g = random.randint(0,150)
@@ -186,7 +186,7 @@ class SnowMode(UnicornHatMode):
             _WriteAll()
         time.sleep(2)
 
-    def OnInboxItemRecieved(self, inboxItem):
+    def OnInboxItemRecieved(self):
         rgb = (255,255,255)
         self._rain.AddRaindrop(rgb)
         self._rain.WriteToBuffer(False)
@@ -211,38 +211,40 @@ class Rain(object):
         elif self._direction == "right":
             x = 7
             y = random.randint(0,7)
+        else:
+            raise Exception("Invalid direction")
         self._raindrops.append(Raindrop(x,y,rgb))
 
     def WriteToBuffer(self, iterate):
         if iterate:
             for r in self._raindrops:
-                _buffer[r._x][r._y] = (0,0,0)
+                _buffer[r.x][r.y] = (0,0,0)
             self.Iterate()
 
         for r in self._raindrops:
-            _buffer[r._x][r._y] = r._rgb
+            _buffer[r.x][r.y] = r.rgb
 
     def Iterate(self):
         for r in self._raindrops:
             if self._direction == "up":
-                r._y += 1           
+                r.y += 1
             elif self._direction == "down":
-                r._y -= 1
+                r.y -= 1
             elif self._direction == "left":
-                r._x += 1
+                r.x += 1
             elif self._direction == "right":
-                r._x -= 1
+                r.x -= 1
 
-            if self._direction == "up" and r._y > 7 \
-                or self._direction == "down" and r._y < 0 \
-                or self._direction == "left" and r._x > 7 \
-                or self._direction == "right" and r._x < 0 :
+            if self._direction == "up" and r.y > 7 \
+                or self._direction == "down" and r.y < 0 \
+                or self._direction == "left" and r.x > 7 \
+                or self._direction == "right" and r.x < 0 :
                     self._raindrops.remove(r)
 
 class Raindrop(object):
     def __init__(self, x, y, rgb):
-        self._x = x
-        self._y = y
+        self.x = x
+        self.y = y
         self._rgb = rgb
 
             
@@ -304,7 +306,8 @@ def OnLightsScheduledTask():
         _mode = next(_modes)
 
 def Fade():
-    _mode.Fade();
+    _mode.Fade()
+
 
 def Close():
     _mode.Close()

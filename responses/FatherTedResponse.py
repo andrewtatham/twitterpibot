@@ -2,13 +2,13 @@ from Response import Response
 import random
 from TwitterHelper import ReplyWith
 class FatherTedResponse(Response):
-    def Condition(args, inboxItem):
-        return super(FatherTedResponse, args).Condition(inboxItem) \
+    def Condition(self, inboxItem):
+        return super(FatherTedResponse, self).Condition(inboxItem) \
             and inboxItem.to_me \
             and not inboxItem.isRespondedTo
 
 
-    def Respond(args, inboxItem):
+    def Respond(self, inboxItem):
 
         responses = [
             # exclaimation

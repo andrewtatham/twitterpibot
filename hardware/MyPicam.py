@@ -4,7 +4,7 @@ import picamera
 import picamera.array
 
 class MyPicam(object):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
 
         self.lock = threading.Lock()
 
@@ -13,14 +13,14 @@ class MyPicam(object):
             self.mypicamera.resolution = (320,240)
 
 
-    def TakePhotoToDisk(args, dir, name, ext):
-        with args.lock:
+    def TakePhotoToDisk(self, dir, name, ext):
+        with self.lock:
             filename = dir + os.path.sep + name + os.extsep + ext
-            args.mypicamera.capture(filename)
+            self.mypicamera.capture(filename)
             return filename
 
-    def Close(args):
-        with args.lock:
-            args.mypicamera.close()
+    def Close(self):
+        with self.lock:
+            self.mypicamera.close()
 
 

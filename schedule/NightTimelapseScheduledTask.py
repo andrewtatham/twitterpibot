@@ -5,10 +5,10 @@ from Timelapse import Timelapse
 import datetime
 
 class NightTimelapseScheduledTask(ScheduledTask):
-    def GetTrigger(args):
+    def GetTrigger(self):
         return CronTrigger(hour = 18, minute = 1) 
 
-    def onRun(args):
+    def onRun(self):
 
 
         astral = MyAstral()

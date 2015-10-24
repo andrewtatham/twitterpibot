@@ -1,6 +1,6 @@
 
 class InboxItem(object):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self.from_me = False
         self.to_me = False
         self.status_id = None
@@ -12,7 +12,7 @@ class InboxItem(object):
 
 
 
-    def Display(args):
+    def Display(self):
         print('InboxItem.Display')
 
 

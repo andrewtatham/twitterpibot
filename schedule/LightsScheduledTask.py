@@ -3,8 +3,8 @@ from apscheduler.triggers.interval import IntervalTrigger
 import hardware
 
 class LightsScheduledTask(ScheduledTask):
-    def GetTrigger(args):
+    def GetTrigger(self):
         return IntervalTrigger(minutes = 1)
-    def onRun(args):
+    def onRun(self):
         hardware.OnLightsScheduledTask()
        

@@ -9,7 +9,7 @@ eventcolours = cycle([Fore.MAGENTA, Fore.CYAN])
 class IncomingEvent(InboxItem):
     def __init__(self, data):
 
-        super(IncomingEvent, self).__init__(data)
+        super(IncomingEvent, self).__init__()
 
         self.isEvent = True
 
@@ -38,23 +38,23 @@ class IncomingEvent(InboxItem):
             if "text" in self.targetObject:
                 self.targetObjectText = self.targetObject["text"]
 
-    def Display(args):
+    def Display(self):
         
         colour = next(eventcolours)
 
-        if args.to_me:
+        if self.to_me:
             colour += Style.BRIGHT
-        elif args.from_me:
+        elif self.from_me:
             colour += Style.NORMAL
         else:
             colour += Style.DIM
 
         
-        text = "* EVENT: Type: " + args.event + os.linesep \
-                    + " Source: " + args.source.name + " [@" + args.source.screen_name + "]" + os.linesep \
-                    + " Target: " + args.target.name + " [@" + args.target.screen_name + "]"
+        text = "* EVENT: Type: " + self.event + os.linesep \
+                    + " Source: " + self.source.name + " [@" + self.source.screen_name + "]" + os.linesep \
+                    + " Target: " + self.target.name + " [@" + self.target.screen_name + "]"
 
-        if args.targetObjectText:
-            text += os.linesep + " TargetObject: " + args.targetObjectText
+        if self.targetObjectText:
+            text += os.linesep + " TargetObject: " + self.targetObjectText
 
         print(colour + text)

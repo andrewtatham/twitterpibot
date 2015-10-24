@@ -29,5 +29,5 @@ class OutgoingTweet(OutboxTextItem):
         if text:
             self.status = self.status + text
 
-    def Display(args):
-        print("-> Tweet: " + args.status)
+    def Display(self):
+        print("-> Tweet: " + self.status)

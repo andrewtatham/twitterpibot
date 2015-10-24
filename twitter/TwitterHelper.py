@@ -27,7 +27,7 @@ def Send(outboxItem):
                 for filePath in outboxItem.filePaths:
                     ext = os.path.splitext(filePath)
                     if ext == "mp4":
-                        media_id = _UploadVideo(twitter, filePath)
+                        media_id = _UploadVideo(filePath)
                     else:
                         media_id = _UploadMedia(twitter, filePath)
                     if media_id:
@@ -53,7 +53,7 @@ def Send(outboxItem):
     id_str = response["id_str"]
     return id_str
 
-def ReplyWith(inboxItem, text, asTweet=False, asDM=False, filePaths=None, in_reply_to_status_id = None, *args, **kwargs):    
+def ReplyWith(inboxItem, text, asTweet=False, asDM=False, filePaths=None, in_reply_to_status_id = None):
 
     replyAsTweet = asTweet or not asDM and inboxItem.isTweet
 
@@ -91,7 +91,7 @@ def GetStreamer(screen_name):
 
 
 
-def _UploadVideo(twitter, filePath):
+def _UploadVideo(filePath):
     print('[MyTwitter] uploading ' + filePath)
 
     with MyTwitter() as twitter:

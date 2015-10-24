@@ -7,20 +7,20 @@ import random
 import MyQueues
 
 class SavedSearchScheduledTask(ScheduledTask):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self._savedSearches = []
 
-    def GetTrigger(args):
+    def GetTrigger(self):
         return IntervalTrigger(minutes=32)
 
-    def onRun(args):
+    def onRun(self):
         with MyTwitter() as twitter:
-            if not args._savedSearches:
+            if not self._savedSearches:
                 searches = twitter.get_saved_searches()
-                args._savedSearches.extend(searches)
+                self._savedSearches.extend(searches)
 
-            if args._savedSearches:
-                search = args._savedSearches.pop()
+            if self._savedSearches:
+                search = self._savedSearches.pop()
                 searchTweets = twitter.search(q = search['query'])
                 for searchTweet in searchTweets["statuses"]:
                     searchTweet['tweetsource'] = "search:" + search["name"]

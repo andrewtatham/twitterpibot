@@ -6,13 +6,13 @@ class StreamTweetsTask(Task):
     def __init__(self, streamer):
         self.streamer = streamer
  
-    def onRun(args):
+    def onRun(self):
         print("starting stream")
-        args.streamer.user()
+        self.streamer.user()
 
-    def onStop(args):
+    def onStop(self):
         print("stopping stream")
-        args.streamer.disconnect()
+        self.streamer.disconnect()
 
 
 

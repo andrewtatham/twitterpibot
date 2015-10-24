@@ -1,7 +1,7 @@
 from astral import Astral
 import datetime
 class MyAstral(object):
-    def GetTimes(args):
+    def GetTimes(self):
                 
         astral = Astral()
         city = astral['Leeds']
@@ -14,7 +14,7 @@ class MyAstral(object):
         print("[Astral] dusk: " + str(sun['dusk']))
         return sun
 
-    def GetTommorrowTimes(args):
+    def GetTommorrowTimes(self):
                 
         astral = Astral()
         city = astral['Leeds']

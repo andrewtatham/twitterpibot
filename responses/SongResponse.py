@@ -7,30 +7,30 @@ from TwitterHelper import Send
 
 
 class SongResponse(Response):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self.songs = Songs()
         self.songnames = self.songs.AllKeys()
 
-    def Condition(args, inboxItem):
-        return super(SongResponse,args).Condition(inboxItem) \
+    def Condition(self, inboxItem):
+        return super(SongResponse,self).Condition(inboxItem) \
             and inboxItem.to_me \
-            and args.Contains(inboxItem.words, args.songnames)
+            and self.Contains(inboxItem.words, self.songnames)
 
-    def Contains(args, list_a, list_b):
+    def Contains(self, list_a, list_b):
         for item_a in list_a:
             for item_b in list_b:
                 if item_a.lower() == item_b.lower():
                     return True
         return False
 
-    def Respond(args, inboxItem):
+    def Respond(self, inboxItem):
         for word in inboxItem.words:
-            for songname in args.songnames:
+            for songname in self.songnames:
                 if word.lower() == songname.lower():
-                    args.songs.Send(
+                    self.songs.Send(
                         songKey = songname,
                         inboxItem = inboxItem, 
-                        response = args)
+                        response = self)
 
 
 

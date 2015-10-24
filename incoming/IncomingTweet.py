@@ -21,7 +21,7 @@ class IncomingTweet(InboxTextItem):
     def __init__(self, data):
         # https://dev.twitter.com/overview/api/tweets
 
-        super(IncomingTweet, self).__init__(data)
+        super(IncomingTweet, self).__init__()
 
         self.isTweet = True
         self.status_id = data["id_str"]
@@ -57,24 +57,24 @@ class IncomingTweet(InboxTextItem):
                         self.to_me = True
 
 
-    def Display(args):
+    def Display(self):
         colour = ""
         text = ""
-        if args.source:
-            text += '['+ args.source + '] '
-            if args.sourceIsTrend:
+        if self.source:
+            text += '['+ self.source + '] '
+            if self.sourceIsTrend:
                 colour = next(trendcolours)
-            elif args.sourceIsSearch:
+            elif self.sourceIsSearch:
                 colour = next(searchcolours)
         else:
             colour = next(tweetcolours)
             text += "* "
 
-        text += args.sender.name + ' [@' + args.sender.screen_name + '] ' + args.text.replace('\n',' ')
+        text += self.sender.name + ' [@' + self.sender.screen_name + '] ' + self.text.replace('\n',' ')
     
-        if args.to_me:
+        if self.to_me:
             colour += Style.BRIGHT
-        elif args.from_me:
+        elif self.from_me:
             colour += Style.NORMAL
         else:
             colour += Style.DIM

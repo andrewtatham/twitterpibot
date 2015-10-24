@@ -3,7 +3,7 @@ import threading
 from Identity import id
 
 class User(object):
-    def __init__(self, data, *args, **kwargs):
+    def __init__(self, data):
 
 
         self.id = data["id_str"]
@@ -33,40 +33,40 @@ class User(object):
         self.lock = threading.Lock()
 
 
-    def isStale(args):
-        with args.lock:
-            if args.updated is None:
+    def isStale(self):
+        with self.lock:
+            if self.updated is None:
                 return True
 
-            delta = datetime.datetime.utcnow() - args.updated
+            delta = datetime.datetime.utcnow() - self.updated
             mins = divmod(delta.days * 86400 + delta.seconds, 60)[0]
             return mins > 45 
 
 
 
-    def update(args, lists):
-        with args.lock:
+    def update(self, lists):
+        with self.lock:
             for list in lists.values():
-                if list.ContainsUser(args.id):
+                if list.ContainsUser(self.id):
 
                     if list.name == "Arseholes":
-                        args.isArsehole = True # This is my favourite line in this code
+                        self.isArsehole = True # This is my favourite line in this code
                         print("Is member of " + list.name)
 
                     if list.name == "Reply Less":
-                        args.isReplyLess = True
+                        self.isReplyLess = True
                         print("Is member of " + list.name)
 
                     if list.name == "Retweet More":
-                        args.isRetweetMore = True
+                        self.isRetweetMore = True
                         print("Is member of " + list.name)
 
                     if list.name == "Awesome Bots":
-                        args.isBot = True                
+                        self.isBot = True
                         print("Is member of " + list.name)
                   
                     if list.name == "Friends":
-                        args.isFriend = True
+                        self.isFriend = True
                         print("Is member of " + list.name)
 
-            args.updated = datetime.datetime.utcnow()
+            self.updated = datetime.datetime.utcnow()

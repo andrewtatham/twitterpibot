@@ -4,17 +4,17 @@ import random
 from TwitterHelper import ReplyWith
 class ThanksResponse(Response):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
 
         self.rx = re.compile("thx|thank(s|you)", re.IGNORECASE)
 
-    def Condition(args, inboxItem):
+    def Condition(self, inboxItem):
         return not inboxItem.from_me \
             and (inboxItem.isDirectMessage or inboxItem.isTweet) \
                 and inboxItem.to_me \
-                and bool(args.rx.match(inboxItem.text))
+                and bool(self.rx.match(inboxItem.text))
 
-    def Respond(args, inboxItem):
+    def Respond(self, inboxItem):
         thanks = [
             "thx",
             "thanks",

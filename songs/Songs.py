@@ -7,7 +7,7 @@ import itertools
 import User
 import datetime
 class Songs(object):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self.songsfolder = "songs/"
         self.mutation = [" ,", " .", " *", " `", " -", " _"]
         self._songs = CaseInsensitiveDict(
@@ -313,22 +313,22 @@ class Songs(object):
         random.shuffle(self._birthdaySongKeys)
         self._birthdaySongKeys = itertools.cycle(self._birthdaySongKeys)
 
-    def AllKeys(args):
+    def AllKeys(self):
         # always returs all keys
-        return args._songs.keys()   
+        return self._songs.keys()
 
-    def Keys(args):
+    def Keys(self):
         today = datetime.date.today()
         isChristmas = today.month == 12 and 24 <= today.day <= 26
-        keys = [k for k,v in args._songs.iteritems() if "birthday" not in v and isChristmas and "christmas" in v]
+        keys = [k for k,v in self._songs.iteritems() if "birthday" not in v and isChristmas and "christmas" in v]
         return keys
 
     def SingBirthdaySong(self, screen_name):
         songKey = self._birthdaySongKeys.next()
         self.Send(songKey, screen_name, text = "Happy Birthday @" + screen_name + " !!!", hashtag = "#HappyBirthday")
 
-    def Send(args, songKey, target = None, inboxItem = None, response = None, text = None, hashtag = None):
-        song = args._songs[songKey]
+    def Send(self, songKey, target = None, inboxItem = None, text = None, hashtag = None):
+        song = self._songs[songKey]
 
         if not text:
             text = random.choice(["All together now!", "Sing along!"])
@@ -336,11 +336,11 @@ class Songs(object):
         if hashtag:
             text += ' ' + hashtag 
 
-        in_reply_to_status_id = args._send(inboxItem, text, response, target, None)
+        in_reply_to_status_id = self._send(inboxItem, text, target, None)
         time.sleep(5)
 
         lyricsfile = song["lyrics"]
-        lyrics = open(args.songsfolder + lyricsfile, "rb").readlines()
+        lyrics = open(self.songsfolder + lyricsfile, "rb").readlines()
         lastlyrics = set([])
         for lyric in lyrics:
             lyric = lyric.strip()
@@ -353,20 +353,19 @@ class Songs(object):
 
                 ## prevent duplicate lines
                 while lyric in lastlyrics:
-                    lyric += random.choice(args.mutation)
+                    lyric += random.choice(self.mutation)
                 lastlyrics.add(lyric)
                 print (in_reply_to_status_id)
-                in_reply_to_status_id = args._send(
+                in_reply_to_status_id = self._send(
                     inboxItem, 
-                    lyric, 
-                    response, 
-                    target, 
+                    lyric,
+                    target,
                     in_reply_to_status_id)
                 time.sleep(2)
 
       
               
-    def _send(args, inboxItem, lyric, response, target, in_reply_to_status_id):
+    def _send(self, inboxItem, lyric, target, in_reply_to_status_id):
         if inboxItem:
             return ReplyWith(
                 inboxItem=inboxItem, 

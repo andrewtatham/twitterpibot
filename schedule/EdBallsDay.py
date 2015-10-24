@@ -8,10 +8,10 @@ from TwitterHelper import Send
 
 class EdBallsDay(ScheduledTask):
 
-    def GetTrigger(args):
+    def GetTrigger(self):
         return CronTrigger(month = 4, day = 28, hour = 16, minute = 20)
  
-    def onRun(args):
+    def onRun(self):
         year = str(datetime.date.today().year)
         text = "@edballs ED BALLS #EdBallsDay #EdBallsDay" + year
         tweet = OutgoingTweet(text=text)

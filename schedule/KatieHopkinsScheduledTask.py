@@ -7,7 +7,7 @@ from TwitterHelper import Send
 
 
 class KatieHopkinsScheduledTask(ScheduledTask):
-    def adjective(args):
+    def adjective(self):
         return random.choice(['fat',
                             'penniless',
                             'ginger',
@@ -41,7 +41,7 @@ class KatieHopkinsScheduledTask(ScheduledTask):
                             'homeless'
                             ])
 
-    def people(args):
+    def people(self):
         return random.choice(['children',
                             'toddlers',
                             'teenagers',
@@ -74,7 +74,7 @@ class KatieHopkinsScheduledTask(ScheduledTask):
                             'farmers',
                             'vegans'
                             ])
-    def insult(args):
+    def insult(self):
         return random.choice(['losers',
                         'failures',
                         'has-beens',
@@ -88,7 +88,7 @@ class KatieHopkinsScheduledTask(ScheduledTask):
                         'wannabes'
                         ])
 
-    def doing(args):
+    def doing(self):
         return random.choice(['on benefits',
                                 'called ' + random.choice(['India','China','Brooklyn','Jayden','Lavender','Sarah','John','Barkley','Tiffany','Lexus','Timothy','James']),
                                 'wearing burqas',
@@ -112,7 +112,7 @@ class KatieHopkinsScheduledTask(ScheduledTask):
                                 'from ' + random.choice(['Belgium','Albania','New Zealand','Tibet','Peru','Gibraltar','Portugal','the North','Scotland','Slough','Greece'])
                                 ])
 
-    def fate(args):
+    def fate(self):
         return random.choice(['go back to ' + random.choice(['Belgium','Cornwall','Brazil','Wales','Switzerland','Norway','Finland','Hawaii','Jamaica','the 1970s','the Isle of Man']),
                                 'jump off a bridge',
                                 'be put in the stocks',
@@ -142,7 +142,7 @@ class KatieHopkinsScheduledTask(ScheduledTask):
                                 'have an abortion'
                                 ])
 
-    def fated(args):
+    def fated(self):
         return random.choice(['went back to ' + random.choice(['Canada','Belgium','Cornwall','Brazil','Wales','Switzerland','Norway','Finland','Hawaii','Jamaica','the 1970s','the Isle of Man']),
                                 'jumped into the sea',
                                 'were arrested',
@@ -168,7 +168,7 @@ class KatieHopkinsScheduledTask(ScheduledTask):
                                 'had an abortion'
                                 ])
 
-    def thing(args):
+    def thing(self):
         return random.choice(['the NHS',
                                 'herbal tea',
                                 'green post-it notes',
@@ -208,7 +208,7 @@ class KatieHopkinsScheduledTask(ScheduledTask):
                                 'The Guardian',
                                 'the environment'
                                 ])
-    def needto(args):
+    def needto(self):
         return random.choice(['face reality',
                         'do us all a favour',
                         'stop wasting our time',
@@ -222,47 +222,47 @@ class KatieHopkinsScheduledTask(ScheduledTask):
 
         
 
-    def tweet(args):
+    def tweet(self):
         message = [
             random.choice(
                     ["I think that ",
                         "Guess what - ",
                         "Let's be realistic, "]) \
-                + random.choice([args.adjective() + " "," "]) \
-                + random.choice([args.people(), args.insult()]) \
+                + random.choice([self.adjective() + " "," "]) \
+                + random.choice([self.people(), self.insult()]) \
                 + " " \
-                + args.doing() + " should " + args.fate() + ".",
+                + self.doing() + " should " + self.fate() + ".",
 
             random.choice(["It's about time that ","It's high time that ","Isn't it time that "]) \
-                + random.choice([args.adjective() + " "," "]) \
-                + args.people() + " " + args.doing() + " " + args.fated() + ".",
+                + random.choice([self.adjective() + " "," "]) \
+                + self.people() + " " + self.doing() + " " + self.fated() + ".",
 
             random.choice(["Don't blame me but ","Not my fault but ","Let's be honest: ","I'm sorry but ","We all know it's true - ","Face facts: ","News flash... "]) \
-                + args.people() + " " + args.doing() \
-                + " need to " + args.needto() + " and " + args.fate() + ".",
+                + self.people() + " " + self.doing() \
+                + " need to " + self.needto() + " and " + self.fate() + ".",
 
-            random.choice(["Is it just me or are all "]) + args.people() + " " \
+            random.choice(["Is it just me or are all "]) + self.people() + " " \
                     + random.choice(['also','worse than','just deluded','just wannabe','really just unemployed','actually just','actually']) + " " \
-                    + random.choice([args.people(),args.insult()]) + "?",
+                    + random.choice([self.people(),self.insult()]) + "?",
 
    
 
             random.choice(["Face it ","Bad news ","Get real "]) \
-                    + args.people() + " you're just " + args.adjective() + " " + args.insult() + ".",
+                    + self.people() + " you're just " + self.adjective() + " " + self.insult() + ".",
 
-            "I hate " + args.people() + " almost as much as I hate " + args.thing() + '.',
+            "I hate " + self.people() + " almost as much as I hate " + self.thing() + '.',
 
-            "If there's one thing I hate more than " + args.people() + " it's " + args.thing() + '.'
+            "If there's one thing I hate more than " + self.people() + " it's " + self.thing() + '.'
             ]
         return random.choice(message)
 
-    def GetTrigger(args):
+    def GetTrigger(self):
 
 
         return CronTrigger(hour="22-23,00-06", minute = "15/30")
 
-    def onRun(args):
+    def onRun(self):
         
-        text = args.tweet() + " #KatieHopkinsTweet"
+        text = self.tweet() + " #KatieHopkinsTweet"
         
         Send(OutgoingTweet(text=text))

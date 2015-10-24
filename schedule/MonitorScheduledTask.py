@@ -9,11 +9,11 @@ import psutil
 class MonitorScheduledTask(ScheduledTask):
 
 
-    def GetTrigger(args):
+    def GetTrigger(self):
         return CronTrigger(minute = '*/5')
     
 
-    def onRun(args):
+    def onRun(self):
         text = datetime.datetime.now().strftime("%c")
         text += os.linesep \
             + 'cpu = ' + str(psutil.cpu_percent()) \

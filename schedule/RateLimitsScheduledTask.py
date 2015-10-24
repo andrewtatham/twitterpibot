@@ -11,11 +11,11 @@ filename = "RATE_LIMITS.pkl"
 
 class RateLimitsScheduledTask(ScheduledTask):
 
-    def GetTrigger(args):
+    def GetTrigger(self):
         return IntervalTrigger(minutes=20)
 
 
-    def onRun(args):
+    def onRun(self):
         # https://dev.twitter.com/rest/public/rate-limiting
         # https://dev.twitter.com/rest/public/rate-limits
         # https://dev.twitter.com/rest/reference/get/application/rate_limit_status
@@ -24,16 +24,3 @@ class RateLimitsScheduledTask(ScheduledTask):
             rates = twitter.get_application_rate_limit_status()
             ratelimits.UpdateRateLimits(rates)
 
-
-    def onInit(args):
-
-        if os.path.isfile(filename):
-            ratelimits = pickle.load(open(filename, "rb"))
-        else:
-            args.onRun()
-
-    def onStop(args):
-        if ratelimits:
-            pickle.dump(ratelimits, open(filename, "wb"))
-
-        

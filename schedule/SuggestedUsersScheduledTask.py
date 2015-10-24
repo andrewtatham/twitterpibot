@@ -8,24 +8,24 @@ suggestedUserColours = cycle([Fore.WHITE, Fore.CYAN])
 
 class SuggestedUsersScheduledTask(ScheduledTask):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self._slugList = [] 
 
-    def GetTrigger(args):
+    def GetTrigger(self):
         return IntervalTrigger(minutes=17)
     
-    def onRun(args):
+    def onRun(self):
 
         with MyTwitter() as twitter:
-            if not args._slugList:
+            if not self._slugList:
                 categories = twitter.get_user_suggestions()
 
                 for category in categories:
                     colour = next(suggestedUserColours)
                     print(colour + "Users: [" + category["name"] + "]")
-                    args._slugList.append(category)
+                    self._slugList.append(category)
  
-            category = args._slugList.pop()
+            category = self._slugList.pop()
             suggestedUsers = twitter.get_user_suggestions_by_slug(slug = category["slug"])
             for user in suggestedUsers["users"]:
                 colour = next(suggestedUserColours)

@@ -58,16 +58,16 @@ class Timelapse(object):
 class TimelapsePhotoInitTask(ScheduledTask):
     def __init__(self, timelapse):
         self.timelapse = timelapse
-    def GetTrigger(args):
-        return DateTrigger(run_date = args.timelapse.initTime[0])
-    def onRun(args):
+    def GetTrigger(self):
+        return DateTrigger(run_date = self.timelapse.initTime[0])
+    def onRun(self):
         print("[Timelapse] Init ")
-        if os.path.exists(args.timelapse.dirPath):
-            print("[Timelapse] Removing " + args.timelapse.dirPath)
-            shutil.rmtree(args.timelapse.dirPath, True)
-        if not os.path.exists(args.timelapse.dirPath):
-            print("[Timelapse] Creating " + args.timelapse.dirPath)
-            os.makedirs(args.timelapse.dirPath)
+        if os.path.exists(self.timelapse.dirPath):
+            print("[Timelapse] Removing " + self.timelapse.dirPath)
+            shutil.rmtree(self.timelapse.dirPath, True)
+        if not os.path.exists(self.timelapse.dirPath):
+            print("[Timelapse] Creating " + self.timelapse.dirPath)
+            os.makedirs(self.timelapse.dirPath)
         
 
 
@@ -75,45 +75,45 @@ class TimelapsePhotoScheduledTask(ScheduledTask):
     def __init__(self, timelapse):
         self.timelapse = timelapse
         self.i = 0
-    def GetTrigger(args):
+    def GetTrigger(self):
         return IntervalTrigger(
-            start_date = args.timelapse.startTime,
-            end_date = args.timelapse.endTime,
-            seconds = args.timelapse.intervalSeconds
+            start_date = self.timelapse.startTime,
+            end_date = self.timelapse.endTime,
+            seconds = self.timelapse.intervalSeconds
             )
-    def onRun(args):
+    def onRun(self):
 
-        print("[Timelapse] " + args.timelapse.name + " Photo " + str(args.i))
+        print("[Timelapse] " + self.timelapse.name + " Photo " + str(self.i))
 
-        name = args.timelapse.name + "_img_"  + "{0:05d}".format(args.i)
+        name = self.timelapse.name + "_img_"  + "{0:05d}".format(self.i)
 
         hardware.TakePhotoToDisk(
-            dir = args.timelapse.dirPath,
+            dir = self.timelapse.dirPath,
             name = name,
-            ext = args.timelapse.imageExtension) 
+            ext = self.timelapse.imageExtension)
 
-        args.i += 1
+        self.i += 1
         
 
 class TimelapseUploadScheduledTask(ScheduledTask):
     def __init__(self, timelapse):
         self.timelapse = timelapse
-    def GetTrigger(args):
-        return DateTrigger(run_date = args.timelapse.uploadTime)
-    def onRun(args):
+    def GetTrigger(self):
+        return DateTrigger(run_date = self.timelapse.uploadTime)
+    def onRun(self):
 
 
 
 
-        searchPath = args.timelapse.dirPath + os.path.sep + args.timelapse.name + "*" + os.extsep + args.timelapse.imageExtension
+        searchPath = self.timelapse.dirPath + os.path.sep + self.timelapse.name + "*" + os.extsep + self.timelapse.imageExtension
 
         files = glob.glob(searchPath)
         files.sort()
         images = [cv2.imread(file) for file in files]
 
-        filename = args.timelapse.dirPath + os.path.sep + args.timelapse.name + os.extsep + args.timelapse.targetExtension
+        filename = self.timelapse.dirPath + os.path.sep + self.timelapse.name + os.extsep + self.timelapse.targetExtension
 
-        if args.timelapse.targetExtension == "gif":
+        if self.timelapse.targetExtension == "gif":
 
             if hardware.iswebcamattached:
                 images = [cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB) for bgr in images ]
@@ -124,16 +124,16 @@ class TimelapseUploadScheduledTask(ScheduledTask):
                 filename, 
                 images,
                 dither = True, 
-                duration = args.timelapse.frameDuration, 
+                duration = self.timelapse.frameDuration,
                 repeat = True, 
                 subRectangles = None)
 
-        elif args.timelapse.targetExtension == "mp4":
+        elif self.timelapse.targetExtension == "mp4":
             #height , width , layers =  images[0].shape
             width = 640
             height = 480
 
-            filenametemp = args.timelapse.dirPath + os.path.sep + args.timelapse.name + os.extsep + "avi"
+            filenametemp = self.timelapse.dirPath + os.path.sep + self.timelapse.name + os.extsep + "avi"
 
 
             print("[Timelapse] Opening video")
@@ -141,7 +141,7 @@ class TimelapseUploadScheduledTask(ScheduledTask):
             video = cv2.VideoWriter(
                 filenametemp,
                 fourcc = fourcc,
-                fps = args.timelapse.fps,
+                fps = self.timelapse.fps,
                 frameSize = (width,height))
 
             for image in images:
@@ -155,9 +155,9 @@ class TimelapseUploadScheduledTask(ScheduledTask):
             os.rename(filenametemp,filename)
 
         else:
-            raise Exception("Not implemented extension " + args.timelapse.targetExtension)
+            raise Exception("Not implemented extension " + self.timelapse.targetExtension)
 
-        print("[Timelapse]" + args.timelapse.name + " Checking")
+        print("[Timelapse]" + self.timelapse.name + " Checking")
 
         if not os.path.isfile(filename):
             raise Exception("File does not exist")    
@@ -167,16 +167,16 @@ class TimelapseUploadScheduledTask(ScheduledTask):
             raise Exception("File size is zero ")
 
 
-        if (args.timelapse.targetExtension == "gif" and fileSize > (4 * 1024 * 1024)) \
-            or (args.timelapse.targetExtension == "mp4" and fileSize > (15 * 1024 * 1024)):
+        if (self.timelapse.targetExtension == "gif" and fileSize > (4 * 1024 * 1024)) \
+            or (self.timelapse.targetExtension == "mp4" and fileSize > (15 * 1024 * 1024)):
             raise Exception("File size is too big ")
 
 
-        print("[Timelapse]" + args.timelapse.name + " Sending")
+        print("[Timelapse]" + self.timelapse.name + " Sending")
         Send(OutgoingTweet(
-            text = args.timelapse.tweetText,
+            text = self.timelapse.tweetText,
             filePaths = [ filename ]))
 
-        if os.path.exists(args.timelapse.dirPath):
-            print("[Timelapse] Removing " + args.timelapse.dirPath)
-            shutil.rmtree(args.timelapse.dirPath, True)
+        if os.path.exists(self.timelapse.dirPath):
+            print("[Timelapse] Removing " + self.timelapse.dirPath)
+            shutil.rmtree(self.timelapse.dirPath, True)

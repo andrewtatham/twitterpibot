@@ -1,14 +1,6 @@
 import subprocess
 import platform
 
-iswindows = False
-isRaspbian = False
-
-isAndrewDesktop = False
-isAndrewLaptop = False
-isRaspberryPi = False
-isRaspberryPi2 = False
-
 ispiglowattached = False
 ispicamattached = False
 iswebcamattached = False

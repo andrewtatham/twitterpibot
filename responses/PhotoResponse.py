@@ -5,12 +5,12 @@ from TwitterHelper import ReplyWith
 
 class PhotoResponse(Response):
     
-    def Condition(args, inboxItem):
-        return super(PhotoResponse, args).Condition(inboxItem) \
+    def Condition(self, inboxItem):
+        return super(PhotoResponse, self).Condition(inboxItem) \
             and inboxItem.to_me \
-            and args.Contains(inboxItem.words, "photo")
+            and self.Contains(inboxItem.words, "photo")
 
-    def Respond(args, inboxItem):
+    def Respond(self, inboxItem):
         photos = hardware.TakePhotoToDisk("temp", "PhotoResponse", "jpg")
         if any(photos):
             photomessages = ["cheese!", "smile!"]

@@ -14,5 +14,5 @@ class OutgoingDirectMessage(OutboxTextItem):
             
         self.text = text
          
-    def Display(args):
-        print(u"-> DM to @" + args.screen_name + u": " + args.text)
+    def Display(self):
+        print(u"-> DM to @" + self.screen_name + u": " + self.text)

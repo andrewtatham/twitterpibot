@@ -3,7 +3,7 @@ import random
 from MyTwitter import MyTwitter
 from TwitterHelper import ReplyWith
 class Magic8BallResponse(Response):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
 
         self.responses = ['Signs point to yes.',
                 'Yes.',
@@ -43,13 +43,13 @@ class Magic8BallResponse(Response):
 
 
 
-    def Condition(args, inboxItem):
-        return super(Magic8BallResponse, args).Condition(inboxItem) \
+    def Condition(self, inboxItem):
+        return super(Magic8BallResponse, self).Condition(inboxItem) \
             and inboxItem.text.find("?") != -1
 
 
-    def Respond(args, inboxItem):
-        response = random.choice(args.responses) + " #Magic8Ball"
+    def Respond(self, inboxItem):
+        response = random.choice(self.responses) + " #Magic8Ball"
         ReplyWith(inboxItem=inboxItem, text=response)
 
 

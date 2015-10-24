@@ -5,10 +5,10 @@ from Timelapse import Timelapse
 import datetime
 
 class SunTimelapseScheduledTask(ScheduledTask):
-    def GetTrigger(args):
+    def GetTrigger(self):
         return CronTrigger(hour = 3, minute = 1) 
 
-    def onRun(args):
+    def onRun(self):
 
         sun = MyAstral().GetTimes()
 

@@ -17,10 +17,10 @@ piracy = [
 ] 
 class TalkLikeAPirateDayScheduledTask(ScheduledTask):
         
-    def GetTrigger(args):
+    def GetTrigger(self):
         return CronTrigger(month = 9, day = 19, minute = "*/10")
  
-    def onRun(args):
+    def onRun(self):
         text = random.choice(piracy) + " #TalkLikeAPirateDay"
         tweet = OutgoingTweet(text=text)
         Send(tweet)

@@ -5,11 +5,11 @@ from Timelapse import Timelapse
 import datetime
 
 class SunsetTimelapseScheduledTask(ScheduledTask):
-    def GetTrigger(args):
+    def GetTrigger(self):
         return CronTrigger(hour=15,minute=0)
 
 
-    def onRun(args):
+    def onRun(self):
 
         sun = MyAstral().GetTimes()
 
