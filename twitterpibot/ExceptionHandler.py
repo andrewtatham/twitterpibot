@@ -3,6 +3,7 @@ import logging
 from colorama import Fore, Style, Back
 
 from twitterpibot.Statistics import RecordWarning, RecordError
+from twitterpibot.twitter.TwitterHelper import Send
 
 logger = logging.getLogger(__name__)
 
@@ -37,15 +38,15 @@ def _RecordError(exception):
 
 
 def _TrySendException():
-    pass
-    # try:
-    #    if hardware.isRaspbian:
-    #        Send(OutgoingDirectMessage(
-    #            text = traceback.format_exc(),
-    #            screen_name = "andrewtatham", 
-    #            user_id = "19201332"))
-    # except Exception as e:
-    #    logger.exception(e) 
-    #    global backoff
-    #    time.sleep(backoff)
-    #    backoff *= 2
+   
+    try:
+        if hardware.isRaspbian:
+            Send(OutgoingDirectMessage(
+                text = traceback.format_exc(),
+                screen_name = "andrewtatham", 
+                user_id = "19201332"))
+    except Exception as e:
+        logger.exception(e) 
+        global backoff
+        time.sleep(backoff)
+        backoff *= 2
