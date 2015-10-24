@@ -1,8 +1,8 @@
 import datetime
 
-from ScheduledTask import ScheduledTask
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.processing.Timelapse import Timelapse
-import MySchedule
+import twitterpibot.schedule.MySchedule as MySchedule
 
 
 class TimelapseScheduledTask(ScheduledTask):

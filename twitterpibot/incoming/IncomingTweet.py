@@ -1,4 +1,4 @@
-from InboxTextItem import InboxTextItem
+from twitterpibot.incoming.InboxTextItem import InboxTextItem
 
 try:
     import html.parser

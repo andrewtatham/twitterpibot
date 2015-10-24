@@ -1,4 +1,5 @@
-from ScheduledTask import ScheduledTask
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
+
 from twitterpibot.users.BotBlocker import BotBlocker
 from twitterpibot.twitter.MyTwitter import MyTwitter
 from apscheduler.triggers.interval import IntervalTrigger

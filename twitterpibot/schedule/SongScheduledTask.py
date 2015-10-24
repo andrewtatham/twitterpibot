@@ -1,4 +1,4 @@
-from ScheduledTask import ScheduledTask
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.songs.Songs import Songs
 from twitterpibot.twitter.MyTwitter import MyTwitter
 import random

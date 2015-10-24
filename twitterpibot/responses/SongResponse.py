@@ -1,4 +1,4 @@
-from Response import Response
+from twitterpibot.responses.Response import Response
 from twitterpibot.songs.Songs import Songs
 
 

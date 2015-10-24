@@ -1,6 +1,6 @@
 from apscheduler.triggers.cron import CronTrigger
 
-from ScheduledTask import ScheduledTask
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 import twitterpibot.hardware.hardware as hardware
 from twitterpibot.twitter.TwitterHelper import Send

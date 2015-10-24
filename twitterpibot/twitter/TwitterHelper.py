@@ -2,7 +2,7 @@ from twitterpibot.twitter.MyTwitter import MyTwitter
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 from twitterpibot.Statistics import RecordOutgoingDirectMessage, RecordOutgoingTweet
-from MyStreamer import MyStreamer
+from twitterpibot.twitter.MyStreamer import MyStreamer
 import os
 
 _screen_name = None

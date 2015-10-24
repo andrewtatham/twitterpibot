@@ -1,4 +1,4 @@
-from InboxItem import InboxItem
+from twitterpibot.incoming.InboxItem import InboxItem
 from itertools import cycle
 from colorama import Fore, Style
 import os

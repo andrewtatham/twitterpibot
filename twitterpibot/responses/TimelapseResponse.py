@@ -1,4 +1,4 @@
-from Response import Response
+from twitterpibot.responses.Response import Response
 from twitterpibot.processing.Timelapse import Timelapse
 import datetime
 from twitterpibot.schedule import MySchedule

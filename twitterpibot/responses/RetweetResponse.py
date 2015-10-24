@@ -1,7 +1,7 @@
 import random
 import re
 
-from Response import Response
+from twitterpibot.responses.Response import Response
 from twitterpibot.twitter.MyTwitter import MyTwitter
 
 

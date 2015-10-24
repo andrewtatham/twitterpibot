@@ -1,4 +1,4 @@
-from ScheduledTask import ScheduledTask
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from apscheduler.triggers.interval import IntervalTrigger
 from twitterpibot.twitter.MyTwitter import MyTwitter
 from colorama import Fore

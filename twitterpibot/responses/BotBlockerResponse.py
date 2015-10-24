@@ -1,4 +1,5 @@
-from Response import Response
+from twitterpibot.responses.Response import Response
+
 from twitterpibot.users.BotBlocker import BotBlocker
 
 

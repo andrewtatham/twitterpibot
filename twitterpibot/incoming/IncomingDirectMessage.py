@@ -1,4 +1,6 @@
-from InboxTextItem import InboxTextItem
+from twitterpibot.incoming.InboxTextItem import InboxTextItem
+
+
 import twitterpibot.users.Users as Users
 
 

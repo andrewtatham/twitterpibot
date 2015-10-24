@@ -1,5 +1,5 @@
 import pyjokes
-from ScheduledTask import ScheduledTask
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from apscheduler.triggers.cron import CronTrigger
 from twitterpibot.twitter.TwitterHelper import Send

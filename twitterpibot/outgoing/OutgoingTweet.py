@@ -1,4 +1,4 @@
-from OutboxTextItem import OutboxTextItem
+from twitterpibot.outgoing.OutboxTextItem import OutboxTextItem
 
 
 class OutgoingTweet(OutboxTextItem):

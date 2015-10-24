@@ -1,4 +1,4 @@
-from Response import Response
+from twitterpibot.responses.Response import Response
 import random
 import twitterpibot.hardware.hardware as hardware
 from twitterpibot.twitter.TwitterHelper import ReplyWith

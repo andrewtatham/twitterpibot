@@ -1,4 +1,4 @@
-from User import User
+from twitterpibot.users.User import User
 from twitterpibot.twitter.MyTwitter import MyTwitter
 
 import threading

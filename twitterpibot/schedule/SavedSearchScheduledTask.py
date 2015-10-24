@@ -1,5 +1,5 @@
 from apscheduler.triggers.interval import IntervalTrigger
-from ScheduledTask import ScheduledTask
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.twitter.MyTwitter import MyTwitter
 import twitterpibot.MyQueues as MyQueues
 

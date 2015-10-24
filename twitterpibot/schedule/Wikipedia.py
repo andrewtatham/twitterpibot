@@ -2,7 +2,7 @@ import random
 
 from apscheduler.triggers.cron import CronTrigger
 
-from ScheduledTask import ScheduledTask
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 import wikipedia
 from wikipedia.exceptions import DisambiguationError

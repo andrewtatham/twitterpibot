@@ -1,4 +1,4 @@
-from ScheduledTask import ScheduledTask
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from apscheduler.triggers.cron import CronTrigger
 import datetime
 from colorama import Style, Fore

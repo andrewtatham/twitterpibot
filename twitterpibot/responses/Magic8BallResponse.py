@@ -1,6 +1,6 @@
 import random
 
-from Response import Response
+from twitterpibot.responses.Response import Response
 from twitterpibot.twitter.TwitterHelper import ReplyWith
 
 

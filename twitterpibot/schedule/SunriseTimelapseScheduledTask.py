@@ -1,4 +1,4 @@
-from ScheduledTask import ScheduledTask
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.processing.MyAstral import MyAstral
 from apscheduler.triggers.cron import CronTrigger
 from twitterpibot.processing.Timelapse import Timelapse
@@ -19,7 +19,7 @@ class SunriseTimelapseScheduledTask(ScheduledTask):
             intervalSeconds=90,
             tweetText="Morning!")
 
-        from MySchedule import add
+        from twitterpibot.schedule.MySchedule import add
         tasks = timelapse.GetScheduledTasks()
         for task in tasks:
             add(task)

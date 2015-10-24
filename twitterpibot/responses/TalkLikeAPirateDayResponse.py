@@ -1,4 +1,4 @@
-from Response import Response
+from twitterpibot.responses.Response import Response
 import random
 import datetime
 from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import piracy
