@@ -46,19 +46,17 @@ elif isRaspbian:
         isunicornhatattached = True
 
 if iswebcamattached:
-    import MyWebcam
-
+    import twitterpibot.hardware.MyWebcam as MyWebcam
     webcam = MyWebcam.Webcam()
 if ispicamattached:
-    import MyPicam
-
+    import twitterpibot.hardware.MyPicam as MyPicam
     picam = MyPicam.MyPicam()
 if isunicornhatattached:
-    import myunicornhat
+    import twitterpibot.hardware.myunicornhat as myunicornhat
 if ispiglowattached:
-    import MyPiglow
+    import twitterpibot.hardware.MyPiglow as MyPiglow
 if isbrightpiattached:
-    import MyBrightPi
+    import twitterpibot.hardware.MyBrightPi as MyBrightPi
 
     brightpi = MyBrightPi.BrightPI()
 
