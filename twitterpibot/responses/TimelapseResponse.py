@@ -1,7 +1,7 @@
 from Response import Response
 from twitterpibot.processing.Timelapse import Timelapse
 import datetime
-import MySchedule
+from twitterpibot.schedule import MySchedule
 
 
 class TimelapseResponse(Response):

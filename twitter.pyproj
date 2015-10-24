@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0d8a6f76-90c3-43e1-8e8f-d24c25a90e50}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>twitterpibot\Main.py</StartupFile>
+    <StartupFile>Main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -111,7 +111,7 @@
     <Compile Include="twitterpibot\incoming\IncomingTweet.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="twitterpibot\Main.py">
+    <Compile Include="Main.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="twitterpibot\MyLogging.py">

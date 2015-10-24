@@ -1,12 +1,7 @@
-/pics/
 *.pkl
-info.txt
-/.project
-*.pyc
-temp.jpg
 twitter.log
 temp/
-.log
 twitter.log.1
 twitter.log.2
 .idea/
+*.pyc
