@@ -193,9 +193,6 @@
     <Compile Include="twitterpibot\schedule\JokesScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="twitterpibot\schedule\KatieHopkinsScheduledTask.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="twitterpibot\schedule\LightsScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>

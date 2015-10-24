@@ -233,7 +233,7 @@ class Raindrop(object):
     def __init__(self, x, y, rgb):
         self.x = x
         self.y = y
-        self._rgb = rgb
+        self.rgb = rgb
 
 
 _buffer = [[(0, 0, 0) for x in range(8)] for y in range(8)]
