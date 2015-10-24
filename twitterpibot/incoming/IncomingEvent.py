@@ -2,9 +2,10 @@ from InboxItem import InboxItem
 from itertools import cycle
 from colorama import Fore, Style
 import os
-import Users
+import twitterpibot.users.Users as Users
 
 eventcolours = cycle([Fore.MAGENTA, Fore.CYAN])
+
 
 class IncomingEvent(InboxItem):
     def __init__(self, data):
@@ -15,8 +16,8 @@ class IncomingEvent(InboxItem):
 
         # https://dev.twitter.com/streaming/overview/messages-types#Events_event
 
-        self.source = Users.getUser(data = data["source"])
-        self.target = Users.getUser(data = data["target"])
+        self.source = Users.getUser(data=data["source"])
+        self.target = Users.getUser(data=data["target"])
 
         self.from_me = self.source.isMe
         self.to_me = self.target.isMe
@@ -25,7 +26,7 @@ class IncomingEvent(InboxItem):
         self.isFavorite = self.event == "favorite"
         self.isFollow = self.event == "follow"
         self.isRetweet = self.event == "quoted_tweet"
-    
+
         self.targetObject = None
         self.targetObjectID = None
         self.targetObjectText = None
@@ -39,7 +40,7 @@ class IncomingEvent(InboxItem):
                 self.targetObjectText = self.targetObject["text"]
 
     def Display(self):
-        
+
         colour = next(eventcolours)
 
         if self.to_me:
@@ -49,10 +50,9 @@ class IncomingEvent(InboxItem):
         else:
             colour += Style.DIM
 
-        
         text = "* EVENT: Type: " + self.event + os.linesep \
-                    + " Source: " + self.source.name + " [@" + self.source.screen_name + "]" + os.linesep \
-                    + " Target: " + self.target.name + " [@" + self.target.screen_name + "]"
+               + " Source: " + self.source.name + " [@" + self.source.screen_name + "]" + os.linesep \
+               + " Target: " + self.target.name + " [@" + self.target.screen_name + "]"
 
         if self.targetObjectText:
             text += os.linesep + " TargetObject: " + self.targetObjectText

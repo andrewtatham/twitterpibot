@@ -1,15 +1,20 @@
 import re
-from MyTwitter import MyTwitter
+from twitterpibot.twitter.MyTwitter import MyTwitter
 from colorama import Fore, Style
+
 
 class BotBlocker(object):
     def __init__(self):
         tooKeen = ["(follow|DM|join|retweet|contact) (me|us|back|now)"]
-        pornWords = ["sexy","naughty","kinky","frisky","bored","cum","horny","housewi(fe|ves?)","teen","latina","ass","boobs?","tits?","puss(y|ies)",
-                     "milf","hoes?","boot(y|ies)","18+","xxx","slut","babe","dirty","naked","bitch"]
-        businessWords = ["team","professionals ","Recruitment", "Training","Leadership","business","discount","cheap","betting","industry","casino",
-                         "economic","entrepreneur","veture","capital","startup","angel","invest","enterprise","special", "offerring", "custom",
-                         "website","hosting","domain","cms","brand(ing)?","media","client","project","TweetBoss", "marketing", "promotion", "leverage", "influence","happylowuk[\\d]"]
+        pornWords = ["sexy", "naughty", "kinky", "frisky", "bored", "cum", "horny", "housewi(fe|ves?)", "teen",
+                     "latina", "ass", "boobs?", "tits?", "puss(y|ies)",
+                     "milf", "hoes?", "boot(y|ies)", "18+", "xxx", "slut", "babe", "dirty", "naked", "bitch"]
+        businessWords = ["team", "professionals ", "Recruitment", "Training", "Leadership", "business", "discount",
+                         "cheap", "betting", "industry", "casino",
+                         "economic", "entrepreneur", "veture", "capital", "startup", "angel", "invest", "enterprise",
+                         "special", "offerring", "custom",
+                         "website", "hosting", "domain", "cms", "brand(ing)?", "media", "client", "project",
+                         "TweetBoss", "marketing", "promotion", "leverage", "influence", "happylowuk[\\d]"]
         tooKeenRx = re.compile("|".join(tooKeen), re.IGNORECASE)
         businessRx = re.compile("|".join(businessWords), re.IGNORECASE)
         pornRx = re.compile("|".join(pornWords), re.IGNORECASE)
@@ -29,10 +34,10 @@ class BotBlocker(object):
             blockFollower = True
         if not blockFollower:
             with MyTwitter() as twitter:
-                lastTweets = twitter.get_user_timeline(user_id = user.id,
-                    screen_name = user.screen_name,
-                    trim_user = True,
-                    count = 20)
+                lastTweets = twitter.get_user_timeline(user_id=user.id,
+                                                       screen_name=user.screen_name,
+                                                       trim_user=True,
+                                                       count=20)
                 searchText = ""
                 for tweet in lastTweets:
                     searchText += tweet["text"]
@@ -45,9 +50,8 @@ class BotBlocker(object):
         return blockFollower
 
     def BlockUser(self, user):
-        print(Fore.RED + Style.BRIGHT + "[Botblock] BLOCKED: " + user.name + " [@" + user.screen_name + "] " + user.description)
+        print(
+            Fore.RED + Style.BRIGHT + "[Botblock] BLOCKED: " + user.name + " [@" + user.screen_name + "] " + user.description)
         with MyTwitter() as twitter:
-            twitter.create_block(user_id = user.id,
-                screen_name = user.screen_name)
-
- 
+            twitter.create_block(user_id=user.id,
+                                 screen_name=user.screen_name)

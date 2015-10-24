@@ -3,15 +3,14 @@ import threading
 import picamera
 import picamera.array
 
+
 class MyPicam(object):
     def __init__(self):
-
         self.lock = threading.Lock()
 
         with self.lock:
             self.mypicamera = picamera.PiCamera()
-            self.mypicamera.resolution = (320,240)
-
+            self.mypicamera.resolution = (320, 240)
 
     def TakePhotoToDisk(self, dir, name, ext):
         with self.lock:
@@ -22,5 +21,3 @@ class MyPicam(object):
     def Close(self):
         with self.lock:
             self.mypicamera.close()
-
-

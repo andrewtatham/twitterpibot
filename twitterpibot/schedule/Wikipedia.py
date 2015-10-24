@@ -1,18 +1,17 @@
-from ScheduledTask import ScheduledTask
-from apscheduler.triggers.cron import CronTrigger
-from OutgoingTweet import OutgoingTweet
-import datetime
-import wikipedia
-from wikipedia.wikipedia import WikipediaPage
-from wikipedia.exceptions import DisambiguationError
 import random
-from TwitterHelper import Send
+
+from apscheduler.triggers.cron import CronTrigger
+
+from ScheduledTask import ScheduledTask
+from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
+import wikipedia
+from wikipedia.exceptions import DisambiguationError
+from twitterpibot.twitter.TwitterHelper import Send
+
 
 class Wikipedia(ScheduledTask):
-
     def GetTrigger(self):
         return CronTrigger(hour="*")
-    
 
     def onRun(self):
 
@@ -33,6 +32,7 @@ class Wikipedia(ScheduledTask):
             text = cap(page.summary, 100) + page.url
             tweet = OutgoingTweet(text=text)
             Send(tweet)
+
 
 def cap(s, l):
     return s if len(s) <= l else s[0:l - 3] + '...'

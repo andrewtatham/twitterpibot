@@ -1,17 +1,15 @@
 from ScheduledTask import ScheduledTask
-from BotBlocker import BotBlocker
-from MyTwitter import MyTwitter
+from twitterpibot.users.BotBlocker import BotBlocker
+from twitterpibot.twitter.MyTwitter import MyTwitter
 from apscheduler.triggers.interval import IntervalTrigger
-import Users
-
+import twitterpibot.users.Users as Users
 
 
 class BotBlockerScheduledTask(ScheduledTask):
     def __init__(self):
         self._blocker = BotBlocker()
         self._page = "-1"
-        self._myFollowers = []     
-
+        self._myFollowers = []
 
     def GetTrigger(self):
         return IntervalTrigger(minutes=13)
@@ -20,11 +18,10 @@ class BotBlockerScheduledTask(ScheduledTask):
         with MyTwitter() as twitter:
             if not any(self._myFollowers):
 
+                # response = twitter.get_followers_list(cursor = args.page)
+                # args.myFollowers.extend(response["users"])
 
-                #response = twitter.get_followers_list(cursor = args.page)
-                #args.myFollowers.extend(response["users"])
-
-                response = twitter.get_followers_ids(cursor = self._page,stringify_ids=True)
+                response = twitter.get_followers_ids(cursor=self._page, stringify_ids=True)
                 self._myFollowers.extend(response["ids"])
 
                 nextPage = response["next_cursor_str"]
@@ -36,11 +33,8 @@ class BotBlockerScheduledTask(ScheduledTask):
             if any(self._myFollowers):
                 followerId = self._myFollowers.pop()
 
-                usr = Users.getUser(id = followerId)
+                usr = Users.getUser(id=followerId)
 
                 block = self._blocker.IsUserBot(usr)
                 if block:
-                     self._blocker.BlockUser(usr)
-
-        
-    
+                    self._blocker.BlockUser(usr)

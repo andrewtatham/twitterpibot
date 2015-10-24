@@ -1,11 +1,12 @@
-from astral import Astral
+import astral
 import datetime
+
+
 class MyAstral(object):
     def GetTimes(self):
-                
-        astral = Astral()
-        city = astral['Leeds']
-        sun = city.sun(date=datetime.date.today(), local = True)
+        a = astral.Astral()
+        city = a['Leeds']
+        sun = city.sun(date=datetime.date.today(), local=True)
 
         print("[Astral] dawn: " + str(sun['dawn']))
         print("[Astral] sunrise: " + str(sun['sunrise']))
@@ -15,10 +16,9 @@ class MyAstral(object):
         return sun
 
     def GetTommorrowTimes(self):
-                
-        astral = Astral()
-        city = astral['Leeds']
-        sun = city.sun(date=datetime.date.today() + datetime.timedelta(days = 1) , local = True)
+        a = astral.Astral()
+        city = a['Leeds']
+        sun = city.sun(date=datetime.date.today() + datetime.timedelta(days=1), local=True)
 
         print("[Astral] dawn: " + str(sun['dawn']))
         print("[Astral] sunrise: " + str(sun['sunrise']))

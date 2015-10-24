@@ -1,10 +1,8 @@
-from ScheduledTask import ScheduledTask
-from MyTwitter import MyTwitter
-from colorama import Fore
-from itertools import cycle
 from apscheduler.triggers.interval import IntervalTrigger
-import random
-import MyQueues
+from ScheduledTask import ScheduledTask
+from twitterpibot.twitter.MyTwitter import MyTwitter
+import twitterpibot.MyQueues as MyQueues
+
 
 class SavedSearchScheduledTask(ScheduledTask):
     def __init__(self):
@@ -21,7 +19,7 @@ class SavedSearchScheduledTask(ScheduledTask):
 
             if self._savedSearches:
                 search = self._savedSearches.pop()
-                searchTweets = twitter.search(q = search['query'])
+                searchTweets = twitter.search(q=search['query'])
                 for searchTweet in searchTweets["statuses"]:
                     searchTweet['tweetsource'] = "search:" + search["name"]
                     MyQueues.inbox.put(searchTweet)

@@ -1,9 +1,5 @@
 from Response import Response
-from OutgoingTweet import OutgoingTweet
-import os
-from Songs import Songs
-import random
-from TwitterHelper import Send
+from twitterpibot.songs.Songs import Songs
 
 
 class SongResponse(Response):
@@ -12,9 +8,9 @@ class SongResponse(Response):
         self.songnames = self.songs.AllKeys()
 
     def Condition(self, inboxItem):
-        return super(SongResponse,self).Condition(inboxItem) \
-            and inboxItem.to_me \
-            and self.Contains(inboxItem.words, self.songnames)
+        return super(SongResponse, self).Condition(inboxItem) \
+               and inboxItem.to_me \
+               and self.Contains(inboxItem.words, self.songnames)
 
     def Contains(self, list_a, list_b):
         for item_a in list_a:
@@ -27,10 +23,4 @@ class SongResponse(Response):
         for word in inboxItem.words:
             for songname in self.songnames:
                 if word.lower() == songname.lower():
-                    self.songs.Send(
-                        songKey = songname,
-                        inboxItem = inboxItem, 
-                        response = self)
-
-
-
+                    self.songs.Send(songKey=songname, inboxItem=inboxItem)

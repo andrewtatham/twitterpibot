@@ -1,19 +1,13 @@
 from twython.api import Twython
-import os
-
-
-import webbrowser
-import Identity
-
-
 
 import Authenticator
 
 _tokens = None
 _screen_name = None
 
+
 class MyTwitter(object):
-    def __init__(self, screen_name = None):
+    def __init__(self, screen_name=None):
         global _screen_name
         _screen_name = screen_name
 
@@ -28,12 +22,4 @@ class MyTwitter(object):
         return instance
 
     def __exit__(self, *args, **kwargs):
-
         pass
-
-
-
-
-
-
-

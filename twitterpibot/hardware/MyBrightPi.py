@@ -1,13 +1,14 @@
-from ExceptionHandler import HandleSilently 
+from twitterpibot.ExceptionHandler import HandleSilently
 import time
 
-try:    
+try:
     import BrightPILed
-    from BrightPILed import BrightPI
+
     enableBrightPi = True
 except Exception as e:
     HandleSilently(e)
     enableBrightPi = False
+
 
 class MyBrightPi(object):
     def __init__(self):

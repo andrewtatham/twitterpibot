@@ -1,24 +1,20 @@
+from apscheduler.triggers.cron import CronTrigger
 
 from ScheduledTask import ScheduledTask
-from apscheduler.triggers.cron import CronTrigger
-from OutgoingTweet import OutgoingTweet
-import datetime
-from OutgoingDirectMessage import OutgoingDirectMessage
+from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
+from twitterpibot.Statistics import GetStatistics, Reset
+from twitterpibot.twitter.TwitterHelper import Send
 
-from Statistics import GetStatistics, Reset
-from TwitterHelper import Send
 
 class MidnightScheduledTask(ScheduledTask):
-
     def GetTrigger(self):
-        return CronTrigger(hour = 0)
- 
-    def onRun(self):
+        return CronTrigger(hour=0)
 
+    def onRun(self):
         stats = GetStatistics()
         tweet = OutgoingDirectMessage(
             text=stats,
-            screen_name = "andrewtatham", 
-            user_id = "19201332")
+            screen_name="andrewtatham",
+            user_id="19201332")
         Send(tweet)
         Reset()

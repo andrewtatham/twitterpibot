@@ -1,18 +1,18 @@
 import re
 from Response import Response
 import random
-from TwitterHelper import ReplyWith
+from twitterpibot.twitter.TwitterHelper import ReplyWith
+
+
 class ThanksResponse(Response):
-
     def __init__(self):
-
         self.rx = re.compile("thx|thank(s|you)", re.IGNORECASE)
 
     def Condition(self, inboxItem):
         return not inboxItem.from_me \
-            and (inboxItem.isDirectMessage or inboxItem.isTweet) \
-                and inboxItem.to_me \
-                and bool(self.rx.match(inboxItem.text))
+               and (inboxItem.isDirectMessage or inboxItem.isTweet) \
+               and inboxItem.to_me \
+               and bool(self.rx.match(inboxItem.text))
 
     def Respond(self, inboxItem):
         thanks = [
@@ -20,8 +20,5 @@ class ThanksResponse(Response):
             "thanks",
             "thankyou",
             "thank u",
-            ]
+        ]
         ReplyWith(inboxItem, random.choice(thanks) + " for the " + random.choice(thanks))
-
-
-

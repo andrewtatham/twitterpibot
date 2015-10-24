@@ -1,19 +1,18 @@
-
 from OutboxTextItem import OutboxTextItem
+
 
 class OutgoingTweet(OutboxTextItem):
     # https://dev.twitter.com/rest/reference/post/statuses/update
 
-    def __init__(self, replyTo=None, text=None , in_reply_to_status_id = None, filePaths = None):
+    def __init__(self, replyTo=None, text=None, in_reply_to_status_id=None, filePaths=None):
 
         super(OutgoingTweet, self).__init__()
 
-        if in_reply_to_status_id :
+        if in_reply_to_status_id:
             self.in_reply_to_status_id = in_reply_to_status_id
-        elif replyTo and replyTo.isTweet and replyTo.status_id :
+        elif replyTo and replyTo.isTweet and replyTo.status_id:
             self.in_reply_to_status_id = replyTo.status_id
 
-  
         self.filePaths = filePaths
 
         self.status = ''

@@ -1,7 +1,4 @@
-import hardware
-import Identity
-
-
+import twitterpibot.hardware.hardware as hardware
 
 screen_name = ""
 if hardware.isRaspberryPi:
@@ -11,24 +8,25 @@ elif hardware.isRaspberryPi2:
 elif hardware.iswindows:
     screen_name = "andrewtathampi2"
 
-import TwitterHelper
+import twitterpibot.twitter.TwitterHelper as TwitterHelper
+
 id = TwitterHelper.Init(screen_name)
 
-def GetResponses():
-    from SongResponse import SongResponse
-    from PhotoResponse import PhotoResponse
-    from Magic8BallResponse import Magic8BallResponse
-    from RetweetResponse import RetweetResponse
-    from FatherTedResponse import FatherTedResponse
-    from MyTwitter import MyTwitter
-    from BotBlockerResponse import BotBlockerResponse
-    from ThanksResponse import ThanksResponse
-    from HelloResponse import HelloResponse
-    from RestartResponse import RestartResponse
-    from TimelapseResponse import TimelapseResponse
-    from TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
 
-    responses = [    
+def GetResponses():
+    from twitterpibot.responses.SongResponse import SongResponse
+    from twitterpibot.responses.PhotoResponse import PhotoResponse
+    from twitterpibot.responses.Magic8BallResponse import Magic8BallResponse
+    from twitterpibot.responses.RetweetResponse import RetweetResponse
+    from twitterpibot.responses.FatherTedResponse import FatherTedResponse
+    from twitterpibot.responses.BotBlockerResponse import BotBlockerResponse
+    from twitterpibot.responses.ThanksResponse import ThanksResponse
+    from twitterpibot.responses.HelloResponse import HelloResponse
+    from twitterpibot.responses.RestartResponse import RestartResponse
+    from twitterpibot.responses.TimelapseResponse import TimelapseResponse
+    from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
+
+    responses = [
         RestartResponse(),
         BotBlockerResponse()
     ]
@@ -41,9 +39,9 @@ def GetResponses():
             HelloResponse(),
             Magic8BallResponse()
         ])
-    elif(hardware.isRaspberryPi2):
+    elif hardware.isRaspberryPi2:
         pass
-        
+
     if hardware.ispicamattached or hardware.iswebcamattached:
         responses.extend([
             PhotoResponse(),
@@ -52,48 +50,45 @@ def GetResponses():
 
     if hardware.isRaspberryPi:
         responses.extend([
-            FatherTedResponse(),           
+            FatherTedResponse(),
             RetweetResponse()
         ])
-    elif(hardware.isRaspberryPi2):
+    elif hardware.isRaspberryPi2:
         pass
-    
+
     return responses
 
+
 def GetScheduledJobs():
-
-    from EdBallsDay import EdBallsDay
-    from Wikipedia import Wikipedia
-    from MonitorScheduledTask import MonitorScheduledTask
-    from TrendsScheduledTask import TrendsScheduledTask
-    from RateLimitsScheduledTask import RateLimitsScheduledTask
-    from SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
-    from KatieHopkinsScheduledTask import KatieHopkinsScheduledTask
-    from UserListsScheduledTask import UserListsScheduledTask
-    from WeatherScheduledTask import WeatherScheduledTask
-    from BotBlockerScheduledTask import BotBlockerScheduledTask
-    from JokesScheduledTask import JokesScheduledTask
-    from TimelapseScheduledTask import TimelapseScheduledTask
-    from SunriseTimelapseScheduledTask import SunriseTimelapseScheduledTask
-    from SunsetTimelapseScheduledTask import SunsetTimelapseScheduledTask
-    from NightTimelapseScheduledTask import NightTimelapseScheduledTask
-    from SunTimelapseScheduledTask import SunTimelapseScheduledTask
-    from SavedSearchScheduledTask import SavedSearchScheduledTask
-    from TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
-    from MidnightScheduledTask import MidnightScheduledTask
-    from SongScheduledTask import SongScheduledTask    
-    from PhotoScheduledTask import PhotoScheduledTask
-    from HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
-    from LightsScheduledTask import LightsScheduledTask
-
-
-
+    from twitterpibot.schedule.EdBallsDay import EdBallsDay
+    from twitterpibot.schedule.Wikipedia import Wikipedia
+    from twitterpibot.schedule.MonitorScheduledTask import MonitorScheduledTask
+    from twitterpibot.schedule.TrendsScheduledTask import TrendsScheduledTask
+    # from twitterpibot.schedule.RateLimitsScheduledTask import RateLimitsScheduledTask
+    from twitterpibot.schedule.SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
+    # from twitterpibot.schedule.KatieHopkinsScheduledTask import KatieHopkinsScheduledTask
+    from twitterpibot.schedule.UserListsScheduledTask import UserListsScheduledTask
+    from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
+    from twitterpibot.schedule.BotBlockerScheduledTask import BotBlockerScheduledTask
+    from twitterpibot.schedule.JokesScheduledTask import JokesScheduledTask
+    # from twitterpibot.schedule.TimelapseScheduledTask import TimelapseScheduledTask
+    from twitterpibot.schedule.SunriseTimelapseScheduledTask import SunriseTimelapseScheduledTask
+    from twitterpibot.schedule.SunsetTimelapseScheduledTask import SunsetTimelapseScheduledTask
+    from twitterpibot.schedule.NightTimelapseScheduledTask import NightTimelapseScheduledTask
+    from twitterpibot.schedule.SunTimelapseScheduledTask import SunTimelapseScheduledTask
+    from twitterpibot.schedule.SavedSearchScheduledTask import SavedSearchScheduledTask
+    from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
+    from twitterpibot.schedule.MidnightScheduledTask import MidnightScheduledTask
+    from twitterpibot.schedule.SongScheduledTask import SongScheduledTask
+    from twitterpibot.schedule.PhotoScheduledTask import PhotoScheduledTask
+    from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
+    from twitterpibot.schedule.LightsScheduledTask import LightsScheduledTask
 
     scheduledjobs = [
-        MonitorScheduledTask(),        
+        MonitorScheduledTask(),
         SuggestedUsersScheduledTask(),
         UserListsScheduledTask(),
-        #RateLimitsScheduledTask(),
+        # RateLimitsScheduledTask(),
         SavedSearchScheduledTask(),
         MidnightScheduledTask(),
         BotBlockerScheduledTask()
@@ -105,22 +100,22 @@ def GetScheduledJobs():
             Wikipedia(),
             EdBallsDay(),
             TalkLikeAPirateDayScheduledTask(),
-            #KatieHopkinsScheduledTask(),
+            # KatieHopkinsScheduledTask(),
             WeatherScheduledTask(),
-            JokesScheduledTask(), 
+            JokesScheduledTask(),
             SongScheduledTask(),
             HappyBirthdayScheduledTask()
         ])
-    
+
     if hardware.iswebcamattached or hardware.ispicamattached:
         scheduledjobs.extend([
-            #TimelapseScheduledTask(),
+            # TimelapseScheduledTask(),
             SunriseTimelapseScheduledTask(),
             SunsetTimelapseScheduledTask(),
             NightTimelapseScheduledTask(),
             SunTimelapseScheduledTask()
-        ])   
-        if not hardware.iswindows :
+        ])
+        if not hardware.iswindows:
             scheduledjobs.append(PhotoScheduledTask())
     if hardware.ispiglowattached or hardware.isunicornhatattached:
         scheduledjobs.extend([
@@ -128,13 +123,14 @@ def GetScheduledJobs():
         ])
     return scheduledjobs
 
+
 def GetTasks():
-    from ProcessInboxTask import ProcessInboxTask
-    from StreamTweetsTask import StreamTweetsTask
-    from FadeTask import FadeTask
-    from LightsTask import LightsTask
+    from twitterpibot.tasks.ProcessInboxTask import ProcessInboxTask
+    from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
+    from twitterpibot.tasks.FadeTask import FadeTask
+    from twitterpibot.tasks.LightsTask import LightsTask
     tasks = [ProcessInboxTask(),
-            StreamTweetsTask(TwitterHelper.GetStreamer(Identity.screen_name))]
+             StreamTweetsTask(TwitterHelper.GetStreamer(screen_name))]
     if hardware.ispiglowattached or hardware.isunicornhatattached:
         tasks.extend([
             LightsTask(),

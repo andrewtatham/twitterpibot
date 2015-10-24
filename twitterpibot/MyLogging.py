@@ -1,10 +1,9 @@
-
 import logging
 from logging import handlers
 
 rootlogger = logging.getLogger("")
 
-fh = handlers.RotatingFileHandler("twitter.log",maxBytes=1024, backupCount=2)
+fh = handlers.RotatingFileHandler("twitter.log", maxBytes=1024, backupCount=2)
 fh.setLevel(logging.DEBUG)
 # create console handler with a higher log level
 ch = logging.StreamHandler()
@@ -16,9 +15,3 @@ fh.setFormatter(formatter)
 # add the handlers to rootlogger
 rootlogger.addHandler(ch)
 rootlogger.addHandler(fh)
-
-
-
-
-
-

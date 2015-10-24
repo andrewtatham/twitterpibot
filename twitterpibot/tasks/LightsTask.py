@@ -1,7 +1,7 @@
+from twitterpibot.tasks.Task import Task
+import twitterpibot.hardware.hardware as hardware
 
-from Task import Task
-import time
-import hardware
+
 class LightsTask(Task):
     def onRun(self):
         hardware.Lights()

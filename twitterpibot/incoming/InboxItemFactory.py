@@ -1,7 +1,6 @@
-from IncomingTweet import IncomingTweet
-from IncomingDirectMessage import IncomingDirectMessage
-from IncomingEvent import IncomingEvent
-
+from twitterpibot.incoming.IncomingTweet import IncomingTweet
+from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
+from twitterpibot.incoming.IncomingEvent import IncomingEvent
 
 
 class InboxItemFactory(object):
@@ -9,7 +8,7 @@ class InboxItemFactory(object):
         if "text" in data:
             return IncomingTweet(data)
         elif "direct_message" in data:
-            return IncomingDirectMessage(data)        
+            return IncomingDirectMessage(data)
         elif "event" in data:
             return IncomingEvent(data)
         elif "friends" in data:

@@ -1,4 +1,3 @@
-
 class InboxItem(object):
     def __init__(self):
         self.from_me = False
@@ -10,9 +9,5 @@ class InboxItem(object):
 
         self.isRespondedTo = False
 
-
-
     def Display(self):
         print('InboxItem.Display')
-
-

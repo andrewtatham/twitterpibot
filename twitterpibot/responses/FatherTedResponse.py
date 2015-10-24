@@ -1,15 +1,15 @@
 from Response import Response
+from twitterpibot.twitter.TwitterHelper import ReplyWith
 import random
-from TwitterHelper import ReplyWith
+
+
 class FatherTedResponse(Response):
     def Condition(self, inboxItem):
         return super(FatherTedResponse, self).Condition(inboxItem) \
-            and inboxItem.to_me \
-            and not inboxItem.isRespondedTo
-
+               and inboxItem.to_me \
+               and not inboxItem.isRespondedTo
 
     def Respond(self, inboxItem):
-
         responses = [
             # exclaimation
             "WOW!",
@@ -19,7 +19,7 @@ class FatherTedResponse(Response):
             "OMG!",
             "WTF?!",
             "ZOMG!",
-            
+
             # positive
             "Nice.",
             "Cool.",
@@ -28,7 +28,7 @@ class FatherTedResponse(Response):
             "Indeed.",
             "Yes.",
             "Ok.",
-            
+
             # neutral
             "[Shrug]",
             "Wat.",
@@ -46,14 +46,14 @@ class FatherTedResponse(Response):
             # negative
             "No.",
             "Nah.",
-            
+
             # simpsons
             "DOH!",
             "Dont have a cow man!",
-             
+
             # Robot Noises
             "BEEP BOOP.",
-            
+
             # father ted
             "That would be an ecumenical matter. #FatherTed",
             "Careful now. #FatherTed",
@@ -64,12 +64,10 @@ class FatherTedResponse(Response):
             "These are small... but the ones out there are far away. #FatherTed",
             "I love my brick! #FatherTed",
             "Go away! I don't want to catch menopause! #FatherTed"
-        #You'll have some tea...  are you sure you don't want any?  Aw go on,
-        #you'll have some.  Go on go on go on go on go on go on go on go on GO
-        #ON!
-            
-            ]
-        response = random.choice(responses) 
-        ReplyWith(inboxItem, response)
+            # You'll have some tea...  are you sure you don't want any?  Aw go on,
+            # you'll have some.  Go on go on go on go on go on go on go on go on GO
+            # ON!
 
-        
+        ]
+        response = random.choice(responses)
+        ReplyWith(inboxItem, response)

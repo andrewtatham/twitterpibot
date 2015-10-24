@@ -1,12 +1,9 @@
+import logging
 
 from colorama import Fore, Style, Back
-from TwitterHelper import Send
+
 from Statistics import RecordWarning, RecordError
-import hardware
-import logging
-from OutgoingDirectMessage import OutgoingDirectMessage
-import traceback
-import time
+
 logger = logging.getLogger(__name__)
 
 # "Twitter API returned a 429 (Too Many Requests), Rate limit exceeded"
@@ -14,8 +11,10 @@ logger = logging.getLogger(__name__)
 
 backoff = 15
 
+
 def HandleSilently(exception):
     _RecordWarning(exception)
+
 
 def Handle(exception):
     if type(exception) is UnicodeEncodeError:
@@ -26,8 +25,9 @@ def Handle(exception):
 
 def _RecordWarning(exception):
     print(Style.DIM + Fore.WHITE + Back.YELLOW + str(exception.message))
-    logger.warn(exception) 
+    logger.warn(exception)
     RecordWarning()
+
 
 def _RecordError(exception):
     print(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
@@ -35,15 +35,16 @@ def _RecordError(exception):
     RecordError()
     _TrySendException()
 
+
 def _TrySendException():
     pass
-    #try:
+    # try:
     #    if hardware.isRaspbian:
     #        Send(OutgoingDirectMessage(
     #            text = traceback.format_exc(),
     #            screen_name = "andrewtatham", 
     #            user_id = "19201332"))
-    #except Exception as e:
+    # except Exception as e:
     #    logger.exception(e) 
     #    global backoff
     #    time.sleep(backoff)

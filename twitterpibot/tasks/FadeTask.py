@@ -1,7 +1,8 @@
-
-from Task import Task
+from twitterpibot.tasks.Task import Task
 import time
-import hardware
+import twitterpibot.hardware.hardware as hardware
+
+
 class FadeTask(Task):
     def onRun(self):
         hardware.Fade()
