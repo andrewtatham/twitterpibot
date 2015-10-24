@@ -1,6 +1,6 @@
 from twython.streaming.api import TwythonStreamer
 import twitterpibot.MyQueues as MyQueues
-import Authenticator
+import twitterpibot.twitter.Authenticator as Authenticator
 import logging
 
 logger = logging.getLogger(__name__)

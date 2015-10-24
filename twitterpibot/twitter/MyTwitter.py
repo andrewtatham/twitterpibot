@@ -1,6 +1,6 @@
 from twython.api import Twython
 
-import Authenticator
+import twitterpibot.twitter.Authenticator as Authenticator
 
 _tokens = None
 _screen_name = None
