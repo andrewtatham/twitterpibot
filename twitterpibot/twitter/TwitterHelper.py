@@ -12,7 +12,7 @@ def init(screen_name):
     global _screen_name
     _screen_name = screen_name
     with MyTwitter(_screen_name) as twitter:
-        me = twitter.lookup_user(screen_name=screen_name)[0]
+        me = twitter.lookup_user(screen_name=_screen_name)[0]
         return me["id_str"]
 
 

@@ -1,12 +1,16 @@
 import twitterpibot.hardware.hardware as hardware
 
-screen_name = ""
-if hardware.isRaspberryPi:
+
+is_andrewtathampi = hardware.isRaspberryPi or hardware.iswindows
+is_andrewtathampi2 = hardware.isRaspberryPi2 and not is_andrewtathampi
+
+screen_name = None
+if is_andrewtathampi:
     screen_name = "andrewtathampi"
-elif hardware.isRaspberryPi2:
+elif is_andrewtathampi2:
     screen_name = "andrewtathampi2"
-elif hardware.iswindows:
-    screen_name = "andrewtathampi"
+
+print ("Identity = " + screen_name)
 
 import twitterpibot.twitter.TwitterHelper as TwitterHelper
 
@@ -31,7 +35,7 @@ def get_responses():
         BotBlockerResponse()
     ]
 
-    if hardware.isRaspberryPi:
+    if is_andrewtathampi:
         responses.extend([
             SongResponse(),
             TalkLikeAPirateDayResponse(),
@@ -39,8 +43,10 @@ def get_responses():
             HelloResponse(),
             Magic8BallResponse()
         ])
-    elif hardware.isRaspberryPi2:
+    elif is_andrewtathampi2:
         pass
+
+
 
     if hardware.ispicamattached or hardware.iswebcamattached:
         responses.extend([
@@ -48,12 +54,14 @@ def get_responses():
             TimelapseResponse()
         ])
 
-    if hardware.isRaspberryPi:
+
+
+    if is_andrewtathampi:
         responses.extend([
             FatherTedResponse(),
             RetweetResponse()
         ])
-    elif hardware.isRaspberryPi2:
+    elif is_andrewtathampi2:
         pass
 
     return responses
@@ -94,7 +102,7 @@ def get_scheduled_jobs():
         BotBlockerScheduledTask()
     ]
 
-    if hardware.isRaspberryPi:
+    if is_andrewtathampi:
         scheduledjobs.extend([
             TrendsScheduledTask(),
             Wikipedia(),
@@ -106,8 +114,10 @@ def get_scheduled_jobs():
             SongScheduledTask(),
             HappyBirthdayScheduledTask()
         ])
+    elif is_andrewtathampi2:
+        pass
 
-    if hardware.iswebcamattached or hardware.ispicamattached:
+    if is_andrewtathampi and (hardware.iswebcamattached or hardware.ispicamattached):
         scheduledjobs.extend([
             # TimelapseScheduledTask(),
             SunriseTimelapseScheduledTask(),
