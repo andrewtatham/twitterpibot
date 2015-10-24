@@ -7,7 +7,7 @@ import datetime
 
 class SunriseTimelapseScheduledTask(ScheduledTask):
     def GetTrigger(self):
-        return CronTrigger(hour=3, minute=0)
+        return CronTrigger(hour=3)
 
     def onRun(self):
         sun = MyAstral().GetTimes()

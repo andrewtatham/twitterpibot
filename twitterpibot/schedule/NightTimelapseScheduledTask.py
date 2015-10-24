@@ -7,7 +7,7 @@ from twitterpibot.processing.Timelapse import Timelapse
 
 class NightTimelapseScheduledTask(ScheduledTask):
     def GetTrigger(self):
-        return CronTrigger(hour=18, minute=1)
+        return CronTrigger(hour=15)
 
     def onRun(self):
         astral = MyAstral()

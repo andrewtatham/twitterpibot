@@ -7,7 +7,7 @@ from twitterpibot.processing.Timelapse import Timelapse
 
 class SunTimelapseScheduledTask(ScheduledTask):
     def GetTrigger(self):
-        return CronTrigger(hour=3, minute=1)
+        return CronTrigger(hour=3)
 
     def onRun(self):
         sun = MyAstral().GetTimes()
