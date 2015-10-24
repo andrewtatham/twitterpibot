@@ -8,7 +8,7 @@ import os
 _screen_name = None
 
 
-def Init(screen_name):
+def init(screen_name):
     global _screen_name
     _screen_name = screen_name
     with MyTwitter(_screen_name) as twitter:
@@ -55,14 +55,14 @@ def Send(outboxItem):
     return id_str
 
 
-def ReplyWith(inboxItem, text, asTweet=False, asDM=False, filePaths=None, in_reply_to_status_id=None):
-    replyAsTweet = asTweet or not asDM and inboxItem.isTweet
+def ReplyWith(inbox_item, text, asTweet=False, asDM=False, filePaths=None, in_reply_to_status_id=None):
+    replyAsTweet = asTweet or not asDM and inbox_item.isTweet
 
-    replyAsDM = asDM or not asTweet and inboxItem.isDirectMessage
+    replyAsDM = asDM or not asTweet and inbox_item.isDirectMessage
 
     if replyAsTweet:
         tweet = OutgoingTweet(
-            replyTo=inboxItem,
+            replyTo=inbox_item,
             text=text,
             filePaths=filePaths,
             in_reply_to_status_id=in_reply_to_status_id)
@@ -70,7 +70,7 @@ def ReplyWith(inboxItem, text, asTweet=False, asDM=False, filePaths=None, in_rep
 
     if replyAsDM:
         dm = OutgoingDirectMessage(
-            replyTo=inboxItem,
+            reply_to=inbox_item,
             text=text)
         return Send(dm)
 

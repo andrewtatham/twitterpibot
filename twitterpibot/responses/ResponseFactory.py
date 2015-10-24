@@ -4,21 +4,21 @@ from twitterpibot.twitter.MyTwitter import MyTwitter
 
 class ResponseFactory(object):
     def __init__(self):
-        self.responses = Identity.GetResponses()
+        self.responses = Identity.get_responses()
         for response in self.responses:
             print("[ResponseFactory] adding " + str(type(response)))
 
-    def Create(self, inboxItem):
-        if inboxItem:
+    def Create(self, inbox_item):
+        if inbox_item:
             for response in self.responses:
-                if response.Condition(inboxItem):
+                if response.Condition(inbox_item):
 
-                    inboxItem.isRespondedTo = True
+                    inbox_item.isRespondedTo = True
 
-                    if inboxItem.isTweet and not inboxItem.favorited and not inboxItem.from_me and response.Favourite(
-                            inboxItem):
+                    if inbox_item.isTweet and not inbox_item.favorited and not inbox_item.from_me and response.Favourite(
+                            inbox_item):
                         with MyTwitter() as twitter:
-                            twitter.create_favourite(id=inboxItem.status_id)
+                            twitter.create_favourite(id=inbox_item.status_id)
 
-                    response.Respond(inboxItem)
+                    response.Respond(inbox_item)
         return None

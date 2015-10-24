@@ -10,11 +10,11 @@ def RunWrapper(task):
         Handle(e)
 
 
-def Start():
+def start():
     _scheduler.start()
 
 
-def Stop():
+def stop():
     _scheduler.shutdown()
     for job in _jobs:
         job.onStop()
@@ -27,7 +27,7 @@ def add(job):
 
 
 _scheduler = BackgroundScheduler()
-_jobs = Identity.GetScheduledJobs()
+_jobs = Identity.get_scheduled_jobs()
 
 for job in _jobs:
     add(job)

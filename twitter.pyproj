@@ -66,6 +66,8 @@
     <Content Include="twitterpibot\songs\wonderwall.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="twitterpibot\incoming\InboxItem.py" />
+    <Compile Include="twitterpibot\incoming\InboxItemFactory.py" />
     <Compile Include="twitterpibot\processing\Birthdays.py">
       <SubType>Code</SubType>
     </Compile>
@@ -91,12 +93,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="twitterpibot\Identity.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="twitterpibot\incoming\InboxItem.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="twitterpibot\incoming\InboxItemFactory.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="twitterpibot\incoming\InboxTextItem.py">

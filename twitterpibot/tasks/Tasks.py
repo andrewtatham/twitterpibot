@@ -2,26 +2,26 @@ import threading
 from twitterpibot.ExceptionHandler import Handle
 import twitterpibot.Identity as Identity
 
-_taskList = Identity.GetTasks()
+_taskList = Identity.get_tasks()
 _running = False
 _runThreads = []
 
 
-def Start():
+def start():
     global _running
     _running = True
 
     global _taskList
     global _runThreads
     for task in _taskList:
-        runThread = threading.Thread(target=RunWrapper, args=[task])
+        runThread = threading.Thread(target=_run_wrapper, args=[task])
         _runThreads.append(runThread)
 
     for thread in _runThreads:
         thread.start()
 
 
-def RunWrapper(task):
+def _run_wrapper(task):
     global _running
     while _running:
         try:
@@ -30,7 +30,7 @@ def RunWrapper(task):
             Handle(e)
 
 
-def Stop():
+def stop():
     global _running
     _running = False
 

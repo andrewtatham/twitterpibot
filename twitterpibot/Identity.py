@@ -6,14 +6,14 @@ if hardware.isRaspberryPi:
 elif hardware.isRaspberryPi2:
     screen_name = "andrewtathampi2"
 elif hardware.iswindows:
-    screen_name = "andrewtathampi2"
+    screen_name = "andrewtathampi"
 
 import twitterpibot.twitter.TwitterHelper as TwitterHelper
 
-id = TwitterHelper.Init(screen_name)
+id = TwitterHelper.init(screen_name)
 
 
-def GetResponses():
+def get_responses():
     from twitterpibot.responses.SongResponse import SongResponse
     from twitterpibot.responses.PhotoResponse import PhotoResponse
     from twitterpibot.responses.Magic8BallResponse import Magic8BallResponse
@@ -59,7 +59,7 @@ def GetResponses():
     return responses
 
 
-def GetScheduledJobs():
+def get_scheduled_jobs():
     from twitterpibot.schedule.EdBallsDay import EdBallsDay
     from twitterpibot.schedule.Wikipedia import Wikipedia
     from twitterpibot.schedule.MonitorScheduledTask import MonitorScheduledTask
@@ -124,7 +124,7 @@ def GetScheduledJobs():
     return scheduledjobs
 
 
-def GetTasks():
+def get_tasks():
     from twitterpibot.tasks.ProcessInboxTask import ProcessInboxTask
     from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
     from twitterpibot.tasks.FadeTask import FadeTask

@@ -16,7 +16,7 @@ class MyTwitter(object):
 
         if not _tokens:
             global _screen_name
-            _tokens = Authenticator.GetTokens(_screen_name)
+            _tokens = Authenticator.get_tokens(_screen_name)
 
         instance = Twython(_tokens[0], _tokens[1], _tokens[2], _tokens[3])
         return instance

@@ -1,4 +1,4 @@
-*.pkl
+.pkl
 twitter.log
 temp/
 twitter.log.1

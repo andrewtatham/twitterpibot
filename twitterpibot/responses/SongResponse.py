@@ -7,10 +7,10 @@ class SongResponse(Response):
         self.songs = Songs()
         self.songnames = self.songs.AllKeys()
 
-    def Condition(self, inboxItem):
-        return super(SongResponse, self).Condition(inboxItem) \
-               and inboxItem.to_me \
-               and self.Contains(inboxItem.words, self.songnames)
+    def Condition(self, inbox_item):
+        return super(SongResponse, self).Condition(inbox_item) \
+               and inbox_item.to_me \
+               and self.Contains(inbox_item.words, self.songnames)
 
     def Contains(self, list_a, list_b):
         for item_a in list_a:
@@ -19,8 +19,8 @@ class SongResponse(Response):
                     return True
         return False
 
-    def Respond(self, inboxItem):
-        for word in inboxItem.words:
+    def Respond(self, inbox_item):
+        for word in inbox_item.words:
             for songname in self.songnames:
                 if word.lower() == songname.lower():
-                    self.songs.Send(songKey=songname, inboxItem=inboxItem)
+                    self.songs.Send(songKey=songname, inbox_item=inbox_item)

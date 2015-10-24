@@ -10,4 +10,4 @@ class InboxItem(object):
         self.isRespondedTo = False
 
     def Display(self):
-        print('InboxItem.Display')
+        print('inbox_item.Display')

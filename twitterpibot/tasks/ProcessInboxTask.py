@@ -1,6 +1,6 @@
 from twitterpibot.responses.ResponseFactory import ResponseFactory
 from twitterpibot.tasks.Task import Task
-from twitterpibot.incoming.InboxItemFactory import InboxItemFactory
+from twitterpibot.incoming.InboxItemFactory  import InboxItemFactory
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.Statistics import RecordIncomingTweet, RecordIncomingDirectMessage
@@ -19,13 +19,13 @@ class ProcessInboxTask(Task):
         try:
             data = twitterpibot.MyQueues.inbox.get()
             if data:
-                inboxItem = self.factory.Create(data)
-                if inboxItem:
-                    if type(inboxItem) is IncomingTweet:
+                inbox_item = self.factory.Create(data)
+                if inbox_item:
+                    if type(inbox_item) is IncomingTweet:
                         RecordIncomingTweet()
-                    if type(inboxItem) is IncomingDirectMessage:
+                    if type(inbox_item) is IncomingDirectMessage:
                         RecordIncomingDirectMessage()
-                    ProcessInboxItem(self, inboxItem)
+                    Processinbox_item(self, inbox_item)
         finally:
             twitterpibot.MyQueues.inbox.task_done()
 
@@ -33,11 +33,11 @@ class ProcessInboxTask(Task):
         twitterpibot.MyQueues.inbox.put(None)
 
 
-def ProcessInboxItem(args, inboxItem):
-    inboxItem.Display()
+def Processinbox_item(args, inbox_item):
+    inbox_item.Display()
 
-    hardware.OnInboxItemRecieved(inboxItem)
+    hardware.Oninbox_itemRecieved(inbox_item)
 
-    response = args.responseFactory.Create(inboxItem)
+    response = args.responseFactory.Create(inbox_item)
     if response:
         Send(response)

@@ -5,11 +5,11 @@ from twitterpibot.schedule import MySchedule
 
 
 class TimelapseResponse(Response):
-    def Condition(self, inboxItem):
-        return inboxItem.isDirectMessage and not inboxItem.from_me and inboxItem.to_me \
-               and "timelapse" in inboxItem.words
+    def Condition(self, inbox_item):
+        return inbox_item.isDirectMessage and not inbox_item.from_me and inbox_item.to_me \
+               and "timelapse" in inbox_item.words
 
-    def Respond(self, inboxItem):
+    def Respond(self, inbox_item):
         now = datetime.datetime.now()
         timelapse = Timelapse(
             name='now',

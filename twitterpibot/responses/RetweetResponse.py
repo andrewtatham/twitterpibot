@@ -25,24 +25,24 @@ class RetweetResponse(Response):
 
         self.rx = re.compile("|".join(self.bannedTopics), re.IGNORECASE)
 
-    def Condition(self, inboxItem):
-        return inboxItem.isTweet \
-               and not inboxItem.from_me \
-               and not inboxItem.to_me \
-               and not inboxItem.retweeted \
-               and not inboxItem.sender.protected \
-               and not inboxItem.sender.isArsehole \
-               and not bool(self.rx.match(inboxItem.text)) \
-               and ((inboxItem.sender.isBot and random.randint(0, 50) == 0) or
-                    (inboxItem.sender.isFriend and random.randint(0, 3) == 0) or
-                    (inboxItem.sender.isRetweetMore and random.randint(0, 9) == 0) or
-                    (inboxItem.sourceIsTrend and random.randint(0, 20) == 0) or
-                    (inboxItem.sourceIsSearch and random.randint(0, 20) == 0) or
+    def Condition(self, inbox_item):
+        return inbox_item.isTweet \
+               and not inbox_item.from_me \
+               and not inbox_item.to_me \
+               and not inbox_item.retweeted \
+               and not inbox_item.sender.protected \
+               and not inbox_item.sender.isArsehole \
+               and not bool(self.rx.match(inbox_item.text)) \
+               and ((inbox_item.sender.isBot and random.randint(0, 50) == 0) or
+                    (inbox_item.sender.isFriend and random.randint(0, 3) == 0) or
+                    (inbox_item.sender.isRetweetMore and random.randint(0, 9) == 0) or
+                    (inbox_item.sourceIsTrend and random.randint(0, 20) == 0) or
+                    (inbox_item.sourceIsSearch and random.randint(0, 20) == 0) or
                     (random.randint(0, 99) == 0))
 
-    def Favourite(self, inboxItem):
+    def Favourite(self, inbox_item):
         return False
 
-    def Respond(self, inboxItem):
+    def Respond(self, inbox_item):
         with MyTwitter() as twitter:
-            twitter.retweet(id=inboxItem.status_id)
+            twitter.retweet(id=inbox_item.status_id)

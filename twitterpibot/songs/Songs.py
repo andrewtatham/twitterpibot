@@ -323,7 +323,7 @@ class Songs(object):
         songKey = self._birthdaySongKeys.next()
         self.Send(songKey, screen_name, text="Happy Birthday @" + screen_name + " !!!", hashtag="#HappyBirthday")
 
-    def Send(self, songKey, target=None, inboxItem=None, text=None, hashtag=None):
+    def Send(self, songKey, target=None, inbox_item=None, text=None, hashtag=None):
         song = self._songs[songKey]
 
         if not text:
@@ -332,7 +332,7 @@ class Songs(object):
         if hashtag:
             text += ' ' + hashtag
 
-        in_reply_to_status_id = self._send(inboxItem, text, target, None)
+        in_reply_to_status_id = self._send(inbox_item, text, target, None)
         time.sleep(5)
 
         lyricsfile = song["lyrics"]
@@ -353,16 +353,16 @@ class Songs(object):
                 lastlyrics.add(lyric)
                 print (in_reply_to_status_id)
                 in_reply_to_status_id = self._send(
-                    inboxItem,
+                    inbox_item,
                     lyric,
                     target,
                     in_reply_to_status_id)
                 time.sleep(2)
 
-    def _send(self, inboxItem, lyric, target, in_reply_to_status_id):
-        if inboxItem:
+    def _send(self, inbox_item, lyric, target, in_reply_to_status_id):
+        if inbox_item:
             return ReplyWith(
-                inboxItem=inboxItem,
+                inbox_item=inbox_item,
                 text=lyric,
                 in_reply_to_status_id=in_reply_to_status_id)
         else:

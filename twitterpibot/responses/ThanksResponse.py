@@ -8,17 +8,17 @@ class ThanksResponse(Response):
     def __init__(self):
         self.rx = re.compile("thx|thank(s|you)", re.IGNORECASE)
 
-    def Condition(self, inboxItem):
-        return not inboxItem.from_me \
-               and (inboxItem.isDirectMessage or inboxItem.isTweet) \
-               and inboxItem.to_me \
-               and bool(self.rx.match(inboxItem.text))
+    def Condition(self, inbox_item):
+        return not inbox_item.from_me \
+               and (inbox_item.isDirectMessage or inbox_item.isTweet) \
+               and inbox_item.to_me \
+               and bool(self.rx.match(inbox_item.text))
 
-    def Respond(self, inboxItem):
+    def Respond(self, inbox_item):
         thanks = [
             "thx",
             "thanks",
             "thankyou",
             "thank u",
         ]
-        ReplyWith(inboxItem, random.choice(thanks) + " for the " + random.choice(thanks))
+        ReplyWith(inbox_item, random.choice(thanks) + " for the " + random.choice(thanks))

@@ -42,10 +42,10 @@ class Magic8BallResponse(Response):
                           'Don\'t bet on it.',
                           'Forget about it.']
 
-    def Condition(self, inboxItem):
-        return super(Magic8BallResponse, self).Condition(inboxItem) \
-               and inboxItem.text.find("?") != -1
+    def Condition(self, inbox_item):
+        return super(Magic8BallResponse, self).Condition(inbox_item) \
+               and inbox_item.text.find("?") != -1
 
-    def Respond(self, inboxItem):
+    def Respond(self, inbox_item):
         response = random.choice(self.responses) + " #Magic8Ball"
-        ReplyWith(inboxItem=inboxItem, text=response)
+        ReplyWith(inbox_item=inbox_item, text=response)

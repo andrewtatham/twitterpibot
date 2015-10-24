@@ -3,12 +3,12 @@ try:
 except ImportError:
     from Tkinter import Tk
 
-top = Tk()
+_top = Tk()
 
 
-def Start():
-    top.mainloop()
+def start():
+    _top.mainloop()
 
 
-def Close():
-    top.quit()
+def close():
+    _top.quit()

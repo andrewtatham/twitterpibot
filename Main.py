@@ -13,15 +13,15 @@ import twitterpibot.MyUI as MyUI
 
 logger = logging.getLogger(__name__)
 
-TwitterHelper.Init(Identity.screen_name)
+TwitterHelper.init(Identity.screen_name)
 
 if not hardware.isAndrewDesktop:
     colorama.init(autoreset=True)
 
-Tasks.Start()
+Tasks.start()
 time.sleep(1)
 
-MySchedule.Start()
+MySchedule.start()
 time.sleep(1)
 
 # if not hardware.iswindows:
@@ -32,7 +32,7 @@ time.sleep(1)
 #    time.sleep(1)
 
 
-MyUI.Start()
+MyUI.start()
 
 
 # if not hardware.iswindows:
@@ -41,8 +41,8 @@ MyUI.Start()
 #        user_id = "19201332", 
 #        text="Down...." + str(datetime.datetime.now())))
 
-Tasks.Stop()
-MySchedule.Stop()
+Tasks.stop()
+MySchedule.stop()
 hardware.Stop()
 print("Done")
 sys.exit(0)

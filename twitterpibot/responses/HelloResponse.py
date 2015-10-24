@@ -20,11 +20,11 @@ class HelloResponse(Response):
 
         self.rx = re.compile("|".join(self.HelloWords), re.IGNORECASE)
 
-    def Condition(self, inboxItem):
-        return not inboxItem.from_me \
-               and (inboxItem.isDirectMessage or inboxItem.isTweet) \
-               and inboxItem.to_me \
-               and bool(self.rx.match(inboxItem.text))
+    def Condition(self, inbox_item):
+        return not inbox_item.from_me \
+               and (inbox_item.isDirectMessage or inbox_item.isTweet) \
+               and inbox_item.to_me \
+               and bool(self.rx.match(inbox_item.text))
 
-    def Respond(self, inboxItem):
-        ReplyWith(inboxItem, random.choice(self.HelloWords))
+    def Respond(self, inbox_item):
+        ReplyWith(inbox_item, random.choice(self.HelloWords))

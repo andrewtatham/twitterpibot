@@ -1,9 +1,10 @@
 import logging
 from logging import handlers
+import os
 
 rootlogger = logging.getLogger("")
 
-fh = handlers.RotatingFileHandler("twitter.log", maxBytes=1024, backupCount=2)
+fh = handlers.RotatingFileHandler("temp" + os.pathsep + "log" + os.pathsep + "twitter.log", maxBytes=1024, backupCount=2)
 fh.setLevel(logging.DEBUG)
 # create console handler with a higher log level
 ch = logging.StreamHandler()

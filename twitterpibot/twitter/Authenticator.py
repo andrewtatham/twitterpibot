@@ -10,11 +10,12 @@ import pickle
 from twython.api import Twython
 
 
-def GetTokens(screen_name):
-    app_key_path = "APP_KEY.pkl"
-    app_secret_path = "APP_SECRET.pkl"
-    final_oauth_token_path = screen_name + "_FINAL_OAUTH_TOKEN.pkl"
-    final_oauth_token_secret_path = screen_name + "FINAL_OAUTH_TOKEN_SECRET.pkl"
+def get_tokens(screen_name):
+    dir = "temp" + os.sep + "tokens" + os.sep
+    app_key_path = dir + "APP_KEY.pkl"
+    app_secret_path = dir + "APP_SECRET.pkl"
+    final_oauth_token_path = dir +  screen_name + "_FINAL_OAUTH_TOKEN.pkl"
+    final_oauth_token_secret_path =  dir + screen_name + "_FINAL_OAUTH_TOKEN_SECRET.pkl"
 
     exists = os.path.isfile(app_key_path) and os.path.isfile(app_secret_path)
 
@@ -32,8 +33,8 @@ def GetTokens(screen_name):
 
     if exists:
 
-        FINAL_OAUTH_TOKEN = pickle.load(open(final_oauth_token_path, "rb"))
-        FINAL_OAUTH_TOKEN_SECRET = pickle.load(open(final_oauth_token_secret_path, "rb"))
+        final_oauth_token = pickle.load(open(final_oauth_token_path, "rb"))
+        final_oauth_token_secret = pickle.load(open(final_oauth_token_secret_path, "rb"))
 
     else:
 
@@ -41,8 +42,8 @@ def GetTokens(screen_name):
 
         auth = twitter.get_authentication_tokens()
 
-        OAUTH_TOKEN = auth["oauth_token"]
-        OAUTH_TOKEN_SECRET = auth["oauth_token_secret"]
+        oauth_token = auth["oauth_token"]
+        oauth_token_secret = auth["oauth_token_secret"]
 
         url = auth["auth_url"]
         print(url)
@@ -50,16 +51,16 @@ def GetTokens(screen_name):
 
         oauth_verifier = input("Enter your pin:")
 
-        twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
+        twitter = Twython(APP_KEY, APP_SECRET, oauth_token, oauth_token_secret)
 
         final_step = twitter.get_authorized_tokens(oauth_verifier)
 
-        FINAL_OAUTH_TOKEN = final_step["oauth_token"]
-        FINAL_OAUTH_TOKEN_SECRET = final_step["oauth_token_secret"]
+        final_oauth_token = final_step["oauth_token"]
+        final_oauth_token_secret = final_step["oauth_token_secret"]
 
-        pickle.dump(FINAL_OAUTH_TOKEN, open(final_oauth_token_path, "wb"))
-        pickle.dump(FINAL_OAUTH_TOKEN_SECRET, open(final_oauth_token_secret_path, "wb"))
+        pickle.dump(final_oauth_token, open(final_oauth_token_path, "wb"))
+        pickle.dump(final_oauth_token_secret, open(final_oauth_token_secret_path, "wb"))
 
-    tokens = [APP_KEY, APP_SECRET, FINAL_OAUTH_TOKEN, FINAL_OAUTH_TOKEN_SECRET]
+    tokens = [APP_KEY, APP_SECRET, final_oauth_token, final_oauth_token_secret]
 
     return tokens

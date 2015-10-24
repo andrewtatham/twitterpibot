@@ -7,11 +7,11 @@ from twitterpibot.twitter.TwitterHelper import ReplyWith
 
 
 class TalkLikeAPirateDayResponse(Response):
-    def Condition(self, inboxItem):
+    def Condition(self, inbox_item):
         today = datetime.date.today()
         isTalkLikeAPirateDay = bool(today.month == 9 and today.day == 19)
-        return super(TalkLikeAPirateDayResponse, self).Condition(inboxItem) and isTalkLikeAPirateDay
+        return super(TalkLikeAPirateDayResponse, self).Condition(inbox_item) and isTalkLikeAPirateDay
 
-    def Respond(self, inboxItem):
+    def Respond(self, inbox_item):
         response = random.choice(piracy) + " #TalkLikeAPirateDay"
-        ReplyWith(inboxItem, response)
+        ReplyWith(inbox_item, response)

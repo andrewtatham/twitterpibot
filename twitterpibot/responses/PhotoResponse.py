@@ -5,16 +5,16 @@ from twitterpibot.twitter.TwitterHelper import ReplyWith
 
 
 class PhotoResponse(Response):
-    def Condition(self, inboxItem):
-        return super(PhotoResponse, self).Condition(inboxItem) \
-               and inboxItem.to_me \
-               and self.Contains(inboxItem.words, "photo")
+    def Condition(self, inbox_item):
+        return super(PhotoResponse, self).Condition(inbox_item) \
+               and inbox_item.to_me \
+               and self.Contains(inbox_item.words, "photo")
 
-    def Respond(self, inboxItem):
+    def Respond(self, inbox_item):
         photos = hardware.TakePhotoToDisk("temp", "PhotoResponse", "jpg")
         if any(photos):
             photomessages = ["cheese!", "smile!"]
-            ReplyWith(inboxItem=inboxItem,
+            ReplyWith(inbox_item=inbox_item,
                       text=random.choice(photomessages),
                       asTweet=True,
                       filePaths=photos)
