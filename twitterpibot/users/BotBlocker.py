@@ -58,8 +58,15 @@ class BotBlocker(object):
         return blockFollower
 
     def BlockUser(self, user):
-        print(
-            Fore.RED + Style.BRIGHT + "[Botblock] BLOCKED: " + user.name + " [@" + user.screen_name + "] " + user.description)
+        txt = "[Botblock] BLOCKED: "
+        if user.name:
+            txt += user.name + " "
+        if user.screen_name:
+            txt += "[@" + user.screen_name + "] "   
+        if user.description:
+            txt += "- " + user.description
+
+        print(Fore.RED + Style.BRIGHT + txt)
         with MyTwitter() as twitter:
             twitter.create_block(user_id=user.id,
                                  screen_name=user.screen_name)
