@@ -1,8 +1,8 @@
 import twitterpibot.hardware.hardware as hardware
 from twitterpibot.schedule.StreamSavedTrendsScheduledTask import StreamSavedTrendsScheduledTask
 
-is_andrewtathampi = hardware.isRaspberryPi or hardware.iswindows
-is_andrewtathampi2 = hardware.isRaspberryPi2 and not is_andrewtathampi
+is_andrewtathampi = hardware.is_raspberry_pi or hardware.is_windows or hardware.is_mac_osx
+is_andrewtathampi2 = hardware.is_raspberry_pi_2 and not is_andrewtathampi
 
 screen_name = None
 if is_andrewtathampi:
@@ -118,7 +118,7 @@ def get_scheduled_jobs():
             NightTimelapseScheduledTask(),
             SunTimelapseScheduledTask()
         ])
-        if not hardware.iswindows:
+        if not hardware.is_windows:
             scheduledjobs.append(PhotoScheduledTask())
     if hardware.ispiglowattached or hardware.isunicornhatattached:
         scheduledjobs.extend([

@@ -1,5 +1,4 @@
 import sys
-import time
 import logging
 
 import colorama
@@ -15,14 +14,12 @@ logger = logging.getLogger(__name__)
 
 TwitterHelper.init(Identity.screen_name)
 
-if not hardware.isAndrewDesktop:
+if not hardware.is_andrew_desktop:
     colorama.init(autoreset=True)
 
 Tasks.start()
-time.sleep(1)
 
 MySchedule.start()
-time.sleep(1)
 
 # if not hardware.iswindows:
 #    Send(OutgoingDirectMessage(

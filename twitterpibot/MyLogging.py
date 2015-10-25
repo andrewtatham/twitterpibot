@@ -14,7 +14,7 @@ fh = handlers.RotatingFileHandler(dir + "twitter.log", maxBytes=1024, backupCoun
 fh.setLevel(logging.DEBUG)
 # create console handler with a higher log level
 ch = logging.StreamHandler()
-if hardware.iswindows:
+if hardware.is_windows:
     ch.setLevel(logging.DEBUG)
 else:
     ch.setLevel(logging.INFO)
