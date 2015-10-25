@@ -208,9 +208,6 @@
     <Compile Include="twitterpibot\schedule\PhotoScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="twitterpibot\schedule\RateLimitsScheduledTask.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="twitterpibot\schedule\SavedSearchScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>

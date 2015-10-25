@@ -32,7 +32,7 @@ def get_responses():
 
     responses = [
         RestartResponse(),
-        BotBlockerResponse()
+        #BotBlockerResponse()
     ]
 
     if is_andrewtathampi:
@@ -68,9 +68,7 @@ def get_scheduled_jobs():
     from twitterpibot.schedule.Wikipedia import Wikipedia
     from twitterpibot.schedule.MonitorScheduledTask import MonitorScheduledTask
     from twitterpibot.schedule.TrendsScheduledTask import TrendsScheduledTask
-    # from twitterpibot.schedule.RateLimitsScheduledTask import RateLimitsScheduledTask
     from twitterpibot.schedule.SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
-    # from twitterpibot.schedule.KatieHopkinsScheduledTask import KatieHopkinsScheduledTask
     from twitterpibot.schedule.UserListsScheduledTask import UserListsScheduledTask
     from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
     from twitterpibot.schedule.BotBlockerScheduledTask import BotBlockerScheduledTask
@@ -92,10 +90,9 @@ def get_scheduled_jobs():
         MonitorScheduledTask(),
         SuggestedUsersScheduledTask(),
         UserListsScheduledTask(),
-        # RateLimitsScheduledTask(),
         SavedSearchScheduledTask(),
         MidnightScheduledTask(),
-        BotBlockerScheduledTask(),
+        #BotBlockerScheduledTask(),
         StreamSavedTrendsScheduledTask()
     ]
 
@@ -105,7 +102,6 @@ def get_scheduled_jobs():
             Wikipedia(),
             EdBallsDay(),
             TalkLikeAPirateDayScheduledTask(),
-            # KatieHopkinsScheduledTask(),
             WeatherScheduledTask(),
             JokesScheduledTask(),
             SongScheduledTask(),
