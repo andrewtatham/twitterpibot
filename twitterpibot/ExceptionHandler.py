@@ -6,6 +6,8 @@ from twitterpibot.Statistics import RecordWarning, RecordError
 from twitterpibot.twitter.TwitterHelper import Send
 from twitterpibot.hardware import hardware
 import time
+from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
+import traceback
 
 logger = logging.getLogger(__name__)
 
