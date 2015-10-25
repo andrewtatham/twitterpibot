@@ -5,6 +5,7 @@ from colorama import Style, Fore
 import os
 import twitterpibot.MyQueues as MyQueues
 import psutil
+from twitterpibot.tasks import Tasks
 
 
 class MonitorScheduledTask(ScheduledTask):
@@ -14,6 +15,10 @@ class MonitorScheduledTask(ScheduledTask):
     def onRun(self):
         text = datetime.datetime.now().strftime("%c")
         text += os.linesep + 'cpu = ' + str(psutil.cpu_percent()) + ' memory = ' + str(psutil.virtual_memory().percent)
-        text += os.linesep + 'inbox = ' + str(MyQueues.inbox.qsize())
+        tasks = Tasks.get()
+        if tasks:
+            for task in tasks:
+                if task:
+                    text += os.linesep + 'monitoring = ' + task
 
         print(Style.BRIGHT + Fore.BLUE + text)

@@ -12,9 +12,5 @@ class MidnightScheduledTask(ScheduledTask):
 
     def onRun(self):
         stats = GetStatistics()
-        tweet = OutgoingDirectMessage(
-            text=stats,
-            screen_name="andrewtatham",
-            user_id="19201332")
-        Send(tweet)
+        Send(OutgoingDirectMessage(text=stats))
         Reset()

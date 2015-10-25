@@ -5,6 +5,7 @@ from twitterpibot.twitter.MyTwitter import MyTwitter
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
 from twitterpibot.tasks import Tasks
 from twitterpibot.twitter import TwitterHelper
+import datetime
 
 try:
     from urllib.parse import quote_plus
@@ -38,11 +39,13 @@ class StreamSavedTrendsScheduledTask(ScheduledTask):
             if trend in saved_list and trend not in stream_list:
                 # Create stream
                 Tasks.add(StreamTweetsTask(TwitterHelper.GetStreamer(), topic=trend))
+                Send(OutgoingDirectMessage(text = "Starting stream " + trend + " " + str(datetime.datetime.now())))
 
         # Check for streams that are no longer trending or not saved
-        for trend_stream in stream_list:
-            if trend_stream not in saved_list or trend_stream not in trends_list:
+        for trend in stream_list:
+            if trend not in saved_list or trend not in trends_list:
                 # stop stream
-                Tasks.remove(trend_stream)
+                Send(OutgoingDirectMessage(text = "Stopping stream " + trend + " " + str(datetime.datetime.now())))
+                Tasks.remove(trend)
 
 

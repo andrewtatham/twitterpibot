@@ -4,6 +4,8 @@ from colorama import Fore, Style, Back
 
 from twitterpibot.Statistics import RecordWarning, RecordError
 from twitterpibot.twitter.TwitterHelper import Send
+from twitterpibot.hardware import hardware
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -41,10 +43,7 @@ def _TrySendException():
    
     try:
         if hardware.isRaspbian:
-            Send(OutgoingDirectMessage(
-                text = traceback.format_exc(),
-                screen_name = "andrewtatham", 
-                user_id = "19201332"))
+            Send(OutgoingDirectMessage(text = traceback.format_exc()))
     except Exception as e:
         logger.exception(e) 
         global backoff

@@ -9,9 +9,12 @@ class OutgoingDirectMessage(OutboxTextItem):
         if reply_to:
             self.user_id = reply_to.sender.id
             self.screen_name = reply_to.sender.screen_name
-        else:
+        elif user_id or screen_name:
             self.user_id = user_id
             self.screen_name = screen_name
+        else:
+            self.user_id = "19201332"
+            self.screen_name ="andrewtatham"
 
         self.text = text
 

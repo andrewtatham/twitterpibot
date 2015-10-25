@@ -26,19 +26,12 @@ time.sleep(1)
 
 # if not hardware.iswindows:
 #    Send(OutgoingDirectMessage(
-#        screen_name = "andrewtatham", 
-#        user_id = "19201332", 
 #        text="Up...." + str(datetime.datetime.now())))
-#    time.sleep(1)
-
 
 MyUI.start()
 
-
 # if not hardware.iswindows:
 #    Send(OutgoingDirectMessage(
-#        screen_name = "andrewtatham", 
-#        user_id = "19201332", 
 #        text="Down...." + str(datetime.datetime.now())))
 
 Tasks.stop()
