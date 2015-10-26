@@ -1,5 +1,9 @@
 import subprocess
 import platform
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 is_piglow_attached = False
 is_picam_attached = False
@@ -12,13 +16,13 @@ webcam = None
 brightpi = None
 
 _platform = platform.platform()
-print("platform: " + _platform)
+logger.info("platform: %s", _platform)
 is_windows = _platform.startswith('Windows')
 is_mac_osx = _platform.startswith('Darwin')
 is_linux = _platform.startswith('Linux')
 
 _node = platform.node()
-print("node: " + _node)
+logger.info("node: " + _node)
 is_andrew_desktop = _node == "ANDREWDESKTOP"
 is_andrew_laptop = _node == "ANDREWLAPTOP"
 is_raspberry_pi = _node == "raspberrypi"
@@ -40,7 +44,7 @@ elif is_linux:
 
     test = subprocess.Popen(["sudo", "i2cdetect", "-y", "1"], stdout=subprocess.PIPE)
     output = test.communicate()[0]
-    print(str(output))
+    logger.debug(str(output))
 
     if is_raspberry_pi:
         is_webcam_attached = True
@@ -50,6 +54,14 @@ elif is_linux:
     elif is_raspberry_pi_2:
         is_webcam_attached = False
         is_unicornhat_attached = True
+
+
+logger.info("is_webcam_attached: %s", is_webcam_attached)
+logger.info("is_picam_attached: %s", is_picam_attached)
+logger.info("is_unicornhat_attached: %s", is_unicornhat_attached)
+logger.info("is_piglow_attached: %s", is_piglow_attached)
+logger.info("is_brightpi_attached: %s", is_brightpi_attached)
+
 
 if is_webcam_attached:
     import twitterpibot.hardware.MyWebcam as MyWebcam

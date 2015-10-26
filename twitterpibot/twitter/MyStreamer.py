@@ -21,4 +21,4 @@ class MyStreamer(TwythonStreamer):
     def on_error(self, status_code, data):
         msg = str(status_code) + " " + str(data)
         logger.error(msg)
-        print(msg)
+

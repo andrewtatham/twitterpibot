@@ -8,7 +8,8 @@ except NameError:
 
 import pickle
 from twython.api import Twython
-
+import logging
+logger = logging.getLogger(__name__)
 
 def get_tokens(screen_name):
     dir = "temp" + os.sep + "tokens" + os.sep
@@ -50,7 +51,7 @@ def get_tokens(screen_name):
         oauth_token_secret = auth["oauth_token_secret"]
 
         url = auth["auth_url"]
-        print(url)
+        logger.info(url)
         webbrowser.open(url)
 
         oauth_verifier = input("Enter your pin:")

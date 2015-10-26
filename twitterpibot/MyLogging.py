@@ -4,13 +4,14 @@ import os
 from twitterpibot.hardware import hardware
 
 rootlogger = logging.getLogger("")
+rootlogger.setLevel(logging.DEBUG)
 
 dir = "temp" + os.sep + "log" + os.sep 
 
 if not os.path.exists(dir):
     os.makedirs(dir)
 
-fh = handlers.RotatingFileHandler(dir + "twitter.log", maxBytes=1024, backupCount=2)
+fh = handlers.RotatingFileHandler(dir + "twitter.log", maxBytes=4*1024*1024, backupCount=2)
 fh.setLevel(logging.DEBUG)
 # create console handler with a higher log level
 ch = logging.StreamHandler()
@@ -25,3 +26,6 @@ fh.setFormatter(formatter)
 # add the handlers to rootlogger
 rootlogger.addHandler(ch)
 rootlogger.addHandler(fh)
+
+def init():
+    pass

@@ -1,5 +1,9 @@
 import twitterpibot.hardware.hardware as hardware
 from twitterpibot.schedule.StreamSavedTrendsScheduledTask import StreamSavedTrendsScheduledTask
+import twitterpibot.twitter.TwitterHelper as TwitterHelper
+
+import logging
+logger = logging.getLogger(__name__)
 
 is_andrewtathampi = hardware.is_raspberry_pi or hardware.is_windows or hardware.is_mac_osx
 is_andrewtathampi2 = hardware.is_raspberry_pi_2 and not is_andrewtathampi
@@ -10,9 +14,8 @@ if is_andrewtathampi:
 elif is_andrewtathampi2:
     screen_name = "andrewtathampi2"
 
-print("Identity = " + screen_name)
+logger.info("Identity: " + screen_name)
 
-import twitterpibot.twitter.TwitterHelper as TwitterHelper
 twid = None
 def init():
     global twid
@@ -121,7 +124,7 @@ def get_scheduled_jobs():
             NightTimelapseScheduledTask(),
             SunTimelapseScheduledTask()
         ])
-    if hardware.is_linux and (hardware.is_piglow_attachedtached or hardware.is_unicornhat_attached):
+    if hardware.is_linux and (hardware.is_piglow_attached or hardware.is_unicornhat_attached):
         scheduledjobs.extend([
             LightsScheduledTask()
         ])
@@ -134,8 +137,8 @@ def get_tasks():
     from twitterpibot.tasks.FadeTask import FadeTask
     from twitterpibot.tasks.LightsTask import LightsTask
     tasks = [ProcessInboxTask(),
-             StreamTweetsTask(TwitterHelper.GetStreamer())
-             #StreamTweetsTask(TwitterHelper.GetStreamer(), topic="#Leeds")
+             StreamTweetsTask(TwitterHelper.GetStreamer()),
+             StreamTweetsTask(TwitterHelper.GetStreamer(),topic="#Leeds")
     ]
     if hardware.is_linux and (hardware.ispiglowattached or hardware.isunicornhatattached):
         tasks.extend([

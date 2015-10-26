@@ -3,6 +3,8 @@ from itertools import cycle
 from colorama import Fore, Style
 import os
 import twitterpibot.users.Users as Users
+import logging
+logger = logging.getLogger(__name__)
 
 eventcolours = cycle([Fore.MAGENTA, Fore.CYAN])
 
@@ -57,4 +59,4 @@ class IncomingEvent(InboxItem):
         if self.targetObjectText:
             text += os.linesep + " TargetObject: " + self.targetObjectText
 
-        print(colour + text)
+        logger.info(colour + text)

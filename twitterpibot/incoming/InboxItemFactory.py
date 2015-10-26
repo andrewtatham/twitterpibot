@@ -1,10 +1,13 @@
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingEvent import IncomingEvent
+import logging
+logger = logging.getLogger(__name__)
 
 
 class InboxItemFactory(object):
     def Create(self, data):
+        #logger.debug(data) #TMI
         if "text" in data:
             return IncomingTweet(data)
         elif "direct_message" in data:
@@ -12,8 +15,6 @@ class InboxItemFactory(object):
         elif "event" in data:
             return IncomingEvent(data)
         elif "friends" in data:
-            print("Connected...")
-        elif "delete" in data:
-            pass
+            logger.info("Connected...")
         else:
-            pass
+            logger.debug(data)

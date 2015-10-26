@@ -1,4 +1,6 @@
 from twitterpibot.outgoing.OutboxTextItem import OutboxTextItem
+import logging
+logger = logging.getLogger(__name__)
 
 
 class OutgoingTweet(OutboxTextItem):
@@ -29,4 +31,4 @@ class OutgoingTweet(OutboxTextItem):
             self.status = self.status + text
 
     def Display(self):
-        print("-> Tweet: " + self.status)
+        logger.info("-> Tweet: " + self.status)

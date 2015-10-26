@@ -1,7 +1,8 @@
 from twitterpibot.ExceptionHandler import Handle
 import twitterpibot.Identity as Identity
 from apscheduler.schedulers.background import BackgroundScheduler
-
+import logging
+logger = logging.getLogger(__name__)
 
 def RunWrapper(task):
     try:
@@ -22,7 +23,7 @@ def stop():
 
 def add(job):
     trigger = job.GetTrigger()
-    print("[MySchedule] adding " + str(type(job)) + " @ " + str(trigger))
+    logger.info("[MySchedule] adding " + str(type(job)) + " @ " + str(trigger))
     _scheduler.add_job(RunWrapper, args=[job], trigger=trigger)
 
 

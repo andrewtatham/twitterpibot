@@ -13,6 +13,8 @@ from itertools import cycle
 from colorama import Fore, Style
 import twitterpibot.users.Users as Users
 import twitterpibot.Identity as Identity
+import logging
+logger = logging.getLogger(__name__)
 
 tweetcolours = cycle([Fore.GREEN, Fore.YELLOW])
 trendcolours = cycle([Fore.MAGENTA, Fore.WHITE])
@@ -80,4 +82,4 @@ class IncomingTweet(InboxTextItem):
         else:
             colour += Style.DIM
 
-        print(colour + text)
+        logger.info(colour + text)

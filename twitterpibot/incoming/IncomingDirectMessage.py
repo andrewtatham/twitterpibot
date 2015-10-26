@@ -1,7 +1,7 @@
 from twitterpibot.incoming.InboxTextItem import InboxTextItem
-
-
 import twitterpibot.users.Users as Users
+import logging
+logger = logging.getLogger(__name__)
 
 
 class IncomingDirectMessage(InboxTextItem):
@@ -20,4 +20,4 @@ class IncomingDirectMessage(InboxTextItem):
 
     def Display(self):
         text = u" * DM from @" + self.sender.screen_name + u" to @" + self.recipient.screen_name + u": " + self.text
-        print(text)
+        logger.info(text)

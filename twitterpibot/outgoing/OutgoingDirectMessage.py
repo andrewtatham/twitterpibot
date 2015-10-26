@@ -1,4 +1,6 @@
 from twitterpibot.outgoing.OutboxTextItem import OutboxTextItem
+import logging
+logger = logging.getLogger(__name__)
 
 
 class OutgoingDirectMessage(OutboxTextItem):
@@ -19,4 +21,4 @@ class OutgoingDirectMessage(OutboxTextItem):
         self.text = text
 
     def Display(self):
-        print(u"-> DM to @" + self.screen_name + u": " + self.text)
+        logger.info(u"-> DM to @" + self.screen_name + u": " + self.text)

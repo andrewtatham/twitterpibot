@@ -1,12 +1,13 @@
 import twitterpibot.Identity as Identity
 from twitterpibot.twitter.MyTwitter import MyTwitter
-
+import logging
+logger = logging.getLogger(__name__)
 
 class ResponseFactory(object):
     def __init__(self):
         self.responses = Identity.get_responses()
         for response in self.responses:
-            print("[ResponseFactory] adding " + str(type(response)))
+            logger.info("[ResponseFactory] adding " + str(type(response)))
 
     def Create(self, inbox_item):
         if inbox_item:

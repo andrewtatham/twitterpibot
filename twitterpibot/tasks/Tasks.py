@@ -26,19 +26,19 @@ def add(task):
     runthread = threading.Thread(target=_run_wrapper, args=[task], name=task.key)
     _task_dic[task.key] = (task, runthread)
     _task_running[task.key] = True
-    logger.debug("[Tasks] starting thread ", task.key)
+    logger.debug("[Tasks] starting thread %s", task.key)
     runthread.start()
 
 
 def _run_wrapper(task):
     while _global_running and (task.core or _task_running[task.key]):
         try:
-            logger.debug("[Tasks] running thread", task.key)
+            logger.debug("[Tasks] running thread %s", task.key)
             task.onRun()
         except Exception as e:
-            logger.debug("[Tasks] exception in thread", task.key)
+            logger.debug("[Tasks] exception in thread %s", task.key)
             Handle(e)
-    logger.debug("[Tasks] exiting thread", task.key)
+    logger.debug("[Tasks] exiting thread %s", task.key)
 
 
 def get():
@@ -49,14 +49,14 @@ def remove(key):
     task = _task_dic[key][0]
     runthread = _task_dic[key][1]
     if _task_running[key]:
-        logger.debug("[Tasks] stopping thread ", key)
+        logger.debug("[Tasks] stopping thread %s", key)
         _task_running[key] = False
 
         stopthread = threading.Thread(target=task.onStop)
         stopthread.start()
         stopthread.join()
         runthread.join()
-        logger.debug("[Tasks] stopped thread ", key)
+        logger.debug("[Tasks] stopped thread %s", key)
         _task_dic.pop(key)
         _task_running.pop(key)
 
@@ -64,6 +64,5 @@ def stop():
     global _global_running
     _global_running = False
 
-    # stop named tasks
     for task in get():
         remove(task)

@@ -6,7 +6,8 @@ import os
 import twitterpibot.MyQueues as MyQueues
 import psutil
 from twitterpibot.tasks import Tasks
-
+import logging
+logger = logging.getLogger(__name__)
 
 class MonitorScheduledTask(ScheduledTask):
     def GetTrigger(self):
@@ -21,4 +22,4 @@ class MonitorScheduledTask(ScheduledTask):
                 if task:
                     text += os.linesep + 'monitoring = ' + task
 
-        print(Style.BRIGHT + Fore.BLUE + text)
+        logger.info(Style.BRIGHT + Fore.BLUE + text)
