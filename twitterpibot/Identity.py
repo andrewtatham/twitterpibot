@@ -13,13 +13,14 @@ elif is_andrewtathampi2:
 print("Identity = " + screen_name)
 
 import twitterpibot.twitter.TwitterHelper as TwitterHelper
-
-id = TwitterHelper.init(screen_name)
+twid = None
+def init():
+    global twid
+    twid = TwitterHelper.init(screen_name)
 
 
 def get_responses():
     from twitterpibot.responses.SongResponse import SongResponse
-    from twitterpibot.responses.PhotoResponse import PhotoResponse
     from twitterpibot.responses.Magic8BallResponse import Magic8BallResponse
     from twitterpibot.responses.RetweetResponse import RetweetResponse
     from twitterpibot.responses.FatherTedResponse import FatherTedResponse
@@ -27,7 +28,6 @@ def get_responses():
     from twitterpibot.responses.ThanksResponse import ThanksResponse
     from twitterpibot.responses.HelloResponse import HelloResponse
     from twitterpibot.responses.RestartResponse import RestartResponse
-    from twitterpibot.responses.TimelapseResponse import TimelapseResponse
     from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
 
     responses = [
@@ -46,7 +46,9 @@ def get_responses():
     elif is_andrewtathampi2:
         pass
 
-    if hardware.ispicamattached or hardware.iswebcamattached:
+    if hardware.is_picam_attached or hardware.is_webcam_attached:
+        from twitterpibot.responses.PhotoResponse import PhotoResponse
+        from twitterpibot.responses.TimelapseResponse import TimelapseResponse
         responses.extend([
             PhotoResponse(),
             TimelapseResponse()
@@ -73,16 +75,10 @@ def get_scheduled_jobs():
     from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
     from twitterpibot.schedule.BotBlockerScheduledTask import BotBlockerScheduledTask
     from twitterpibot.schedule.JokesScheduledTask import JokesScheduledTask
-    # from twitterpibot.schedule.TimelapseScheduledTask import TimelapseScheduledTask
-    from twitterpibot.schedule.SunriseTimelapseScheduledTask import SunriseTimelapseScheduledTask
-    from twitterpibot.schedule.SunsetTimelapseScheduledTask import SunsetTimelapseScheduledTask
-    from twitterpibot.schedule.NightTimelapseScheduledTask import NightTimelapseScheduledTask
-    from twitterpibot.schedule.SunTimelapseScheduledTask import SunTimelapseScheduledTask
     from twitterpibot.schedule.SavedSearchScheduledTask import SavedSearchScheduledTask
     from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
     from twitterpibot.schedule.MidnightScheduledTask import MidnightScheduledTask
     from twitterpibot.schedule.SongScheduledTask import SongScheduledTask
-    from twitterpibot.schedule.PhotoScheduledTask import PhotoScheduledTask
     from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
     from twitterpibot.schedule.LightsScheduledTask import LightsScheduledTask
 
@@ -110,17 +106,22 @@ def get_scheduled_jobs():
     elif is_andrewtathampi2:
         pass
 
-    if is_andrewtathampi and (hardware.iswebcamattached or hardware.ispicamattached):
+    if is_andrewtathampi and (hardware.is_webcam_attached or hardware.is_picam_attached):
+        from twitterpibot.schedule.PhotoScheduledTask import PhotoScheduledTask
+        # from twitterpibot.schedule.TimelapseScheduledTask import TimelapseScheduledTask
+        from twitterpibot.schedule.SunriseTimelapseScheduledTask import SunriseTimelapseScheduledTask
+        from twitterpibot.schedule.SunsetTimelapseScheduledTask import SunsetTimelapseScheduledTask
+        from twitterpibot.schedule.NightTimelapseScheduledTask import NightTimelapseScheduledTask
+        from twitterpibot.schedule.SunTimelapseScheduledTask import SunTimelapseScheduledTask
         scheduledjobs.extend([
+            PhotoScheduledTask(),
             # TimelapseScheduledTask(),
             SunriseTimelapseScheduledTask(),
             SunsetTimelapseScheduledTask(),
             NightTimelapseScheduledTask(),
             SunTimelapseScheduledTask()
         ])
-        if not hardware.is_windows:
-            scheduledjobs.append(PhotoScheduledTask())
-    if hardware.ispiglowattached or hardware.isunicornhatattached:
+    if hardware.is_linux and (hardware.is_piglow_attachedtached or hardware.is_unicornhat_attached):
         scheduledjobs.extend([
             LightsScheduledTask()
         ])
@@ -136,7 +137,7 @@ def get_tasks():
              StreamTweetsTask(TwitterHelper.GetStreamer())
              #StreamTweetsTask(TwitterHelper.GetStreamer(), topic="#Leeds")
     ]
-    if hardware.ispiglowattached or hardware.isunicornhatattached:
+    if hardware.is_linux and (hardware.ispiglowattached or hardware.isunicornhatattached):
         tasks.extend([
             LightsTask(),
             FadeTask()

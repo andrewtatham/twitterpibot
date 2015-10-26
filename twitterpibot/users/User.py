@@ -1,18 +1,17 @@
 import datetime
 import threading
-from twitterpibot.Identity import id
+from twitterpibot import Identity
 
 
 class User(object):
     def __init__(self, data):
 
         self.id = data["id_str"]
-
-        self.isMe = bool(self.id == id)
-
         self.name = data["name"]
         self.screen_name = data["screen_name"]
         self.description = data["description"]
+
+        self.isMe = bool(self.screen_name == Identity.screen_name)
 
         self.verified = bool(data["verified"])
         self.location = data["location"]

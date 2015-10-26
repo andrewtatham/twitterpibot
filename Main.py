@@ -12,7 +12,8 @@ import twitterpibot.MyUI as MyUI
 
 logger = logging.getLogger(__name__)
 
-TwitterHelper.init(Identity.screen_name)
+Identity.init()
+
 
 if not hardware.is_andrew_desktop:
     colorama.init(autoreset=True)

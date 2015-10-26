@@ -59,7 +59,7 @@ class Timelapse(object):
 
 class TimelapsePhotoInitTask(ScheduledTask):
     def __init__(self, timelapse):
-        super().__init__()
+        super(TimelapsePhotoInitTask, self).__init__()
         self.timelapse = timelapse
 
     def GetTrigger(self):
@@ -77,7 +77,7 @@ class TimelapsePhotoInitTask(ScheduledTask):
 
 class TimelapsePhotoScheduledTask(ScheduledTask):
     def __init__(self, timelapse):
-        super().__init__()
+        super(TimelapsePhotoScheduledTask,self).__init__()
         self.timelapse = timelapse
         self.i = 0
 
@@ -103,7 +103,7 @@ class TimelapsePhotoScheduledTask(ScheduledTask):
 
 class TimelapseUploadScheduledTask(ScheduledTask):
     def __init__(self, timelapse):
-        super().__init__()
+        super(TimelapseUploadScheduledTask, self).__init__()
         self.timelapse = timelapse
 
     def GetTrigger(self):

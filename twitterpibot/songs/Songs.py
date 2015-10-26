@@ -4,6 +4,7 @@ import itertools
 import datetime
 
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
+from twitterpibot.processing.christmas import is_christmas
 from twitterpibot.twitter.TwitterHelper import Send, ReplyWith
 from twitterpibot.users import User
 
@@ -310,14 +311,16 @@ class Songs(object):
         self._birthdaySongKeys = itertools.cycle(self._birthdaySongKeys)
 
     def AllKeys(self):
-        # always returs all keys
+        # always returns all keys
         return self._songs.keys()
 
+
     def Keys(self):
-        today = datetime.date.today()
-        isChristmas = today.month == 12 and 24 <= today.day <= 26
-        keys = [k for k, v in self._songs.iteritems() if "birthday" not in v and isChristmas and "christmas" in v]
+        isChristmas = is_christmas()
+        keys = [k for k, v in self._songs.items() if "birthday" not in v and (isChristmas or "christmas" not in v)]
         return keys
+
+
 
     def SingBirthdaySong(self, screen_name):
         songKey = self._birthdaySongKeys.next()

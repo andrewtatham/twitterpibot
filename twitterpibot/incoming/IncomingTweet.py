@@ -52,10 +52,10 @@ class IncomingTweet(InboxTextItem):
             if "user_mentions" in entities:
                 mentions = entities["user_mentions"]
                 for mention in mentions:
-                    if mention["id_str"] != Identity.id:
+                    if mention["id_str"] != Identity.twid:
                         self.targets.append(mention["screen_name"])
 
-                    if mention["id_str"] == Identity.id:
+                    if mention["id_str"] == Identity.twid:
                         self.to_me = True
 
     def Display(self):
