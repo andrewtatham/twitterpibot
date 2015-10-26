@@ -140,7 +140,7 @@ def get_tasks():
              StreamTweetsTask(TwitterHelper.GetStreamer()),
              StreamTweetsTask(TwitterHelper.GetStreamer(),topic="#Leeds")
     ]
-    if hardware.is_linux and (hardware.ispiglowattached or hardware.isunicornhatattached):
+    if hardware.is_linux and (hardware.is_piglow_attached or hardware.is_unicornhat_attached):
         tasks.extend([
             LightsTask(),
             FadeTask()
