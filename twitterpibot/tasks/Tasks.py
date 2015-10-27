@@ -33,7 +33,7 @@ def add(task):
 def _run_wrapper(task):
     while _global_running and (task.core or _task_running[task.key]):
         try:
-            logger.debug("[Tasks] running thread %s", task.key)
+            #logger.debug("[Tasks] running thread %s", task.key)
             task.onRun()
         except Exception as e:
             logger.debug("[Tasks] exception in thread %s", task.key)
