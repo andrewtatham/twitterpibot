@@ -33,7 +33,7 @@ class StreamTrendsScheduledTask(ScheduledTask):
 
             if (is_saved or is_one_direction) and not is_streaming:
                 # Create stream
-                Tasks.add(StreamTweetsTask(TwitterHelper.GetStreamer(), topic=trend))
+                Tasks.add(StreamTweetsTask(TwitterHelper.GetStreamer(topic=trend), topic=trend))
                 Send(OutgoingDirectMessage(text = "Starting stream " + trend + " " + str(datetime.datetime.now())))
 
         # Check for streams that are no longer trending or not saved

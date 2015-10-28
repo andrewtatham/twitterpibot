@@ -11,7 +11,7 @@ class SavedSearchScheduledTask(ScheduledTask):
         self._savedSearches = []
 
     def GetTrigger(self):
-        return IntervalTrigger(minutes=1)
+        return IntervalTrigger(minutes=7)
 
     def onRun(self):
         if not self._savedSearches:
