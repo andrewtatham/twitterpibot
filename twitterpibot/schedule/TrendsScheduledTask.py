@@ -1,6 +1,6 @@
 from apscheduler.triggers.interval import IntervalTrigger
 
-from twitter import TrendingTopics
+from twitterpibot.twitter import TrendingTopics
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.twitter import TwitterHelper
 import twitterpibot.MyQueues as MyQueues
