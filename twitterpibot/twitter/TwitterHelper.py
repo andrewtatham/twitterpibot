@@ -48,17 +48,18 @@ def Send(outboxItem):
                 status=outboxItem.status,
                 in_reply_to_status_id=outboxItem.in_reply_to_status_id,
                 media_ids=outboxItem.media_ids)
+            id_str = response["id_str"]
+            return id_str
 
         if type(outboxItem) is OutgoingDirectMessage:
             RecordOutgoingDirectMessage()
 
-            response = twitter.send_direct_message(
+            twitter.send_direct_message(
                 text=outboxItem.text,
                 screen_name=outboxItem.screen_name,
                 user_id=outboxItem.user_id)
 
-    id_str = response["id_str"]
-    return id_str
+    return None
 
 
 def ReplyWith(inbox_item, text, asTweet=False, asDM=False, filePaths=None, in_reply_to_status_id=None):
