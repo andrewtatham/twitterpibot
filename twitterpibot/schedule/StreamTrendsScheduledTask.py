@@ -2,7 +2,7 @@ import datetime
 
 from apscheduler.triggers.interval import IntervalTrigger
 
-from outgoing.OutgoingDirectMessage import OutgoingDirectMessage
+from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
 from twitterpibot.tasks import Tasks
