@@ -1,9 +1,8 @@
 import threading
-from twitterpibot.ExceptionHandler import Handle
-
 from multiprocessing import Lock
-from twitterpibot import MyLogging
 import logging
+
+from twitterpibot.ExceptionHandler import Handle
 
 logger = logging.getLogger(__name__)
 

@@ -3,6 +3,12 @@ from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 from twitterpibot.Statistics import RecordOutgoingDirectMessage, RecordOutgoingTweet
 from twitterpibot.twitter.MyStreamer import MyStreamer
+
+try:
+    from urllib.parse import quote_plus
+except ImportError:
+    from urllib import quote_plus
+
 import os
 
 _screen_name = None
@@ -147,3 +153,38 @@ def bytes_from_file(filePath, chunksize):
                 yield chunk
             else:
                 break
+def GetTrendingTopicsFor(woeids):
+    trending_topics = []
+    with MyTwitter() as twitter:
+        for woeid in woeids:
+            trends = twitter.get_place_trends(id=woeid)[0].get('trends', [])
+            for trend in trends:
+                trending_topics.append(trend['name'])
+    return trending_topics
+
+
+def get_saved_searches():
+    saved_searches = []
+    with MyTwitter() as twitter:
+        searches = twitter.get_saved_searches()
+        for search in searches:
+            saved_searches.append(search['name'])
+    return saved_searches
+
+
+
+def search(text,result_type="popular"):
+
+    query = quote_plus(text)
+
+    with MyTwitter() as twitter:
+        return twitter.search(q=query,result_type=result_type)["statuses"]
+
+
+def create_favourite(id):
+    with MyTwitter() as twitter:
+        twitter.create_favourite(id=id)
+
+def retweet(id):
+    with MyTwitter() as twitter:
+        twitter.retweet(id=id)

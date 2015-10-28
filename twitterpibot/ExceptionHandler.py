@@ -44,7 +44,7 @@ def _RecordError(exception):
 def _TrySendException():
    
     try:
-        if hardware.isRaspbian:
+        if hardware.is_linux:
             Send(OutgoingDirectMessage(text = traceback.format_exc()))
     except Exception as e:
         logger.exception(e) 

@@ -1,7 +1,6 @@
 import random
 import time
 import itertools
-import datetime
 
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.processing.christmas import is_christmas

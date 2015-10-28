@@ -1,6 +1,6 @@
 import twitterpibot.Identity as Identity
-from twitterpibot.twitter.MyTwitter import MyTwitter
 import logging
+from twitterpibot.twitter import TwitterHelper
 logger = logging.getLogger(__name__)
 
 class ResponseFactory(object):
@@ -16,10 +16,11 @@ class ResponseFactory(object):
 
                     inbox_item.isRespondedTo = True
 
-                    if inbox_item.isTweet and not inbox_item.favorited and not inbox_item.from_me and response.Favourite(
-                            inbox_item):
-                        with MyTwitter() as twitter:
-                            twitter.create_favourite(id=inbox_item.status_id)
+                    if inbox_item.isTweet \
+                        and not inbox_item.favorited \
+                        and not inbox_item.from_me \
+                        and response.Favourite(inbox_item):
+                        TwitterHelper.create_favourite(inbox_item.status_id)
 
                     response.Respond(inbox_item)
         return None

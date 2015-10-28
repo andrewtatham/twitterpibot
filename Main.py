@@ -5,7 +5,6 @@ import colorama
 
 import twitterpibot.hardware.hardware as hardware
 import twitterpibot.Identity as Identity
-import twitterpibot.twitter.TwitterHelper as TwitterHelper
 import twitterpibot.tasks.Tasks as Tasks
 import twitterpibot.schedule.MySchedule as MySchedule
 import twitterpibot.MyUI as MyUI

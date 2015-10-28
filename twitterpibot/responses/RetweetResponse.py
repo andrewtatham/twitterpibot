@@ -2,7 +2,7 @@ import random
 import re
 
 from twitterpibot.responses.Response import Response
-from twitterpibot.twitter.MyTwitter import MyTwitter
+from twitterpibot.twitter import TwitterHelper
 
 
 class RetweetResponse(Response):
@@ -44,5 +44,4 @@ class RetweetResponse(Response):
         return False
 
     def Respond(self, inbox_item):
-        with MyTwitter() as twitter:
-            twitter.retweet(id=inbox_item.status_id)
+        TwitterHelper.retweet(inbox_item.status_id)

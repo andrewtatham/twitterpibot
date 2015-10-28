@@ -1,37 +1,27 @@
-from twitterpibot.schedule.ScheduledTask import ScheduledTask
-from itertools import cycle
 from apscheduler.triggers.interval import IntervalTrigger
-from twitterpibot.twitter.MyTwitter import MyTwitter
 
-try:
-    from urllib.parse import quote_plus
-except ImportError:
-    from urllib import quote_plus
+from twitter import TrendingTopics
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
+from twitterpibot.twitter import TwitterHelper
 import twitterpibot.MyQueues as MyQueues
-
-UK_WOEID = 23424975
-US_WOEID = 23424977
-woeids = cycle([UK_WOEID, US_WOEID])
 
 
 class TrendsScheduledTask(ScheduledTask):
     def __init__(self):
-        super(TrendsScheduledTask, self).__init__()
         self._trendsList = []
+        super(TrendsScheduledTask, self).__init__()
 
     def GetTrigger(self):
-        return IntervalTrigger(minutes=29)
+        return IntervalTrigger(minutes=5)
 
     def onRun(self):
-        with MyTwitter() as twitter:
-            if not self._trendsList:
-                woeid = next(woeids)
-                trends = twitter.get_place_trends(id=woeid)[0].get('trends', [])
-                self._trendsList.extend(trends)
+        if not self._trendsList:
+            self._trendsList = TrendingTopics.get()
 
-            if self._trendsList:
-                trend = self._trendsList.pop()
-                trendtweets = twitter.search(q=quote_plus(trend["name"]), result_type="popular")
-                for trendtweet in trendtweets["statuses"]:
-                    trendtweet['tweetsource'] = "trend:" + trend["name"]
-                    MyQueues.inbox.put(trendtweet)
+
+        if self._trendsList:
+            trend = self._trendsList.pop()
+            trendtweets = TwitterHelper.search(trend)
+            for trendtweet in trendtweets:
+                trendtweet['tweetsource'] = "trend:" + trend
+                MyQueues.inbox.put(trendtweet)

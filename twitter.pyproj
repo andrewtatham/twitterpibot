@@ -140,6 +140,12 @@
     <Compile Include="twitterpibot\processing\Timelapse.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="twitterpibot\twitter\SavedSearches.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="twitterpibot\twitter\TrendingTopics.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="twitterpibot\processing\__init__.py" />
     <Compile Include="twitterpibot\responses\BotBlockerResponse.py">
       <SubType>Code</SubType>
@@ -220,7 +226,7 @@
     <Compile Include="twitterpibot\schedule\SongScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="twitterpibot\schedule\StreamSavedTrendsScheduledTask.py">
+    <Compile Include="twitterpibot\schedule\StreamTrendsScheduledTask.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="twitterpibot\schedule\SuggestedUsersScheduledTask.py">
@@ -288,6 +294,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="twitterpibot\twitter\MyStreamer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="twitterpibot\processing\OneDirection.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="twitterpibot\twitter\TwitterHelper.py">

@@ -1,12 +1,14 @@
-from twitterpibot.schedule.ScheduledTask import ScheduledTask
-from apscheduler.triggers.cron import CronTrigger
 import datetime
-from colorama import Style, Fore
 import os
-import twitterpibot.MyQueues as MyQueues
-import psutil
-from twitterpibot.tasks import Tasks
 import logging
+
+from apscheduler.triggers.cron import CronTrigger
+from colorama import Style, Fore
+import psutil
+
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
+from twitterpibot.tasks import Tasks
+
 logger = logging.getLogger(__name__)
 
 class MonitorScheduledTask(ScheduledTask):

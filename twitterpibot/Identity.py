@@ -1,8 +1,7 @@
-import twitterpibot.hardware.hardware as hardware
-from twitterpibot.schedule.StreamSavedTrendsScheduledTask import StreamSavedTrendsScheduledTask
-import twitterpibot.twitter.TwitterHelper as TwitterHelper
-
 import logging
+
+import twitterpibot.hardware.hardware as hardware
+import twitterpibot.twitter.TwitterHelper as TwitterHelper
 logger = logging.getLogger(__name__)
 
 is_andrewtathampi = hardware.is_raspberry_pi or hardware.is_windows or hardware.is_mac_osx
@@ -27,7 +26,6 @@ def get_responses():
     from twitterpibot.responses.Magic8BallResponse import Magic8BallResponse
     from twitterpibot.responses.RetweetResponse import RetweetResponse
     from twitterpibot.responses.FatherTedResponse import FatherTedResponse
-    from twitterpibot.responses.BotBlockerResponse import BotBlockerResponse
     from twitterpibot.responses.ThanksResponse import ThanksResponse
     from twitterpibot.responses.HelloResponse import HelloResponse
     from twitterpibot.responses.RestartResponse import RestartResponse
@@ -76,7 +74,6 @@ def get_scheduled_jobs():
     from twitterpibot.schedule.SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
     from twitterpibot.schedule.UserListsScheduledTask import UserListsScheduledTask
     from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
-    from twitterpibot.schedule.BotBlockerScheduledTask import BotBlockerScheduledTask
     from twitterpibot.schedule.JokesScheduledTask import JokesScheduledTask
     from twitterpibot.schedule.SavedSearchScheduledTask import SavedSearchScheduledTask
     from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
@@ -84,6 +81,7 @@ def get_scheduled_jobs():
     from twitterpibot.schedule.SongScheduledTask import SongScheduledTask
     from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
     from twitterpibot.schedule.LightsScheduledTask import LightsScheduledTask
+    from twitterpibot.schedule.StreamTrendsScheduledTask import StreamTrendsScheduledTask
 
     scheduledjobs = [
         MonitorScheduledTask(),
@@ -92,7 +90,7 @@ def get_scheduled_jobs():
         SavedSearchScheduledTask(),
         MidnightScheduledTask(),
         #BotBlockerScheduledTask(),
-        StreamSavedTrendsScheduledTask()
+        StreamTrendsScheduledTask()
     ]
 
     if is_andrewtathampi:
