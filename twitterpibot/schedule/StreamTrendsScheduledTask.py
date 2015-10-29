@@ -35,19 +35,19 @@ class StreamTrendsScheduledTask(ScheduledTask):
             for trend in stream_list:
                 is_trending = trend in _trends_list
                 if not is_trending:
-                    logger.info("adding " + trend + " to stop list")
+                    logger.debug("adding " + trend + " to stop list")
                     _stop_list.append(trend)
 
         if _trends_list:
             trend = _trends_list.pop()
 
-            logger.info("checking " + trend)
+            logger.debug("checking " + trend)
             is_streaming = trend in stream_list
             if is_streaming:
-                logger.info("adding " + trend + " to stop list")
+                logger.debug("adding " + trend + " to stop list")
                 _stop_list.append(trend)
             else:
-                logger.info("adding " + trend + " to start list")
+                logger.debug("adding " + trend + " to start list")
                 _start_list.append(trend)
 
         if _stop_list:
@@ -59,11 +59,11 @@ class StreamTrendsScheduledTask(ScheduledTask):
                 Tasks.remove(stop_trend)
             logger.info(text)
             text += " at " + str(datetime.datetime.now())
-            Send(OutgoingDirectMessage(text=text))
+            # Send(OutgoingDirectMessage(text=text))
         elif _start_list:
             # Create stream
             start_trend = _start_list.pop()
-            text = "Starting stream " + start_trend + " " + str(datetime.datetime.now())
+            text = "Starting stream: " + start_trend + " at " + str(datetime.datetime.now())
             logger.info(text)
             Tasks.add(StreamTweetsTask(TwitterHelper.GetStreamer(topic=start_trend)))
-            Send(OutgoingDirectMessage(text=text))
+            # Send(OutgoingDirectMessage(text=text))
