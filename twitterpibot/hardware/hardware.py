@@ -133,6 +133,7 @@ def inbox_item_received(inbox_item):
 
 
 def Stop():
+    logger.info("Stopping")
     if is_webcam_attached and webcam:
         webcam.Close()
     if is_picam_attached and picam:
@@ -143,3 +144,4 @@ def Stop():
         MyPiglow.Close()
     if is_brightpi_attached and brightpi:
         brightpi.Close()
+    logger.info("Stopped")

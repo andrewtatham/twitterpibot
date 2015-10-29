@@ -13,7 +13,9 @@ def get_saved_searches():
         if _updated:
             delta = datetime.datetime.now() - _updated
             mins = divmod(delta.days * 86400 + delta.seconds, 60)[0]
-        if not _updated or mins > 15:
+            if mins > 15:
+                _update()
+        else:
             _update()
 
         return _saved_searches

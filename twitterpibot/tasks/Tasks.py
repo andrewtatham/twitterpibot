@@ -32,7 +32,6 @@ def add(task):
 def _run_wrapper(task):
     while _global_running and (task.core or _task_running[task.key]):
         try:
-            # logger.debug("[Tasks] running thread %s", task.key)
             task.onRun()
         except Exception as e:
             logger.debug("[Tasks] exception in thread %s", task.key)
@@ -51,14 +50,19 @@ def remove(key):
         logger.debug("[Tasks] stopping thread %s", key)
         _task_running[key] = False
         task.onStop()
+        runthread.join()
         logger.debug("[Tasks] stopped thread %s", key)
         _task_dic.pop(key)
         _task_running.pop(key)
 
 
 def stop():
+    logger.info("Stopping")
+
     global _global_running
     _global_running = False
 
-    for task in get():
+    for task in _task_dic.keys():
         remove(task)
+
+    logger.info("Stopped")

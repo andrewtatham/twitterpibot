@@ -6,8 +6,8 @@ from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
 from twitterpibot.tasks import Tasks
-from twitterpibot.twitter import TwitterHelper, SavedSearches, TrendingTopics
-from twitterpibot.processing import OneDirection
+from twitterpibot.twitter import TwitterHelper, TrendingTopics#, SavedSearches
+#from twitterpibot.processing import OneDirection
 from twitterpibot.twitter.TwitterHelper import Send
 
 
@@ -47,7 +47,7 @@ class StreamTrendsScheduledTask(ScheduledTask):
                 Send(OutgoingDirectMessage(text="Starting stream " + trend + " " + str(datetime.datetime.now())))
                 new_stream_count += 1
 
-                if new_stream_count >= 4:
+                if new_stream_count >= 1:
                     break
 
 
