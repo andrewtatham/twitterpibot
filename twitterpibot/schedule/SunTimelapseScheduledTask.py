@@ -1,5 +1,5 @@
 from apscheduler.triggers.cron import CronTrigger
-from processing.MyAstral import GetTimes
+import twitterpibot.processing.MyAstral as MyAstral
 
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.processing.Timelapse import Timelapse
@@ -10,7 +10,7 @@ class SunTimelapseScheduledTask(ScheduledTask):
         return CronTrigger(hour=3)
 
     def onRun(self):
-        sun = GetTimes()
+        sun = MyAstral.GetTimes()
 
         timelapse = Timelapse(
             name='sun',
