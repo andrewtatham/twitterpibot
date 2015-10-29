@@ -6,9 +6,12 @@ from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
 from twitterpibot.tasks import Tasks
-from twitterpibot.twitter import TwitterHelper, TrendingTopics#, SavedSearches
-#from twitterpibot.processing import OneDirection
+from twitterpibot.twitter import TwitterHelper, TrendingTopics
 from twitterpibot.twitter.TwitterHelper import Send
+
+_trends_list = []
+_start_list = []
+_stop_list = []
 
 
 class StreamTrendsScheduledTask(ScheduledTask):
@@ -16,40 +19,37 @@ class StreamTrendsScheduledTask(ScheduledTask):
         return IntervalTrigger(minutes=5)
 
     def onRun(self):
-        # saved_list = SavedSearches.get_saved_searches()
-        trends_list = TrendingTopics.get()
+        global _trends_list
+        global _start_list
+        global _stop_list
+
         stream_list = Tasks.get()
 
-        # Check for streams that are no longer trending
-        for trend in stream_list:
+        if not _trends_list:
+            _trends_list.extend(TrendingTopics.get())
 
-            # is_one_direction = OneDirection.is_one_direction(trend)
-            # is_saved = trend in saved_list
-            is_trending = trend in trends_list
+            # Check for streams that are no longer trending
+            for trend in stream_list:
+                is_trending = trend in _trends_list
+                if not is_trending:
+                    _stop_list.append(trend)
 
-            if not is_trending:
-                # stop stream
-                Send(OutgoingDirectMessage(text="Stopping stream " + trend + " " + str(datetime.datetime.now())))
-                Tasks.remove(trend)
-
-
-        # Check for new trends
-        new_stream_count = 0
-        for trend in trends_list:
-
-            # is_one_direction = OneDirection.is_one_direction(trend)
-            # is_saved = trend in saved_list
+        if _trends_list:
+            trend = _trends_list.pop()
             is_streaming = trend in stream_list
+            if is_streaming:
+                _stop_list.append(trend)
+            else:
+                _start_list.append(trend)
 
-            if not is_streaming:
-                # Create stream
-                Tasks.add(StreamTweetsTask(TwitterHelper.GetStreamer(topic=trend)))
-                Send(OutgoingDirectMessage(text="Starting stream " + trend + " " + str(datetime.datetime.now())))
-                new_stream_count += 1
+        if _stop_list:
+            stop_trend = _stop_list.pop()
+            # stop stream
+            Send(OutgoingDirectMessage(text="Stopping stream " + stop_trend + " " + str(datetime.datetime.now())))
+            Tasks.remove(stop_trend)
 
-                if new_stream_count >= 1:
-                    break
-
-
-
-
+        if _start_list:
+            # Create stream
+            start_trend = _start_list.pop()
+            Tasks.add(StreamTweetsTask(TwitterHelper.GetStreamer(topic=start_trend)))
+            Send(OutgoingDirectMessage(text="Starting stream " + start_trend + " " + str(datetime.datetime.now())))
