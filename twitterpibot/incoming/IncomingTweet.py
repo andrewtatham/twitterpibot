@@ -18,10 +18,10 @@ import twitterpibot.Identity as Identity
 import logging
 logger = logging.getLogger(__name__)
 
-tweetcolours = cycle([Fore.GREEN, Fore.YELLOW])
+tweetcolours = cycle([Fore.GREEN, Fore.WHITE])
 trendcolours = cycle([Fore.MAGENTA, Fore.WHITE])
 searchcolours = cycle([Fore.CYAN, Fore.WHITE])
-
+streamcolours = cycle([Fore.YELLOW, Fore.WHITE])
 
 class IncomingTweet(InboxTextItem):
     def __init__(self, data):
@@ -38,12 +38,15 @@ class IncomingTweet(InboxTextItem):
         self.source = None
         self.sourceIsTrend = False
         self.sourceIsSearch = False
+        self.sourceIsStream = False
         if 'tweetsource' in data:
             self.source = data['tweetsource']
             if 'trend' in self.source:
                 self.sourceIsTrend = True
             elif 'search' in self.source:
                 self.sourceIsSearch = True
+            elif 'stream' in self.source:
+                self.sourceIsStream = True
 
         self.text = h.unescape(data["text"])
         self.words = self.text.split()
@@ -71,6 +74,8 @@ class IncomingTweet(InboxTextItem):
                 colour = next(trendcolours)
             elif self.sourceIsSearch:
                 colour = next(searchcolours)
+            elif self.sourceIsStream:
+                colour = next(streamcolours)
         else:
             colour = next(tweetcolours)
             text += "* "
