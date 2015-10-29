@@ -1,10 +1,12 @@
 from twitterpibot.incoming.InboxTextItem import InboxTextItem
 
 try:
+    # noinspection PyUnresolvedReferences
     import html.parser
 
     h = html.parser.HTMLParser()
 except ImportError:
+    # noinspection PyUnresolvedReferences
     import HTMLParser
 
     h = HTMLParser.HTMLParser()
@@ -60,7 +62,7 @@ class IncomingTweet(InboxTextItem):
                     if mention["id_str"] == Identity.twid:
                         self.to_me = True
 
-    def Display(self):
+    def display(self):
         colour = ""
         text = ""
         if self.source:

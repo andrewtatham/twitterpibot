@@ -73,6 +73,7 @@ class DotsMode(UnicornHatMode):
             unicornhat.show()
         time.sleep(2)
 
+    # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
         with _lock:
             x = random.randint(0, 7)
@@ -98,6 +99,7 @@ class FlashMode(UnicornHatMode):
             _WriteAll()
         time.sleep(2)
 
+    # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
         with _lock:
             r = random.randint(1, 255)
@@ -119,6 +121,7 @@ class RainMode(UnicornHatMode):
             _WriteAll()
         time.sleep(0.25)
 
+    # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
         rgb = (0, 0, 255)
         self._rain.AddRaindrop(rgb)
@@ -136,6 +139,7 @@ class MatrixMode(UnicornHatMode):
             _WriteAll()
         time.sleep(0.5)
 
+    # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
         rgb = (0, 255, 0)
         self._rain.AddRaindrop(rgb)
@@ -153,6 +157,7 @@ class FireMode(UnicornHatMode):
             _WriteAll()
         time.sleep(0.4)
 
+    # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
         r = random.randint(100, 255)
         g = random.randint(0, 150)
@@ -173,6 +178,7 @@ class SnowMode(UnicornHatMode):
             _WriteAll()
         time.sleep(2)
 
+    # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
         rgb = (255, 255, 255)
         self._rain.AddRaindrop(rgb)

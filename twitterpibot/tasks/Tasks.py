@@ -2,7 +2,7 @@ import threading
 from multiprocessing import Lock
 import logging
 
-from twitterpibot.ExceptionHandler import Handle
+from twitterpibot.ExceptionHandler import handle
 
 logger = logging.getLogger(__name__)
 
@@ -32,11 +32,11 @@ def add(task):
 def _run_wrapper(task):
     while _global_running and (task.core or _task_running[task.key]):
         try:
-            #logger.debug("[Tasks] running thread %s", task.key)
+            # logger.debug("[Tasks] running thread %s", task.key)
             task.onRun()
         except Exception as e:
             logger.debug("[Tasks] exception in thread %s", task.key)
-            Handle(e)
+            handle(e)
     logger.debug("[Tasks] exiting thread %s", task.key)
 
 
@@ -58,6 +58,7 @@ def remove(key):
         logger.debug("[Tasks] stopped thread %s", key)
         _task_dic.pop(key)
         _task_running.pop(key)
+
 
 def stop():
     global _global_running

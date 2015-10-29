@@ -14,40 +14,40 @@ logger = logging.getLogger(__name__)
 # "Twitter API returned a 429 (Too Many Requests), Rate limit exceeded"
 # "Twitter API returned a 403 (Forbidden), There was an error sending your message: Whoops! You already said that."
 
-backoff = 15
+_back_off = 15
 
 
-def HandleSilently(exception):
-    _RecordWarning(exception)
+def handle_silently(exception):
+    _record_warning(exception)
 
 
-def Handle(exception):
+def handle(exception):
     if type(exception) is UnicodeEncodeError:
-        _RecordWarning(exception)
+        _record_warning(exception)
     else:
-        _RecordError(exception)
+        _record_error(exception)
 
 
-def _RecordWarning(exception):
+def _record_warning(exception):
     print(Style.DIM + Fore.WHITE + Back.YELLOW + str(exception.message))
     logger.warn(exception)
     RecordWarning()
 
 
-def _RecordError(exception):
+def _record_error(exception):
     print(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
     logger.exception(exception)
     RecordError()
-    _TrySendException()
+    _try_send_exception()
 
 
-def _TrySendException():
-   
+def _try_send_exception():
+    global _back_off
     try:
         if hardware.is_linux:
-            Send(OutgoingDirectMessage(text = traceback.format_exc()))
+            Send(OutgoingDirectMessage(text=traceback.format_exc()))
+            _back_off = 15
     except Exception as e:
-        logger.exception(e) 
-        global backoff
-        time.sleep(backoff)
-        backoff *= 2
+        logger.exception(e)
+        time.sleep(_back_off)
+        _back_off *= 2

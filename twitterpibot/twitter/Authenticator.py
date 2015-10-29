@@ -2,6 +2,7 @@ import os
 import webbrowser
 
 try:
+    # noinspection PyUnresolvedReferences,PyShadowingBuiltins
     input = raw_input
 except NameError:
     pass
@@ -9,7 +10,9 @@ except NameError:
 import pickle
 from twython.api import Twython
 import logging
+
 logger = logging.getLogger(__name__)
+
 
 def get_tokens(screen_name):
     dir = "temp" + os.sep + "tokens" + os.sep
@@ -19,8 +22,8 @@ def get_tokens(screen_name):
 
     app_key_path = dir + "APP_KEY.pkl"
     app_secret_path = dir + "APP_SECRET.pkl"
-    final_oauth_token_path = dir +  screen_name + "_FINAL_OAUTH_TOKEN.pkl"
-    final_oauth_token_secret_path =  dir + screen_name + "_FINAL_OAUTH_TOKEN_SECRET.pkl"
+    final_oauth_token_path = dir + screen_name + "_FINAL_OAUTH_TOKEN.pkl"
+    final_oauth_token_secret_path = dir + screen_name + "_FINAL_OAUTH_TOKEN_SECRET.pkl"
 
     exists = os.path.isfile(app_key_path) and os.path.isfile(app_secret_path)
 

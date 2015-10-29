@@ -8,16 +8,18 @@ _trending = []
 _lock = Lock()
 _updated = None
 
+
 def get():
     with _lock:
 
-        if _updated: 
+        if _updated:
             delta = datetime.datetime.now() - _updated
             mins = divmod(delta.days * 86400 + delta.seconds, 60)[0]
         if not _updated or mins > 15:
             _update()
 
         return _trending
+
 
 def _update():
     global _trending

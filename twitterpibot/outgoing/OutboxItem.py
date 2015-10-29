@@ -14,5 +14,5 @@ class OutboxItem(object):
         self.screen_name = None
         self.text = None
 
-    def Display(self):
+    def display(self):
         pass

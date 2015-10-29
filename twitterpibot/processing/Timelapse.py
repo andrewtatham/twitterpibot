@@ -32,7 +32,6 @@ class Timelapse(object):
         self.fps = 10
         self.frameDuration = 1.0 / self.fps
 
-
         # calculate nuber of frames captured
         duration = self.endTime - self.startTime
         noFrames = duration.total_seconds() / self.intervalSeconds
@@ -77,7 +76,7 @@ class TimelapsePhotoInitTask(ScheduledTask):
 
 class TimelapsePhotoScheduledTask(ScheduledTask):
     def __init__(self, timelapse):
-        super(TimelapsePhotoScheduledTask,self).__init__()
+        super(TimelapsePhotoScheduledTask, self).__init__()
         self.timelapse = timelapse
         self.i = 0
 
@@ -121,9 +120,9 @@ class TimelapseUploadScheduledTask(ScheduledTask):
 
         if self.timelapse.targetExtension == "gif":
 
-            if hardware.iswebcamattached:
+            if hardware.is_webcam_attached:
                 images = [cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB) for bgr in images]
-            if hardware.ispicamattached:
+            if hardware.is_picam_attached:
                 images = [cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY) for bgr in images]
 
             images2gif.writeGif(

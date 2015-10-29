@@ -26,3 +26,6 @@ class MyStreamer(TwythonStreamer):
         msg = str(status_code) + " " + str(data)
         logger.error(msg)
 
+    @property
+    def topic(self):
+        return self._topic

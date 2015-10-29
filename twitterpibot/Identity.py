@@ -2,6 +2,7 @@ import logging
 
 import twitterpibot.hardware.hardware as hardware
 import twitterpibot.twitter.TwitterHelper as TwitterHelper
+
 logger = logging.getLogger(__name__)
 
 is_andrewtathampi = hardware.is_raspberry_pi or hardware.is_windows or hardware.is_mac_osx
@@ -16,6 +17,8 @@ elif is_andrewtathampi2:
 logger.info("Identity: " + screen_name)
 
 twid = None
+
+
 def init():
     global twid
     twid = TwitterHelper.init(screen_name)
@@ -33,7 +36,7 @@ def get_responses():
 
     responses = [
         RestartResponse(),
-        #BotBlockerResponse()
+        # BotBlockerResponse()
     ]
 
     if is_andrewtathampi:
@@ -89,7 +92,7 @@ def get_scheduled_jobs():
         UserListsScheduledTask(),
         SavedSearchScheduledTask(),
         MidnightScheduledTask(),
-        #BotBlockerScheduledTask(),
+        # BotBlockerScheduledTask(),
         StreamTrendsScheduledTask()
     ]
 
@@ -134,9 +137,10 @@ def get_tasks():
     from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
     from twitterpibot.tasks.FadeTask import FadeTask
     from twitterpibot.tasks.LightsTask import LightsTask
-    tasks = [ProcessInboxTask(),
-             StreamTweetsTask(TwitterHelper.GetStreamer()),
-             StreamTweetsTask(TwitterHelper.GetStreamer(),topic="#Leeds")
+    tasks = [
+        ProcessInboxTask(),
+        StreamTweetsTask(TwitterHelper.GetStreamer()),
+        StreamTweetsTask(TwitterHelper.GetStreamer(topic="#Leeds"))
     ]
     if hardware.is_linux and (hardware.is_piglow_attached or hardware.is_unicornhat_attached):
         tasks.extend([

@@ -18,6 +18,6 @@ class IncomingDirectMessage(InboxTextItem):
         self.text = data["direct_message"]["text"]
         self.words = self.text.split()
 
-    def Display(self):
+    def display(self):
         text = u" * DM from @" + self.sender.screen_name + u" to @" + self.recipient.screen_name + u": " + self.text
         logger.info(text)

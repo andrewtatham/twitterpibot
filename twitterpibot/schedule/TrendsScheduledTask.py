@@ -18,7 +18,6 @@ class TrendsScheduledTask(ScheduledTask):
         if not self._trendsList:
             self._trendsList = TrendingTopics.get()
 
-
         if self._trendsList:
             trend = self._trendsList.pop()
             trendtweets = TwitterHelper.search(trend)

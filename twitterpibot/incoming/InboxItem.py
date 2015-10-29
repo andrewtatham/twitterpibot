@@ -9,5 +9,5 @@ class InboxItem(object):
 
         self.isRespondedTo = False
 
-    def Display(self):
+    def display(self):
         pass

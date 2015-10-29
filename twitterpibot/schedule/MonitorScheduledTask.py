@@ -11,6 +11,7 @@ from twitterpibot.tasks import Tasks
 
 logger = logging.getLogger(__name__)
 
+
 class MonitorScheduledTask(ScheduledTask):
     def GetTrigger(self):
         return CronTrigger(minute='*/5')

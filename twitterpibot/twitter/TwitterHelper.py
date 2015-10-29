@@ -7,6 +7,7 @@ from twitterpibot.twitter.MyStreamer import MyStreamer
 try:
     from urllib.parse import quote_plus
 except ImportError:
+    # noinspection PyUnresolvedReferences
     from urllib import quote_plus
 
 import os
@@ -23,8 +24,7 @@ def init(screen_name):
 
 
 def Send(outboxItem):
-    outboxItem.Display()
-    response = None
+    outboxItem.display()
     with MyTwitter() as twitter:
         if type(outboxItem) is OutgoingTweet:
 
@@ -69,7 +69,7 @@ def ReplyWith(inbox_item, text, asTweet=False, asDM=False, filePaths=None, in_re
 
     if replyAsTweet:
         tweet = OutgoingTweet(
-            replyTo=inbox_item,
+            reply_to=inbox_item,
             text=text,
             filePaths=filePaths,
             in_reply_to_status_id=in_reply_to_status_id)
@@ -95,8 +95,8 @@ def _UploadMedia(twitter, filePath):
             file.close()
 
 
-def GetStreamer():
-    return MyStreamer(_screen_name)
+def GetStreamer(topic=None):
+    return MyStreamer(_screen_name, topic)
 
 
 def _UploadVideo(filePath):
@@ -154,6 +154,8 @@ def bytes_from_file(filePath, chunksize):
                 yield chunk
             else:
                 break
+
+
 def GetTrendingTopicsFor(woeids):
     trending_topics = []
     with MyTwitter() as twitter:
@@ -168,23 +170,22 @@ def get_saved_searches():
     saved_searches = []
     with MyTwitter() as twitter:
         searches = twitter.get_saved_searches()
-        for search in searches:
-            saved_searches.append(search['name'])
+        for srch in searches:
+            saved_searches.append(srch['name'])
     return saved_searches
 
 
-
-def search(text,result_type="popular"):
-
+def search(text, result_type="popular"):
     query = quote_plus(text)
 
     with MyTwitter() as twitter:
-        return twitter.search(q=query,result_type=result_type)["statuses"]
+        return twitter.search(q=query, result_type=result_type)["statuses"]
 
 
 def create_favourite(id):
     with MyTwitter() as twitter:
         twitter.create_favourite(id=id)
+
 
 def retweet(id):
     with MyTwitter() as twitter:

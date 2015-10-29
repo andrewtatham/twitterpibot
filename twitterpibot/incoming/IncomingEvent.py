@@ -41,7 +41,7 @@ class IncomingEvent(InboxItem):
             if "text" in self.targetObject:
                 self.targetObjectText = self.targetObject["text"]
 
-    def Display(self):
+    def display(self):
 
         colour = next(eventcolours)
 

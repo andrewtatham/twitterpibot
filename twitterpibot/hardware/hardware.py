@@ -76,6 +76,7 @@ if is_piglow_attached:
 if is_brightpi_attached:
     import twitterpibot.hardware.MyBrightPi as MyBrightPi
 
+    # noinspection PyUnresolvedReferences
     brightpi = MyBrightPi.BrightPI()
 
 

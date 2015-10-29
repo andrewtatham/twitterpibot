@@ -1,4 +1,4 @@
-from twitterpibot.ExceptionHandler import HandleSilently
+from twitterpibot.ExceptionHandler import handle_silently
 import time
 
 try:
@@ -6,13 +6,14 @@ try:
 
     enableBrightPi = True
 except Exception as e:
-    HandleSilently(e)
+    handle_silently(e)
     enableBrightPi = False
 
 
 class MyBrightPi(object):
     def __init__(self):
         if enableBrightPi:
+            # noinspection PyUnresolvedReferences
             self.light = BrightPI(1)
             self.light.Reset()
             self.light.Led_1_On()

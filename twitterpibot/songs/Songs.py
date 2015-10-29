@@ -313,13 +313,10 @@ class Songs(object):
         # always returns all keys
         return self._songs.keys()
 
-
     def Keys(self):
         isChristmas = is_christmas()
         keys = [k for k, v in self._songs.items() if "birthday" not in v and (isChristmas or "christmas" not in v)]
         return keys
-
-
 
     def SingBirthdaySong(self, screen_name):
         songKey = self._birthdaySongKeys.next()
@@ -369,6 +366,7 @@ class Songs(object):
         else:
             text = ""
             if target:
+                # noinspection PyUnresolvedReferences
                 if isinstance(target, basestring):
                     text = "@" + target
                 elif isinstance(target, User.User):

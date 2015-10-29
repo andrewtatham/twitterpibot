@@ -10,9 +10,8 @@ class NightTimelapseScheduledTask(ScheduledTask):
         return CronTrigger(hour=15)
 
     def onRun(self):
-        astral = MyAstral()
-        today = astral.GetTimes()
-        tommorrow = astral.GetTommorrowTimes()
+        today = GetTimes()
+        tommorrow = GetTommorrowTimes()
 
         timelapse = Timelapse(
             name='night',

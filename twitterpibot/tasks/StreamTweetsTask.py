@@ -2,13 +2,14 @@ from twitterpibot.tasks.Task import Task
 
 
 class StreamTweetsTask(Task):
-    def __init__(self, streamer, topic=None):
+    def __init__(self, streamer):
         Task.__init__(self)
         self._streamer = streamer
-        self._topic = topic
+        self._topic = streamer.topic
         if self._topic:
             self.key = self._topic
         else:
+            # user stream is a core task
             self.core = True
 
     def onRun(self):

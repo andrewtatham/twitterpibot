@@ -55,6 +55,7 @@ class DotsMode(PiglowMode):
 
         time.sleep(2)
 
+    # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
         with _lock:
             led = random.randint(0, 17)
@@ -76,6 +77,7 @@ class FlashMode(PiglowMode):
 
         time.sleep(0.25)
 
+    # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
         with _lock:
             for led in range(18):
