@@ -30,7 +30,7 @@ def add(task):
 
 
 def _run_wrapper(task):
-    while _global_running and (task.core or _task_running[task.key]):
+    while _global_running and (task.core or bool(_task_running[task.key])):
         try:
             task.onRun()
         except Exception as e:
@@ -40,7 +40,7 @@ def _run_wrapper(task):
 
 
 def get():
-    return [k for k, v in _task_dic.items() if not v[0].core]
+    return [k for k, v in _task_dic.items() if not v[0].core and bool(_task_running[v[0].key])]
 
 
 def remove(key):
