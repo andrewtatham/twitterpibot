@@ -50,11 +50,7 @@ def remove(key):
     if _task_running[key]:
         logger.debug("[Tasks] stopping thread %s", key)
         _task_running[key] = False
-
-        stopthread = threading.Thread(target=task.onStop)
-        stopthread.start()
-        stopthread.join()
-        runthread.join()
+        task.onStop()
         logger.debug("[Tasks] stopped thread %s", key)
         _task_dic.pop(key)
         _task_running.pop(key)
