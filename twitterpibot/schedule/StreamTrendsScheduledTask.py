@@ -60,8 +60,7 @@ class StreamTrendsScheduledTask(ScheduledTask):
             logger.info(text)
             text += " at " + str(datetime.datetime.now())
             Send(OutgoingDirectMessage(text=text))
-
-        if _start_list:
+        elif _start_list:
             # Create stream
             start_trend = _start_list.pop()
             text = "Starting stream " + start_trend + " " + str(datetime.datetime.now())
