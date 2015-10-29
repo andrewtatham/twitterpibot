@@ -16,7 +16,7 @@ _stop_list = []
 
 class StreamTrendsScheduledTask(ScheduledTask):
     def GetTrigger(self):
-        return IntervalTrigger(seconds=30)
+        return IntervalTrigger(minutes=30)
 
     def onRun(self):
         global _trends_list
