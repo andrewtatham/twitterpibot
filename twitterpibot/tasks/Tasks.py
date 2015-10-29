@@ -52,8 +52,6 @@ def remove(key):
         task.onStop()
         runthread.join()
         logger.debug("[Tasks] stopped thread %s", key)
-        _task_dic.pop(key)
-        _task_running.pop(key)
 
 
 def stop():
