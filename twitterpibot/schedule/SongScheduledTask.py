@@ -16,7 +16,7 @@ class SongScheduledTask(ScheduledTask):
         return CronTrigger(hour="8-22/3")
 
     def onRun(self):
-        songKey = random.choice(self.songs.Keys)
+        songKey = random.choice(self.songs.Keys())
 
         with MyTwitter() as twitter:
             target = None
