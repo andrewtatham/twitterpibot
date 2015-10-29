@@ -1,4 +1,5 @@
 import datetime
+from apscheduler.triggers.interval import IntervalTrigger
 
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.processing.Timelapse import Timelapse

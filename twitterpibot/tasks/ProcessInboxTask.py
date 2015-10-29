@@ -1,7 +1,6 @@
-from incoming import InboxItemFactory
 from twitterpibot.responses.ResponseFactory import ResponseFactory
 from twitterpibot.tasks.Task import Task
-import twitterpibot.incoming.InboxItemFactory
+import twitterpibot.incoming.InboxItemFactory as InboxItemFactory
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.Statistics import RecordIncomingTweet, RecordIncomingDirectMessage
