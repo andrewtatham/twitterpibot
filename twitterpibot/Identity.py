@@ -35,7 +35,7 @@ def get_responses():
     from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
 
     responses = [
-        RestartResponse(),
+        RestartResponse()
         # BotBlockerResponse()
     ]
 
@@ -60,11 +60,15 @@ def get_responses():
 
     if is_andrewtathampi:
         responses.extend([
-            FatherTedResponse(),
-            RetweetResponse()
+            FatherTedResponse()
         ])
     elif is_andrewtathampi2:
         pass
+
+    responses.extend([
+        RetweetResponse()
+    ])
+
 
     return responses
 
@@ -93,13 +97,12 @@ def get_scheduled_jobs():
         SavedSearchScheduledTask(),
         MidnightScheduledTask(),
         # BotBlockerScheduledTask(),
-        StreamTrendsScheduledTask()
+        TrendsScheduledTask(),
+        Wikipedia()
     ]
 
     if is_andrewtathampi:
         scheduledjobs.extend([
-            TrendsScheduledTask(),
-            Wikipedia(),
             EdBallsDay(),
             TalkLikeAPirateDayScheduledTask(),
             WeatherScheduledTask(),
@@ -108,7 +111,9 @@ def get_scheduled_jobs():
             HappyBirthdayScheduledTask()
         ])
     elif is_andrewtathampi2:
-        pass
+        scheduledjobs.extend([
+            StreamTrendsScheduledTask()
+        ])
 
     if is_andrewtathampi and (hardware.is_webcam_attached or hardware.is_picam_attached):
         from twitterpibot.schedule.PhotoScheduledTask import PhotoScheduledTask
