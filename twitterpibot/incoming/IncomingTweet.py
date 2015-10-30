@@ -1,4 +1,5 @@
 from twitterpibot.incoming.InboxTextItem import InboxTextItem
+from twitterpibot.twitter.topics import Topics
 
 try:
     # noinspection PyUnresolvedReferences
@@ -51,6 +52,8 @@ class IncomingTweet(InboxTextItem):
         self.text = h.unescape(data["text"])
         self.words = self.text.split()
 
+        self.topic = Topics.get_topic(self.text)
+
         self.to_me = False
         self.targets = []
         if "entities" in data:
@@ -78,7 +81,10 @@ class IncomingTweet(InboxTextItem):
                 colour = next(streamcolours)
         else:
             colour = next(tweetcolours)
-            text += "* "
+            text += "[user] "
+
+        if self.topic:
+            text += "{topic: " + str(self.topic) + "} "
 
         text += self.sender.name + ' [@' + self.sender.screen_name + '] ' + self.text.replace('\n', ' ')
 

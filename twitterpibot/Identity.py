@@ -139,8 +139,7 @@ def get_tasks():
     from twitterpibot.tasks.LightsTask import LightsTask
     tasks = [
         ProcessInboxTask(),
-        StreamTweetsTask(TwitterHelper.GetStreamer()),
-        StreamTweetsTask(TwitterHelper.GetStreamer(topic="#Leeds"))
+        StreamTweetsTask(TwitterHelper.GetStreamer())
     ]
     if hardware.is_linux and (hardware.is_piglow_attached or hardware.is_unicornhat_attached):
         tasks.extend([
