@@ -20,7 +20,7 @@ class TrendsScheduledTask(ScheduledTask):
 
         if self._trendsList:
             trend = self._trendsList.pop()
-            trendtweets = TwitterHelper.search(trend)
+            trendtweets = TwitterHelper.search(trend.text)
             for trendtweet in trendtweets:
-                trendtweet['tweetsource'] = "trend:" + trend
+                trendtweet['tweetsource'] = "trend:" + trend.text
                 MyQueues.inbox.put(trendtweet)

@@ -1,4 +1,5 @@
 from twitterpibot.incoming.InboxTextItem import InboxTextItem
+from twitterpibot.twitter.topics import Topics
 
 try:
     # noinspection PyUnresolvedReferences
@@ -16,12 +17,14 @@ from colorama import Fore, Style
 import twitterpibot.users.Users as Users
 import twitterpibot.Identity as Identity
 import logging
+
 logger = logging.getLogger(__name__)
 
 tweetcolours = cycle([Fore.GREEN, Fore.WHITE])
 trendcolours = cycle([Fore.MAGENTA, Fore.WHITE])
 searchcolours = cycle([Fore.CYAN, Fore.WHITE])
 streamcolours = cycle([Fore.YELLOW, Fore.WHITE])
+
 
 class IncomingTweet(InboxTextItem):
     def __init__(self, data):
@@ -35,6 +38,7 @@ class IncomingTweet(InboxTextItem):
         self.from_me = self.sender.isMe
         self.favorited = bool(data["favorited"])
         self.retweeted = bool(data["retweeted"])
+
         self.source = None
         self.sourceIsTrend = False
         self.sourceIsSearch = False
@@ -51,19 +55,23 @@ class IncomingTweet(InboxTextItem):
         self.text = h.unescape(data["text"])
         self.words = self.text.split()
 
+        self.topic = Topics.get_topic(self.text)
+
         self.to_me = False
         self.targets = []
         if "entities" in data:
             entities = data["entities"]
-
             if "user_mentions" in entities:
                 mentions = entities["user_mentions"]
                 for mention in mentions:
                     if mention["id_str"] != Identity.twid:
                         self.targets.append(mention["screen_name"])
-
                     if mention["id_str"] == Identity.twid:
                         self.to_me = True
+
+        self.retweeted_status = None
+        if "retweeted_status" in data:
+            self.retweeted_status = IncomingTweet(data["retweeted_status"])  # retweet recursion!
 
     def display(self):
         colour = ""
@@ -78,7 +86,10 @@ class IncomingTweet(InboxTextItem):
                 colour = next(streamcolours)
         else:
             colour = next(tweetcolours)
-            text += "* "
+            text += "[user] "
+
+        if self.topic:
+            text += "{topic: " + str(self.topic) + "} "
 
         text += self.sender.name + ' [@' + self.sender.screen_name + '] ' + self.text.replace('\n', ' ')
 

@@ -24,6 +24,7 @@ class User(object):
         self.updated = None
 
         self.isArsehole = False
+        self.is_do_not_retweet = False
         self.isRetweetMore = False
         self.isBot = False
         self.isFriend = False
@@ -46,23 +47,21 @@ class User(object):
                 if list.ContainsUser(self.id):
 
                     if list.name == "Arseholes":
-                        self.isArsehole = True  # This is my favourite line in this code
-                        print("Is member of " + list.name)
+                        self.isArsehole = True
 
                     if list.name == "Reply Less":
                         self.isReplyLess = True
-                        print("Is member of " + list.name)
+
+                    if list.name == "Dont Retweet":
+                        self.is_do_not_retweet = True
 
                     if list.name == "Retweet More":
                         self.isRetweetMore = True
-                        print("Is member of " + list.name)
 
                     if list.name == "Awesome Bots":
                         self.isBot = True
-                        print("Is member of " + list.name)
 
                     if list.name == "Friends":
                         self.isFriend = True
-                        print("Is member of " + list.name)
 
             self.updated = datetime.datetime.utcnow()
