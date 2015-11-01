@@ -72,12 +72,12 @@ class Topic(object):
                             and self._from_month <= today.month <= self._to_month
 
         if not has_date_range or is_date_match:
-            definite_matches = list(self._definite_rx.findall(text))
+            definite_matches = self._definite_rx.findall(text)
             if definite_matches:
                 result["definite_matches"] = definite_matches
                 return result
             elif self._possible_rx:
-                possible_matches = list(self._possible_rx.findall(text))
+                possible_matches = self._possible_rx.findall(text)
                 if possible_matches:
                     result["possible_matches"] = possible_matches
                     return result
@@ -89,5 +89,4 @@ class Topic(object):
     def retweet(self):
         return self._retweet
 
-    def __str__(self):
-        return self.__class__.__name__
+

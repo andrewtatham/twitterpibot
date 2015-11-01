@@ -24,6 +24,7 @@ def stop():
         scheduled_job.onStop()
     logger.info("Stopped")
 
+
 def add(scheduled_job):
     trigger = scheduled_job.GetTrigger()
     logger.info("[MySchedule] adding " + str(type(scheduled_job)) + " @ " + str(trigger))

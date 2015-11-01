@@ -9,11 +9,11 @@ class OneDirection(Topic):
             "Niall", "Horan",
             "Payne",
             "Harry Styles",
-            "(Louis)? Tomlinson",
+            "Louis Tomlinson",
             "Zayn", "Malik"
 
         ], [
-            "Liam",
+            "\bLiam",
             "Harry", "Styles",
             "Louis"
         ])
@@ -29,7 +29,7 @@ class FiveSecondsOfSummer(Topic):
             "Calum Hood",
             "Ashton Irwin",
             "The New Broken Scene"
-        ],[
+        ], [
             "Luke", "Hemmings",
             "Michael", "Clifford",
             "Calum", "Hood",

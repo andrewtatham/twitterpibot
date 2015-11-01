@@ -42,7 +42,7 @@ class Topics(object):
 
 
 def get_topics(text):
-    results = map(lambda topic: topic.condition(text), _topics)
+    results = map(lambda t: t.condition(text), _topics)
     matching_topics = list(filter(_has_matches, results))
     if 0 < len(matching_topics) <= 3:
         return Topics(sorted(matching_topics, key=_score, reverse=True))

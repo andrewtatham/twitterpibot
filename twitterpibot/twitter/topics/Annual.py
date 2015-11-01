@@ -13,7 +13,7 @@ class Halloween(Topic):
 
 class AllSaintsDay(Topic):
     def __init__(self):
-        super(BonfireNight, self).__init__(
+        super(AllSaintsDay, self).__init__(
             ["All Saints Day"],
             on_date="01/11"
         )

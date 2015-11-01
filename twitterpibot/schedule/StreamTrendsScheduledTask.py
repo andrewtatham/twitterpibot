@@ -62,7 +62,7 @@ class StreamTrendsScheduledTask(ScheduledTask):
                     _stop_list.append(trend)
                 else:
                     if trend.topic:
-                        logger.debug("Topic is " + trend.topic )
+                        logger.debug("Topic is " + trend.topic)
 
                     logger.debug("adding " + trend + " to start list")
                     _start_list.append(trend)

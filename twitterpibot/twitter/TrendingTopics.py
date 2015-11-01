@@ -10,6 +10,7 @@ _trending = []
 _updated = None
 _lock = Lock()
 
+
 class TrendingTopic(object):
     def __init__(self, topic_text, topic):
         self.text = topic_text
@@ -38,6 +39,3 @@ def get():
         else:
             _update()
         return _trending
-
-
-

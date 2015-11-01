@@ -7,7 +7,6 @@ class XFactor(Topic):
     def __init__(self):
         super(XFactor, self).__init__([
             "XFactor"
-
         ])
 
 
@@ -24,9 +23,9 @@ class StrictlyComeDancing(Topic):
 class DrWho(Topic):
     def __init__(self):
         super(DrWho, self).__init__([
-            "D(octo)?r Who",
+            "(Dr|Doctor) Who",
         ], [
-            "The Doctor"
+            "The (Dr|Doctor)"
         ])
 
 
@@ -47,7 +46,7 @@ class MatchOfTheDay(Topic):
 class AndrewMarrShow(Topic):
     def __init__(self):
         super(AndrewMarrShow, self).__init__([
-            "(Andrew)? Marr"
+            "Andrew Marr", r"\bmarr\b"
         ])
 
 

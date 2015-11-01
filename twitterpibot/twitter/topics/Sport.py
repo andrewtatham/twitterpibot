@@ -32,8 +32,8 @@ class FootballUK(Topic):
 
 class Rugby(Topic):
     def __init__(self):
-        teams = set(["All Blacks"])
-        super(Rugby, self).__init__(set(["Rugby", "#RWC"]) | teams)
+        teams = {"All Blacks"}
+        super(Rugby, self).__init__({"Rugby", "#RWC"} | teams)
 
 
 class Cricket(Topic):
@@ -41,14 +41,13 @@ class Cricket(Topic):
         teams = ["England", "Pakistan", "India", "Australia"]
         ["%s to (bat|field|bowl)".format(team) for team in teams]
         super(Cricket, self).__init__(
-            set(["Cricket", "wicket", "the toss"]) | set(["%s to (bat|field|bowl)".format(team) for team in teams]),
-            ["bowl", "bat"])
+            {"Cricket", "wicket", "the toss"} | set(["%s to (bat|field|bowl)".format(team) for team in teams]))
 
 
 class SportOther(Topic):
     def __init__(self):
         super(SportOther, self).__init__([
-            "#(?P<hometeam>[\w]{2,4}) ?vs?#? ?(?P<awayteam>[\w]{2,4})"
+            r"#(?P<hometeam>[\w]{2,4}) ?vs?#? ?(?P<awayteam>[\w]{2,4})\b"
 
         ])
 
