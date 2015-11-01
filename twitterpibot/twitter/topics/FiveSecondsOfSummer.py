@@ -9,5 +9,6 @@ class FiveSecondsOfSummer(Topic):
             "Luke", "Hemmings",
             "Michael", "Clifford",
             "Calum", "Hood",
-            "Ashton", "Irwin"
+            "Ashton", "Irwin",
+            "The New Broken Scene"
         ])

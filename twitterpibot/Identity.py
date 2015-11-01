@@ -6,7 +6,7 @@ import twitterpibot.twitter.TwitterHelper as TwitterHelper
 logger = logging.getLogger(__name__)
 
 is_andrewtathampi = hardware.is_raspberry_pi or hardware.is_windows or hardware.is_mac_osx
-is_andrewtathampi2 = hardware.is_raspberry_pi_2 and not is_andrewtathampi
+is_andrewtathampi2 = not is_andrewtathampi and hardware.is_raspberry_pi_2
 
 screen_name = None
 if is_andrewtathampi:
@@ -68,7 +68,6 @@ def get_responses():
     responses.extend([
         RetweetResponse()
     ])
-
 
     return responses
 
@@ -145,6 +144,7 @@ def get_tasks():
     tasks = [
         ProcessInboxTask(),
         StreamTweetsTask(TwitterHelper.GetStreamer())
+        #,StreamTweetsTask(TwitterHelper.GetStreamer(topic="#XFactor,#MOTD"))
     ]
     if hardware.is_linux and (hardware.is_piglow_attached or hardware.is_unicornhat_attached):
         tasks.extend([

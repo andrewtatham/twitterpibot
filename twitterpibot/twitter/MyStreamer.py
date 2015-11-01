@@ -18,7 +18,7 @@ class MyStreamer(TwythonStreamer):
             _tokens = Authenticator.get_tokens(screen_name)
 
         self._topic = topic
-        super(MyStreamer, self).__init__(_tokens[0], _tokens[1], _tokens[2], _tokens[3])
+        super(MyStreamer, self).__init__(_tokens[0], _tokens[1], _tokens[2], _tokens[3], )
 
     def on_success(self, data):
         global _back_off

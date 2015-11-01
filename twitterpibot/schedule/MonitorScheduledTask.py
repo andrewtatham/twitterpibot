@@ -19,6 +19,7 @@ class MonitorScheduledTask(ScheduledTask):
     def onRun(self):
         text = datetime.datetime.now().strftime("%c")
         text += os.linesep + 'cpu = ' + str(psutil.cpu_percent()) + ' memory = ' + str(psutil.virtual_memory().percent)
+
         tasks = Tasks.get()
         if tasks:
             for task in tasks:

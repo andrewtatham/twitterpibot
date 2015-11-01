@@ -33,6 +33,7 @@ class ProcessInboxTask(Task):
                     _process_inbox_item(self, inbox_item)
         except Exception:
             logger.debug(data)
+            raise
         finally:
             twitterpibot.MyQueues.inbox.task_done()
 

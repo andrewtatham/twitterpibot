@@ -55,7 +55,7 @@ class IncomingTweet(InboxTextItem):
         self.text = h.unescape(data["text"])
         self.words = self.text.split()
 
-        self.topic = Topics.get_topic(self.text)
+        self.topics = Topics.get_topics(self.text)
 
         self.to_me = False
         self.targets = []
@@ -88,8 +88,8 @@ class IncomingTweet(InboxTextItem):
             colour = next(tweetcolours)
             text += "[user] "
 
-        if self.topic:
-            text += "{topic: " + str(self.topic) + "} "
+        if self.topics:
+            text += "{topic: " + str(self.topics) + "} "
 
         text += self.sender.name + ' [@' + self.sender.screen_name + '] ' + self.text.replace('\n', ' ')
 
