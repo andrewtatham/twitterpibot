@@ -36,6 +36,7 @@ class RetweetResponse(Response):
                and not inbox_item.sender.isArsehole \
                and not (inbox_item.sender.is_do_not_retweet or inbox_item.retweeted_status and inbox_item.retweeted_status.sender.is_do_not_retweet) \
                and not bool(self.rx.match(inbox_item.text)) \
+               and (not inbox_item.topics or inbox_item.topics.retweet()) \
                and ((inbox_item.sender.isBot and random.randint(0, 50) == 0) or
                     (inbox_item.sender.isFriend and random.randint(0, 3) == 0) or
                     (inbox_item.sender.isRetweetMore and random.randint(0, 9) == 0) or

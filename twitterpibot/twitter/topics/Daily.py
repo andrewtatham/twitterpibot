@@ -13,5 +13,13 @@ class FridayFeeling(Topic):
         super(FridayFeeling, self).__init__(["#FridayFeeling"])
 
 
+class SuperSunday(Topic):
+    def __init__(self):
+        super(SuperSunday, self).__init__(["Super Sunday"])
+
+
 def get():
-    return [FollowFriday(), FridayFeeling()]
+    return [
+        FollowFriday(), FridayFeeling(),
+        SuperSunday()
+    ]

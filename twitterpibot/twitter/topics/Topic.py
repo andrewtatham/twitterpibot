@@ -16,7 +16,10 @@ class Topic(object):
                  from_date=None,
                  to_date=None,
                  on_date=None,
-                 on_date_range=None):
+                 on_date_range=0,
+                 retweet=False):
+
+        self._retweet = retweet
 
         self._definite_rx = _init_regex(definite_regexes)
         self._possible_rx = None
@@ -55,7 +58,7 @@ class Topic(object):
 
     def condition(self, text, today=None):
 
-        result = {'topic': self.__class__.__name__ }
+        result = {'topic': self.__class__.__name__}
 
         has_date_range = self._from_date and self._from_month and self._to_date and self._to_month
 
@@ -69,14 +72,22 @@ class Topic(object):
                             and self._from_month <= today.month <= self._to_month
 
         if not has_date_range or is_date_match:
-
-            result["definite_matches"] = [match for match in [self._definite_rx.findall(text)] if match]
-
-            if not result["definite_matches"] and self._possible_rx:
-                result["possible_matches"] = [match for match in [self._possible_rx.findall(text)] if match]
-            return result
+            definite_matches = list(self._definite_rx.findall(text))
+            if definite_matches:
+                result["definite_matches"] = definite_matches
+                return result
+            elif self._possible_rx:
+                possible_matches = list(self._possible_rx.findall(text))
+                if possible_matches:
+                    result["possible_matches"] = possible_matches
+                    return result
+                else:
+                    return None
         else:
             return None
+
+    def retweet(self):
+        return self._retweet
 
     def __str__(self):
         return self.__class__.__name__

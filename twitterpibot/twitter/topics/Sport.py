@@ -27,8 +27,22 @@ class FootballUK(Topic):
             "#WBA",
             "#WHUFC"
 
-
         ])
+
+
+class Rugby(Topic):
+    def __init__(self):
+        teams = set(["All Blacks"])
+        super(Rugby, self).__init__(set(["Rugby", "#RWC"]) | teams)
+
+
+class Cricket(Topic):
+    def __init__(self):
+        teams = ["England", "Pakistan", "India", "Australia"]
+        ["%s to (bat|field|bowl)".format(team) for team in teams]
+        super(Cricket, self).__init__(
+            set(["Cricket", "wicket", "the toss"]) | set(["%s to (bat|field|bowl)".format(team) for team in teams]),
+            ["bowl", "bat"])
 
 
 class SportOther(Topic):
@@ -38,9 +52,12 @@ class SportOther(Topic):
 
         ])
 
+
 def get():
     return [
         # TODO More Sports
         FootballUK(),
+        Rugby(),
+        Cricket(),
         SportOther()
     ]
