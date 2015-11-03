@@ -1,6 +1,20 @@
 from twitterpibot.twitter.topics.Topic import Topic
 
 
+class NewYear(Topic):
+    def __init__(self):
+        super(NewYear, self).__init__({"New Year"},
+                                      on_date="01/01",
+                                      on_date_range=7)
+
+
+class Easter(Topic):
+    def __init__(self):
+        super(Easter, self).__init__({"Easter", "Maundy Thursday", "Good Friday", "Holy Saturday", "Palm Sunday"},
+                                     from_date="01/03",
+                                     to_date="31/04")
+
+
 class Halloween(Topic):
     def __init__(self):
         super(Halloween, self).__init__(
@@ -29,8 +43,16 @@ class BonfireNight(Topic):
         )
 
 
+class Christmas(Topic):
+    def __init__(self):
+        super(Christmas, self).__init__({"Christmas", "Xmas"})
+
+
 def get():
     return [
+        NewYear(),
+        Easter(),
         Halloween(),
-        BonfireNight()
+        BonfireNight(),
+        Christmas()
     ]

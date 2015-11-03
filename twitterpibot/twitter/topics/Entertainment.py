@@ -50,6 +50,13 @@ class AndrewMarrShow(Topic):
         ])
 
 
+class TheArchers(Topic):
+    def __init__(self):
+        super(TheArchers, self).__init__([
+            "#TheArchers"
+        ])
+
+
 def get():
     return [
         XFactor(),
@@ -57,5 +64,6 @@ def get():
         DrWho(),
         MostHaunted(),
         MatchOfTheDay(),
-        AndrewMarrShow()
+        AndrewMarrShow(),
+        TheArchers()
     ]

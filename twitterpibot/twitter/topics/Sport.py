@@ -25,9 +25,14 @@ class FootballUK(Topic):
             "#Swans",
             "#WatfordFC",
             "#WBA",
-            "#WHUFC"
+            "#WHUFC",
 
-        ])
+            "FA Cup",
+            "Wembley",
+            "Premier League",
+            "Soccer"
+
+        ], ["Football", "rangers", "celtic", r"\bHib"])
 
 
 class Rugby(Topic):
@@ -44,6 +49,16 @@ class Cricket(Topic):
             {"Cricket", "wicket", "the toss"} | set(["%s to (bat|field|bowl)".format(team) for team in teams]))
 
 
+class Golf(Topic):
+    def __init__(self):
+        super(Golf, self).__init__({"Golf", "Tiger Woods", "PGA Tour"})
+
+
+class Tennis(Topic):
+    def __init__(self):
+        super(Tennis, self).__init__({"Tennis", "Federer", "Nadal"})
+
+
 class SportOther(Topic):
     def __init__(self):
         super(SportOther, self).__init__([
@@ -54,9 +69,11 @@ class SportOther(Topic):
 
 def get():
     return [
-        # TODO More Sports
+
         FootballUK(),
         Rugby(),
         Cricket(),
+        Golf(),
+        Tennis(),
         SportOther()
     ]

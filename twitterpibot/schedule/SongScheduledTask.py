@@ -18,6 +18,9 @@ class SongScheduledTask(ScheduledTask):
     def onRun(self):
         songKey = random.choice(self.songs.Keys())
 
+
+
+
         with MyTwitter() as twitter:
             target = None
             if random.randint(0, 9) == 0:

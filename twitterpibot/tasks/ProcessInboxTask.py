@@ -1,4 +1,5 @@
 import logging
+
 from twitterpibot.responses.ResponseFactory import ResponseFactory
 from twitterpibot.tasks.Task import Task
 import twitterpibot.incoming.InboxItemFactory as InboxItemFactory
@@ -6,10 +7,8 @@ from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.Statistics import RecordIncomingTweet, RecordIncomingDirectMessage
 from twitterpibot.twitter.TwitterHelper import Send
-
 import twitterpibot.hardware.hardware as hardware
 import twitterpibot.MyQueues
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +31,7 @@ class ProcessInboxTask(Task):
                         RecordIncomingDirectMessage()
                     _process_inbox_item(self, inbox_item)
         except Exception:
-            logger.debug(data)
+            logger.warn(data)
             raise
         finally:
             twitterpibot.MyQueues.inbox.task_done()

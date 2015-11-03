@@ -5,6 +5,7 @@ import os
 import shutil
 import glob
 import images2gif
+# noinspection PyPackageRequirements,PyUnresolvedReferences
 import cv2
 
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet

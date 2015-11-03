@@ -1,4 +1,4 @@
-from twitterpibot.twitter.topics import Daily, Monthly, Annual, Politics, Sport, Entertainment, Celebrity
+from twitterpibot.twitter.topics import Daily, Monthly, Annual, Politics, Sport, Entertainment, Celebrity, News
 import logging
 
 logger = logging.getLogger(__name__)
@@ -16,16 +16,17 @@ _topics.extend(Politics.get())
 _topics.extend(Celebrity.get())
 _topics.extend(Sport.get())
 _topics.extend(Entertainment.get())
+_topics.extend(News.get())
 
 for topic in _topics:
     logger.debug("Topic %s definite: %s",
                  topic.__str__(),
-                 topic._definite_rx
+                 topic.definite_rx
                  )
-    if topic._possible_rx:
+    if topic.possible_rx:
         logger.debug("Topic %s possible: %s",
                      topic.__str__(),
-                     topic._possible_rx
+                     topic.possible_rx
                      )
 
 
@@ -34,8 +35,8 @@ class Topics(object):
         self._topics_list = topics_list
 
     def retweet(self):
-        bools = map(lambda t: t.retweet(), self._topics_list)
-        return reduce(lambda t1, t2: t1 and t2, self._topics_list)
+        bools = map(lambda t: bool(t['retweet']), self._topics_list)
+        return reduce(lambda t1, t2: t1 and t2, bools)
 
     def __str__(self):
         return str(self._topics_list)

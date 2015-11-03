@@ -10,7 +10,6 @@ class RestartResponse(Response):
                and "restart" in inbox_item.words  # and not hardware.iswindows
 
     def Respond(self, inbox_item):
-        TwitterHelper.Send(OutgoingDirectMessage())
         MyUI.close()
         # if not hardware.iswindows:
         #    Send(OutgoingDirectMessage(
