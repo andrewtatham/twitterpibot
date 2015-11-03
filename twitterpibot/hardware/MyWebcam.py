@@ -1,5 +1,6 @@
 import os
 import threading
+# noinspection PyPackageRequirements
 import cv2
 
 

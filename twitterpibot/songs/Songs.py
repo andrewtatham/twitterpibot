@@ -242,6 +242,65 @@ class Songs(object):
                     "lyrics": "wedidntstartthefire.txt",
                     "video": "https://youtu.be/eFTLKWw542g"
                 },
+                "gangnamstyle": {
+                    "artist": "",
+                    "screen_name": None,
+                    "title": "",
+                    "lyrics": "gangnamstyle.txt",
+                    "video": "https://youtu.be/9bZkp7q19f0"
+                },
+                "americafuckyeah": {
+                    "artist": "",
+                    "screen_name": None,
+                    "title": "",
+                    "lyrics": "americafuckyeah.txt",
+                    "video": "https://youtu.be/7R5A0pg4oN8"
+                },
+                "ronery": {
+                    "artist": "",
+                    "screen_name": None,
+                    "title": "",
+                    "lyrics": "ronery.txt",
+                    "video": "https://youtu.be/UEaKX9YYHiQ"
+                },
+                "aids": {
+                    "artist": "",
+                    "screen_name": None,
+                    "title": "",
+                    "lyrics": "aids.txt",
+                    "video": "https://youtu.be/StPTCo5qk8E"
+                },
+                "jumparound": {
+                    "artist": "",
+                    "screen_name": None,
+                    "title": "",
+                    "lyrics": "jumparound.txt",
+                    "video": "https://youtu.be/KZaz7OqyTHQ"
+                },
+                "jump": {
+                    "artist": "",
+                    "screen_name": None,
+                    "title": "",
+                    "lyrics": "jump.txt",
+                    "video": "https://youtu.be/010KyIQjkTk"
+                },
+                "tribute": {
+                    "artist": "",
+                    "screen_name": None,
+                    "title": "",
+                    "lyrics": "tribute.txt",
+                    "video": "https://youtu.be/_lK4cX5xGiQ"
+                },
+                "rhumble": {
+                    "artist": "",
+                    "screen_name": None,
+                    "title": "Let's Get Ready To Rhumble",
+                    "lyrics": "rhumble.txt",
+                    "video": "https://youtu.be/m_sJmIQrH54"
+                },
+
+
+
                 # Birthday songs
                 "indaclub": {
                     "artist": "50 Cent",

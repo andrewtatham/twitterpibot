@@ -4,22 +4,23 @@ from twitterpibot.twitter.topics.Topic import Topic
 class PoliticsUK(Topic):
     def __init__(self):
         super(PoliticsUK, self).__init__([
-            "David", "Cameron",
-            "George", "Osbourne",
+            "David Cameron",
+            "George Osborne",
+            "Jeremy Hunt",
             "Conservative",
-            "Tory",
+            r"\bTory\b",
 
-            "Jeremy", "Corbyn",
+            "Jeremy Corbyn",
             "Labour",
 
-            "Nigel", "Farage",
+            "Nigel Farage",
             "UKIP",
 
-            "PM", "PMQ",
+            "PMQ",
             "Prime Minister",
             "Westminster",
             "Downing"
-        ])
+        ], ["politic", r"\bPM\b"])
 
 
 class PoliticsUS(Topic):
@@ -44,7 +45,7 @@ class PoliticsUS(Topic):
             "Senate",
             "House of Representatives"
 
-        ])
+        ], ["politic"])
 
 
 def get():

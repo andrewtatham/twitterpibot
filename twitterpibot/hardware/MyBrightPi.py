@@ -2,6 +2,7 @@ from twitterpibot.ExceptionHandler import handle_silently
 import time
 
 try:
+    # noinspection PyUnresolvedReferences
     import BrightPILed
 
     enableBrightPi = True

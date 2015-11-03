@@ -39,6 +39,10 @@ def _run_wrapper(task):
     logger.debug("[Tasks] exiting thread %s", task.key)
 
 
+def get_all():
+    return _task_dic.keys()
+
+
 def get():
     return [k for k, v in _task_dic.items() if not v[0].core and bool(_task_running[v[0].key])]
 

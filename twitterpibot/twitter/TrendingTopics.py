@@ -10,6 +10,7 @@ _trending = []
 _updated = None
 _lock = Lock()
 
+
 class TrendingTopic(object):
     def __init__(self, topic_text, topic):
         self.text = topic_text
@@ -24,7 +25,7 @@ def _update():
     global _updated
 
     topics_text = TwitterHelper.GetTrendingTopicsFor([UK_WOEID, US_WOEID])
-    _trending = list(map(lambda topic_text: TrendingTopic(topic_text, Topics.get_topic(topic_text)), topics_text))
+    _trending = list(map(lambda topic_text: TrendingTopic(topic_text, Topics.get_topics(topic_text)), topics_text))
     _updated = datetime.datetime.now()
 
 
@@ -38,6 +39,3 @@ def get():
         else:
             _update()
         return _trending
-
-
-
