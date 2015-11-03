@@ -17,9 +17,13 @@ class Topic(object):
                  to_date=None,
                  on_date=None,
                  on_date_range=0,
-                 retweet=False):
+                 retweet=False,
+                 reply=False,
+                 stream=False):
 
         self._retweet = retweet
+        self._reply = reply
+        self._stream = stream
 
         self.definite_rx = _init_regex(definite_regexes)
         self.possible_rx = None
@@ -60,7 +64,9 @@ class Topic(object):
 
         result = {
             'topic': self.__class__.__name__,
-            'retweet': self._retweet
+            'retweet': self._retweet,
+            'reply': self._reply,
+            'stream': self._stream
         }
 
         has_date_range = self._from_date and self._from_month and self._to_date and self._to_month
@@ -89,5 +95,3 @@ class Topic(object):
         else:
             return None
 
-    def retweet(self):
-        return self._retweet

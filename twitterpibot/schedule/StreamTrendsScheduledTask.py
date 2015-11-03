@@ -42,7 +42,9 @@ class StreamTrendsScheduledTask(ScheduledTask):
             stream_list = Tasks.get()
 
             if not _trends_list:
-                _trends_list.extend(TrendingTopics.get())
+                trending_topics = TrendingTopics.get()
+                filtered_trending_topics = filter(lambda tt: not tt.topics or tt.topics.stream(), trending_topics)
+                _trends_list.extend(map(lambda tt: tt.text, filtered_trending_topics))
 
             if _trends_list and stream_list:
                 # Check for streams that are no longer trending

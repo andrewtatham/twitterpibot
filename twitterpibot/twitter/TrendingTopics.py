@@ -1,10 +1,19 @@
+import os
 from twitterpibot.twitter.topics import Topics
 from twitterpibot.twitter import TwitterHelper
 from multiprocessing import Lock
 import datetime
+import logging
+
+try:
+    from functools import reduce
+except NameError:
+    pass
 
 UK_WOEID = 23424975
 US_WOEID = 23424977
+
+logger = logging.getLogger(__name__)
 
 _trending = []
 _updated = None
@@ -12,12 +21,28 @@ _lock = Lock()
 
 
 class TrendingTopic(object):
-    def __init__(self, topic_text, topic):
+    def __init__(self, topic_text):
         self.text = topic_text
-        self.topic = topic
+        logger.info('Determining topics for ' + self.text)
+        self.topics = Topics.get_topics(topic_text)
+        if self.topics:
+            logger.info('Determined topics for ' + self.text + ' to be ' + self.topics)
+        else:
+            logger.info('Getting tweets for ' + self.text)
+            topic_tweets = TwitterHelper.search(topic_text)
+            tweets_text = reduce(lambda t1, t2: t1 + os.linesep + t2, map(lambda t: t['text'], topic_tweets))
+            tweets_text = ''.join([i if ord(i) < 128 else ' ' for i in tweets_text])
+            logger.info('Determining topics for ' + tweets_text)
+            self.topics = Topics.get_topics(tweets_text)
+            if self.topics:
+                logger.info('Determined topics for ' + self.text + ' to be ' + str(self.topics))
 
     def __str__(self):
-        return self.text
+        txt = self.__class__.__name__ + ': ' + self.text
+        if self.topics:
+            txt += ': ' + str(self.topics)
+
+        return txt
 
 
 def _update():
@@ -25,7 +50,7 @@ def _update():
     global _updated
 
     topics_text = TwitterHelper.GetTrendingTopicsFor([UK_WOEID, US_WOEID])
-    _trending = list(map(lambda topic_text: TrendingTopic(topic_text, Topics.get_topics(topic_text)), topics_text))
+    _trending = list(map(lambda topic_text: TrendingTopic(topic_text), topics_text))
     _updated = datetime.datetime.now()
 
 
