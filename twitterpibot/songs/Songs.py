@@ -1,3 +1,4 @@
+import os
 import random
 import time
 import itertools
@@ -10,7 +11,7 @@ from twitterpibot.users import User
 
 class Songs(object):
     def __init__(self):
-        self.songsfolder = "songs/"
+        self.songsfolder = "twitterpibot" + os.sep + "songs" + os.sep
         self.mutation = [" ,", " .", " *", " `", " -", " _"]
         self._songs = CaseInsensitiveDict(
             {
