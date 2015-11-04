@@ -26,7 +26,7 @@ class TrendingTopic(object):
         logger.info('Determining topics for ' + self.text)
         self.topics = Topics.get_topics(topic_text)
         if self.topics:
-            logger.info('Determined topics for ' + self.text + ' to be ' + self.topics)
+            logger.info('Determined topics for ' + self.text + ' to be ' + str(self.topics))
         else:
             logger.info('Getting tweets for ' + self.text)
             topic_tweets = TwitterHelper.search(topic_text)
