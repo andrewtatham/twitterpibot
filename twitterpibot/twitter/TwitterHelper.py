@@ -175,6 +175,13 @@ def get_saved_searches():
     return saved_searches
 
 
+def delete_saved_searches():
+    with MyTwitter() as twitter:
+        searches = twitter.get_saved_searches()
+        for srch in searches:
+            twitter.destroy_saved_search(id=srch["id_str"])
+
+
 def search(text, result_type="popular"):
     query = quote_plus(text)
 
