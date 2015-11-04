@@ -32,7 +32,7 @@ class BadThings(Topic):
 class Weather(Topic):
     def __init__(self):
         super(Weather, self).__init__(
-            ["Sun", "Rain", "Snow", "Fog", "Sleet"], retweet=True
+            ["Sun(ny)?", "rain(ing)?", "Snow(ing)?", "Fog(gy)", "Sleet(ing)?"], retweet=True
         )
 
 

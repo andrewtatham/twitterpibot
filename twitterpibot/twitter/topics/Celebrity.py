@@ -13,7 +13,7 @@ class OneDirection(Topic):
             "Zayn", "Malik"
 
         ], [
-            "\bLiam",
+            "Liam",
             "Harry", "Styles",
             "Louis"
         ])

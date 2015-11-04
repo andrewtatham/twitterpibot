@@ -4,9 +4,11 @@ import re
 
 def _init_regex(regular_expression_list):
     def make_spaces_optional(rx):
-        return rx.replace(" ", " ?")
+        return r"\b" + rx.replace(" ", r" ?") + r"\b"
 
-    return re.compile("|".join(map(make_spaces_optional, regular_expression_list)), re.IGNORECASE)
+    rx = "|".join(map(make_spaces_optional, regular_expression_list))
+    print(rx)
+    return re.compile(rx, re.IGNORECASE)
 
 
 class Topic(object):
@@ -19,7 +21,8 @@ class Topic(object):
                  on_date_range=0,
                  retweet=False,
                  reply=False,
-                 stream=False):
+                 stream=False
+                 ):
 
         self._retweet = retweet
         self._reply = reply
@@ -81,12 +84,12 @@ class Topic(object):
                             and self._from_month <= today.month <= self._to_month
 
         if not has_date_range or is_date_match:
-            definite_matches = self.definite_rx.findall(text)
+            definite_matches = [match.group(0) for match in self.definite_rx.finditer(text) if match]
             if definite_matches:
                 result["definite_matches"] = definite_matches
                 return result
             elif self.possible_rx:
-                possible_matches = self.possible_rx.findall(text)
+                possible_matches = [match.group(0) for match in self.possible_rx.finditer(text) if match]
                 if possible_matches:
                     result["possible_matches"] = possible_matches
                     return result
@@ -94,4 +97,3 @@ class Topic(object):
                     return None
         else:
             return None
-

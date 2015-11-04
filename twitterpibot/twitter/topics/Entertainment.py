@@ -46,8 +46,8 @@ class MatchOfTheDay(Topic):
 class AndrewMarrShow(Topic):
     def __init__(self):
         super(AndrewMarrShow, self).__init__([
-            "Andrew Marr", r"\bmarr\b"
-        ])
+            "Andrew Marr"
+        ],["marr"])
 
 
 class TheArchers(Topic):

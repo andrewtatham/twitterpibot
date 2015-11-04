@@ -1,19 +1,18 @@
 from unittest import TestCase
-from twitterpibot.twitter.topics.Politics import PoliticsUK
+from twitterpibot.twitter.topics.News import Weather
 
 __author__ = 'andrewtatham'
 
 
-class TestPoliticsUK(TestCase):
+class TestWeather(TestCase):
     def test_condition(self):
 
-        topic = PoliticsUK()
+        topic = Weather()
         testcases = [
-            ("Prime Minister", "definite_matches"),
-            ("Prime Number", None),
-            ("tory", "definite_matches"),
-            ("conservatory", None),
-            ("tories", "definite_matches")
+            ("rain", "definite_matches"),
+            ("raining", "definite_matches"),
+            ("train", None),
+            ("training", None)
         ]
         for testcase in testcases:
             actual = topic.condition(testcase[0])
@@ -21,7 +20,7 @@ class TestPoliticsUK(TestCase):
             print("testcase actual", testcase, actual)
             if testcase[1]:
                 self.assertIsNotNone(actual)
-                print(actual["definite_matches"])
                 self.assertTrue(testcase[0] in actual[testcase[1]])
             else:
                 self.assertIsNone(actual)
+

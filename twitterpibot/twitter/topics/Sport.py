@@ -32,7 +32,7 @@ class FootballUK(Topic):
             "Premier League",
             "Soccer"
 
-        ], ["Football", "rangers", "celtic", r"\bHib"])
+        ], ["Football", "rangers", "celtic", "Hib(ernian)"])
 
 
 class Rugby(Topic):
@@ -62,7 +62,7 @@ class Tennis(Topic):
 class SportOther(Topic):
     def __init__(self):
         super(SportOther, self).__init__([
-            r"#(?P<hometeam>[\w]{2,4}) ?vs?#? ?(?P<awayteam>[\w]{2,4})\b"
+            "#(?P<hometeam>[\w]{2,4}) ?vs?#? ?(?P<awayteam>[\w]{2,4})"
 
         ])
 

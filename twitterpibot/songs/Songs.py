@@ -398,10 +398,10 @@ class Songs(object):
         lyrics = open(self.songsfolder + lyricsfile, "rb").readlines()
         lastlyrics = set([])
         for lyric in lyrics:
-            lyric = lyric.strip()
+            lyric = str(lyric.strip())
             if lyric:
                 if "<<screen_name>>" in lyric:
-                    lyric = lyric.replace("<<screen_name>>", "@" + target)
+                    lyric = lyric.replace("<<screen_name>>", "@" + bytes(target))
 
                 if hashtag:
                     lyric += ' ' + hashtag
