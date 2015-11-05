@@ -1,15 +1,18 @@
-from twitterpibot.twitter.topics.Topic import Topic
+from twitterpibot.twitter.topics.Topic import DontCareTopic,SpamTopic
 
 
-class DecsAndLondon(Topic):
+class DecsAndLondon(SpamTopic):
     def __init__(self):
         super(DecsAndLondon, self).__init__({"DecsAndLondon", "#DoItLikeItsLegal"})
 
 
-class Starbucks(Topic):
+class Starbucks(DontCareTopic):
     def __init__(self):
         super(Starbucks, self).__init__(
-            {"Pumpkin Spice(d) Latte", "PSL", "Red Cups", "(Eggnog|Gingerbread) Latte", "Eggnog Latte"})
+            {
+                "Pumpkin Spice(d) Latte", "PSL",
+                "Red Cups", "(Eggnog|Gingerbread) Latte"
+            })
 
 
 def get():

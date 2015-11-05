@@ -1,7 +1,7 @@
-from twitterpibot.twitter.topics.Topic import Topic
+from twitterpibot.twitter.topics.Topic import NewsTopic
 
 
-class PoliticsUK(Topic):
+class PoliticsUK(NewsTopic):
     def __init__(self):
         super(PoliticsUK, self).__init__([
             "(David)? Cameron",
@@ -23,7 +23,7 @@ class PoliticsUK(Topic):
         ], ["politic", "PM"])
 
 
-class PoliticsUS(Topic):
+class PoliticsUS(NewsTopic):
     def __init__(self):
         super(PoliticsUS, self).__init__([
 

@@ -1,4 +1,4 @@
-from twitterpibot.twitter.topics.Topic import Topic
+from twitterpibot.twitter.topics.Topic import NewsTopic
 
 _months = [
     "Jan(uary)",
@@ -14,7 +14,7 @@ _months = [
 ]
 
 
-class FirstOfMonth(Topic):
+class FirstOfMonth(NewsTopic):
     def __init__(self):
         super(FirstOfMonth, self).__init__(
            ["Happy New Month", "(first|1(st)) of (%s)".format("|".join(_months))]

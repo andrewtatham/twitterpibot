@@ -1,7 +1,7 @@
-from twitterpibot.twitter.topics.Topic import Topic
+from twitterpibot.twitter.topics.Topic import DontCareTopic
 
 
-class OneDirection(Topic):
+class OneDirection(DontCareTopic):
     def __init__(self):
         super(OneDirection, self).__init__([
             "1D",
@@ -19,7 +19,7 @@ class OneDirection(Topic):
         ])
 
 
-class FiveSecondsOfSummer(Topic):
+class FiveSecondsOfSummer(DontCareTopic):
     def __init__(self):
         super(FiveSecondsOfSummer, self).__init__([
             "5SOS",
@@ -37,7 +37,7 @@ class FiveSecondsOfSummer(Topic):
         ])
 
 
-class Kardashians(Topic):
+class Kardashians(DontCareTopic):
     def __init__(self):
         super(Kardashians, self).__init__([
             "Kardashian",
@@ -52,7 +52,7 @@ class Kardashians(Topic):
         ])
 
 
-class CelebrityOther(Topic):
+class CelebrityOther(DontCareTopic):
     def __init__(self):
         super(CelebrityOther, self).__init__([
             "Justin Bieber",

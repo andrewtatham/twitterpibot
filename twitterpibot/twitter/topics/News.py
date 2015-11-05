@@ -1,7 +1,7 @@
-from twitterpibot.twitter.topics.Topic import Topic
+from twitterpibot.twitter.topics.Topic import NewsTopic,DontCareTopic
 
 
-class BadThings(Topic):
+class BadThings(NewsTopic):
     def __init__(self):
         super(BadThings, self).__init__(
             [
@@ -22,18 +22,19 @@ class BadThings(Topic):
                 "isis",
                 "knife(d)?",
                 "arson",
-                "(child|sex) abuse"
+                "(child|sex) abuse",
+                "rap(e|ed|ist|ing)'"
 
             ], [
                 "fire",
                 "dead",
                 "suspect(ed)",
                 "abuse"
-            ], retweet=True
+            ]
         )
 
 
-class Weather(Topic):
+class Weather(DontCareTopic):
     def __init__(self):
         super(Weather, self).__init__(
             [
@@ -43,11 +44,11 @@ class Weather(Topic):
                 "Fog(gy)",
                 "Sleet(ing)?"
 
-            ], retweet=True
+            ]
         )
 
 
-class ExtremeWeather(Topic):
+class ExtremeWeather(NewsTopic):
     def __init__(self):
         super(ExtremeWeather, self).__init__(
             [
@@ -63,11 +64,11 @@ class ExtremeWeather(Topic):
                 "thunder",
                 "storm",
                 "flood"
-            ], retweet=True
+            ]
         )
 
 
-class Geology(Topic):
+class Geology(NewsTopic):
     def __init__(self):
         super(Geology, self).__init__([
             "Earthquake",
@@ -75,9 +76,7 @@ class Geology(Topic):
             "Volcano",
             "Avalanche",
             "landslide"
-        ],
-            retweet=True
-        )
+        ])
 
 
 def get():

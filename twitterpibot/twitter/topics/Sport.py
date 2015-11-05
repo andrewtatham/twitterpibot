@@ -1,7 +1,7 @@
-from twitterpibot.twitter.topics.Topic import Topic
+from twitterpibot.twitter.topics.Topic import DontCareTopic, NewsTopic
 
 
-class FootballUK(Topic):
+class FootballUK(DontCareTopic):
     def __init__(self):
         super(FootballUK, self).__init__([
             "Man City",
@@ -35,13 +35,13 @@ class FootballUK(Topic):
         ], ["Football", "rangers", "celtic", "Hib(ernian)"])
 
 
-class Rugby(Topic):
+class Rugby(DontCareTopic):
     def __init__(self):
         teams = {"All Blacks"}
         super(Rugby, self).__init__({"Rugby", "#RWC"} | teams)
 
 
-class Cricket(Topic):
+class Cricket(DontCareTopic):
     def __init__(self):
         teams = ["England", "Pakistan", "India", "Australia"]
         ["%s to (bat|field|bowl)".format(team) for team in teams]
@@ -49,23 +49,26 @@ class Cricket(Topic):
             {"Cricket", "wicket", "the toss"} | set(["%s to (bat|field|bowl)".format(team) for team in teams]))
 
 
-class Golf(Topic):
+class Golf(DontCareTopic):
     def __init__(self):
         super(Golf, self).__init__({"Golf", "Tiger Woods", "PGA Tour"})
 
 
-class Tennis(Topic):
+class Tennis(DontCareTopic):
     def __init__(self):
         super(Tennis, self).__init__({"Tennis", "Federer", "Nadal"})
 
 
-class SportOther(Topic):
+class SportOther(DontCareTopic):
     def __init__(self):
         super(SportOther, self).__init__([
             "#(?P<hometeam>[\w]{2,4}) ?vs?#? ?(?P<awayteam>[\w]{2,4})"
 
         ])
 
+class FormulaOne(NewsTopic):
+    def __init__(self):
+        super(FormulaOne, self).__init__({"F1", "Formula One"})
 
 def get():
     return [
@@ -75,5 +78,6 @@ def get():
         Cricket(),
         Golf(),
         Tennis(),
+        FormulaOne(),
         SportOther()
     ]

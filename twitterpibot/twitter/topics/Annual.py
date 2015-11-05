@@ -1,21 +1,27 @@
-from twitterpibot.twitter.topics.Topic import Topic
+from twitterpibot.twitter.topics.Topic import NewsTopic, DontCareTopic
 
 
-class NewYear(Topic):
+class NewYear(NewsTopic):
     def __init__(self):
         super(NewYear, self).__init__({"New Year"},
                                       on_date="01/01",
                                       on_date_range=7)
 
 
-class Easter(Topic):
+class Easter(NewsTopic):
     def __init__(self):
-        super(Easter, self).__init__({"Easter", "Maundy Thursday", "Good Friday", "Holy Saturday", "Palm Sunday"},
-                                     from_date="01/03",
-                                     to_date="31/04")
+        super(Easter, self).__init__({
+            "Easter",
+            "Maundy Thursday",
+            "Good Friday",
+            "Holy Saturday",
+            "Palm Sunday"
+        },
+            from_date="01/03",
+            to_date="31/04")
 
 
-class Halloween(Topic):
+class Halloween(NewsTopic):
     def __init__(self):
         super(Halloween, self).__init__(
             ["Halloween", "trick or treat"],
@@ -25,15 +31,7 @@ class Halloween(Topic):
         )
 
 
-class AllSaintsDay(Topic):
-    def __init__(self):
-        super(AllSaintsDay, self).__init__(
-            ["All Saints Day"],
-            on_date="01/11"
-        )
-
-
-class BonfireNight(Topic):
+class BonfireNight(NewsTopic):
     def __init__(self):
         super(BonfireNight, self).__init__(
             ["Bonfire", "Firework", "Guy Fawkes", "5th of Nov(ember)?"],
@@ -43,9 +41,27 @@ class BonfireNight(Topic):
         )
 
 
-class Christmas(Topic):
+class Thanksgiving(DontCareTopic):
     def __init__(self):
-        super(Christmas, self).__init__({"Christmas", "Xmas"})
+        super(Thanksgiving, self).__init__(
+            {"Thanksgiving", "Turkey"},
+            from_date="21/11",
+            to_date="28/11")
+
+
+class BlackFriday(DontCareTopic):
+    def __init__(self):
+        super(BlackFriday, self).__init__(
+            {"Black Friday"},
+            from_date="21/11",
+            to_date="01/12")
+
+
+class Christmas(NewsTopic):
+    def __init__(self):
+        super(Christmas, self).__init__({"Christmas", "Xmas"},
+                                        from_date="21/12",
+                                        to_date="31/12")
 
 
 def get():
@@ -54,5 +70,7 @@ def get():
         Easter(),
         Halloween(),
         BonfireNight(),
+        Thanksgiving(),
+        BlackFriday(),
         Christmas()
     ]

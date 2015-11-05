@@ -1,16 +1,16 @@
-from twitterpibot.twitter.topics.Topic import Topic
+from twitterpibot.twitter.topics.Topic import DontCareTopic
 
 __author__ = 'andrewtatham'
 
 
-class XFactor(Topic):
+class XFactor(DontCareTopic):
     def __init__(self):
         super(XFactor, self).__init__([
             "XFactor"
         ])
 
 
-class StrictlyComeDancing(Topic):
+class StrictlyComeDancing(DontCareTopic):
     def __init__(self):
         super(StrictlyComeDancing, self).__init__([
             "#Strictly",
@@ -20,7 +20,7 @@ class StrictlyComeDancing(Topic):
         ])
 
 
-class DrWho(Topic):
+class DrWho(DontCareTopic):
     def __init__(self):
         super(DrWho, self).__init__([
             "(Dr|Doctor) Who",
@@ -29,35 +29,35 @@ class DrWho(Topic):
         ])
 
 
-class MostHaunted(Topic):
+class MostHaunted(DontCareTopic):
     def __init__(self):
         super(MostHaunted, self).__init__([
             "Most Haunted"
         ])
 
 
-class MatchOfTheDay(Topic):
+class MatchOfTheDay(DontCareTopic):
     def __init__(self):
         super(MatchOfTheDay, self).__init__([
             "Match of the Day", "MOTD"
         ])
 
 
-class AndrewMarrShow(Topic):
+class AndrewMarrShow(DontCareTopic):
     def __init__(self):
         super(AndrewMarrShow, self).__init__([
             "Andrew Marr"
         ], ["marr"])
 
 
-class TheArchers(Topic):
+class TheArchers(DontCareTopic):
     def __init__(self):
         super(TheArchers, self).__init__([
             "#TheArchers"
         ])
 
 
-class AtMidnight(Topic):
+class AtMidnight(DontCareTopic):
     def __init__(self):
         super(AtMidnight, self).__init__([
             "@Midnight", "#[\w]+in[\d]+words?"

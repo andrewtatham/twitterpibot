@@ -21,12 +21,14 @@ class Topic(object):
                  on_date_range=0,
                  retweet=False,
                  reply=False,
-                 stream=False
+                 stream=False,
+                 spam=False
                  ):
 
         self._retweet = retweet
         self._reply = reply
         self._stream = stream
+        self._spam = spam
 
         self.definite_rx = _init_regex(definite_regexes)
         self.possible_rx = None
@@ -97,3 +99,85 @@ class Topic(object):
                     return None
         else:
             return None
+
+
+class GoodTopic(Topic):
+    def __init__(self,
+                 definite_regexes,
+                 possible_regexes=None,
+                 from_date=None,
+                 to_date=None,
+                 on_date=None,
+                 on_date_range=0
+                 ):
+        super(GoodTopic, self).__init__(
+            definite_regexes,
+            possible_regexes,
+            from_date,
+            to_date,
+            on_date,
+            on_date_range,
+            retweet=True,
+            reply=True,
+            stream=True)
+
+
+class DontCareTopic(Topic):
+    def __init__(self,
+                 definite_regexes,
+                 possible_regexes=None,
+                 from_date=None,
+                 to_date=None,
+                 on_date=None,
+                 on_date_range=0
+                 ):
+        super(DontCareTopic, self).__init__(
+            definite_regexes,
+            possible_regexes,
+            from_date,
+            to_date,
+            on_date,
+            on_date_range,
+            retweet=False,
+            reply=False,
+            stream=False)
+class NewsTopic(Topic):
+    def __init__(self,
+                 definite_regexes,
+                 possible_regexes=None,
+                 from_date=None,
+                 to_date=None,
+                 on_date=None,
+                 on_date_range=0
+                 ):
+        super(NewsTopic, self).__init__(
+            definite_regexes,
+            possible_regexes,
+            from_date,
+            to_date,
+            on_date,
+            on_date_range,
+            retweet=True,
+            reply=False,
+            stream=True)
+
+class SpamTopic(Topic):
+    def __init__(self,
+                 definite_regexes,
+                 possible_regexes=None,
+                 from_date=None,
+                 to_date=None,
+                 on_date=None,
+                 on_date_range=0
+                 ):
+        super(SpamTopic, self).__init__(
+            definite_regexes,
+            possible_regexes,
+            from_date,
+            to_date,
+            on_date,
+            on_date_range,
+            retweet=False,
+            reply=False,
+            stream=False,
+            spam=True)
