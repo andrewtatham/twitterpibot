@@ -11,7 +11,7 @@ class PhotoScheduledTask(ScheduledTask):
         return CronTrigger(hour="*/3")
 
     def onRun(self):
-        photos = hardware.TakePhotoToDisk("temp", "PhotoScheduledTask", "jpg")
+        photos = hardware.take_photo("temp", "PhotoScheduledTask", "jpg")
         if any(photos):
             tweet = OutgoingTweet(filePaths=photos)
             Send(tweet)

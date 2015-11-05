@@ -11,7 +11,7 @@ class PhotoResponse(Response):
                and self.Contains(inbox_item.words, "photo")
 
     def Respond(self, inbox_item):
-        photos = hardware.TakePhotoToDisk("temp", "PhotoResponse", "jpg")
+        photos = hardware.take_photo("temp", "PhotoResponse", "jpg")
         if any(photos):
             photomessages = ["cheese!", "smile!"]
             ReplyWith(inbox_item=inbox_item,

@@ -8,4 +8,4 @@ class LightsTask(Task):
         self.core = True
 
     def onRun(self):
-        hardware.Lights()
+        hardware.on_lights_task()

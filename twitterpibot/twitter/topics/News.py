@@ -7,24 +7,28 @@ class BadThings(Topic):
             [
                 "Shooting",
                 "Gunman",
-                "Fatal",
-                "wound",
-                "victim",
-                "murder",
+                "Fatal(y|ites)?",
+                "wound(ed)?",
+                "victims?",
+                "murder(er|ed)?",
                 "suicide",
-                "peadophile",
-                "terror",
-                "stab",
-                "bomb",
-                "explosion",
-                "fire",
+                "peadophil(e|es|ic)?",
+                "terror(ist|ism)?",
+                "stab(bed|bing)?",
+                "bomb(s)?",
+                "explosion(s)?",
                 "crash",
                 "isil",
                 "isis",
-                "kninfed",
-                "dead",
-                "suspect"
+                "knife(d)?",
+                "arson",
+                "(child|sex) abuse"
 
+            ], [
+                "fire",
+                "dead",
+                "suspect(ed)",
+                "abuse"
             ], retweet=True
         )
 
@@ -32,14 +36,47 @@ class BadThings(Topic):
 class Weather(Topic):
     def __init__(self):
         super(Weather, self).__init__(
-            ["Sun(ny)?", "rain(ing)?", "Snow(ing)?", "Fog(gy)", "Sleet(ing)?"], retweet=True
+            [
+                "Sun(ny|shine)?",
+                "rain(ing)?",
+                "Snow(ing|fall)?",
+                "Fog(gy)",
+                "Sleet(ing)?"
+
+            ], retweet=True
+        )
+
+
+class ExtremeWeather(Topic):
+    def __init__(self):
+        super(ExtremeWeather, self).__init__(
+            [
+                "thunder storm",
+                "heat wave",
+                "(tropical)? cyclone",
+                "tornado",
+                "hurricane",
+                "flash flood",
+                "drought"
+
+            ], [
+                "thunder",
+                "storm",
+                "flood"
+            ], retweet=True
         )
 
 
 class Geology(Topic):
     def __init__(self):
-        super(Geology, self).__init__(
-            ["Earthquake", "Volcano", "landslide"], retweet=True
+        super(Geology, self).__init__([
+            "Earthquake",
+            "Tsunami",
+            "Volcano",
+            "Avalanche",
+            "landslide"
+        ],
+            retweet=True
         )
 
 
@@ -47,5 +84,6 @@ def get():
     return [
         BadThings(),
         Weather(),
+        ExtremeWeather(),
         Geology()
     ]

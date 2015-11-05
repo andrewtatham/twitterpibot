@@ -80,10 +80,10 @@ if is_brightpi_attached:
     brightpi = MyBrightPi.BrightPI()
 
 
-def TakePhotoToDisk(dir, name, ext, useFlash=False):
+def take_photo(dir, name, ext, use_flash=False):
     try:
-        if useFlash:
-            CameraFlash(True)
+        if use_flash:
+            camera_flash(True)
         photos = []
         if is_webcam_attached and webcam:
             photos.append(webcam.TakePhotoToDisk(dir, name, ext))
@@ -91,11 +91,11 @@ def TakePhotoToDisk(dir, name, ext, useFlash=False):
             photos.append(picam.TakePhotoToDisk(dir, name, ext))
         return photos
     finally:
-        if useFlash:
-            CameraFlash(False)
+        if use_flash:
+            camera_flash(False)
 
 
-def CameraFlash(on):
+def camera_flash(on):
     if is_unicornhat_attached:
         myunicornhat.CameraFlash(on)
     if is_piglow_attached:
@@ -104,35 +104,35 @@ def CameraFlash(on):
         brightpi.CameraFlash(on)
 
 
-def Lights():
+def on_lights_task():
     if is_unicornhat_attached:
         myunicornhat.Lights()
     if is_piglow_attached:
         MyPiglow.Lights()
 
 
-def OnLightsScheduledTask():
+def on_lights_scheduled_task():
     if is_unicornhat_attached:
         myunicornhat.OnLightsScheduledTask()
     if is_piglow_attached:
         MyPiglow.OnLightsScheduledTask()
 
 
-def Fade():
+def on_fade_task():
     if is_unicornhat_attached:
         myunicornhat.Fade()
     if is_piglow_attached:
         MyPiglow.Fade()
 
 
-def inbox_item_received(inbox_item):
+def on_inbox_item_received(inbox_item):
     if is_unicornhat_attached:
         myunicornhat.inbox_item_received(inbox_item)
     if is_piglow_attached:
         MyPiglow.Oninbox_itemRecieved(inbox_item)
 
 
-def Stop():
+def stop():
     logger.info("Stopping")
     if is_webcam_attached and webcam:
         webcam.Close()

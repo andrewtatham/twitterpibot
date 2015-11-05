@@ -8,4 +8,4 @@ class LightsScheduledTask(ScheduledTask):
         return IntervalTrigger(minutes=1)
 
     def onRun(self):
-        hardware.OnLightsScheduledTask()
+        hardware.on_lights_scheduled_task()

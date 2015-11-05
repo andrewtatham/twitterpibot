@@ -36,9 +36,9 @@ class AllSaintsDay(Topic):
 class BonfireNight(Topic):
     def __init__(self):
         super(BonfireNight, self).__init__(
-            ["Bonfire", "Firework", "Guy Fawkes"],
+            ["Bonfire", "Firework", "Guy Fawkes", "5th of Nov(ember)?"],
             ["sparkler", "rocket"],
-            on_date="25/10",
+            on_date="05/11",
             on_date_range=7
         )
 

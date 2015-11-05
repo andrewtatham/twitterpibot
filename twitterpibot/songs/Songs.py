@@ -401,7 +401,7 @@ class Songs(object):
             lyric = str(lyric.strip())
             if lyric:
                 if "<<screen_name>>" in lyric:
-                    lyric = lyric.replace("<<screen_name>>", "@" + bytes(target))
+                    lyric = str(lyric.replace(b"<<screen_name>>", b"@" + bytes(target)))
 
                 if hashtag:
                     lyric += ' ' + hashtag

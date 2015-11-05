@@ -1,4 +1,5 @@
-from twitterpibot.twitter.topics import Daily, Monthly, Annual, Politics, Sport, Entertainment, Celebrity, News, Corporate
+from twitterpibot.twitter.topics import Daily, Monthly, Annual, Politics, Sport, Entertainment, Celebrity, News, \
+    Corporate
 import logging
 
 logger = logging.getLogger(__name__)

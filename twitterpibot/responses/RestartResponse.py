@@ -1,6 +1,5 @@
 from twitterpibot import MyUI
 from twitterpibot.responses.Response import Response
-from twitterpibot.twitter import TwitterHelper
 
 
 class RestartResponse(Response):
@@ -11,7 +10,5 @@ class RestartResponse(Response):
 
     def Respond(self, inbox_item):
         MyUI.close()
-        # if not hardware.iswindows:
-        #    Send(OutgoingDirectMessage(
-        #        text="Restarting...." + str(datetime.datetime.now())))
+
 

@@ -31,7 +31,8 @@ class ProcessInboxTask(Task):
                         RecordIncomingDirectMessage()
                     _process_inbox_item(self, inbox_item)
         except Exception:
-            logger.warn(data)
+            if data:
+                logger.warn(data)
             raise
         finally:
             twitterpibot.MyQueues.inbox.task_done()
@@ -43,7 +44,7 @@ class ProcessInboxTask(Task):
 def _process_inbox_item(args, inbox_item):
     inbox_item.display()
 
-    hardware.inbox_item_received(inbox_item)
+    hardware.on_inbox_item_received(inbox_item)
 
     response = args.responseFactory.Create(inbox_item)
     if response:

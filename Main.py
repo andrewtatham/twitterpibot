@@ -34,6 +34,6 @@ MyUI.start()
 
 Tasks.stop()
 MySchedule.stop()
-hardware.Stop()
+hardware.stop()
 print("Done")
 sys.exit(0)

@@ -47,13 +47,20 @@ class AndrewMarrShow(Topic):
     def __init__(self):
         super(AndrewMarrShow, self).__init__([
             "Andrew Marr"
-        ],["marr"])
+        ], ["marr"])
 
 
 class TheArchers(Topic):
     def __init__(self):
         super(TheArchers, self).__init__([
             "#TheArchers"
+        ])
+
+
+class AtMidnight(Topic):
+    def __init__(self):
+        super(AtMidnight, self).__init__([
+            "@Midnight", "#[\w]+in[\d]+words?"
         ])
 
 
@@ -65,5 +72,6 @@ def get():
         MostHaunted(),
         MatchOfTheDay(),
         AndrewMarrShow(),
-        TheArchers()
+        TheArchers(),
+        AtMidnight()
     ]

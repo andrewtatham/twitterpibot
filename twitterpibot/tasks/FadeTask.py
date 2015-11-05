@@ -9,5 +9,5 @@ class FadeTask(Task):
         self.core = True
 
     def onRun(self):
-        hardware.Fade()
+        hardware.on_fade_task()
         time.sleep(1)

@@ -59,15 +59,15 @@ def get_responses():
         ])
 
     if is_andrewtathampi:
-        responses.extend([
+        responses.append(
             FatherTedResponse()
-        ])
+        )
     elif is_andrewtathampi2:
         pass
 
-    responses.extend([
+    responses.append(
         RetweetResponse()
-    ])
+    )
 
     return responses
 

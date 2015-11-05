@@ -1,7 +1,6 @@
 import logging
 from logging import handlers
 import os
-from twitterpibot.hardware import hardware
 
 rootlogger = logging.getLogger("")
 rootlogger.setLevel(logging.DEBUG)

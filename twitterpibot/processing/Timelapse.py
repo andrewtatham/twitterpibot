@@ -93,7 +93,7 @@ class TimelapsePhotoScheduledTask(ScheduledTask):
 
         name = self.timelapse.name + "_img_" + "{0:05d}".format(self.i)
 
-        hardware.TakePhotoToDisk(
+        hardware.take_photo(
             dir=self.timelapse.dirPath,
             name=name,
             ext=self.timelapse.imageExtension)

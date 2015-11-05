@@ -6,9 +6,9 @@ def _init_regex(regular_expression_list):
     def make_spaces_optional(rx):
         return r"\b" + rx.replace(" ", r" ?") + r"\b"
 
-    rx = "|".join(map(make_spaces_optional, regular_expression_list))
-    print(rx)
-    return re.compile(rx, re.IGNORECASE)
+    regex = "|".join(map(make_spaces_optional, regular_expression_list))
+    print(regex)
+    return re.compile(regex, re.IGNORECASE)
 
 
 class Topic(object):
