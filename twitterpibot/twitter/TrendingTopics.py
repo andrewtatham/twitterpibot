@@ -24,19 +24,19 @@ class TrendingTopic(object):
     def __init__(self, topic_text):
         self.text = topic_text
         logger.info('Determining topics for ' + self.text)
-        self.topics = Topics.get_topics(topic_text)
-        if self.topics:
-            logger.info('Determined topics for ' + self.text + ' to be ' + str(self.topics))
-        else:
-            logger.info('Getting tweets for ' + self.text)
-            topic_tweets = TwitterHelper.search(topic_text)
-            if topic_tweets:
-                tweets_text = reduce(lambda t1, t2: t1 + os.linesep + t2, map(lambda t: t['text'], topic_tweets))
-                tweets_text = ''.join([i if ord(i) < 128 else ' ' for i in tweets_text])
-                logger.info('Determining topics for ' + tweets_text)
-                self.topics = Topics.get_topics(tweets_text)
-                if self.topics:
-                    logger.info('Determined topics for ' + self.text + ' to be ' + str(self.topics))
+        # self.topics = Topics.get_topics(topic_text)
+        # if self.topics:
+        #     logger.info('Determined topics for ' + self.text + ' to be ' + str(self.topics))
+        # else:
+        logger.info('Getting tweets for ' + self.text)
+        topic_tweets = TwitterHelper.search(topic_text)
+        if topic_tweets:
+            tweets_text = reduce(lambda t1, t2: t1 + os.linesep + t2, map(lambda t: t['text'], topic_tweets))
+            tweets_text = ''.join([i if ord(i) < 128 else ' ' for i in tweets_text])
+            logger.info('Determining topics for ' + tweets_text)
+            self.topics = Topics.get_topics(tweets_text)
+            if self.topics:
+                logger.info('Determined topics for ' + self.text + ' to be ' + str(self.topics))
 
     def __str__(self):
         txt = self.__class__.__name__ + ': ' + self.text

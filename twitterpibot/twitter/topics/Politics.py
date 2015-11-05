@@ -7,10 +7,14 @@ class PoliticsUK(NewsTopic):
             "(David)? Cameron",
             "(George)? Osborne",
             "Jeremy Hunt",
+            "(Margret|Maggie)? Thatcher",
             "Conservative",
             "Tor(y|ies)",
 
             "(Jeremy)? Corbyn",
+            "(Ed)? Milliband",
+            "(Tony)? Blair",
+            "Gordon Brown",
             "Labour",
 
             "(Nigel)? Farage",
@@ -19,7 +23,8 @@ class PoliticsUK(NewsTopic):
             "PMQ",
             "Prime Minister",
             "Westminster",
-            "Downing"
+            "parliament",
+            "Downing S(ree)?t"
         ], ["politic", "PM"])
 
 

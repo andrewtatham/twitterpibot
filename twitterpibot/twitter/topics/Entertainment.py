@@ -64,6 +64,13 @@ class AtMidnight(DontCareTopic):
         ])
 
 
+class WWE(DontCareTopic):
+    def __init__(self):
+        super(WWE, self).__init__([
+            "WWE"
+        ])
+
+
 def get():
     return [
         XFactor(),
@@ -73,5 +80,6 @@ def get():
         MatchOfTheDay(),
         AndrewMarrShow(),
         TheArchers(),
-        AtMidnight()
+        AtMidnight(),
+        WWE()
     ]

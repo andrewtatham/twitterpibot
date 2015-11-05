@@ -3,7 +3,7 @@ import random
 import datetime
 from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import piracy
 
-from twitterpibot.twitter.TwitterHelper import ReplyWith
+from twitterpibot.twitter.TwitterHelper import reply_with
 
 
 class TalkLikeAPirateDayResponse(Response):
@@ -14,4 +14,4 @@ class TalkLikeAPirateDayResponse(Response):
 
     def Respond(self, inbox_item):
         response = random.choice(piracy) + " #TalkLikeAPirateDay"
-        ReplyWith(inbox_item, response)
+        reply_with(inbox_item, response)

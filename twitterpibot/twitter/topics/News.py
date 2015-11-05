@@ -1,4 +1,4 @@
-from twitterpibot.twitter.topics.Topic import NewsTopic,DontCareTopic
+from twitterpibot.twitter.topics.Topic import NewsTopic, DontCareTopic
 
 
 class BadThings(NewsTopic):

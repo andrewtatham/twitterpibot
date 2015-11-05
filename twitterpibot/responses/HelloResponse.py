@@ -1,7 +1,7 @@
 import re
 from twitterpibot.responses.Response import Response
 import random
-from twitterpibot.twitter.TwitterHelper import ReplyWith
+from twitterpibot.twitter.TwitterHelper import reply_with
 
 
 class HelloResponse(Response):
@@ -27,4 +27,4 @@ class HelloResponse(Response):
                and bool(self.rx.match(inbox_item.text))
 
     def Respond(self, inbox_item):
-        ReplyWith(inbox_item, random.choice(self.HelloWords))
+        reply_with(inbox_item, random.choice(self.HelloWords))

@@ -3,7 +3,7 @@ from apscheduler.triggers.cron import CronTrigger
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 
 import datetime
-from twitterpibot.twitter.TwitterHelper import Send
+from twitterpibot.twitter.TwitterHelper import send
 
 
 class EdBallsDay(ScheduledTask):
@@ -14,4 +14,4 @@ class EdBallsDay(ScheduledTask):
         year = str(datetime.date.today().year)
         text = "@edballs ED BALLS #EdBallsDay #EdBallsDay" + year
         tweet = OutgoingTweet(text=text)
-        Send(tweet)
+        send(tweet)

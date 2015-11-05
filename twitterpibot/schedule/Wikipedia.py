@@ -6,7 +6,7 @@ from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 import wikipedia
 from wikipedia.exceptions import DisambiguationError
-from twitterpibot.twitter.TwitterHelper import Send
+from twitterpibot.twitter.TwitterHelper import send
 
 
 class Wikipedia(ScheduledTask):
@@ -31,7 +31,7 @@ class Wikipedia(ScheduledTask):
         if page:
             text = cap(page.summary, 100) + page.url
             tweet = OutgoingTweet(text=text)
-            Send(tweet)
+            send(tweet)
 
 
 def cap(s, l):

@@ -6,7 +6,7 @@ import twitterpibot.incoming.InboxItemFactory as InboxItemFactory
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.Statistics import RecordIncomingTweet, RecordIncomingDirectMessage
-from twitterpibot.twitter.TwitterHelper import Send
+from twitterpibot.twitter.TwitterHelper import send
 import twitterpibot.hardware.hardware as hardware
 import twitterpibot.MyQueues
 
@@ -48,4 +48,4 @@ def _process_inbox_item(args, inbox_item):
 
     response = args.responseFactory.Create(inbox_item)
     if response:
-        Send(response)
+        send(response)

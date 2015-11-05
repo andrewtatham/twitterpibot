@@ -1,7 +1,7 @@
 import random
 
 from twitterpibot.responses.Response import Response
-from twitterpibot.twitter.TwitterHelper import ReplyWith
+from twitterpibot.twitter.TwitterHelper import reply_with
 
 
 class Magic8BallResponse(Response):
@@ -48,4 +48,4 @@ class Magic8BallResponse(Response):
 
     def Respond(self, inbox_item):
         response = random.choice(self.responses) + " #Magic8Ball"
-        ReplyWith(inbox_item=inbox_item, text=response)
+        reply_with(inbox_item=inbox_item, text=response)

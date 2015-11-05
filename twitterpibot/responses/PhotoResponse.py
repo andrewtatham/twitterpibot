@@ -1,7 +1,7 @@
 from twitterpibot.responses.Response import Response
 import random
 import twitterpibot.hardware.hardware as hardware
-from twitterpibot.twitter.TwitterHelper import ReplyWith
+from twitterpibot.twitter.TwitterHelper import reply_with
 
 
 class PhotoResponse(Response):
@@ -14,7 +14,7 @@ class PhotoResponse(Response):
         photos = hardware.take_photo("temp", "PhotoResponse", "jpg")
         if any(photos):
             photomessages = ["cheese!", "smile!"]
-            ReplyWith(inbox_item=inbox_item,
+            reply_with(inbox_item=inbox_item,
                       text=random.choice(photomessages),
-                      asTweet=True,
-                      filePaths=photos)
+                      as_tweet=True,
+                      file_paths=photos)

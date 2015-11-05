@@ -5,7 +5,7 @@ import itertools
 
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.processing.christmas import is_christmas
-from twitterpibot.twitter.TwitterHelper import Send, ReplyWith
+from twitterpibot.twitter.TwitterHelper import send, reply_with
 from twitterpibot.users import User
 
 
@@ -419,7 +419,7 @@ class Songs(object):
 
     def _send(self, inbox_item, lyric, target, in_reply_to_status_id):
         if inbox_item:
-            return ReplyWith(
+            return reply_with(
                 inbox_item=inbox_item,
                 text=lyric,
                 in_reply_to_status_id=in_reply_to_status_id)
@@ -435,7 +435,7 @@ class Songs(object):
             tweet = OutgoingTweet(
                 text=text,
                 in_reply_to_status_id=in_reply_to_status_id)
-            return Send(tweet)
+            return send(tweet)
 
 
 class CaseInsensitiveDict(dict):

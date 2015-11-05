@@ -1,7 +1,7 @@
 import re
 from twitterpibot.responses.Response import Response
 import random
-from twitterpibot.twitter.TwitterHelper import ReplyWith
+from twitterpibot.twitter.TwitterHelper import reply_with
 
 
 class ThanksResponse(Response):
@@ -21,4 +21,4 @@ class ThanksResponse(Response):
             "thankyou",
             "thank u",
         ]
-        ReplyWith(inbox_item, random.choice(thanks) + " for the " + random.choice(thanks))
+        reply_with(inbox_item, random.choice(thanks) + " for the " + random.choice(thanks))

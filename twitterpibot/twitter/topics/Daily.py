@@ -8,9 +8,24 @@ class MondayMotivation(DontCareTopic):
         super(MondayMotivation, self).__init__(["Monday Motivation"])
 
 
+class TuesdayTreats(DontCareTopic):
+    def __init__(self):
+        super(TuesdayTreats, self).__init__(["Tuesday Treats?"])
+
+
+class WednesdayWisdom(DontCareTopic):
+    def __init__(self):
+        super(WednesdayWisdom, self).__init__(["Wednesday Wisdom"])
+
+
+class ThursdayThoughts(DontCareTopic):
+    def __init__(self):
+        super(ThursdayThoughts, self).__init__(["Thursday Thoughts?"])
+
+
 class FollowFriday(DontCareTopic):
     def __init__(self):
-        super(FollowFriday, self).__init__(["#FF", "#FollowFriday"])
+        super(FollowFriday, self).__init__(["#FF", "Follow Friday"])
 
 
 class FridayFeeling(DontCareTopic):
@@ -26,7 +41,9 @@ class SuperSunday(DontCareTopic):
 def get():
     return [
         MondayMotivation(),
-
+        TuesdayTreats(),
+        WednesdayWisdom(),
+        ThursdayThoughts(),
         FollowFriday(), FridayFeeling(),
         SuperSunday()
     ]

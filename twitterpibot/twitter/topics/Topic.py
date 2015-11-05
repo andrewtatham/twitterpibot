@@ -141,6 +141,8 @@ class DontCareTopic(Topic):
             retweet=False,
             reply=False,
             stream=False)
+
+
 class NewsTopic(Topic):
     def __init__(self,
                  definite_regexes,
@@ -160,6 +162,7 @@ class NewsTopic(Topic):
             retweet=True,
             reply=False,
             stream=True)
+
 
 class SpamTopic(Topic):
     def __init__(self,

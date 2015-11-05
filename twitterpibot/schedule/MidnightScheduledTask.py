@@ -3,7 +3,7 @@ from apscheduler.triggers.cron import CronTrigger
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 from twitterpibot.Statistics import GetStatistics, Reset
-from twitterpibot.twitter.TwitterHelper import Send
+from twitterpibot.twitter.TwitterHelper import send
 
 
 class MidnightScheduledTask(ScheduledTask):
@@ -12,5 +12,5 @@ class MidnightScheduledTask(ScheduledTask):
 
     def onRun(self):
         stats = GetStatistics()
-        Send(OutgoingDirectMessage(text=stats))
+        send(OutgoingDirectMessage(text=stats))
         Reset()

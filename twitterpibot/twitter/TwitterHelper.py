@@ -23,16 +23,16 @@ def init(screen_name):
         return me["id_str"]
 
 
-def Send(outboxItem):
-    outboxItem.display()
+def send(outbox_item):
+    outbox_item.display()
     with MyTwitter() as twitter:
-        if type(outboxItem) is OutgoingTweet:
+        if type(outbox_item) is OutgoingTweet:
 
             RecordOutgoingTweet()
 
-            if outboxItem.filePaths and any(outboxItem.filePaths):
+            if outbox_item.filePaths and any(outbox_item.filePaths):
                 media_ids = []
-                for filePath in outboxItem.filePaths:
+                for filePath in outbox_item.filePaths:
                     ext = os.path.splitext(filePath)
                     if ext == "mp4":
                         media_id = _UploadVideo(filePath)
@@ -42,44 +42,44 @@ def Send(outboxItem):
                         media_ids.append(media_id)
 
                 if media_ids:
-                    outboxItem.media_ids = media_ids
+                    outbox_item.media_ids = media_ids
 
             response = twitter.update_status(
-                status=outboxItem.status,
-                in_reply_to_status_id=outboxItem.in_reply_to_status_id,
-                media_ids=outboxItem.media_ids)
+                status=outbox_item.status,
+                in_reply_to_status_id=outbox_item.in_reply_to_status_id,
+                media_ids=outbox_item.media_ids)
             id_str = response["id_str"]
             return id_str
 
-        if type(outboxItem) is OutgoingDirectMessage:
+        if type(outbox_item) is OutgoingDirectMessage:
             RecordOutgoingDirectMessage()
 
             twitter.send_direct_message(
-                text=outboxItem.text,
-                screen_name=outboxItem.screen_name,
-                user_id=outboxItem.user_id)
+                text=outbox_item.text,
+                screen_name=outbox_item.screen_name,
+                user_id=outbox_item.user_id)
 
     return None
 
 
-def ReplyWith(inbox_item, text, asTweet=False, asDM=False, filePaths=None, in_reply_to_status_id=None):
-    replyAsTweet = asTweet or not asDM and inbox_item.isTweet
+def reply_with(inbox_item, text, as_tweet=False, as_direct_message=False, file_paths=None, in_reply_to_status_id=None):
+    replyAsTweet = as_tweet or not as_direct_message and inbox_item.isTweet
 
-    replyAsDM = asDM or not asTweet and inbox_item.isDirectMessage
+    replyAsDM = as_direct_message or not as_tweet and inbox_item.isDirectMessage
 
     if replyAsTweet:
         tweet = OutgoingTweet(
             reply_to=inbox_item,
             text=text,
-            filePaths=filePaths,
+            filePaths=file_paths,
             in_reply_to_status_id=in_reply_to_status_id)
-        return Send(tweet)
+        return send(tweet)
 
     if replyAsDM:
         dm = OutgoingDirectMessage(
             reply_to=inbox_item,
             text=text)
-        return Send(dm)
+        return send(dm)
 
     return None
 

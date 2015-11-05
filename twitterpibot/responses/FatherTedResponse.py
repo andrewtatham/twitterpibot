@@ -1,5 +1,5 @@
 from twitterpibot.responses.Response import Response
-from twitterpibot.twitter.TwitterHelper import ReplyWith
+from twitterpibot.twitter.TwitterHelper import reply_with
 import random
 
 
@@ -70,4 +70,4 @@ class FatherTedResponse(Response):
 
         ]
         response = random.choice(responses)
-        ReplyWith(inbox_item, response)
+        reply_with(inbox_item, response)

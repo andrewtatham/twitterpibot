@@ -30,7 +30,8 @@ class FootballUK(DontCareTopic):
             "FA Cup",
             "Wembley",
             "Premier League",
-            "Soccer"
+            "Soccer",
+            "Leeds United"
 
         ], ["Football", "rangers", "celtic", "Hib(ernian)"])
 
@@ -66,9 +67,11 @@ class SportOther(DontCareTopic):
 
         ])
 
+
 class FormulaOne(NewsTopic):
     def __init__(self):
         super(FormulaOne, self).__init__({"F1", "Formula One"})
+
 
 def get():
     return [

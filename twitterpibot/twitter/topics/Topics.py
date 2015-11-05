@@ -1,5 +1,5 @@
 from twitterpibot.twitter.topics import Daily, Monthly, Annual, Politics, Sport, Entertainment, Celebrity, News, \
-    Corporate, Technology
+    Corporate, Technology, Regional
 import logging
 
 logger = logging.getLogger(__name__)
@@ -20,7 +20,7 @@ _topics.extend(Entertainment.get())
 _topics.extend(News.get())
 _topics.extend(Corporate.get())
 _topics.extend(Technology.get())
-
+_topics.extend(Regional.get())
 
 for topic in _topics:
     logger.debug("Topic %s definite: %s",

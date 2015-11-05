@@ -3,7 +3,7 @@ from apscheduler.triggers.cron import CronTrigger
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 import twitterpibot.hardware.hardware as hardware
-from twitterpibot.twitter.TwitterHelper import Send
+from twitterpibot.twitter.TwitterHelper import send
 
 
 class PhotoScheduledTask(ScheduledTask):
@@ -14,4 +14,4 @@ class PhotoScheduledTask(ScheduledTask):
         photos = hardware.take_photo("temp", "PhotoScheduledTask", "jpg")
         if any(photos):
             tweet = OutgoingTweet(filePaths=photos)
-            Send(tweet)
+            send(tweet)

@@ -25,7 +25,7 @@ class Arduino(GoodTopic):
 class Apple(NewsTopic):
     def __init__(self):
         super(Apple, self).__init__(
-            ["Apple", "Mac(intosh|book)", "iP(a|o)d", "iphone"]
+            ["Apple", "Mac(intosh|book)", "i(P(a|o)d|phone|tunes|watch"]
         )
 
 
@@ -40,7 +40,7 @@ class Microsoft(NewsTopic):
 class Google(NewsTopic):
     def __init__(self):
         super(Google, self).__init__(
-            ["Google", "Android", "Chrome"]
+            ["Google", "Android", "Chrome", "GMail"]
         )
 
 

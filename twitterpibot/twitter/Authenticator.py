@@ -28,14 +28,14 @@ def get_tokens(screen_name):
     exists = os.path.isfile(app_key_path) and os.path.isfile(app_secret_path)
 
     if exists:
-        APP_KEY = pickle.load(open(app_key_path, "rb"))
-        APP_SECRET = pickle.load(open(app_secret_path, "rb"))
+        app_key = pickle.load(open(app_key_path, "rb"))
+        app_secret = pickle.load(open(app_secret_path, "rb"))
     else:
-        APP_KEY = input("Enter your APP_KEY:")
-        APP_SECRET = input("Enter your APP_SECRET:")
+        app_key = input("Enter your APP_KEY:")
+        app_secret = input("Enter your APP_SECRET:")
 
-        pickle.dump(APP_KEY, open(app_key_path, "wb"))
-        pickle.dump(APP_SECRET, open(app_secret_path, "wb"))
+        pickle.dump(app_key, open(app_key_path, "wb"))
+        pickle.dump(app_secret, open(app_secret_path, "wb"))
 
     exists = os.path.isfile(final_oauth_token_path) and os.path.isfile(final_oauth_token_secret_path)
 
@@ -46,7 +46,7 @@ def get_tokens(screen_name):
 
     else:
 
-        twitter = Twython(APP_KEY, APP_SECRET)
+        twitter = Twython(app_key, app_secret)
 
         auth = twitter.get_authentication_tokens()
 
@@ -59,7 +59,7 @@ def get_tokens(screen_name):
 
         oauth_verifier = input("Enter your pin:")
 
-        twitter = Twython(APP_KEY, APP_SECRET, oauth_token, oauth_token_secret)
+        twitter = Twython(app_key, app_secret, oauth_token, oauth_token_secret)
 
         final_step = twitter.get_authorized_tokens(oauth_verifier)
 
@@ -69,6 +69,6 @@ def get_tokens(screen_name):
         pickle.dump(final_oauth_token, open(final_oauth_token_path, "wb"))
         pickle.dump(final_oauth_token_secret, open(final_oauth_token_secret_path, "wb"))
 
-    tokens = [APP_KEY, APP_SECRET, final_oauth_token, final_oauth_token_secret]
+    tokens = [app_key, app_secret, final_oauth_token, final_oauth_token_secret]
 
     return tokens

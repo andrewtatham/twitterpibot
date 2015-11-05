@@ -10,7 +10,7 @@ import cv2
 
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
-from twitterpibot.twitter.TwitterHelper import Send
+from twitterpibot.twitter.TwitterHelper import send
 import twitterpibot.hardware.hardware as hardware
 
 
@@ -176,7 +176,7 @@ class TimelapseUploadScheduledTask(ScheduledTask):
             raise Exception("File size is too big ")
 
         print("[Timelapse]" + self.timelapse.name + " Sending")
-        Send(OutgoingTweet(
+        send(OutgoingTweet(
             text=self.timelapse.tweetText,
             filePaths=[filename]))
 

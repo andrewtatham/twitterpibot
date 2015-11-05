@@ -3,7 +3,7 @@ import logging
 from colorama import Fore, Style, Back
 
 from twitterpibot.Statistics import RecordWarning, RecordError
-from twitterpibot.twitter.TwitterHelper import Send
+from twitterpibot.twitter.TwitterHelper import send
 from twitterpibot.hardware import hardware
 import time
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
@@ -45,7 +45,7 @@ def _try_send_exception():
     global _back_off
     try:
         if hardware.is_linux:
-            Send(OutgoingDirectMessage(text=traceback.format_exc()))
+            send(OutgoingDirectMessage(text=traceback.format_exc()))
             _back_off = 15
     except Exception as e:
         logger.exception(e)

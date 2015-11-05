@@ -1,4 +1,4 @@
-from twitterpibot.twitter.topics.Topic import DontCareTopic,SpamTopic
+from twitterpibot.twitter.topics.Topic import DontCareTopic, SpamTopic
 
 
 class DecsAndLondon(SpamTopic):
