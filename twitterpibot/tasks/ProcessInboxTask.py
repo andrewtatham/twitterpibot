@@ -23,7 +23,7 @@ class ProcessInboxTask(Task):
         try:
             data = twitterpibot.MyQueues.inbox.get()
             if data:
-                inbox_item = InboxItemFactory.Create(data)
+                inbox_item = InboxItemFactory.create(data)
                 if inbox_item:
                     if type(inbox_item) is IncomingTweet:
                         RecordIncomingTweet()
@@ -46,6 +46,6 @@ def _process_inbox_item(args, inbox_item):
 
     hardware.on_inbox_item_received(inbox_item)
 
-    response = args.responseFactory.Create(inbox_item)
+    response = args.responseFactory.create(inbox_item)
     if response:
         send(response)

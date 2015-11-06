@@ -178,7 +178,7 @@ class TimelapseUploadScheduledTask(ScheduledTask):
         print("[Timelapse]" + self.timelapse.name + " Sending")
         send(OutgoingTweet(
             text=self.timelapse.tweetText,
-            filePaths=[filename]))
+            file_paths=[filename]))
 
         if os.path.exists(self.timelapse.dirPath):
             print("[Timelapse] Removing " + self.timelapse.dirPath)

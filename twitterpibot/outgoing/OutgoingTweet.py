@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 class OutgoingTweet(OutboxTextItem):
     # https://dev.twitter.com/rest/reference/post/statuses/update
 
-    def __init__(self, reply_to=None, text=None, in_reply_to_status_id=None, filePaths=None):
+    def __init__(self, reply_to=None, text=None, in_reply_to_status_id=None, file_paths=None):
 
         super(OutgoingTweet, self).__init__()
 
@@ -15,7 +15,7 @@ class OutgoingTweet(OutboxTextItem):
         elif reply_to and reply_to.isTweet and reply_to.status_id:
             self.in_reply_to_status_id = reply_to.status_id
 
-        self.filePaths = filePaths
+        self.filePaths = file_paths
 
         self.status = ''
 

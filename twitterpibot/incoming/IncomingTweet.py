@@ -34,7 +34,7 @@ class IncomingTweet(InboxTextItem):
 
         self.isTweet = True
         self.status_id = data["id_str"]
-        self.sender = Users.getUser(data=data["user"])
+        self.sender = Users.get_user(user_data=data["user"])
         self.from_me = self.sender.isMe
         self.favorited = bool(data["favorited"])
         self.retweeted = bool(data["retweeted"])

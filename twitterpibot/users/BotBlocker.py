@@ -1,72 +1,64 @@
-import re
-from twitterpibot.twitter.MyTwitter import MyTwitter
+import logging
+
 from colorama import Fore, Style
+
+from twitterpibot.twitter import Lists
+from twitterpibot.twitter.MyTwitter import MyTwitter
+from twitterpibot.twitter.topics import Topics
+
+logger = logging.getLogger(__name__)
 
 
 class BotBlocker(object):
-    def __init__(self):
-        tooKeen = ["(follow|DM|join|retweet|contact) (me|us|back|now)"]
-        pornWords = ["sexy", "naughty", "kinky", "frisky", "bored", "cum", "horny", "housewi(fe|ves?)", "teen",
-                     "latina", "ass", "boobs?", "tits?", "puss(y|ies)",
-                     "milf", "hoes?", "boot(y|ies)", "18+", "xxx", "slut", "babe", "dirty", "naked", "bitch"]
-        businessWords = ["team", "professionals ", "Recruitment", "Training", "Leadership", "business", "discount",
-                         "cheap", "betting", "industry", "casino",
-                         "economic", "entrepreneur", "veture", "capital", "startup", "angel", "invest", "enterprise",
-                         "special", "offerring", "custom",
-                         "website", "hosting", "domain", "cms", "brand(ing)?", "media", "client", "project",
-                         "TweetBoss", "marketing", "promotion", "leverage", "influence", "happylowuk[\\d]"]
-        tooKeenRx = re.compile("|".join(tooKeen), re.IGNORECASE)
-        businessRx = re.compile("|".join(businessWords), re.IGNORECASE)
-        pornRx = re.compile("|".join(pornWords), re.IGNORECASE)
-        self.rxs = [(tooKeenRx, 5), (pornRx, 4), (businessRx, 1)]
-
     def IsUserBot(self, user):
-        blockFollower = False
-        score = 0
-        if not user.verified and not user.isFriend and not user.description:
-            score += 7
-
-        searchText = ""
+        block_follower = False
+        search_text = ""
         if user.name:
-            searchText += user.name
+            search_text += user.name
         if user.screen_name:
-            searchText += user.screen_name
+            search_text += " " + user.screen_name
         if user.description:
-            searchText += user.description
+            search_text += " " + user.description
 
-        for rx in self.rxs:
-            matches = rx[0].findall(searchText)
-            if any(matches):
-                score += rx[1] * len(matches)
-        if score > 10:
-            blockFollower = True
-        if not blockFollower:
+        logger.info("Checking user profile: " + search_text)
+
+        topics1 = Topics.get_topics(search_text)
+        if topics1:
+            logger.info("Profile topics:" + str(topics1))
+            block_follower = topics1.spam()
+
+        if not block_follower:
+
             with MyTwitter() as twitter:
-                lastTweets = twitter.get_user_timeline(user_id=user.id,
-                                                       screen_name=user.screen_name,
-                                                       trim_user=True,
-                                                       count=20)
-                searchText = ""
-                for tweet in lastTweets:
-                    searchText += tweet["text"]
-                for rx in self.rxs:
-                    matches = rx[0].findall(searchText)
-                    if any(matches):
-                        score += rx[1] * len(matches)
-        if score > 10:
-            blockFollower = True
-        return blockFollower
+                last_tweets = twitter.get_user_timeline(user_id=user.id,
+                                                        screen_name=user.screen_name,
+                                                        trim_user=True,
+                                                        count=20)
+            search_text = ""
+            for tweet in last_tweets:
+                search_text += tweet["text"]
+            logger.info("Checking user tweets" + search_text)
+            topics2 = Topics.get_topics(search_text)
+            if topics2:
+                logger.info("User tweet topics" + str(topics2))
+                block_follower = topics2.spam()
+        return block_follower
 
     def BlockUser(self, user):
         txt = "[Botblock] BLOCKED: "
         if user.name:
             txt += user.name + " "
         if user.screen_name:
-            txt += "[@" + user.screen_name + "] "   
+            txt += "[@" + user.screen_name + "] "
         if user.description:
             txt += "- " + user.description
-
         print(Fore.RED + Style.BRIGHT + txt)
-        with MyTwitter() as twitter:
-            twitter.create_block(user_id=user.id,
-                                 screen_name=user.screen_name)
+
+        # with MyTwitter() as twitter:
+        #     twitter.create_block(user_id=user.id,
+        #                          screen_name=user.screen_name)
+        logger.warn(txt)
+
+        Lists.add_user(list_name="Bad Bots", user_id=user.id, screen_name=user.screen_name)
+
+        # TwitterHelper.send(OutgoingDirectMessage(txt))

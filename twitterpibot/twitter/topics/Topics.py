@@ -1,5 +1,5 @@
 from twitterpibot.twitter.topics import Daily, Monthly, Annual, Politics, Sport, Entertainment, Celebrity, News, \
-    Corporate, Technology, Regional
+    Corporate, Technology, Regional, Spam
 import logging
 
 logger = logging.getLogger(__name__)
@@ -21,6 +21,7 @@ _topics.extend(News.get())
 _topics.extend(Corporate.get())
 _topics.extend(Technology.get())
 _topics.extend(Regional.get())
+_topics.extend(Spam.get())
 
 for topic in _topics:
     logger.debug("Topic %s definite: %s",
@@ -49,6 +50,10 @@ class Topics(object):
     def reply(self):
         bools = map(lambda t: bool(t['reply']), self._topics_list)
         return reduce(lambda t1, t2: t1 and t2, bools)
+
+    def spam(self):
+        bools = map(lambda t: bool(t['spam']), self._topics_list)
+        return reduce(lambda t1, t2: t1 or t2, bools)
 
     def __str__(self):
         return str(self._topics_list)

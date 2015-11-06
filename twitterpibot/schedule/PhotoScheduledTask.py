@@ -13,5 +13,5 @@ class PhotoScheduledTask(ScheduledTask):
     def onRun(self):
         photos = hardware.take_photo("temp", "PhotoScheduledTask", "jpg")
         if any(photos):
-            tweet = OutgoingTweet(filePaths=photos)
+            tweet = OutgoingTweet(file_paths=photos)
             send(tweet)

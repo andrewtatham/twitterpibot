@@ -4,12 +4,12 @@ import random
 
 
 class FatherTedResponse(Response):
-    def Condition(self, inbox_item):
-        return super(FatherTedResponse, self).Condition(inbox_item) \
+    def condition(self, inbox_item):
+        return super(FatherTedResponse, self).condition(inbox_item) \
                and inbox_item.to_me \
                and not inbox_item.isRespondedTo
 
-    def Respond(self, inbox_item):
+    def respond(self, inbox_item):
         responses = [
             # exclaimation
             "WOW!",

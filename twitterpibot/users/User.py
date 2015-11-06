@@ -40,28 +40,3 @@ class User(object):
                 return mins > 45
             else:
                 return True
-
-    def update(self, lists):
-        with self.lock:
-            for list in lists.values():
-                if list.ContainsUser(self.id):
-
-                    if list.name == "Arseholes":
-                        self.isArsehole = True
-
-                    if list.name == "Reply Less":
-                        self.isReplyLess = True
-
-                    if list.name == "Dont Retweet":
-                        self.is_do_not_retweet = True
-
-                    if list.name == "Retweet More":
-                        self.isRetweetMore = True
-
-                    if list.name == "Awesome Bots":
-                        self.isBot = True
-
-                    if list.name == "Friends":
-                        self.isFriend = True
-
-            self.updated = datetime.datetime.utcnow()

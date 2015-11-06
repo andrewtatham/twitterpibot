@@ -17,11 +17,19 @@ _months = [
 class FirstOfMonth(NewsTopic):
     def __init__(self):
         super(FirstOfMonth, self).__init__(
-           ["Happy New Month", "(first|1(st)) of (%s)".format("|".join(_months))]
+            ["Happy New Month", "(first|1(st)) of (%s)".format("|".join(_months))]
+        )
+
+
+class Movember(NewsTopic):
+    def __init__(self):
+        super(Movember, self).__init__(
+            ["Movember"]
         )
 
 
 def get():
     return [
-        FirstOfMonth()
+        FirstOfMonth(),
+        Movember()
     ]

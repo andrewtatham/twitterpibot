@@ -71,7 +71,7 @@ def reply_with(inbox_item, text, as_tweet=False, as_direct_message=False, file_p
         tweet = OutgoingTweet(
             reply_to=inbox_item,
             text=text,
-            filePaths=file_paths,
+            file_paths=file_paths,
             in_reply_to_status_id=in_reply_to_status_id)
         return send(tweet)
 
@@ -197,3 +197,8 @@ def create_favourite(id):
 def retweet(id):
     with MyTwitter() as twitter:
         twitter.retweet(id=id)
+
+
+def add_user_to_list(list_id, user_id, screen_name):
+    with MyTwitter() as twitter:
+        twitter.create_list_members(list_id=list_id, user_id=user_id, screen_name=screen_name)

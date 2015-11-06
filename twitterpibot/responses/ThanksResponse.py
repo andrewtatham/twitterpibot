@@ -8,13 +8,13 @@ class ThanksResponse(Response):
     def __init__(self):
         self.rx = re.compile("thx|thank(s|you)", re.IGNORECASE)
 
-    def Condition(self, inbox_item):
+    def condition(self, inbox_item):
         return not inbox_item.from_me \
                and (inbox_item.isDirectMessage or inbox_item.isTweet) \
                and inbox_item.to_me \
                and bool(self.rx.match(inbox_item.text))
 
-    def Respond(self, inbox_item):
+    def respond(self, inbox_item):
         thanks = [
             "thx",
             "thanks",

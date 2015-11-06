@@ -1,44 +1,30 @@
+from twitterpibot.twitter import Lists
 from twitterpibot.users.User import User
 from twitterpibot.twitter.MyTwitter import MyTwitter
 
 import threading
-from twitterpibot.users.UserSet import UserSet
 
 _lock = threading.Lock()
 _users = {}
-_sets = {}
 
 
-def updateLists():
-    with MyTwitter() as twitter:
-        myLists = twitter.show_owned_lists()
-        for myList in myLists["lists"]:
-            members = twitter.get_list_members(list_id=myList["id_str"])
-            key = myList["id_str"]
-            with _lock:
-                if key not in _sets:
-                    _sets[key] = UserSet(myList["name"])
-                set = _sets[key]
-                set.UpdateMembers(members)
-
-
-def getUser(id=None, data=None):
-    if not id and not data:
+def get_user(user_id=None, user_data=None):
+    if not user_id and not user_data:
         raise ValueError()
 
     with _lock:
 
-        if id and not data:
+        if user_id and not user_data:
             with MyTwitter() as twitter:
-                data = twitter.lookup_user(user_id=id)[0]
+                user_data = twitter.lookup_user(user_id=user_id)[0]
 
-        if data:
-            id = data["id_str"]
+        if user_data:
+            user_id = user_data["id_str"]
 
-            if id not in _users:
-                _users[id] = User(data)
+            if user_id not in _users:
+                _users[user_id] = User(user_data)
 
-            if _users[id].isStale():
-                _users[id].update(_sets)
+            if _users[user_id].isStale():
+                Lists.update_user(user=_users[user_id])
 
-            return _users[id]
+            return _users[user_id]

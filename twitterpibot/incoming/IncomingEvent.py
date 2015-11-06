@@ -18,8 +18,8 @@ class IncomingEvent(InboxItem):
 
         # https://dev.twitter.com/streaming/overview/messages-types#Events_event
 
-        self.source = Users.getUser(data=data["source"])
-        self.target = Users.getUser(data=data["target"])
+        self.source = Users.get_user(user_data=data["source"])
+        self.target = Users.get_user(user_data=data["target"])
 
         self.from_me = self.source.isMe
         self.to_me = self.target.isMe

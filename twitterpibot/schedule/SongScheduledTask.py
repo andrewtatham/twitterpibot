@@ -25,7 +25,7 @@ class SongScheduledTask(ScheduledTask):
                 songUsersList = [filter(lambda l: l["name"] == "Song People", lists["lists"])][0]
                 listId = songUsersList["id_str"]
                 members = twitter.get_list_members(list_id=int(listId))
-                target = Users.getUser(data=random.choice(members["users"]))
+                target = Users.get_user(user_data=random.choice(members["users"]))
 
             self.songs.Send(
                 songKey=songKey,

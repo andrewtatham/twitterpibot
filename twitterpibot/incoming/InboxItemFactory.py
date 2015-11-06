@@ -6,7 +6,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def Create(data):
+def create(data):
     if "text" in data:
         return IncomingTweet(data)
     elif "direct_message" in data:

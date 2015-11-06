@@ -10,8 +10,8 @@ class IncomingDirectMessage(InboxTextItem):
     def __init__(self, data):
         super(IncomingDirectMessage, self).__init__()
         self.isDirectMessage = True
-        self.sender = Users.getUser(data=data["direct_message"]["sender"])
-        self.recipient = Users.getUser(data=data["direct_message"]["recipient"])
+        self.sender = Users.get_user(user_data=data["direct_message"]["sender"])
+        self.recipient = Users.get_user(user_data=data["direct_message"]["recipient"])
         self.from_me = self.sender.isMe
         self.to_me = self.recipient.isMe
         self.targets = [self.sender.screen_name]

@@ -33,10 +33,11 @@ def get_responses():
     from twitterpibot.responses.HelloResponse import HelloResponse
     from twitterpibot.responses.RestartResponse import RestartResponse
     from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
+    from twitterpibot.responses.BotBlockerResponse import BotBlockerResponse
 
     responses = [
-        RestartResponse()
-        # BotBlockerResponse()
+        RestartResponse(),
+        BotBlockerResponse()
     ]
 
     if is_andrewtathampi:
@@ -88,6 +89,7 @@ def get_scheduled_jobs():
     from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
     from twitterpibot.schedule.LightsScheduledTask import LightsScheduledTask
     from twitterpibot.schedule.StreamTrendsScheduledTask import StreamTrendsScheduledTask
+    from twitterpibot.schedule.BotBlockerScheduledTask import BotBlockerScheduledTask
 
     scheduledjobs = [
         MonitorScheduledTask(),
@@ -95,7 +97,7 @@ def get_scheduled_jobs():
         UserListsScheduledTask(),
         SavedSearchScheduledTask(),
         MidnightScheduledTask(),
-        # BotBlockerScheduledTask(),
+        BotBlockerScheduledTask(),
         TrendsScheduledTask(),
         Wikipedia()
     ]

@@ -71,7 +71,8 @@ class Topic(object):
             'topic': self.__class__.__name__,
             'retweet': self._retweet,
             'reply': self._reply,
-            'stream': self._stream
+            'stream': self._stream,
+            'spam': self._spam
         }
 
         has_date_range = self._from_date and self._from_month and self._to_date and self._to_month

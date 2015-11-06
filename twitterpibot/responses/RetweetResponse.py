@@ -29,7 +29,7 @@ class RetweetResponse(Response):
 
         self.rx = re.compile("|".join(self.bannedTopics), re.IGNORECASE)
 
-    def Condition(self, inbox_item):
+    def condition(self, inbox_item):
         return inbox_item.isTweet \
                and not inbox_item.from_me \
                and not inbox_item.to_me \
@@ -48,9 +48,9 @@ class RetweetResponse(Response):
                     (inbox_item.sourceIsSearch and random.randint(0, 20) == 0) or
                     (random.randint(0, 99) == 0))
 
-    def Favourite(self, inbox_item):
+    def favourite(self, inbox_item):
         return False
 
-    def Respond(self, inbox_item):
+    def respond(self, inbox_item):
         logger.info("retweeting status id %s", inbox_item.status_id)
         TwitterHelper.retweet(inbox_item.status_id)
