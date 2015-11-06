@@ -25,7 +25,7 @@ class Arduino(GoodTopic):
 class Apple(NewsTopic):
     def __init__(self):
         super(Apple, self).__init__(
-            ["Apple", "Mac(intosh|book)", "i(P(a|o)d|phone|tunes|watch"]
+            ["Apple", "Mac(intosh|book)", "i(P(a|o)d|phone|tunes|watch)"]
         )
 
 
