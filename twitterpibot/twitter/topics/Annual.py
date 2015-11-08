@@ -41,6 +41,15 @@ class BonfireNight(NewsTopic):
         )
 
 
+class RemembranceSunday(NewsTopic):
+    def __init__(self):
+        super(RemembranceSunday, self).__init__(
+            ["Remembrance Sunday"],
+            on_date="11/11",
+            on_date_range=7
+        )
+
+
 class Thanksgiving(DontCareTopic):
     def __init__(self):
         super(Thanksgiving, self).__init__(
@@ -70,6 +79,7 @@ def get():
         Easter(),
         Halloween(),
         BonfireNight(),
+        RemembranceSunday(),
         Thanksgiving(),
         BlackFriday(),
         Christmas()

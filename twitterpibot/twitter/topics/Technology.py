@@ -22,6 +22,13 @@ class Arduino(GoodTopic):
         )
 
 
+class Git(GoodTopic):
+    def __init__(self):
+        super(Git, self).__init__(
+            ["Git(flow|hub)?"]
+        )
+
+
 class Apple(NewsTopic):
     def __init__(self):
         super(Apple, self).__init__(
@@ -57,6 +64,7 @@ def get():
         RaspberryPi(),
         Python(),
         Arduino(),
+        Git(),
         Apple(),
         Microsoft(),
         Google(),

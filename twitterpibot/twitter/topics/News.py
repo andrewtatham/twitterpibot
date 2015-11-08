@@ -23,7 +23,8 @@ class BadThings(NewsTopic):
                 "knife(d)?",
                 "arson",
                 "(child|sex) abuse",
-                "rap(e|ed|ist|ing)'"
+                "rap(e|ed|ist|ing)'",
+                "RIP"
 
             ], [
                 "fire",
