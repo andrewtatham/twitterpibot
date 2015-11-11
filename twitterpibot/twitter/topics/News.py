@@ -34,6 +34,16 @@ class BadThings(NewsTopic):
             ]
         )
 
+class CivilRights(NewsTopic):
+   def __init__(self):
+        super(CivilRights, self).__init__(
+            [
+                "BlackLivesMatter",
+                "LGBT?"
+
+            ])
+
+
 
 class Weather(DontCareTopic):
     def __init__(self):
@@ -85,5 +95,6 @@ def get():
         BadThings(),
         Weather(),
         ExtremeWeather(),
-        Geology()
+        Geology(),
+        CivilRights()
     ]

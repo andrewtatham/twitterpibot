@@ -55,7 +55,7 @@ class Kardashians(DontCareTopic):
 class CelebrityOther(DontCareTopic):
     def __init__(self):
         super(CelebrityOther, self).__init__([
-            "Justin Bieber",
+            "Justin Bieber", "BELIEBERS", "jb(i|e)ebs",
             "Miley Cyrus",
             "Taylor Swift",
             "Britney Spears",

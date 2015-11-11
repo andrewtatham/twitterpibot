@@ -71,6 +71,24 @@ class WWE(DontCareTopic):
         ])
 
 
+class ImACelbrityGetMeOutOfHere(DontCareTopic):
+    def __init__(self):
+        super(ImACelbrityGetMeOutOfHere, self).__init__([
+            "I'?m a celeb"
+        ], [
+            "jungle"
+        ])
+
+
+class TheApprentice(DontCareTopic):
+    def __init__(self):
+        super(TheApprentice, self).__init__([
+            "The Apprentice", "(lord|alan) sugar"
+        ], [
+            "apprentice"
+        ])
+
+
 def get():
     return [
         XFactor(),
@@ -81,5 +99,7 @@ def get():
         AndrewMarrShow(),
         TheArchers(),
         AtMidnight(),
-        WWE()
+        WWE(),
+        ImACelbrityGetMeOutOfHere(),
+        TheApprentice()
     ]
