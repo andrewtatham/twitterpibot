@@ -13,6 +13,7 @@ class User(object):
 
         self.isMe = bool(self.screen_name == Identity.screen_name)
 
+        self.following = bool(data["following"])
         self.verified = bool(data["verified"])
         self.location = data["location"]
         self.protected = bool(data["protected"])
