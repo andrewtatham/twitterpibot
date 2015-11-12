@@ -50,6 +50,23 @@ class RemembranceSunday(NewsTopic):
         )
 
 
+class VeteransDay(NewsTopic):
+    def __init__(self):
+        super(VeteransDay, self).__init__(
+            ["Veterans Day"],
+            on_date="11/11",
+            on_date_range=7
+        )
+
+
+class Diwali(NewsTopic):
+    def __init__(self):
+        super(Diwali, self).__init__(
+            {"Di(w|v)ali", "Deepavali"},
+            from_date="7/10",
+            to_date="21/11")
+
+
 class Thanksgiving(DontCareTopic):
     def __init__(self):
         super(Thanksgiving, self).__init__(
@@ -80,6 +97,8 @@ def get():
         Halloween(),
         BonfireNight(),
         RemembranceSunday(),
+        VeteransDay(),
+        Diwali(),
         Thanksgiving(),
         BlackFriday(),
         Christmas()
