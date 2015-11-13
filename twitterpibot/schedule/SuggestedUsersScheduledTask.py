@@ -28,13 +28,13 @@ class SuggestedUsersScheduledTask(ScheduledTask):
                     self._slugList.append(category)
 
             category = self._slugList.pop()
-            suggestedUsers = twitter.get_user_suggestions_by_slug(slug=category["slug"])["users"]
-            for user in suggestedUsers:
+            suggested_users = twitter.get_user_suggestions_by_slug(slug=category["slug"])["users"]
+            for user in suggested_users:
                 colour = next(suggestedUserColours)
                 print(colour + "User: [" + category["name"] + "] - " + user["name"] + " [@" + user[
                     "screen_name"] + "] - " + user["description"].replace("\n", "   "))
 
             if random.randint(0, 2) == 0:
-                user = random.choice(suggestedUsers)
+                user = random.choice(suggested_users)
                 print("[SuggestedUsersScheduledTask] following " + user["name"] + " [@" + user["screen_name"] + "]")
                 twitter.create_friendship(id=user["id_str"])

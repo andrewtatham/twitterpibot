@@ -21,15 +21,15 @@ class BotBlockerScheduledTask(ScheduledTask):
             if not any(self._myFollowers):
                 response = twitter.get_followers_ids(cursor=self._page, stringify_ids=True)
                 self._myFollowers.extend(response["ids"])
-                nextPage = response["next_cursor_str"]
-                if nextPage == "0":
+                next_page = response["next_cursor_str"]
+                if next_page == "0":
                     self._page = "-1"
                 else:
-                    self._page = nextPage
+                    self._page = next_page
 
             if any(self._myFollowers):
-                followerId = self._myFollowers.pop()
-                usr = Users.get_user(user_id=followerId)
+                follower_id = self._myFollowers.pop()
+                usr = Users.get_user(user_id=follower_id)
                 block = self._blocker.IsUserBot(usr)
                 if block:
                     self._blocker.BlockUser(usr)

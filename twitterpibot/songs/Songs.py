@@ -2,6 +2,7 @@ import os
 import random
 import time
 import itertools
+import twitterpibot
 
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.processing.christmas import is_christmas
@@ -374,16 +375,16 @@ class Songs(object):
         return self._songs.keys()
 
     def Keys(self):
-        isChristmas = is_christmas()
-        keys = [k for k, v in self._songs.items() if "birthday" not in v and (isChristmas or "christmas" not in v)]
+        is_christmas = twitterpibot.processing.christmas.is_christmas()
+        keys = [k for k, v in self._songs.items() if "birthday" not in v and (is_christmas or "christmas" not in v)]
         return keys
 
     def SingBirthdaySong(self, screen_name):
-        songKey = self._birthdaySongKeys.next()
-        self.Send(songKey, screen_name, text="Happy Birthday @" + screen_name + " !!!", hashtag="#HappyBirthday")
+        song_key = self._birthdaySongKeys.next()
+        self.Send(song_key, screen_name, text="Happy Birthday @" + screen_name + " !!!", hashtag="#HappyBirthday")
 
-    def Send(self, songKey, target=None, inbox_item=None, text=None, hashtag=None):
-        song = self._songs[songKey]
+    def Send(self, song_key, target=None, inbox_item=None, text=None, hashtag=None):
+        song = self._songs[song_key]
 
         if not text:
             text = random.choice(["All together now!", "Sing along!"])

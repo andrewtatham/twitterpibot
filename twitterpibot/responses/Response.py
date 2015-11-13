@@ -14,13 +14,5 @@ class Response(object):
     def favourite(self, inbox_item):
         return False
 
-    def contains(self, list, item):
-        if list:
-            for listItem in list:
-                if listItem.lower() == item.lower():
-                    return True
-
-        return False
-
     def respond(self, inbox_item):
         return None

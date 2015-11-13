@@ -8,7 +8,7 @@ class HappyBirthdayScheduledTask(ScheduledTask):
         return CronTrigger(hour="8-20/2")
 
     def onRun(self):
-        birthdayUsers = Birthdays.GetBirthdayUsers()
-        if birthdayUsers:
-            for birthdayUser in birthdayUsers:
-                Birthdays.SingBirthdaySong(birthdayUser)
+        birthday_users = Birthdays.get_birthday_users()
+        if birthday_users:
+            for birthdayUser in birthday_users:
+                Birthdays.sing_birthday_song(birthdayUser)

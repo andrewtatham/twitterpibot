@@ -12,7 +12,7 @@ with _statsLock:
     Errors = 0
 
 
-def Reset():
+def reset():
     with _statsLock:
         global IncomingTweets
         global IncomingDirectMessages
@@ -29,7 +29,7 @@ def Reset():
         Errors = 0
 
 
-def GetStatistics():
+def get_statistics():
     text = "Stats at " + datetime.datetime.now().strftime("%x %X") + os.linesep
 
     with _statsLock:
@@ -50,37 +50,37 @@ def GetStatistics():
     return text
 
 
-def RecordIncomingTweet():
+def record_incoming_tweet():
     with _statsLock:
         global IncomingTweets
         IncomingTweets += 1
 
 
-def RecordIncomingDirectMessage():
+def record_incoming_direct_message():
     with _statsLock:
         global IncomingDirectMessages
         IncomingDirectMessages += 1
 
 
-def RecordOutgoingTweet():
+def record_outgoing_tweet():
     with _statsLock:
         global OutgoingTweets
         OutgoingTweets += 1
 
 
-def RecordOutgoingDirectMessage():
+def record_outgoing_direct_message():
     with _statsLock:
         global OutgoingDirectMessages
         OutgoingDirectMessages += 1
 
 
-def RecordWarning():
+def record_warning():
     with _statsLock:
         global Warnings
         Warnings += 1
 
 
-def RecordError():
+def record_error():
     with _statsLock:
         global Errors
         Errors += 1

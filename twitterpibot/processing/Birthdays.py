@@ -17,7 +17,7 @@ _birthdays = {
 }
 
 
-def GetBirthdayUsers():
+def get_birthday_users():
     today = datetime.date.today().strftime("%d/%m")
 
     if today in _birthdays:
@@ -26,5 +26,5 @@ def GetBirthdayUsers():
         return None
 
 
-def SingBirthdaySong(screen_name):
+def sing_birthday_song(screen_name):
     _songs.SingBirthdaySong(screen_name)

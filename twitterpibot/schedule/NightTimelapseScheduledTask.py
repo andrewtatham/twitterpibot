@@ -10,15 +10,15 @@ class NightTimelapseScheduledTask(ScheduledTask):
         return CronTrigger(hour=15)
 
     def onRun(self):
-        today = MyAstral.GetTimes()
-        tommorrow = MyAstral.GetTommorrowTimes()
+        today = MyAstral.get_today_times()
+        tommorrow = MyAstral.get_tomorrow_times()
 
         timelapse = Timelapse(
             name='night',
-            startTime=today['sunset'],
-            endTime=tommorrow['sunrise'],
-            intervalSeconds=600,
-            tweetText="The cosmic ballet goes on...")
+            start_time=today['sunset'],
+            end_time=tommorrow['sunrise'],
+            interval_seconds=600,
+            tweet_text="The cosmic ballet goes on...")
 
         from twitterpibot.schedule.MySchedule import add
         tasks = timelapse.GetScheduledTasks()

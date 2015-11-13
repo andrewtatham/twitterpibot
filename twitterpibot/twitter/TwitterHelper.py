@@ -1,7 +1,7 @@
 from twitterpibot.twitter.MyTwitter import MyTwitter
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
-from twitterpibot.Statistics import RecordOutgoingDirectMessage, RecordOutgoingTweet
+from twitterpibot.Statistics import record_outgoing_direct_message, record_outgoing_tweet
 from twitterpibot.twitter.MyStreamer import MyStreamer
 
 try:
@@ -28,16 +28,16 @@ def send(outbox_item):
     with MyTwitter() as twitter:
         if type(outbox_item) is OutgoingTweet:
 
-            RecordOutgoingTweet()
+            record_outgoing_tweet()
 
             if outbox_item.filePaths and any(outbox_item.filePaths):
                 media_ids = []
                 for filePath in outbox_item.filePaths:
                     ext = os.path.splitext(filePath)
                     if ext == "mp4":
-                        media_id = _UploadVideo(filePath)
+                        media_id = _upload_video(filePath)
                     else:
-                        media_id = _UploadMedia(twitter, filePath)
+                        media_id = _upload_media(twitter, filePath)
                     if media_id:
                         media_ids.append(media_id)
 
@@ -52,7 +52,7 @@ def send(outbox_item):
             return id_str
 
         if type(outbox_item) is OutgoingDirectMessage:
-            RecordOutgoingDirectMessage()
+            record_outgoing_direct_message()
 
             twitter.send_direct_message(
                 text=outbox_item.text,
@@ -63,11 +63,11 @@ def send(outbox_item):
 
 
 def reply_with(inbox_item, text, as_tweet=False, as_direct_message=False, file_paths=None, in_reply_to_status_id=None):
-    replyAsTweet = as_tweet or not as_direct_message and inbox_item.isTweet
+    reply_as_tweet = as_tweet or not as_direct_message and inbox_item.isTweet
 
-    replyAsDM = as_direct_message or not as_tweet and inbox_item.isDirectMessage
+    reply_as_dm = as_direct_message or not as_tweet and inbox_item.isDirectMessage
 
-    if replyAsTweet:
+    if reply_as_tweet:
         tweet = OutgoingTweet(
             reply_to=inbox_item,
             text=text,
@@ -75,7 +75,7 @@ def reply_with(inbox_item, text, as_tweet=False, as_direct_message=False, file_p
             in_reply_to_status_id=in_reply_to_status_id)
         return send(tweet)
 
-    if replyAsDM:
+    if reply_as_dm:
         dm = OutgoingDirectMessage(
             reply_to=inbox_item,
             text=text)
@@ -84,10 +84,10 @@ def reply_with(inbox_item, text, as_tweet=False, as_direct_message=False, file_p
     return None
 
 
-def _UploadMedia(twitter, filePath):
+def _upload_media(twitter, file_path):
     file = None
     try:
-        file = open(filePath, 'rb')
+        file = open(file_path, 'rb')
         media = twitter.upload_media(media=file)
         return media["media_id_string"]
     finally:
@@ -95,68 +95,68 @@ def _UploadMedia(twitter, filePath):
             file.close()
 
 
-def GetStreamer(topic=None):
+def get_streamer(topic=None):
     return MyStreamer(_screen_name, topic)
 
 
-def _UploadVideo(filePath):
-    print('[MyTwitter] uploading ' + filePath)
+def _upload_video(file_path):
+    print('[MyTwitter] uploading ' + file_path)
 
     with MyTwitter() as twitter:
         url = 'https://upload.twitter.com/1.1/media/upload.json'
-        fileSize = os.path.getsize(filePath)
+        file_size = os.path.getsize(file_path)
 
         print('[MyTwitter] Init')
-        initParams = {
+        init_params = {
             "command": "INIT",
             "media_type": "video/mp4",
-            "total_bytes": fileSize
+            "total_bytes": file_size
         }
-        initResponse = twitter.post(url, initParams)
+        init_response = twitter.post(url, init_params)
 
-        print(initResponse)
+        print(init_response)
 
-        media_id = initResponse["media_id_string"]
+        media_id = init_response["media_id_string"]
         print('[MyTwitter] media_id ' + media_id)
 
         segment = 0
-        chunkSize = 4 * 1024 * 1024
-        for chunk in bytes_from_file(filePath, chunkSize):
+        chunk_size = 4 * 1024 * 1024
+        for chunk in bytes_from_file(file_path, chunk_size):
             print('[MyTwitter] Append ' + str(segment))
 
-            appendParams = {
+            append_params = {
                 'command': 'APPEND',
                 'media_id': media_id,
                 'segment_index': segment
             }
-            appendResponse = twitter.post(url, appendParams, {'media': chunk})
+            append_response = twitter.post(url, append_params, {'media': chunk})
 
-            print(appendResponse)
+            print(append_response)
 
         segment += 1
 
         print('[MyTwitter] Finalize')
-        finalizeParams = {
+        finalize_params = {
             "command": "FINALIZE",
             "media_id": media_id,
 
         }
-        twitter.post(url, finalizeParams)
+        twitter.post(url, finalize_params)
 
     return media_id
 
 
-def bytes_from_file(filePath, chunksize):
-    with open(filePath, "rb") as f:
+def bytes_from_file(file_path, chunk_size):
+    with open(file_path, "rb") as f:
         while True:
-            chunk = f.read(chunksize)
+            chunk = f.read(chunk_size)
             if chunk:
                 yield chunk
             else:
                 break
 
 
-def GetTrendingTopicsFor(woeids):
+def get_trending_topics_for(woeids):
     trending_topics = []
     with MyTwitter() as twitter:
         for woeid in woeids:

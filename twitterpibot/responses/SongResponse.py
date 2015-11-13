@@ -23,4 +23,4 @@ class SongResponse(Response):
         for word in inbox_item.words:
             for songname in self.songnames:
                 if word.lower() == songname.lower():
-                    self.songs.Send(songKey=songname, inbox_item=inbox_item)
+                    self.songs.Send(song_key=songname, inbox_item=inbox_item)

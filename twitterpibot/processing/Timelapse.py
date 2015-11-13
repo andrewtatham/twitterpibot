@@ -15,19 +15,19 @@ import twitterpibot.hardware.hardware as hardware
 
 
 class Timelapse(object):
-    def __init__(self, name, startTime, endTime, intervalSeconds=1, tweetText=''):
+    def __init__(self, name, start_time, end_time, interval_seconds=1, tweet_text=''):
         self.name = name
         self.imageExtension = 'jpg'
         self.folderName = "temp" + os.path.sep + 'timelapse' + os.path.sep + self.name
         self.dirPath = os.path.abspath(self.folderName)
-        self.startTime = startTime
-        self.endTime = endTime
-        self.intervalSeconds = intervalSeconds
+        self.startTime = start_time
+        self.endTime = end_time
+        self.intervalSeconds = interval_seconds
 
         self.initTime = self.startTime + datetime.timedelta(seconds=-1),
         self.uploadTime = self.endTime + datetime.timedelta(seconds=1)
 
-        self.tweetText = tweetText + " from " + self.startTime.strftime("%X") + " to " + self.endTime.strftime(
+        self.tweetText = tweet_text + " from " + self.startTime.strftime("%X") + " to " + self.endTime.strftime(
             "%X") + " #timelapse"
         self.targetExtension = "gif"  # "mp4" / "gif"
         self.fps = 10
@@ -35,17 +35,17 @@ class Timelapse(object):
 
         # calculate nuber of frames captured
         duration = self.endTime - self.startTime
-        noFrames = duration.total_seconds() / self.intervalSeconds
+        no_of_frames = duration.total_seconds() / self.intervalSeconds
 
         # expected duration of output video
-        durationSeconds = noFrames / self.fps
+        duration_seconds = no_of_frames / self.fps
 
-        print("[Timelapse] " + self.name + " Expected duration = " + str(durationSeconds))
+        print("[Timelapse] " + self.name + " Expected duration = " + str(duration_seconds))
 
         if self.targetExtension == "mp4":
-            if durationSeconds < 0.5:
+            if duration_seconds < 0.5:
                 raise Exception("Video will be too short")
-            if durationSeconds > 30:
+            if duration_seconds > 30:
                 raise Exception("Video is too long")
 
     def GetScheduledTasks(self):
@@ -111,9 +111,9 @@ class TimelapseUploadScheduledTask(ScheduledTask):
 
     def onRun(self):
 
-        searchPath = self.timelapse.dirPath + os.path.sep + self.timelapse.name + "*" + os.extsep + self.timelapse.imageExtension
+        search_path = self.timelapse.dirPath + os.path.sep + self.timelapse.name + "*" + os.extsep + self.timelapse.imageExtension
 
-        files = glob.glob(searchPath)
+        files = glob.glob(search_path)
         files.sort()
         images = [cv2.imread(file) for file in files]
 
@@ -167,12 +167,12 @@ class TimelapseUploadScheduledTask(ScheduledTask):
         if not os.path.isfile(filename):
             raise Exception("File does not exist")
 
-        fileSize = os.path.getsize(filename)
-        if fileSize == 0:
+        file_size = os.path.getsize(filename)
+        if file_size == 0:
             raise Exception("File size is zero ")
 
-        if (self.timelapse.targetExtension == "gif" and fileSize > (4 * 1024 * 1024)) \
-                or (self.timelapse.targetExtension == "mp4" and fileSize > (15 * 1024 * 1024)):
+        if (self.timelapse.targetExtension == "gif" and file_size > (4 * 1024 * 1024)) \
+                or (self.timelapse.targetExtension == "mp4" and file_size > (15 * 1024 * 1024)):
             raise Exception("File size is too big ")
 
         print("[Timelapse]" + self.timelapse.name + " Sending")

@@ -10,14 +10,14 @@ class SunTimelapseScheduledTask(ScheduledTask):
         return CronTrigger(hour=3)
 
     def onRun(self):
-        sun = MyAstral.GetTimes()
+        sun = MyAstral.get_today_times()
 
         timelapse = Timelapse(
             name='sun',
-            startTime=sun['dawn'],
-            endTime=sun['dusk'],
-            intervalSeconds=600,
-            tweetText="The cosmic ballet goes on...")
+            start_time=sun['dawn'],
+            end_time=sun['dusk'],
+            interval_seconds=600,
+            tweet_text="The cosmic ballet goes on...")
 
         from twitterpibot.schedule.MySchedule import add
         tasks = timelapse.GetScheduledTasks()

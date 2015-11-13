@@ -18,6 +18,6 @@ class MyPicam(object):
             self.mypicamera.capture(filename)
             return filename
 
-    def Close(self):
+    def close(self):
         with self.lock:
             self.mypicamera.close()

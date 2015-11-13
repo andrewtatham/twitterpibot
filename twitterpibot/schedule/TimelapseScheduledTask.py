@@ -14,10 +14,10 @@ class TimelapseScheduledTask(ScheduledTask):
         now = datetime.datetime.now()
         timelapse = Timelapse(
             name='now',
-            startTime=now + datetime.timedelta(seconds=1),
-            endTime=now + datetime.timedelta(seconds=8),
-            intervalSeconds=1,
-            tweetText="")
+            start_time=now + datetime.timedelta(seconds=1),
+            end_time=now + datetime.timedelta(seconds=8),
+            interval_seconds=1,
+            tweet_text="")
 
         tasks = timelapse.GetScheduledTasks()
         for task in tasks:

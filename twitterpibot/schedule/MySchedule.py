@@ -6,7 +6,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def RunWrapper(task):
+def _run_wrapper(task):
     try:
         task.onRun()
     except Exception as e:
@@ -28,7 +28,7 @@ def stop():
 def add(scheduled_job):
     trigger = scheduled_job.GetTrigger()
     logger.info("[MySchedule] adding " + str(type(scheduled_job)) + " @ " + str(trigger))
-    _scheduler.add_job(RunWrapper, args=[scheduled_job], trigger=trigger)
+    _scheduler.add_job(_run_wrapper, args=[scheduled_job], trigger=trigger)
 
 
 _scheduler = BackgroundScheduler()

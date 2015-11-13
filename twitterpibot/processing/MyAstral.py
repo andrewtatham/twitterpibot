@@ -2,7 +2,7 @@ import astral
 import datetime
 
 
-def GetTimes():
+def get_today_times():
     a = astral.Astral()
     city = a['Leeds']
     sun = city.sun(date=datetime.date.today(), local=True)
@@ -15,7 +15,7 @@ def GetTimes():
     return sun
 
 
-def GetTommorrowTimes():
+def get_tomorrow_times():
     a = astral.Astral()
     city = a['Leeds']
     sun = city.sun(date=datetime.date.today() + datetime.timedelta(days=1), local=True)

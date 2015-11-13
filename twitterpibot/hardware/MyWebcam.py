@@ -21,6 +21,6 @@ class Webcam(object):
             cv2.imwrite(filename, image)
         return filename
 
-    def Close(self):
+    def close(self):
         with self._lock:
             self._webcam.release()

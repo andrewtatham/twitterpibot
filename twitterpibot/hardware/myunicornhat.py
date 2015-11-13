@@ -7,7 +7,7 @@ from multiprocessing import Lock
 import colorsys
 
 
-def _WritePixel(x, y):
+def _write_pixel(x, y):
     pixel = _buffer[x][y]
     r = int(pixel[0])
     g = int(pixel[1])
@@ -15,10 +15,10 @@ def _WritePixel(x, y):
     unicornhat.set_pixel(x, y, r, g, b)
 
 
-def _WriteAll():
+def _write_all():
     for y in range(8):
         for x in range(8):
-            _WritePixel(x, y)
+            _write_pixel(x, y)
     unicornhat.show()
 
 
@@ -104,7 +104,7 @@ class FlashMode(UnicornHatMode):
             for y in range(8):
                 for x in range(8):
                     _buffer[x][y] = (r, g, b)
-            _WriteAll()
+            _write_all()
         time.sleep(2)
 
     # noinspection PyUnusedLocal
@@ -116,7 +116,7 @@ class FlashMode(UnicornHatMode):
             for y in range(8):
                 for x in range(8):
                     _buffer[x][y] = (r, g, b)
-            _WriteAll()
+            _write_all()
 
 
 class RainMode(UnicornHatMode):
@@ -126,7 +126,7 @@ class RainMode(UnicornHatMode):
     def lights(self):
         with _lock:
             self._rain.WriteToBuffer(True)
-            _WriteAll()
+            _write_all()
         time.sleep(0.25)
 
     # noinspection PyUnusedLocal
@@ -134,7 +134,7 @@ class RainMode(UnicornHatMode):
         rgb = (0, 0, 255)
         self._rain.AddRaindrop(rgb)
         self._rain.WriteToBuffer(False)
-        _WriteAll()
+        _write_all()
 
 
 class MatrixMode(UnicornHatMode):
@@ -144,7 +144,7 @@ class MatrixMode(UnicornHatMode):
     def lights(self):
         with _lock:
             self._rain.WriteToBuffer(True)
-            _WriteAll()
+            _write_all()
         time.sleep(0.5)
 
     # noinspection PyUnusedLocal
@@ -152,7 +152,7 @@ class MatrixMode(UnicornHatMode):
         rgb = (0, 255, 0)
         self._rain.AddRaindrop(rgb)
         self._rain.WriteToBuffer(False)
-        _WriteAll()
+        _write_all()
 
 
 class FireMode(UnicornHatMode):
@@ -162,7 +162,7 @@ class FireMode(UnicornHatMode):
     def lights(self):
         with _lock:
             self._rain.WriteToBuffer(True)
-            _WriteAll()
+            _write_all()
         time.sleep(0.4)
 
     # noinspection PyUnusedLocal
@@ -173,7 +173,7 @@ class FireMode(UnicornHatMode):
         rgb = (r, g, b)
         self._rain.AddRaindrop(rgb)
         self._rain.WriteToBuffer(False)
-        _WriteAll()
+        _write_all()
 
 
 class SnowMode(UnicornHatMode):
@@ -183,7 +183,7 @@ class SnowMode(UnicornHatMode):
     def lights(self):
         with _lock:
             self._rain.WriteToBuffer(True)
-            _WriteAll()
+            _write_all()
         time.sleep(2)
 
     # noinspection PyUnusedLocal
@@ -191,7 +191,7 @@ class SnowMode(UnicornHatMode):
         rgb = (255, 255, 255)
         self._rain.AddRaindrop(rgb)
         self._rain.WriteToBuffer(False)
-        _WriteAll()
+        _write_all()
 
 
 class Rain(object):
@@ -269,7 +269,7 @@ class RainbowMode(UnicornHatMode):
             for y in range(8):
                 for x in range(8):
                     _buffer[x][y] = ((1.0 / 8) * x, 1.0, (1.0 / 8) * y)
-        _WriteAll()
+        _write_all()
         time.sleep(0.25)
 
 
@@ -281,7 +281,7 @@ class RainbowRainMode(UnicornHatMode):
     def lights(self):
         with _lock:
             self._rain.WriteToBuffer(True)
-            _WriteAll()
+            _write_all()
         time.sleep(0.25)
 
     # noinspection PyUnusedLocal
@@ -291,7 +291,7 @@ class RainbowRainMode(UnicornHatMode):
             self.h = 0.0
         self._rain.AddRaindrop(hsv2rgb((self.h, 1.0, 1.0)))
         self._rain.WriteToBuffer(False)
-        _WriteAll()
+        _write_all()
 
 
 _buffer = [[(0, 0, 0) for x in range(8)] for y in range(8)]
@@ -336,11 +336,11 @@ _mode = next(_modes)
 _lock = Lock()
 
 
-def Lights():
+def lights():
     _mode.lights()
 
 
-def CameraFlash(on):
+def camera_flash(on):
     _mode.camera_flash(on)
 
 
@@ -348,15 +348,15 @@ def inbox_item_received(inbox_item):
     _mode.inbox_item_received(inbox_item)
 
 
-def OnLightsScheduledTask():
+def on_lights_scheduled_task():
     with _lock:
         global _mode
         _mode = next(_modes)
 
 
-def Fade():
+def fade():
     _mode.fade()
 
 
-def Close():
+def close():
     _mode.close()

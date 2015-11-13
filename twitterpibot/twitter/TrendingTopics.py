@@ -50,7 +50,7 @@ def _update():
     global _trending
     global _updated
 
-    topics_text = TwitterHelper.GetTrendingTopicsFor([UK_WOEID, US_WOEID])
+    topics_text = TwitterHelper.get_trending_topics_for([UK_WOEID, US_WOEID])
     _trending = list(map(lambda topic_text: TrendingTopic(topic_text), topics_text))
     _updated = datetime.datetime.now()
 

@@ -20,7 +20,7 @@ class SavedSearchScheduledTask(ScheduledTask):
 
         if self._savedSearches:
             search = self._savedSearches.pop()
-            searchTweets = TwitterHelper.search(search)
-            for searchTweet in searchTweets:
-                searchTweet['tweetsource'] = "search:" + search
-                MyQueues.inbox.put(searchTweet)
+            search_tweets = TwitterHelper.search(search)
+            for search_tweet in search_tweets:
+                search_tweet['tweetsource'] = "search:" + search
+                MyQueues.inbox.put(search_tweet)

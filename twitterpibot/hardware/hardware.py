@@ -97,51 +97,51 @@ def take_photo(dir, name, ext, use_flash=False):
 
 def camera_flash(on):
     if is_unicornhat_attached:
-        myunicornhat.CameraFlash(on)
+        myunicornhat.camera_flash(on)
     if is_piglow_attached:
-        MyPiglow.CameraFlash(on)
+        MyPiglow.camera_flash(on)
     if is_brightpi_attached and brightpi:
         brightpi.camera_flash(on)
 
 
 def on_lights_task():
     if is_unicornhat_attached:
-        myunicornhat.Lights()
+        myunicornhat.lights()
     if is_piglow_attached:
-        MyPiglow.Lights()
+        MyPiglow.lights()
 
 
 def on_lights_scheduled_task():
     if is_unicornhat_attached:
-        myunicornhat.OnLightsScheduledTask()
+        myunicornhat.on_lights_scheduled_task()
     if is_piglow_attached:
-        MyPiglow.OnLightsScheduledTask()
+        MyPiglow.on_lights_scheduled_task()
 
 
 def on_fade_task():
     if is_unicornhat_attached:
-        myunicornhat.Fade()
+        myunicornhat.fade()
     if is_piglow_attached:
-        MyPiglow.Fade()
+        MyPiglow.fade()
 
 
 def on_inbox_item_received(inbox_item):
     if is_unicornhat_attached:
         myunicornhat.inbox_item_received(inbox_item)
     if is_piglow_attached:
-        MyPiglow.Oninbox_itemRecieved(inbox_item)
+        MyPiglow.inbox_item_received(inbox_item)
 
 
 def stop():
     logger.info("Stopping")
     if is_webcam_attached and webcam:
-        webcam.Close()
+        webcam.close()
     if is_picam_attached and picam:
-        picam.Close()
+        picam.close()
     if is_unicornhat_attached:
-        myunicornhat.Close()
+        myunicornhat.close()
     if is_piglow_attached:
-        MyPiglow.Close()
+        MyPiglow.close()
     if is_brightpi_attached and brightpi:
         brightpi.close()
     logger.info("Stopped")

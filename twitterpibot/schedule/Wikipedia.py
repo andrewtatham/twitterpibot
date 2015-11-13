@@ -17,16 +17,16 @@ class Wikipedia(ScheduledTask):
 
         # https://wikipedia.readthedocs.org/en/latest/quickstart.html
 
-        isDisambiguation = True
+        is_disambiguation_page = True
         rand = wikipedia.random(pages=1)
         page = None
-        while isDisambiguation:
+        while is_disambiguation_page:
             try:
                 page = wikipedia.page(title=rand)
-                isDisambiguation = False
+                is_disambiguation_page = False
             except DisambiguationError as e:
                 rand = random.choice(e.options)
-                isDisambiguation = True
+                is_disambiguation_page = True
 
         if page:
             text = cap(page.summary, 100) + page.url

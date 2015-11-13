@@ -37,7 +37,7 @@ class StreamTrendsScheduledTask(ScheduledTask):
             start_trend = _start_list.pop()
             text = "Starting stream: " + start_trend + " at " + str(datetime.datetime.now())
             logger.info(text)
-            Tasks.add(StreamTweetsTask(TwitterHelper.GetStreamer(topic=start_trend)))
+            Tasks.add(StreamTweetsTask(TwitterHelper.get_streamer(topic=start_trend)))
         else:
             stream_list = Tasks.get()
 

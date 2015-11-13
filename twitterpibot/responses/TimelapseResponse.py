@@ -13,10 +13,10 @@ class TimelapseResponse(Response):
         now = datetime.datetime.now()
         timelapse = Timelapse(
             name='now',
-            startTime=now + datetime.timedelta(seconds=1),
-            endTime=now + datetime.timedelta(minutes=2),
-            intervalSeconds=30,
-            tweetText="")
+            start_time=now + datetime.timedelta(seconds=1),
+            end_time=now + datetime.timedelta(minutes=2),
+            interval_seconds=30,
+            tweet_text="")
 
         tasks = timelapse.GetScheduledTasks()
         for task in tasks:

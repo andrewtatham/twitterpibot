@@ -145,7 +145,7 @@ def get_tasks():
     from twitterpibot.tasks.LightsTask import LightsTask
     tasks = [
         ProcessInboxTask(),
-        StreamTweetsTask(TwitterHelper.GetStreamer())
+        StreamTweetsTask(TwitterHelper.get_streamer())
         # ,StreamTweetsTask(TwitterHelper.GetStreamer(topic="#XFactor,#MOTD"))
     ]
     if hardware.is_linux and (hardware.is_piglow_attached or hardware.is_unicornhat_attached):

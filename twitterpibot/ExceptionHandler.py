@@ -2,7 +2,7 @@ import logging
 
 from colorama import Fore, Style, Back
 
-from twitterpibot.Statistics import RecordWarning, RecordError
+from twitterpibot.Statistics import record_warning, record_error
 from twitterpibot.twitter.TwitterHelper import send
 from twitterpibot.hardware import hardware
 import time
@@ -31,13 +31,13 @@ def handle(exception):
 def _record_warning(exception):
     print(Style.DIM + Fore.WHITE + Back.YELLOW + str(exception.message))
     logger.warn(exception)
-    RecordWarning()
+    record_warning()
 
 
 def _record_error(exception):
     print(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
     logger.exception(exception)
-    RecordError()
+    record_error()
     _try_send_exception()
 
 

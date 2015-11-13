@@ -5,7 +5,7 @@ from twitterpibot.tasks.Task import Task
 import twitterpibot.incoming.InboxItemFactory as InboxItemFactory
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
-from twitterpibot.Statistics import RecordIncomingTweet, RecordIncomingDirectMessage
+from twitterpibot.Statistics import record_incoming_tweet, record_incoming_direct_message
 from twitterpibot.twitter.TwitterHelper import send
 import twitterpibot.hardware.hardware as hardware
 import twitterpibot.MyQueues
@@ -27,9 +27,9 @@ class ProcessInboxTask(Task):
                 inbox_item = InboxItemFactory.create(data)
                 if inbox_item:
                     if type(inbox_item) is IncomingTweet:
-                        RecordIncomingTweet()
+                        record_incoming_tweet()
                     if type(inbox_item) is IncomingDirectMessage:
-                        RecordIncomingDirectMessage()
+                        record_incoming_direct_message()
                     _process_inbox_item(self, inbox_item)
         except Exception:
             if data:

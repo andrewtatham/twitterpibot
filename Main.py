@@ -19,18 +19,10 @@ if not hardware.is_andrew_desktop:
     colorama.init(autoreset=True)
 
 Tasks.start()
-
 MySchedule.start()
-
-# if not hardware.iswindows:
-#    Send(OutgoingDirectMessage(
-#        text="Up...." + str(datetime.datetime.now())))
 
 MyUI.start()
 
-# if not hardware.iswindows:
-#    Send(OutgoingDirectMessage(
-#        text="Down...." + str(datetime.datetime.now())))
 MySchedule.stop()
 Tasks.stop()
 hardware.stop()
