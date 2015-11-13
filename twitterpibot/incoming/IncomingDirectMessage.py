@@ -9,7 +9,7 @@ class IncomingDirectMessage(InboxTextItem):
     # https://dev.twitter.com/rest/reference/get/direct_messages
     def __init__(self, data):
         super(IncomingDirectMessage, self).__init__()
-        self.isDirectMessage = True
+        self.is_direct_message = True
         self.sender = Users.get_user(user_data=data["direct_message"]["sender"])
         self.recipient = Users.get_user(user_data=data["direct_message"]["recipient"])
         self.from_me = self.sender.isMe

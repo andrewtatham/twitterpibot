@@ -32,7 +32,7 @@ class IncomingTweet(InboxTextItem):
 
         super(IncomingTweet, self).__init__()
 
-        self.isTweet = True
+        self.is_tweet = True
         self.status_id = data["id_str"]
         self.sender = Users.get_user(user_data=data["user"])
         self.from_me = self.sender.isMe

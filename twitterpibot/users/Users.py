@@ -8,12 +8,11 @@ _lock = threading.Lock()
 _users = {}
 
 
-def get_user(user_id=None, user_data=None):
+def get_user(user_id=None, user_data=None) -> User:
     if not user_id and not user_data:
         raise ValueError()
 
     with _lock:
-
         if user_id and not user_data:
             with MyTwitter() as twitter:
                 user_data = twitter.lookup_user(user_id=user_id)[0]

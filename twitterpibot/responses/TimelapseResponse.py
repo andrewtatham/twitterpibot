@@ -1,3 +1,4 @@
+from twitterpibot.incoming.InboxItem import InboxItem
 from twitterpibot.responses.Response import Response
 from twitterpibot.processing.Timelapse import Timelapse
 import datetime
@@ -5,8 +6,8 @@ from twitterpibot.schedule import MySchedule
 
 
 class TimelapseResponse(Response):
-    def condition(self, inbox_item):
-        return inbox_item.isDirectMessage and not inbox_item.from_me and inbox_item.to_me \
+    def condition(self, inbox_item:InboxItem):
+        return inbox_item.is_direct_message and not inbox_item.from_me and inbox_item.to_me \
                and "timelapse" in inbox_item.words
 
     def respond(self, inbox_item):

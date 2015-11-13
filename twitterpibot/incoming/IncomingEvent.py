@@ -14,7 +14,7 @@ class IncomingEvent(InboxItem):
 
         super(IncomingEvent, self).__init__()
 
-        self.isEvent = True
+        self.is_event = True
 
         # https://dev.twitter.com/streaming/overview/messages-types#Events_event
 

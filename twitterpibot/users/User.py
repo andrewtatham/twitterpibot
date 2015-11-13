@@ -24,12 +24,12 @@ class User(object):
 
         self.updated = None
 
-        self.isArsehole = False
+        self.is_arsehole = False
         self.is_do_not_retweet = False
-        self.isRetweetMore = False
-        self.isBot = False
-        self.isFriend = False
-        self.isReplyLess = False
+        self.is_retweet_more = False
+        self.is_bot = False
+        self.is_friend = False
+        self.is_reply_less = False
 
         self.lock = threading.Lock()
 

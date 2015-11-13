@@ -1,3 +1,4 @@
+from twitterpibot.incoming.InboxItem import InboxItem
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingEvent import IncomingEvent
@@ -6,7 +7,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def create(data):
+def create(data)->InboxItem:
     if "text" in data:
         return IncomingTweet(data)
     elif "direct_message" in data:

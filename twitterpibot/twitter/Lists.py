@@ -52,11 +52,11 @@ def update_user(user):
     if not _sets or not _list_ids:
         update_lists()
     with _lock:
-        user.isArsehole = user.id in _sets["Arseholes"]
-        user.isReplyLess = user.id in _sets["Reply Less"]
+        user.is_arsehole = user.id in _sets["Arseholes"]
+        user.is_reply_less = user.id in _sets["Reply Less"]
         user.is_do_not_retweet = user.id in _sets["Dont Retweet"]
-        user.isRetweetMore = user.id in _sets["Retweet More"]
-        user.isBot = user.id in _sets["Awesome Bots"]
-        user.isFriend = user.id in _sets["Friends"]
+        user.is_retweet_more = user.id in _sets["Retweet More"]
+        user.is_bot = user.id in _sets["Awesome Bots"]
+        user.is_friend = user.id in _sets["Friends"]
 
         user.updated = datetime.datetime.utcnow()
