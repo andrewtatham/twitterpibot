@@ -9,9 +9,9 @@ import colorsys
 
 def _WritePixel(x, y):
     pixel = _buffer[x][y]
-    r = pixel[0]
-    g = pixel[1]
-    b = pixel[2]
+    r = int(pixel[0])
+    g = int(pixel[1])
+    b = int(pixel[2])
     unicornhat.set_pixel(x, y, r, g, b)
 
 
