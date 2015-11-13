@@ -101,7 +101,7 @@ def camera_flash(on):
     if is_piglow_attached:
         MyPiglow.CameraFlash(on)
     if is_brightpi_attached and brightpi:
-        brightpi.CameraFlash(on)
+        brightpi.camera_flash(on)
 
 
 def on_lights_task():
@@ -143,5 +143,5 @@ def stop():
     if is_piglow_attached:
         MyPiglow.Close()
     if is_brightpi_attached and brightpi:
-        brightpi.Close()
+        brightpi.close()
     logger.info("Stopped")

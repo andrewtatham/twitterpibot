@@ -20,6 +20,7 @@ class ProcessInboxTask(Task):
         self.responseFactory = ResponseFactory()
 
     def onRun(self):
+        data = None
         try:
             data = twitterpibot.MyQueues.inbox.get()
             if data:

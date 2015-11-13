@@ -4,6 +4,8 @@ import time
 import itertools
 from multiprocessing import Lock
 
+import colorsys
+
 
 def _WritePixel(x, y):
     pixel = _buffer[x][y]
@@ -21,7 +23,7 @@ def _WriteAll():
 
 
 class UnicornHatMode(object):
-    def CameraFlash(self, on):
+    def camera_flash(self, on):
         with _lock:
             for y in range(8):
                 for x in range(8):
@@ -37,7 +39,7 @@ class UnicornHatMode(object):
                     unicornhat.set_pixel(x, y, r, g, b)
             unicornhat.show()
 
-    def Fade(self):
+    def fade(self):
         with _lock:
             for y in range(8):
                 for x in range(8):
@@ -49,7 +51,7 @@ class UnicornHatMode(object):
                     unicornhat.set_pixel(x, y, r, g, b)
             unicornhat.show()
 
-    def Close(self):
+    def close(self):
         with _lock:
             r = 0
             g = 0
@@ -59,9 +61,15 @@ class UnicornHatMode(object):
                     unicornhat.set_pixel(x, y, r, g, b)
             unicornhat.show()
 
+    def lights(self):
+        pass
+
+    def inbox_item_received(self, inbox_item):
+        pass
+
 
 class DotsMode(UnicornHatMode):
-    def Lights(self):
+    def lights(self):
         with _lock:
             x = random.randint(0, 7)
             y = random.randint(0, 7)
@@ -87,7 +95,7 @@ class DotsMode(UnicornHatMode):
 
 
 class FlashMode(UnicornHatMode):
-    def Lights(self):
+    def lights(self):
 
         with _lock:
             r = random.randint(1, 255)
@@ -115,7 +123,7 @@ class RainMode(UnicornHatMode):
     def __init__(self):
         self._rain = Rain()
 
-    def Lights(self):
+    def lights(self):
         with _lock:
             self._rain.WriteToBuffer(True)
             _WriteAll()
@@ -133,7 +141,7 @@ class MatrixMode(UnicornHatMode):
     def __init__(self):
         self._rain = Rain(direction="right")
 
-    def Lights(self):
+    def lights(self):
         with _lock:
             self._rain.WriteToBuffer(True)
             _WriteAll()
@@ -151,7 +159,7 @@ class FireMode(UnicornHatMode):
     def __init__(self):
         self._rain = Rain(direction="up")
 
-    def Lights(self):
+    def lights(self):
         with _lock:
             self._rain.WriteToBuffer(True)
             _WriteAll()
@@ -172,7 +180,7 @@ class SnowMode(UnicornHatMode):
     def __init__(self):
         self._rain = Rain()
 
-    def Lights(self):
+    def lights(self):
         with _lock:
             self._rain.WriteToBuffer(True)
             _WriteAll()
@@ -242,14 +250,60 @@ class Raindrop(object):
         self.rgb = rgb
 
 
+def hsv2rgb(hsv):
+    rgb = [int(x * 255) for x in colorsys.hsv_to_rgb(hsv[0], hsv[1], hsv[2])]
+    return rgb
+
+
+class RainbowMode(UnicornHatMode):
+    def __init__(self):
+        self.state = False
+
+    def lights(self):
+        self.state = not self.state
+        if self.state:
+            for y in range(8):
+                for x in range(8):
+                    _buffer[x][y] = ((1.0 / 8) * x, (1.0 / 8) * y, 1.0)
+        else:
+            for y in range(8):
+                for x in range(8):
+                    _buffer[x][y] = ((1.0 / 8) * x, 1.0, (1.0 / 8) * y)
+        _WriteAll()
+        time.sleep(0.25)
+
+
+class RainbowRainMode(UnicornHatMode):
+    def __init__(self):
+        self._rain = Rain()
+        self.h = 0.0
+
+    def lights(self):
+        with _lock:
+            self._rain.WriteToBuffer(True)
+            _WriteAll()
+        time.sleep(0.25)
+
+    # noinspection PyUnusedLocal
+    def inbox_item_received(self, inbox_item):
+        self.h += 0.1
+        if self.h > 1.0:
+            self.h = 0.0
+        self._rain.AddRaindrop(hsv2rgb((self.h, 1.0, 1.0)))
+        self._rain.WriteToBuffer(False)
+        _WriteAll()
+
+
 _buffer = [[(0, 0, 0) for x in range(8)] for y in range(8)]
 _modes = itertools.cycle([
     # DotsMode(),
     # FlashMode(),
-    SnowMode(),
-    RainMode(),
-    FireMode(),
-    MatrixMode(),
+    # SnowMode(),
+    # RainMode(),
+    # FireMode(),
+    # MatrixMode(),
+    RainbowMode(),
+    RainbowRainMode(),
 
     # TODO
     # Rain
@@ -283,11 +337,11 @@ _lock = Lock()
 
 
 def Lights():
-    _mode.Lights()
+    _mode.lights()
 
 
 def CameraFlash(on):
-    _mode.CameraFlash(on)
+    _mode.camera_flash(on)
 
 
 def inbox_item_received(inbox_item):
@@ -301,8 +355,8 @@ def OnLightsScheduledTask():
 
 
 def Fade():
-    _mode.Fade()
+    _mode.fade()
 
 
 def Close():
-    _mode.Close()
+    _mode.close()

@@ -401,12 +401,9 @@ class Songs(object):
             lyric = str(lyric.strip())
             if lyric:
                 if "<<screen_name>>" in lyric:
-                    lyric = str(lyric.replace(b"<<screen_name>>", b"@" + bytes(target)))
-
+                    lyric = str(lyric.replace("<<screen_name>>", "@" + target))
                 if hashtag:
-                    lyric += ' ' + hashtag
-
-                    # prevent duplicate lines
+                    lyric += " " + hashtag
                 while lyric in lastlyrics:
                     lyric += random.choice(self.mutation)
                 lastlyrics.add(lyric)

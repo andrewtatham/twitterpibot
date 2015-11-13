@@ -103,11 +103,11 @@ _mode = next(_modes)
 
 
 def Lights():
-    _mode.Lights()
+    _mode.lights()
 
 
 def CameraFlash(on):
-    _mode.CameraFlash(on)
+    _mode.camera_flash(on)
 
 
 def Oninbox_itemRecieved(inbox_item):
@@ -121,8 +121,8 @@ def OnLightsScheduledTask():
 
 
 def Fade():
-    _mode.Fade()
+    _mode.fade()
 
 
 def Close():
-    _mode.Close()
+    _mode.close()
