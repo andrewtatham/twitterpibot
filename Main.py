@@ -31,9 +31,8 @@ MyUI.start()
 # if not hardware.iswindows:
 #    Send(OutgoingDirectMessage(
 #        text="Down...." + str(datetime.datetime.now())))
-
-Tasks.stop()
 MySchedule.stop()
+Tasks.stop()
 hardware.stop()
 print("Done")
 sys.exit(0)
