@@ -37,17 +37,16 @@ def get_responses():
 
     responses = [
         RestartResponse(),
-        BotBlockerResponse()
+        BotBlockerResponse(),
+        SongResponse(),
+        TalkLikeAPirateDayResponse(),
+        ThanksResponse(),
+        HelloResponse(),
+        Magic8BallResponse()
     ]
 
     if is_andrewtathampi:
-        responses.extend([
-            SongResponse(),
-            TalkLikeAPirateDayResponse(),
-            ThanksResponse(),
-            HelloResponse(),
-            Magic8BallResponse()
-        ])
+        pass
     elif is_andrewtathampi2:
         pass
 
@@ -60,15 +59,14 @@ def get_responses():
         ])
 
     if is_andrewtathampi:
-        responses.append(
-            FatherTedResponse()
-        )
+        pass
     elif is_andrewtathampi2:
         pass
 
-    responses.append(
+    responses.extend([
+        FatherTedResponse(),
         RetweetResponse()
-    )
+    ])
 
     return responses
 
