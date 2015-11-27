@@ -9,7 +9,7 @@ class ThanksResponse(Response):
     def __init__(self):
         self.rx = re.compile("thx|thank(s|you)", re.IGNORECASE)
 
-    def condition(self, inbox_item:InboxItem):
+    def condition(self, inbox_item):
         return not inbox_item.from_me \
                and (inbox_item.is_direct_message or inbox_item.is_tweet) \
                and inbox_item.to_me \

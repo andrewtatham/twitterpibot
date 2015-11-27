@@ -8,7 +8,7 @@ class BotBlockerResponse(Response):
     def __init__(self):
         self.blocker = BotBlocker()
 
-    def condition(self, inbox_item:InboxItem):
+    def condition(self, inbox_item):
         is_new_follower = inbox_item.is_event and not inbox_item.from_me and inbox_item.to_me and inbox_item.isFollow
         if is_new_follower:
             return self.blocker.IsUserBot(inbox_item.source)

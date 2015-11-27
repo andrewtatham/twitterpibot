@@ -6,7 +6,7 @@ from twitterpibot.schedule import MySchedule
 
 
 class TimelapseResponse(Response):
-    def condition(self, inbox_item:InboxItem):
+    def condition(self, inbox_item):
         return inbox_item.is_direct_message and not inbox_item.from_me and inbox_item.to_me \
                and "timelapse" in inbox_item.words
 

@@ -33,7 +33,7 @@ class RetweetResponse(Response):
 
         self.rx = re.compile("|".join(self.bannedTopics), re.IGNORECASE)
 
-    def condition(self, inbox_item:InboxItem):
+    def condition(self, inbox_item):
         return inbox_item.is_tweet \
                and not inbox_item.from_me \
                and not inbox_item.to_me \
