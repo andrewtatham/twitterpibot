@@ -8,7 +8,7 @@ _lock = threading.Lock()
 _users = {}
 
 
-def get_user(user_id=None, user_data=None) -> User:
+def get_user(user_id=None, user_data=None):
     if not user_id and not user_data:
         raise ValueError()
 

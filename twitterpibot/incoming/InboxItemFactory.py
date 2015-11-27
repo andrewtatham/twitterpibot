@@ -7,7 +7,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def create(data)->InboxItem:
+def create(data):
     if "text" in data:
         return IncomingTweet(data)
     elif "direct_message" in data:
