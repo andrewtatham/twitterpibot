@@ -57,11 +57,9 @@ class BotBlocker(object):
             txt += "- " + user.description
         print(Fore.RED + Style.BRIGHT + txt)
 
-        # with MyTwitter() as twitter:
-        #     twitter.create_block(user_id=user.id,
-        #                          screen_name=user.screen_name)
         logger.warn(txt)
-
         Lists.add_user(list_name="Bad Bots", user_id=user.id, screen_name=user.screen_name)
+        with MyTwitter() as twitter:
+            twitter.create_block(user_id=user.id,
+                                 screen_name=user.screen_name)
 
-        # TwitterHelper.send(OutgoingDirectMessage(txt))
