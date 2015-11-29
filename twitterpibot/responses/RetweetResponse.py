@@ -1,11 +1,9 @@
 import random
 import re
-from twitterpibot.incoming.InboxItem import InboxItem
+import logging
 
 from twitterpibot.responses.Response import Response
 from twitterpibot.twitter import TwitterHelper
-
-import logging
 
 logger = logging.getLogger(__name__)
 

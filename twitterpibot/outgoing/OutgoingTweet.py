@@ -12,7 +12,7 @@ class OutgoingTweet(OutboxTextItem):
 
         if in_reply_to_status_id:
             self.in_reply_to_status_id = in_reply_to_status_id
-        elif reply_to and reply_to.isTweet and reply_to.status_id:
+        elif reply_to and reply_to.is_tweet and reply_to.status_id:
             self.in_reply_to_status_id = reply_to.status_id
 
         self.filePaths = file_paths

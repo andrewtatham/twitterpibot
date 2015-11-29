@@ -1,4 +1,3 @@
-from twitterpibot.incoming.InboxItem import InboxItem
 from twitterpibot.responses.Response import Response
 
 from twitterpibot.users.BotBlocker import BotBlocker

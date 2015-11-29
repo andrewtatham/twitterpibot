@@ -1,5 +1,4 @@
 from twitterpibot import MyUI
-from twitterpibot.incoming.InboxItem import InboxItem
 from twitterpibot.responses.Response import Response
 
 

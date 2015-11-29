@@ -1,5 +1,4 @@
 import random
-from twitterpibot.incoming.InboxItem import InboxItem
 
 
 class Response(object):

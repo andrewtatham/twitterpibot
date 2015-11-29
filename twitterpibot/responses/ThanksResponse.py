@@ -1,7 +1,7 @@
 import re
-from twitterpibot.incoming.InboxItem import InboxItem
-from twitterpibot.responses.Response import Response
 import random
+
+from twitterpibot.responses.Response import Response
 from twitterpibot.twitter.TwitterHelper import reply_with
 
 

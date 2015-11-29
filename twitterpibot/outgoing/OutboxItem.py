@@ -1,7 +1,7 @@
 class OutboxItem(object):
     def __init__(self):
-        self.isTweet = False
-        self.isDirectMessage = False
+        self.is_tweet = False
+        self.is_direct_message = False
 
         # Tweets
         self.status = None

@@ -1,7 +1,7 @@
-from twitterpibot.incoming.InboxItem import InboxItem
+import datetime
+
 from twitterpibot.responses.Response import Response
 from twitterpibot.processing.Timelapse import Timelapse
-import datetime
 from twitterpibot.schedule import MySchedule
 
 

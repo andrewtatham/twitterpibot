@@ -1,6 +1,6 @@
-import twitterpibot.Identity as Identity
 import logging
-from twitterpibot.incoming.InboxItem import InboxItem
+
+import twitterpibot.Identity as Identity
 from twitterpibot.twitter import TwitterHelper
 
 logger = logging.getLogger(__name__)

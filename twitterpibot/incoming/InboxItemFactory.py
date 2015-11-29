@@ -1,8 +1,8 @@
-from twitterpibot.incoming.InboxItem import InboxItem
+import logging
+
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingEvent import IncomingEvent
-import logging
 
 logger = logging.getLogger(__name__)
 
