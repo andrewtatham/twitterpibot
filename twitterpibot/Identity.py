@@ -97,24 +97,23 @@ def get_scheduled_jobs():
         MidnightScheduledTask(),
         BotBlockerScheduledTask(),
         TrendsScheduledTask(),
-        Wikipedia()
+        Wikipedia(),
+        EdBallsDay(),
+        TalkLikeAPirateDayScheduledTask(),
+        WeatherScheduledTask(),
+        JokesScheduledTask(),
+        SongScheduledTask(),
+        HappyBirthdayScheduledTask()
     ]
 
     if is_andrewtathampi:
-        scheduledjobs.extend([
-            EdBallsDay(),
-            TalkLikeAPirateDayScheduledTask(),
-            WeatherScheduledTask(),
-            JokesScheduledTask(),
-            SongScheduledTask(),
-            HappyBirthdayScheduledTask()
-        ])
+        pass
     elif is_andrewtathampi2:
         scheduledjobs.extend([
             StreamTrendsScheduledTask()
         ])
 
-    if is_andrewtathampi and (hardware.is_webcam_attached or hardware.is_picam_attached):
+    if hardware.is_linux and (hardware.is_webcam_attached or hardware.is_picam_attached):
         from twitterpibot.schedule.PhotoScheduledTask import PhotoScheduledTask
         # from twitterpibot.schedule.TimelapseScheduledTask import TimelapseScheduledTask
         from twitterpibot.schedule.SunriseTimelapseScheduledTask import SunriseTimelapseScheduledTask
