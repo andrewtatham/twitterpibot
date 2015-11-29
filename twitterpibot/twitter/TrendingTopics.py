@@ -23,6 +23,7 @@ _lock = Lock()
 class TrendingTopic(object):
     def __init__(self, topic_text):
         self.text = topic_text
+        self.topics = None
         logger.info('Determining topics for ' + self.text)
         # self.topics = Topics.get_topics(topic_text)
         # if self.topics:
