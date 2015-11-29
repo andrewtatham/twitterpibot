@@ -25,11 +25,14 @@ def update_lists():
         with MyTwitter() as twitter:
 
             twitter_lists = twitter.show_owned_lists()["lists"]
-
             twitter_lists_set = set(map(lambda tl: tl["name"], twitter_lists))
+            any_new_lists_created = False
             for list in _lists:
                 if list not in twitter_lists_set:
                     twitter.create_list(name=list, mode="private")
+                    any_new_lists_created = True
+            if any_new_lists_created:
+                twitter_lists = twitter.show_owned_lists()["lists"]
 
             for twitter_list in twitter_lists:
                 list_id = twitter_list["id_str"]
