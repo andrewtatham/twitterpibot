@@ -65,7 +65,7 @@ def send(outbox_item):
 def reply_with(inbox_item, text, as_tweet=False, as_direct_message=False, file_paths=None, in_reply_to_status_id=None):
     reply_as_tweet = as_tweet or not as_direct_message and inbox_item.is_tweet
 
-    reply_as_dm = as_direct_message or not as_tweet and inbox_item.isDirectMessage
+    reply_as_dm = as_direct_message or not as_tweet and inbox_item.is_direct_message
 
     if reply_as_tweet:
         tweet = OutgoingTweet(
