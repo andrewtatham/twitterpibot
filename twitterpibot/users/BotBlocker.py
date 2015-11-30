@@ -30,7 +30,7 @@ class BotBlocker(object):
                 logger.info("Profile topics:" + str(topics1))
                 block_follower = topics1.spam()
 
-            if not block_follower:
+            if not block_follower and (user.following or not user.protected):
 
                 with MyTwitter() as twitter:
                     last_tweets = twitter.get_user_timeline(user_id=user.id,
