@@ -70,8 +70,17 @@ class IncomingTweet(InboxTextItem):
                         self.to_me = True
 
         self.retweeted_status = None
+        self.is_retweet_of_my_status = False
         if "retweeted_status" in data:
             self.retweeted_status = IncomingTweet(data["retweeted_status"])  # retweet recursion!
+
+            if self.retweeted_status.from_me:
+                self.is_retweet_of_my_status = True
+
+
+
+
+
 
     def display(self):
         colour = ""
