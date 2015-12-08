@@ -128,7 +128,7 @@ def get_scheduled_jobs():
             NightTimelapseScheduledTask(),
             SunTimelapseScheduledTask()
         ])
-    if is_andrewtathampi2 and (hardware.is_piglow_attached or hardware.is_unicornhat_attached):
+    if hardware.is_linux and (hardware.is_piglow_attached or hardware.is_unicornhat_attached):
         scheduledjobs.extend([
             LightsScheduledTask()
         ])
@@ -145,7 +145,7 @@ def get_tasks():
         StreamTweetsTask(TwitterHelper.get_streamer())
         # ,StreamTweetsTask(TwitterHelper.GetStreamer(topic="#XFactor,#MOTD"))
     ]
-    if is_andrewtathampi2 and (hardware.is_piglow_attached or hardware.is_unicornhat_attached):
+    if hardware.is_linux and (hardware.is_piglow_attached or hardware.is_unicornhat_attached):
         tasks.extend([
             LightsTask(),
             FadeTask()
