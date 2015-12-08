@@ -34,7 +34,7 @@ class SuggestedUsersScheduledTask(ScheduledTask):
                 print(colour + "User: [" + category["name"] + "] - " + user["name"] + " [@" + user[
                     "screen_name"] + "] - " + user["description"].replace("\n", "   "))
 
-            if random.randint(0, 2) == 0:
-                user = random.choice(suggested_users)
-                print("[SuggestedUsersScheduledTask] following " + user["name"] + " [@" + user["screen_name"] + "]")
-                twitter.create_friendship(id=user["id_str"])
+            # if random.randint(0, 2) == 0:
+            #     user = random.choice(suggested_users)
+            #     print("[SuggestedUsersScheduledTask] following " + user["name"] + " [@" + user["screen_name"] + "]")
+            #     twitter.create_friendship(id=user["id_str"])
