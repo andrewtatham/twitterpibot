@@ -9,10 +9,13 @@ is_andrewtathampi = hardware.is_raspberry_pi or hardware.is_windows or hardware.
 is_andrewtathampi2 = not is_andrewtathampi and hardware.is_raspberry_pi_2
 
 screen_name = None
+converse_with = None
 if is_andrewtathampi:
     screen_name = "andrewtathampi"
+    converse_with = "andrewtathampi2"
 elif is_andrewtathampi2:
     screen_name = "andrewtathampi2"
+    converse_with = "andrewtathampi"
 
 logger.info("Identity: " + screen_name)
 
@@ -34,12 +37,14 @@ def get_responses():
     from twitterpibot.responses.RestartResponse import RestartResponse
     from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
     from twitterpibot.responses.BotBlockerResponse import BotBlockerResponse
+    from twitterpibot.responses.ConversationResponse import ConversationResponse
 
     responses = [
         RestartResponse(),
         BotBlockerResponse(),
         SongResponse(),
         TalkLikeAPirateDayResponse(),
+        ConversationResponse(),
         ThanksResponse(),
         HelloResponse(),
         Magic8BallResponse()
@@ -88,6 +93,7 @@ def get_scheduled_jobs():
     from twitterpibot.schedule.LightsScheduledTask import LightsScheduledTask
     from twitterpibot.schedule.StreamTrendsScheduledTask import StreamTrendsScheduledTask
     from twitterpibot.schedule.BotBlockerScheduledTask import BotBlockerScheduledTask
+    from twitterpibot.schedule.ConversationScheduledTask import ConversationScheduledTask
 
     scheduledjobs = [
         MonitorScheduledTask(),
@@ -103,7 +109,8 @@ def get_scheduled_jobs():
         WeatherScheduledTask(),
         JokesScheduledTask(),
         SongScheduledTask(),
-        HappyBirthdayScheduledTask()
+        HappyBirthdayScheduledTask(),
+        ConversationScheduledTask()
     ]
 
     if is_andrewtathampi:

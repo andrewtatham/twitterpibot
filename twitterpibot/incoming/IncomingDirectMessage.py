@@ -16,6 +16,7 @@ class IncomingDirectMessage(InboxTextItem):
         self.to_me = self.recipient.isMe
         self.targets = [self.sender.screen_name]
         self.text = data["direct_message"]["text"]
+        self.text_stripped = self.text
         self.words = self.text.split()
 
     def display(self):

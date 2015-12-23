@@ -53,6 +53,7 @@ class IncomingTweet(InboxTextItem):
                 self.sourceIsStream = True
 
         self.text = h.unescape(data["text"])
+        self.text_stripped = self.text
         self.words = self.text.split()
 
         self.topics = Topics.get_topics(self.text)
@@ -64,6 +65,9 @@ class IncomingTweet(InboxTextItem):
             if "user_mentions" in entities:
                 mentions = entities["user_mentions"]
                 for mention in mentions:
+
+                    self.text_stripped = self.text_stripped.replace("@" + mention["screen_name"], "").strip()
+
                     if mention["id_str"] != Identity.twid:
                         self.targets.append(mention["screen_name"])
                     if mention["id_str"] == Identity.twid:
@@ -76,11 +80,6 @@ class IncomingTweet(InboxTextItem):
 
             if self.retweeted_status.from_me:
                 self.is_retweet_of_my_status = True
-
-
-
-
-
 
     def display(self):
         colour = ""
