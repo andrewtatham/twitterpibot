@@ -24,4 +24,5 @@ class ResponseFactory(object):
                         TwitterHelper.create_favourite(inbox_item.status_id)
 
                     response.respond(inbox_item)
+                    break
         return None
