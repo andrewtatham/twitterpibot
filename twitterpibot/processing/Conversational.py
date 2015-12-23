@@ -8,7 +8,7 @@ weather_responses = {
     "Mackerel sky and mare's tails make tall ships carry low sails",
     "Rain before seven, fine by eleven",
     "If crows fly low, winds going to blow; If crows fly high, winds going to die.",
-    "Whether it’s cold or whether it’s hot; We shall have weather, whether or not!",
+    "Whether it's cold or whether it's hot; We shall have weather, whether or not!",
     "No weather is ill, if the wind is still",
     "Rain, rain go away; come back another day"
 }
