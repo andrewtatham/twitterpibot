@@ -191,7 +191,7 @@ def search(text, result_type="popular"):
 
 def create_favorite(id):
     with MyTwitter() as twitter:
-        twitter.create_favourite(id=id)
+        twitter.create_favorite(id=id)
 
 
 def retweet(id):
