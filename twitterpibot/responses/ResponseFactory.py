@@ -16,13 +16,6 @@ class ResponseFactory(object):
         if inbox_item:
             for response in self.responses:
                 if response.condition(inbox_item):
-
-                    if inbox_item.is_tweet \
-                            and not inbox_item.favorited \
-                            and not inbox_item.from_me \
-                            and response.favourite(inbox_item):
-                        TwitterHelper.create_favourite(inbox_item.status_id)
-
                     response.respond(inbox_item)
                     break
         return None

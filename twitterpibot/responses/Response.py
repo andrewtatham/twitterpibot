@@ -11,8 +11,5 @@ class Response(object):
                     or (inbox_item.sender.is_retweet_more and random.randint(0, 9) == 0)
                     or random.randint(0, 99) == 0)
 
-    def favourite(self, inbox_item):
-        return False
-
     def respond(self, inbox_item):
         return None

@@ -8,7 +8,7 @@ from twitterpibot.twitter import TwitterHelper
 logger = logging.getLogger(__name__)
 
 
-class RetweetResponse(Response):
+class FavoriteResponse(Response):
     def __init__(self):
         self.bannedTopics = [
 
@@ -21,12 +21,6 @@ class RetweetResponse(Response):
             "(RT|Retweet).*(Fav)",
             "(Fav).*(RT|Retweet)",
 
-            # Football
-
-            # Job Adverts
-            "is.*(looking for|hiring)",
-            "Jobs available",
-            "Apply now"
         ]
 
         self.rx = re.compile("|".join(self.bannedTopics), re.IGNORECASE)
@@ -35,21 +29,16 @@ class RetweetResponse(Response):
         return inbox_item.is_tweet \
                and not inbox_item.from_me \
                and not inbox_item.to_me \
-               and not (inbox_item.retweeted or inbox_item.retweeted_status and inbox_item.retweeted_status.retweeted) \
-               and not inbox_item.sender.protected \
+               and not (inbox_item.favorited or inbox_item.retweeted_status and inbox_item.retweeted_status.favorited) \
                and not inbox_item.sender.is_arsehole \
-               and not (inbox_item.sender.is_do_not_retweet
-                        or inbox_item.retweeted_status
-                        and inbox_item.retweeted_status.sender.is_do_not_retweet) \
                and not bool(self.rx.match(inbox_item.text)) \
                and (not inbox_item.topics or inbox_item.topics.retweet()) \
                and ((inbox_item.sender.is_bot and random.randint(0, 50) == 0) or
                     (inbox_item.sender.is_friend and random.randint(0, 3) == 0) or
-                    (inbox_item.sender.is_retweet_more and random.randint(0, 9) == 0) or
                     (inbox_item.sourceIsTrend and random.randint(0, 20) == 0) or
                     (inbox_item.sourceIsSearch and random.randint(0, 20) == 0) or
                     (random.randint(0, 99) == 0))
 
     def respond(self, inbox_item):
-        logger.info("retweeting status id %s", inbox_item.status_id)
-        TwitterHelper.retweet(inbox_item.status_id)
+        logger.info("favoriting status id %s", inbox_item.status_id)
+        TwitterHelper.create_favorite(inbox_item.status_id)

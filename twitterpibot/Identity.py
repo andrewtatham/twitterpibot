@@ -1,5 +1,4 @@
 import logging
-
 import twitterpibot.hardware.hardware as hardware
 import twitterpibot.twitter.TwitterHelper as TwitterHelper
 
@@ -38,6 +37,7 @@ def get_responses():
     from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
     from twitterpibot.responses.BotBlockerResponse import BotBlockerResponse
     from twitterpibot.responses.ConversationResponse import ConversationResponse
+    from twitterpibot.responses.FavoriteResponse import FavoriteResponse
 
     responses = [
         RestartResponse(),
@@ -70,6 +70,7 @@ def get_responses():
 
     responses.extend([
         FatherTedResponse(),
+        FavoriteResponse(),
         RetweetResponse()
     ])
 

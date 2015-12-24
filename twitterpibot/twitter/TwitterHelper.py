@@ -189,7 +189,7 @@ def search(text, result_type="popular"):
         return twitter.search(q=query, result_type=result_type)["statuses"]
 
 
-def create_favourite(id):
+def create_favorite(id):
     with MyTwitter() as twitter:
         twitter.create_favourite(id=id)
 

@@ -96,10 +96,10 @@ class IncomingTweet(InboxTextItem):
             colour = next(tweetcolours)
             text += "[user] "
 
+        text += self.sender.name + ' [@' + self.sender.screen_name + '] ' + self.text.replace('\n', ' ')
+
         if self.topics:
             text += "{topic: " + str(self.topics) + "} "
-
-        text += self.sender.name + ' [@' + self.sender.screen_name + '] ' + self.text.replace('\n', ' ')
 
         if self.to_me:
             colour += Style.BRIGHT
