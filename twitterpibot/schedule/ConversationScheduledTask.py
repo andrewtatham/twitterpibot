@@ -12,5 +12,5 @@ class ConversationScheduledTask(ScheduledTask):
         return IntervalTrigger(hours=2)
 
     def onRun(self):
-        text = "@" + Identity.converse_with + " " + random.choice(prompts_list)
+        text = "@" + Identity.converse_with + " " + random.choice(prompts_list_cold)
         send(OutgoingTweet(text=text))
