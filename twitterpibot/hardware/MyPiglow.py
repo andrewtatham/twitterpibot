@@ -46,7 +46,8 @@ class PiglowMode(object):
             _write_all()
 
     def lights(self):
-        pass
+        time.sleep(1)
+
 
     def inbox_item_received(self, inbox_item):
         pass

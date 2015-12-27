@@ -4,12 +4,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-
 is_piglow_attached = False
 is_picam_attached = False
 is_webcam_attached = False
 is_brightpi_attached = False
 is_unicornhat_attached = False
+is_blinksticknano_attached = False
 
 picam = None
 webcam = None
@@ -39,6 +39,8 @@ if is_windows:
 elif is_mac_osx:
     if is_andrew_macbook:
         is_webcam_attached = False
+        is_blinksticknano_attached = True
+
 
 elif is_linux:
 
@@ -55,19 +57,19 @@ elif is_linux:
         is_webcam_attached = True
         is_unicornhat_attached = True
 
-
 logger.info("is_webcam_attached: %s", is_webcam_attached)
 logger.info("is_picam_attached: %s", is_picam_attached)
 logger.info("is_unicornhat_attached: %s", is_unicornhat_attached)
 logger.info("is_piglow_attached: %s", is_piglow_attached)
 logger.info("is_brightpi_attached: %s", is_brightpi_attached)
 
-
 if is_webcam_attached:
     import twitterpibot.hardware.MyWebcam as MyWebcam
+
     webcam = MyWebcam.Webcam()
 if is_picam_attached:
     import twitterpibot.hardware.MyPicam as MyPicam
+
     picam = MyPicam.MyPicam()
 if is_unicornhat_attached:
     import twitterpibot.hardware.myunicornhat as myunicornhat
@@ -75,9 +77,10 @@ if is_piglow_attached:
     import twitterpibot.hardware.MyPiglow as MyPiglow
 if is_brightpi_attached:
     import twitterpibot.hardware.MyBrightPi as MyBrightPi
-
     # noinspection PyUnresolvedReferences
     brightpi = MyBrightPi.BrightPI()
+if is_blinksticknano_attached:
+    import twitterpibot.hardware.MyBlinkstickNano as MyBlinkstickNano
 
 
 def take_photo(dir, name, ext, use_flash=False):
@@ -102,6 +105,8 @@ def camera_flash(on):
         MyPiglow.camera_flash(on)
     if is_brightpi_attached and brightpi:
         brightpi.camera_flash(on)
+    if is_blinksticknano_attached:
+        MyBlinkstickNano.camera_flash(on)
 
 
 def on_lights_task():
@@ -109,6 +114,8 @@ def on_lights_task():
         myunicornhat.lights()
     if is_piglow_attached:
         MyPiglow.lights()
+    if is_blinksticknano_attached:
+        MyBlinkstickNano.lights()
 
 
 def on_lights_scheduled_task():
@@ -116,6 +123,8 @@ def on_lights_scheduled_task():
         myunicornhat.on_lights_scheduled_task()
     if is_piglow_attached:
         MyPiglow.on_lights_scheduled_task()
+    if is_blinksticknano_attached:
+        MyBlinkstickNano.on_lights_scheduled_task()
 
 
 def on_fade_task():
@@ -123,6 +132,8 @@ def on_fade_task():
         myunicornhat.fade()
     if is_piglow_attached:
         MyPiglow.fade()
+    if is_blinksticknano_attached:
+        MyBlinkstickNano.fade()
 
 
 def on_inbox_item_received(inbox_item):
@@ -130,6 +141,8 @@ def on_inbox_item_received(inbox_item):
         myunicornhat.inbox_item_received(inbox_item)
     if is_piglow_attached:
         MyPiglow.inbox_item_received(inbox_item)
+    if is_blinksticknano_attached:
+        MyBlinkstickNano.inbox_item_received(inbox_item)
 
 
 def stop():
@@ -144,4 +157,6 @@ def stop():
         MyPiglow.close()
     if is_brightpi_attached and brightpi:
         brightpi.close()
+    if is_blinksticknano_attached:
+        MyBlinkstickNano.close()
     logger.info("Stopped")

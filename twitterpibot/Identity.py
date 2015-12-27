@@ -136,7 +136,7 @@ def get_scheduled_jobs():
             NightTimelapseScheduledTask(),
             SunTimelapseScheduledTask()
         ])
-    if hardware.is_linux and (hardware.is_piglow_attached or hardware.is_unicornhat_attached):
+    if hardware.is_piglow_attached or hardware.is_unicornhat_attached or hardware.is_blinksticknano_attached:
         scheduledjobs.extend([
             LightsScheduledTask()
         ])
@@ -153,7 +153,7 @@ def get_tasks():
         StreamTweetsTask(TwitterHelper.get_streamer())
         # ,StreamTweetsTask(TwitterHelper.GetStreamer(topic="#XFactor,#MOTD"))
     ]
-    if hardware.is_linux and (hardware.is_piglow_attached or hardware.is_unicornhat_attached):
+    if hardware.is_piglow_attached or hardware.is_unicornhat_attached or hardware.is_blinksticknano_attached:
         tasks.extend([
             LightsTask(),
             FadeTask()
