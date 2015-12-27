@@ -45,13 +45,12 @@ class BlinkstickNanoMode(object):
 
 class AlternateMode(BlinkstickNanoMode):
     def inbox_item_received(self, inbox_item):
+        global _led
         r = random.randint(0, _maxbright)
         g = random.randint(0, _maxbright)
         b = random.randint(0, _maxbright)
         with _lock:
-
             _blinkstick.set_color(channel=0, index=_led, red=r, green=g, blue=b)
-            global _led
             _led = next(_leds)
 
 
