@@ -25,7 +25,7 @@ def add(task):
     runthread = threading.Thread(target=_run_wrapper, args=[task], name=task.key)
     _task_dic[task.key] = (task, runthread)
     _task_running[task.key] = True
-    logger.debug("[Tasks] starting thread %s", task.key)
+    logger.info("[Tasks] starting thread %s", task.key)
     runthread.start()
 
 
@@ -34,9 +34,9 @@ def _run_wrapper(task):
         try:
             task.onRun()
         except Exception as e:
-            logger.debug("[Tasks] exception in thread %s", task.key)
+            logger.warn("[Tasks] exception in thread %s", task.key)
             handle(e)
-    logger.debug("[Tasks] exiting thread %s", task.key)
+    logger.info("[Tasks] exiting thread %s", task.key)
 
 
 def get_all():
@@ -51,11 +51,11 @@ def remove(key):
     task = _task_dic[key][0]
     runthread = _task_dic[key][1]
     if _task_running[key]:
-        logger.debug("[Tasks] stopping thread %s", key)
+        logger.info("[Tasks] stopping thread %s", key)
         _task_running[key] = False
         task.onStop()
         runthread.join()
-        logger.debug("[Tasks] stopped thread %s", key)
+        logger.info("[Tasks] stopped thread %s", key)
 
 
 def stop():
