@@ -1,6 +1,7 @@
 import logging
 
 from colorama import Fore, Style, Back
+from twython import TwythonError
 
 from twitterpibot.Statistics import record_warning, record_error
 from twitterpibot.twitter.TwitterHelper import send
@@ -13,7 +14,8 @@ logger = logging.getLogger(__name__)
 
 # "Twitter API returned a 429 (Too Many Requests), Rate limit exceeded"
 # "Twitter API returned a 403 (Forbidden), There was an error sending your message: Whoops! You already said that."
-
+# TwythonError: HTTPSConnectionPool(host='http://api.twitter.com ', port=443): Read timed out. (read timeout=None)
+# TwythonError: ('Connection aborted.', error(110, 'Connection timed out'))
 _back_off = 15
 
 
@@ -23,6 +25,8 @@ def handle_silently(exception):
 
 def handle(exception):
     if type(exception) is UnicodeEncodeError:
+        _record_warning(exception)
+    elif type(exception) is TwythonError:
         _record_warning(exception)
     else:
         _record_error(exception)
