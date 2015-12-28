@@ -48,7 +48,6 @@ class PiglowMode(object):
     def lights(self):
         time.sleep(1)
 
-
     def inbox_item_received(self, inbox_item):
         pass
 

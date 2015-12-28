@@ -8,7 +8,6 @@ class FatherTedResponse(Response):
         return super(FatherTedResponse, self).condition(inbox_item) \
                and inbox_item.to_me
 
-
     def respond(self, inbox_item):
         responses = [
             # exclaimation

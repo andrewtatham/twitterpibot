@@ -1,7 +1,5 @@
 import logging
-
 import twitterpibot.Identity as Identity
-from twitterpibot.twitter import TwitterHelper
 
 logger = logging.getLogger(__name__)
 

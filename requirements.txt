@@ -1,3 +1,4 @@
+blinkstick
 picamera
 unicornhat
 APScheduler
