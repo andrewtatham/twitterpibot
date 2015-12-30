@@ -1,16 +1,18 @@
+import logging
 from twitterpibot.twitter.MyTwitter import MyTwitter
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 from twitterpibot.Statistics import record_outgoing_direct_message, record_outgoing_tweet
 from twitterpibot.twitter.MyStreamer import MyStreamer
+import os
 
+logger = logging.getLogger(__name__)
 try:
     from urllib.parse import quote_plus
 except ImportError:
     # noinspection PyUnresolvedReferences
     from urllib import quote_plus
 
-import os
 
 _screen_name = None
 
@@ -106,7 +108,7 @@ def _upload_video(file_path):
         url = 'https://upload.twitter.com/1.1/media/upload.json'
         file_size = os.path.getsize(file_path)
 
-        print('[MyTwitter] Init')
+        logger.info('[MyTwitter] Init')
         init_params = {
             "command": "INIT",
             "media_type": "video/mp4",
@@ -114,15 +116,15 @@ def _upload_video(file_path):
         }
         init_response = twitter.post(url, init_params)
 
-        print(init_response)
+        logger.info(init_response)
 
         media_id = init_response["media_id_string"]
-        print('[MyTwitter] media_id ' + media_id)
+        logger.info('[MyTwitter] media_id ' + media_id)
 
         segment = 0
         chunk_size = 4 * 1024 * 1024
         for chunk in bytes_from_file(file_path, chunk_size):
-            print('[MyTwitter] Append ' + str(segment))
+            logger.info('[MyTwitter] Append ' + str(segment))
 
             append_params = {
                 'command': 'APPEND',
@@ -131,11 +133,11 @@ def _upload_video(file_path):
             }
             append_response = twitter.post(url, append_params, {'media': chunk})
 
-            print(append_response)
+            logger.info(append_response)
 
         segment += 1
 
-        print('[MyTwitter] Finalize')
+        logger.info('[MyTwitter] Finalize')
         finalize_params = {
             "command": "FINALIZE",
             "media_id": media_id,

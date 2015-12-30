@@ -1,4 +1,7 @@
+import logging
 from twitterpibot.tasks.Task import Task
+
+logger = logging.getLogger(__name__)
 
 
 class StreamTweetsTask(Task):
@@ -14,15 +17,15 @@ class StreamTweetsTask(Task):
 
     def onRun(self):
         if self._topic:
-            print("starting topic stream = " + self._topic)
+            logger.info("starting topic stream = " + self._topic)
             self._streamer.statuses.filter(track=self._topic, filter_level="low", language="en")
         else:
-            print("starting user stream")
+            logger.info("starting user stream")
             self._streamer.user()
 
     def onStop(self):
         if self._topic:
-            print("stopping topic stream = " + self._topic)
+            logger.info("stopping topic stream = " + self._topic)
         else:
-            print("stopping user stream")
+            logger.info("stopping user stream")
         self._streamer.disconnect()

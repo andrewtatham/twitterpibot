@@ -1,5 +1,8 @@
 import astral
 import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def get_today_times():
@@ -7,11 +10,11 @@ def get_today_times():
     city = a['Leeds']
     sun = city.sun(date=datetime.date.today(), local=True)
 
-    print("[Astral] dawn: " + str(sun['dawn']))
-    print("[Astral] sunrise: " + str(sun['sunrise']))
-    print("[Astral] noon: " + str(sun['noon']))
-    print("[Astral] sunset: " + str(sun['sunset']))
-    print("[Astral] dusk: " + str(sun['dusk']))
+    logger.info("[Astral] dawn: " + str(sun['dawn']))
+    logger.info("[Astral] sunrise: " + str(sun['sunrise']))
+    logger.info("[Astral] noon: " + str(sun['noon']))
+    logger.info("[Astral] sunset: " + str(sun['sunset']))
+    logger.info("[Astral] dusk: " + str(sun['dusk']))
     return sun
 
 
@@ -20,11 +23,11 @@ def get_tomorrow_times():
     city = a['Leeds']
     sun = city.sun(date=datetime.date.today() + datetime.timedelta(days=1), local=True)
 
-    print("[Astral] dawn: " + str(sun['dawn']))
-    print("[Astral] sunrise: " + str(sun['sunrise']))
-    print("[Astral] noon: " + str(sun['noon']))
-    print("[Astral] sunset: " + str(sun['sunset']))
-    print("[Astral] dusk: " + str(sun['dusk']))
+    logger.info("[Astral] dawn: " + str(sun['dawn']))
+    logger.info("[Astral] sunrise: " + str(sun['sunrise']))
+    logger.info("[Astral] noon: " + str(sun['noon']))
+    logger.info("[Astral] sunset: " + str(sun['sunset']))
+    logger.info("[Astral] dusk: " + str(sun['dusk']))
 
     return sun
 

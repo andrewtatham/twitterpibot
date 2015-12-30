@@ -1,3 +1,4 @@
+import logging
 from apscheduler.triggers.interval import IntervalTrigger
 import datetime
 from apscheduler.triggers.date import DateTrigger
@@ -7,11 +8,12 @@ import glob
 import images2gif
 # noinspection PyPackageRequirements,PyUnresolvedReferences
 import cv2
-
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.twitter.TwitterHelper import send
 import twitterpibot.hardware.hardware as hardware
+
+logger = logging.getLogger(__name__)
 
 
 class Timelapse(object):
@@ -40,7 +42,7 @@ class Timelapse(object):
         # expected duration of output video
         duration_seconds = no_of_frames / self.fps
 
-        print("[Timelapse] " + self.name + " Expected duration = " + str(duration_seconds))
+        logger.info("[Timelapse] " + self.name + " Expected duration = " + str(duration_seconds))
 
         if self.targetExtension == "mp4":
             if duration_seconds < 0.5:
@@ -66,12 +68,12 @@ class TimelapsePhotoInitTask(ScheduledTask):
         return DateTrigger(run_date=self.timelapse.initTime[0])
 
     def onRun(self):
-        print("[Timelapse] Init ")
+        logger.info("[Timelapse] Init ")
         if os.path.exists(self.timelapse.dirPath):
-            print("[Timelapse] Removing " + self.timelapse.dirPath)
+            logger.info("[Timelapse] Removing " + self.timelapse.dirPath)
             shutil.rmtree(self.timelapse.dirPath, True)
         if not os.path.exists(self.timelapse.dirPath):
-            print("[Timelapse] Creating " + self.timelapse.dirPath)
+            logger.info("[Timelapse] Creating " + self.timelapse.dirPath)
             os.makedirs(self.timelapse.dirPath)
 
 
@@ -89,7 +91,7 @@ class TimelapsePhotoScheduledTask(ScheduledTask):
         )
 
     def onRun(self):
-        print("[Timelapse] " + self.timelapse.name + " Photo " + str(self.i))
+        logger.info("[Timelapse] " + self.timelapse.name + " Photo " + str(self.i))
 
         name = self.timelapse.name + "_img_" + "{0:05d}".format(self.i)
 
@@ -141,7 +143,7 @@ class TimelapseUploadScheduledTask(ScheduledTask):
 
             filenametemp = self.timelapse.dirPath + os.path.sep + self.timelapse.name + os.extsep + "avi"
 
-            print("[Timelapse] Opening video")
+            logger.info("[Timelapse] Opening video")
             fourcc = cv2.cv.CV_FOURCC(*'MPG4')
             video = cv2.VideoWriter(
                 filenametemp,
@@ -150,19 +152,19 @@ class TimelapseUploadScheduledTask(ScheduledTask):
                 frameSize=(width, height))
 
             for image in images:
-                print("[Timelapse] Writing image to video")
+                logger.info("[Timelapse] Writing image to video")
                 video.write(image)
 
-            print("[Timelapse] Closing video")
+            logger.info("[Timelapse] Closing video")
             video.release()
 
-            print("[Timelapse] Renaming video")
+            logger.info("[Timelapse] Renaming video")
             os.rename(filenametemp, filename)
 
         else:
             raise Exception("Not implemented extension " + self.timelapse.targetExtension)
 
-        print("[Timelapse]" + self.timelapse.name + " Checking")
+        logger.info("[Timelapse]" + self.timelapse.name + " Checking")
 
         if not os.path.isfile(filename):
             raise Exception("File does not exist")
@@ -175,11 +177,11 @@ class TimelapseUploadScheduledTask(ScheduledTask):
                 or (self.timelapse.targetExtension == "mp4" and file_size > (15 * 1024 * 1024)):
             raise Exception("File size is too big ")
 
-        print("[Timelapse]" + self.timelapse.name + " Sending")
+        logger.info("[Timelapse]" + self.timelapse.name + " Sending")
         send(OutgoingTweet(
             text=self.timelapse.tweetText,
             file_paths=[filename]))
 
         if os.path.exists(self.timelapse.dirPath):
-            print("[Timelapse] Removing " + self.timelapse.dirPath)
+            logger.info("[Timelapse] Removing " + self.timelapse.dirPath)
             shutil.rmtree(self.timelapse.dirPath, True)

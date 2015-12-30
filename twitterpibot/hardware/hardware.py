@@ -39,7 +39,7 @@ if is_windows:
 elif is_mac_osx:
     if is_andrew_macbook:
         is_webcam_attached = False
-        is_blinksticknano_attached = True
+        is_blinksticknano_attached = False
 
 
 elif is_linux:

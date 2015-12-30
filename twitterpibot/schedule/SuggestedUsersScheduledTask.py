@@ -3,7 +3,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 from twitterpibot.twitter.MyTwitter import MyTwitter
 from colorama import Fore
 from itertools import cycle
-import random
+# import random
 
 suggestedUserColours = cycle([Fore.WHITE, Fore.CYAN])
 
