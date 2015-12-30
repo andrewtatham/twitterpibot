@@ -150,8 +150,8 @@ def get_tasks():
     from twitterpibot.tasks.LightsTask import LightsTask
     tasks = [
         ProcessInboxTask(),
-        StreamTweetsTask(TwitterHelper.get_streamer())
-        # ,StreamTweetsTask(TwitterHelper.GetStreamer(topic="#XFactor,#MOTD"))
+        StreamTweetsTask(TwitterHelper.get_streamer()),
+        StreamTweetsTask(TwitterHelper.get_streamer(topic="#Magic8Ball"), core=True)
     ]
     if hardware.is_piglow_attached or hardware.is_unicornhat_attached or hardware.is_blinksticknano_attached:
         tasks.extend([

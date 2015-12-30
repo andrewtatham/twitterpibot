@@ -5,12 +5,13 @@ logger = logging.getLogger(__name__)
 
 
 class StreamTweetsTask(Task):
-    def __init__(self, streamer):
+    def __init__(self, streamer, core=False):
         Task.__init__(self)
         self._streamer = streamer
         self._topic = streamer.topic
         if self._topic:
             self.key = self._topic
+            self.core = core
         else:
             # user stream is a core task
             self.core = True
