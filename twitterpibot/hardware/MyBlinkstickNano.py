@@ -37,7 +37,7 @@ class BlinkstickNanoMode(object):
             _blinkstick.turn_off()
 
     def lights(self):
-        time.sleep(1)
+        time.sleep(10)
 
     def inbox_item_received(self, inbox_item):
         pass

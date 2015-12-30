@@ -62,7 +62,7 @@ class UnicornHatMode(object):
             unicornhat.show()
 
     def lights(self):
-        time.sleep(1)
+        time.sleep(10)
 
     def inbox_item_received(self, inbox_item):
         pass
