@@ -135,9 +135,9 @@ general_prompts = \
     {
         "How are you?": how_are_you_responses,
         "How are you today?": how_are_you_responses,
-        "Hows tricks?": how_are_you_responses,
+        "How's tricks?": how_are_you_responses,
         "How ya diddlin'?": how_are_you_responses,
-        "Hows the weather where you are?": weather_responses,
+        "How's the weather where you are?": weather_responses,
         "So what about all this weather we've been having?": weather_responses
     }
 
