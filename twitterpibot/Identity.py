@@ -90,7 +90,7 @@ def get_scheduled_jobs():
     from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
     from twitterpibot.schedule.MidnightScheduledTask import MidnightScheduledTask
     from twitterpibot.schedule.SongScheduledTask import SongScheduledTask
-    from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
+    # from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
     from twitterpibot.schedule.LightsScheduledTask import LightsScheduledTask
     from twitterpibot.schedule.StreamTrendsScheduledTask import StreamTrendsScheduledTask
     from twitterpibot.schedule.BotBlockerScheduledTask import BotBlockerScheduledTask
@@ -110,7 +110,7 @@ def get_scheduled_jobs():
         WeatherScheduledTask(),
         JokesScheduledTask(),
         SongScheduledTask(),
-        HappyBirthdayScheduledTask(),
+        # HappyBirthdayScheduledTask(),
         ConversationScheduledTask()
     ]
 

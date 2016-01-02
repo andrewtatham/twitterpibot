@@ -1,3 +1,4 @@
+from twitterpibot.processing import Birthdays
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.songs.Songs import Songs
 from twitterpibot.twitter.MyTwitter import MyTwitter
@@ -16,17 +17,23 @@ class SongScheduledTask(ScheduledTask):
         return CronTrigger(hour="8-22/3")
 
     def onRun(self):
-        song_key = random.choice(self.songs.Keys())
 
-        with MyTwitter() as twitter:
-            target = None
-            if random.randint(0, 9) == 0:
-                lists = twitter.show_owned_lists()
-                song_users_list = filter(lambda l: l["name"] == "Song People", lists["lists"])
-                list_id = song_users_list["id_str"]
-                members = twitter.get_list_members(list_id=int(list_id))
-                target = Users.get_user(user_data=random.choice(members["users"]))
+        birthday_users = Birthdays.get_birthday_users()
+        if birthday_users:
+            for birthdayUser in birthday_users:
+                Birthdays.sing_birthday_song(birthdayUser)
+        else:
+            song_key = random.choice(self.songs.Keys())
 
-            self.songs.Send(
-                song_key=song_key,
-                target=target)
+            with MyTwitter() as twitter:
+                target = None
+                if random.randint(0, 9) == 0:
+                    lists = twitter.show_owned_lists()
+                    song_users_list = filter(lambda l: l["name"] == "Song People", lists["lists"])
+                    list_id = song_users_list["id_str"]
+                    members = twitter.get_list_members(list_id=int(list_id))
+                    target = Users.get_user(user_data=random.choice(members["users"]))
+
+                self.songs.Send(
+                    song_key=song_key,
+                    target=target)

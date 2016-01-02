@@ -12,7 +12,7 @@ class TrendsScheduledTask(ScheduledTask):
         super(TrendsScheduledTask, self).__init__()
 
     def GetTrigger(self):
-        return IntervalTrigger(minutes=5)
+        return IntervalTrigger(minutes=45)
 
     def onRun(self):
         if not self._trendsList:

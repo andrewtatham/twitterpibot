@@ -14,7 +14,7 @@ class BotBlockerScheduledTask(ScheduledTask):
         self._myFollowers = []
 
     def GetTrigger(self):
-        return IntervalTrigger(minutes=3)
+        return IntervalTrigger(minutes=24)
 
     def onRun(self):
         with MyTwitter() as twitter:
