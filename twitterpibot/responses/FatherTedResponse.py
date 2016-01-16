@@ -71,7 +71,7 @@ class FatherTedResponse(Response):
             "Niiice!",
             "What type of dog is this?",
             "Is this a cat in a hat?",
-            "Are you telling me the man who try to put a rubber fist in my anus was a homosexual?",
+            # "Are you telling me the man who try to put a rubber fist in my anus was a homosexual?",
             "Wa-woo-wee-wa!",
             "Jak sie masz",
 
