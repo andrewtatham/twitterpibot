@@ -54,7 +54,7 @@ elif is_linux:
         is_piglow_attached = True  # bool(" 54 " in output)
         is_brightpi_attached = bool(" 70 " in output)
     elif is_raspberry_pi_2:
-        is_webcam_attached = True
+        is_webcam_attached = False
         is_unicornhat_attached = True
 
 logger.info("is_webcam_attached: %s", is_webcam_attached)
