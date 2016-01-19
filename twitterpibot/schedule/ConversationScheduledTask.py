@@ -9,7 +9,7 @@ from twitterpibot.twitter.TwitterHelper import send
 
 class ConversationScheduledTask(ScheduledTask):
     def GetTrigger(self):
-        return IntervalTrigger(hours=2)
+        return IntervalTrigger(hours=17)
 
     def onRun(self):
         text = "@" + Identity.converse_with + " " + random.choice(prompts_list_cold)

@@ -10,6 +10,8 @@ with _statsLock:
     OutgoingDirectMessages = 0
     Warnings = 0
     Errors = 0
+    Retweets = 0
+    Favourites = 0
 
 
 def reset():
@@ -20,6 +22,8 @@ def reset():
         global OutgoingDirectMessages
         global Warnings
         global Errors
+        global Retweets
+        global Favourites
 
         IncomingTweets = 0
         IncomingDirectMessages = 0
@@ -27,6 +31,8 @@ def reset():
         OutgoingDirectMessages = 0
         Warnings = 0
         Errors = 0
+        Retweets = 0
+        Favourites = 0
 
 
 def get_statistics():
@@ -39,6 +45,8 @@ def get_statistics():
         global OutgoingDirectMessages
         global Warnings
         global Errors
+        global Retweets
+        global Favourites
 
         text += str(IncomingTweets) + " IncomingTweets" + os.linesep
         text += str(IncomingDirectMessages) + " IncomingDirectMessages" + os.linesep
@@ -46,6 +54,8 @@ def get_statistics():
         text += str(OutgoingDirectMessages) + " OutgoingDirectMessages" + os.linesep
         text += str(Warnings) + " Warnings" + os.linesep
         text += str(Errors) + " Errors" + os.linesep
+        text += str(Retweets) + " Retweets" + os.linesep
+        text += str(Favourites) + " Favourites" + os.linesep
 
     return text
 
@@ -84,3 +94,15 @@ def record_error():
     with _statsLock:
         global Errors
         Errors += 1
+
+
+def record_retweet():
+    with _statsLock:
+        global Retweets
+        Retweets += 1
+
+
+def record_favourite():
+    with _statsLock:
+        global Favourites
+        Favourites += 1

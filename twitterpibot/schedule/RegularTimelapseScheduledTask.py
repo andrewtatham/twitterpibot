@@ -18,7 +18,7 @@ class RegularTimelapseScheduledTask(ScheduledTask):
         return CronTrigger(hour='*')
 
     def onRun(self):
-        now = datetime.datetime().now() % datetime.timedelta(hours=1)
+        now = datetime.datetime.now() % datetime.timedelta(hours=1)
 
         start = now + datetime.timedelta(hours=1)
         end = now + datetime.timedelta(hours=2)

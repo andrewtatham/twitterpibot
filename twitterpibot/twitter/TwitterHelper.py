@@ -1,8 +1,8 @@
 import logging
+from twitterpibot import Statistics
 from twitterpibot.twitter.MyTwitter import MyTwitter
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
-from twitterpibot.Statistics import record_outgoing_direct_message, record_outgoing_tweet
 from twitterpibot.twitter.MyStreamer import MyStreamer
 import os
 
@@ -30,7 +30,7 @@ def send(outbox_item):
     with MyTwitter() as twitter:
         if type(outbox_item) is OutgoingTweet:
 
-            record_outgoing_tweet()
+            Statistics.record_outgoing_tweet()
 
             if outbox_item.filePaths and any(outbox_item.filePaths):
                 media_ids = []
@@ -54,7 +54,7 @@ def send(outbox_item):
             return id_str
 
         if type(outbox_item) is OutgoingDirectMessage:
-            record_outgoing_direct_message()
+            Statistics.record_outgoing_direct_message()
 
             twitter.send_direct_message(
                 text=outbox_item.text,
@@ -194,11 +194,13 @@ def search(text, result_type="popular"):
 def create_favorite(id):
     with MyTwitter() as twitter:
         twitter.create_favorite(id=id)
+    Statistics.record_favourite()
 
 
 def retweet(id):
     with MyTwitter() as twitter:
         twitter.retweet(id=id)
+    Statistics.record_retweet()
 
 
 def add_user_to_list(list_id, user_id, screen_name):
