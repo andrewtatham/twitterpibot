@@ -1,5 +1,6 @@
 import datetime
 import re
+import logging
 
 
 def _init_regex(regular_expression_list):
@@ -7,7 +8,7 @@ def _init_regex(regular_expression_list):
         return r"\b" + rx.replace(" ", r" ?") + r"\b"
 
     regex = "|".join(map(make_spaces_optional, regular_expression_list))
-    print(regex)
+    logging.debug(regex)
     return re.compile(regex, re.IGNORECASE)
 
 

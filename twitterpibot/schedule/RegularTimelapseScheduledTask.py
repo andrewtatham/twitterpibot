@@ -1,4 +1,6 @@
 import random
+import six
+from twitterpibot.processing import MyAstral
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from apscheduler.triggers.cron import CronTrigger
 from twitterpibot.processing.Timelapse import Timelapse
@@ -15,22 +17,29 @@ messages = [
 
 class RegularTimelapseScheduledTask(ScheduledTask):
     def GetTrigger(self):
-        return CronTrigger(hour='*')
+        return CronTrigger(hour='3')
 
     def onRun(self):
-        now = datetime.datetime.now()
+        n = 6
 
-        start = now + datetime.timedelta(hours=1)
-        end = now + datetime.timedelta(hours=2)
+        sun = MyAstral.get_today_times()
 
-        timelapse = Timelapse(
-            name='timelapse%s' % start.hour,
-            start_time=start,
-            end_time=end,
-            interval_seconds=60,
-            tweet_text=random.choice(messages))
+        dawn = sun['dawn']
+        dusk = sun['dusk']
+        delta = (dusk - dawn) / n
 
-        from twitterpibot.schedule.MySchedule import add
-        tasks = timelapse.GetScheduledTasks()
-        for task in tasks:
-            add(task)
+        for i in range(n):
+            start = dawn + delta * i
+            end = dawn + delta * (i + 1)
+
+            timelapse = Timelapse(
+                name='timelapse%s' % i,
+                start_time=start,
+                end_time=end,
+                interval_seconds=300,
+                tweet_text=random.choice(messages))
+
+            import twitterpibot.schedule.MySchedule as Schedule
+            tasks = timelapse.GetScheduledTasks()
+            for task in tasks:
+                Schedule.add(task)
