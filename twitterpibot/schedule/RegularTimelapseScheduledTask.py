@@ -24,7 +24,7 @@ class RegularTimelapseScheduledTask(ScheduledTask):
         end = now + datetime.timedelta(hours=2)
 
         timelapse = Timelapse(
-            name='timelapse%s' % start.hour(),
+            name='timelapse%s' % start.hours,
             start_time=start,
             end_time=end,
             interval_seconds=60,
