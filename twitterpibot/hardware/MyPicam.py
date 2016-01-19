@@ -10,7 +10,7 @@ class MyPicam(object):
 
         with self.lock:
             self.mypicamera = picamera.PiCamera()
-            self.mypicamera.resolution = (320, 240)
+            self.mypicamera.resolution = (640, 480)
 
     def TakePhotoToDisk(self, dir, name, ext):
         with self.lock:

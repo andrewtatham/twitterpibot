@@ -126,15 +126,18 @@ def get_scheduled_jobs():
         # from twitterpibot.schedule.TimelapseScheduledTask import TimelapseScheduledTask
         from twitterpibot.schedule.SunriseTimelapseScheduledTask import SunriseTimelapseScheduledTask
         from twitterpibot.schedule.SunsetTimelapseScheduledTask import SunsetTimelapseScheduledTask
-        from twitterpibot.schedule.NightTimelapseScheduledTask import NightTimelapseScheduledTask
-        from twitterpibot.schedule.SunTimelapseScheduledTask import SunTimelapseScheduledTask
+        # from twitterpibot.schedule.SunTimelapseScheduledTask import SunTimelapseScheduledTask
+        # from twitterpibot.schedule.NightTimelapseScheduledTask import NightTimelapseScheduledTask
+        from twitterpibot.schedule.RegularTimelapseScheduledTask import RegularTimelapseScheduledTask
+
         scheduledjobs.extend([
             PhotoScheduledTask(),
             # TimelapseScheduledTask(),
             SunriseTimelapseScheduledTask(),
             SunsetTimelapseScheduledTask(),
-            NightTimelapseScheduledTask(),
-            SunTimelapseScheduledTask()
+            # NightTimelapseScheduledTask(),
+            # SunTimelapseScheduledTask(),
+            RegularTimelapseScheduledTask()
         ])
     if hardware.is_piglow_attached or hardware.is_unicornhat_attached or hardware.is_blinksticknano_attached:
         scheduledjobs.extend([
