@@ -43,9 +43,8 @@ class Magic8BallResponse(Response):
                           'Forget about it.']
 
     def condition(self, inbox_item):
-
         stream = inbox_item.is_tweet and not inbox_item.from_me and not inbox_item.is_retweet_of_my_status \
-                and inbox_item.source and "#Magic8Ball" in inbox_item.source
+                 and inbox_item.source and "#Magic8Ball" in inbox_item.source and random.randint(0, 3) == 0
 
         return (super(Magic8BallResponse, self).condition(inbox_item) or stream) and "?" in inbox_item.text
 
