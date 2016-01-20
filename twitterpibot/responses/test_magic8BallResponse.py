@@ -14,3 +14,8 @@ class TestMagic8BallResponse(TestCase):
             "tweetsource": "stream:#Magic8Ball",
             "text": "blah?"
         })))
+
+        self.assertFalse(response.condition(IncomingTweet({
+            "text": "blah?"
+        })))
+

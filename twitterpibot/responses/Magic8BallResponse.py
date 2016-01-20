@@ -44,7 +44,7 @@ class Magic8BallResponse(Response):
 
     def condition(self, inbox_item):
         return (super(Magic8BallResponse, self).condition(inbox_item) or
-                inbox_item.is_tweet and not inbox_item.from_me and "#Magic8Ball" in inbox_item.source
+                inbox_item.is_tweet and not inbox_item.from_me and inbox_item.source and "#Magic8Ball" in inbox_item.source
                 ) and "?" in inbox_item.text
 
     def respond(self, inbox_item):
