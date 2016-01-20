@@ -40,30 +40,31 @@ class IncomingTweet(InboxTextItem):
         self.retweeted = bool(data.get("retweeted"))
 
         self.source = data.get('tweetsource')
-        self.sourceIsTrend = 'trend' in self.source
-        self.sourceIsSearch = 'search' in self.source
-        self.sourceIsStream = 'stream' in self.source
+        self.sourceIsTrend = self.source and 'trend' in self.source
+        self.sourceIsSearch = self.source and 'search' in self.source
+        self.sourceIsStream = self.source and 'stream' in self.source
 
-        self.text = h.unescape(data["text"])
-        self.text_stripped = self.text
-        self.words = self.text.split()
+        self.text = data.get("text")
+        if self.text:
+            self.text = h.unescape(self.text)
+            self.words = self.text.split()
 
-        self.topics = Topics.get_topics(self.text)
+            self.topics = Topics.get_topics(self.text)
+            self.to_me = False
+            self.targets = []
+            self.text_stripped = self.text
+            if "entities" in data:
+                entities = data["entities"]
+                if "user_mentions" in entities:
+                    mentions = entities["user_mentions"]
+                    for mention in mentions:
 
-        self.to_me = False
-        self.targets = []
-        if "entities" in data:
-            entities = data["entities"]
-            if "user_mentions" in entities:
-                mentions = entities["user_mentions"]
-                for mention in mentions:
+                        self.text_stripped = self.text_stripped.replace("@" + mention["screen_name"], "").strip()
 
-                    self.text_stripped = self.text_stripped.replace("@" + mention["screen_name"], "").strip()
-
-                    if mention["id_str"] != Identity.twid:
-                        self.targets.append(mention["screen_name"])
-                    if mention["id_str"] == Identity.twid:
-                        self.to_me = True
+                        if mention["id_str"] != Identity.twid:
+                            self.targets.append(mention["screen_name"])
+                        if mention["id_str"] == Identity.twid:
+                            self.to_me = True
 
         self.retweeted_status = None
         self.is_retweet_of_my_status = False

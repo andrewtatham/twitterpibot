@@ -102,7 +102,7 @@ def get_streamer(topic=None, topic_name=None):
 
 
 def _upload_video(file_path):
-    print('[MyTwitter] uploading ' + file_path)
+    logging.info('[MyTwitter] uploading ' + file_path)
 
     with MyTwitter() as twitter:
         url = 'https://upload.twitter.com/1.1/media/upload.json'

@@ -1,3 +1,4 @@
+import logging
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from apscheduler.triggers.interval import IntervalTrigger
 from twitterpibot.twitter.MyTwitter import MyTwitter
@@ -24,17 +25,17 @@ class SuggestedUsersScheduledTask(ScheduledTask):
 
                 for category in categories:
                     colour = next(suggestedUserColours)
-                    print(colour + "Users: [" + category["name"] + "]")
+                    logging.info(colour + "Users: [" + category["name"] + "]")
                     self._slugList.append(category)
 
             category = self._slugList.pop()
             suggested_users = twitter.get_user_suggestions_by_slug(slug=category["slug"])["users"]
             for user in suggested_users:
                 colour = next(suggestedUserColours)
-                print(colour + "User: [" + category["name"] + "] - " + user["name"] + " [@" + user[
+                logging.info(colour + "User: [" + category["name"] + "] - " + user["name"] + " [@" + user[
                     "screen_name"] + "] - " + user["description"].replace("\n", "   "))
 
             # if random.randint(0, 2) == 0:
             #     user = random.choice(suggested_users)
-            #     print("[SuggestedUsersScheduledTask] following " + user["name"] + " [@" + user["screen_name"] + "]")
+            #     logging.info("[SuggestedUsersScheduledTask] following " + user["name"] + " [@" + user["screen_name"] + "]")
             #     twitter.create_friendship(id=user["id_str"])

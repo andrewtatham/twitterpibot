@@ -18,16 +18,16 @@ class IncomingEvent(InboxItem):
 
         # https://dev.twitter.com/streaming/overview/messages-types#Events_event
 
-        self.source = Users.get_user(user_data=data["source"])
-        self.target = Users.get_user(user_data=data["target"])
+        self.source = Users.get_user(user_data=data.get("source"))
+        self.target = Users.get_user(user_data=data.get("target"))
 
-        self.from_me = self.source.isMe
-        self.to_me = self.target.isMe
+        self.from_me = self.source and self.source.isMe
+        self.to_me = self.target and self.target.isMe
 
-        self.event = data["event"]
-        self.isFavorite = self.event == "favorite"
-        self.isFollow = self.event == "follow"
-        self.isRetweet = self.event == "quoted_tweet"
+        self.event = data.get("event")
+        self.isFavorite = self.event and self.event == "favorite"
+        self.isFollow = self.event and self.event == "follow"
+        self.isRetweet = self.event and self.event == "quoted_tweet"
 
         self.targetObject = None
         self.targetObjectID = None
