@@ -33,24 +33,16 @@ class IncomingTweet(InboxTextItem):
         super(IncomingTweet, self).__init__()
 
         self.is_tweet = True
-        self.status_id = data["id_str"]
-        self.sender = Users.get_user(user_data=data["user"])
-        self.from_me = self.sender.isMe
-        self.favorited = bool(data["favorited"])
-        self.retweeted = bool(data["retweeted"])
+        self.status_id = data.get("id_str")
+        self.sender = Users.get_user(user_data=data.get("user"))
+        self.from_me = self.sender and self.sender.isMe
+        self.favorited = bool(data.get("favorited"))
+        self.retweeted = bool(data.get("retweeted"))
 
-        self.source = None
-        self.sourceIsTrend = False
-        self.sourceIsSearch = False
-        self.sourceIsStream = False
-        if 'tweetsource' in data:
-            self.source = data['tweetsource']
-            if 'trend' in self.source:
-                self.sourceIsTrend = True
-            elif 'search' in self.source:
-                self.sourceIsSearch = True
-            elif 'stream' in self.source:
-                self.sourceIsStream = True
+        self.source = data.get('tweetsource')
+        self.sourceIsTrend = 'trend' in self.source
+        self.sourceIsSearch = 'search' in self.source
+        self.sourceIsStream = 'stream' in self.source
 
         self.text = h.unescape(data["text"])
         self.text_stripped = self.text

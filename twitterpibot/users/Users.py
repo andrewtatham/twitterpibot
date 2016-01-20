@@ -9,9 +9,6 @@ _users = {}
 
 
 def get_user(user_id=None, user_data=None):
-    if not user_id and not user_data:
-        raise ValueError()
-
     with _lock:
         if user_id and not user_data:
             with MyTwitter() as twitter:

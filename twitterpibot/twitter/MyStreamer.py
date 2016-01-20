@@ -8,22 +8,29 @@ logger = logging.getLogger(__name__)
 
 _tokens = None
 
+
 # _back_off_seconds = 60
 
 
 class MyStreamer(TwythonStreamer):
-    def __init__(self, screen_name=None, topic=None):
+    def __init__(self, screen_name=None, topic=None, topic_name=None):
         global _tokens
         if not _tokens:
             _tokens = Authenticator.get_tokens(screen_name)
 
         self._topic = topic
+
+        if topic_name:
+            self._topic_name = topic_name
+        else:
+            self._topic_name = topic
+
         super(MyStreamer, self).__init__(_tokens[0], _tokens[1], _tokens[2], _tokens[3])
 
     def on_success(self, data):
         # global _back_off_seconds
-        if self._topic:
-            data['tweetsource'] = "stream:" + self._topic
+        if self._topic_name:
+            data['tweetsource'] = "stream:" + self._topic_name
         MyQueues.inbox.put(data)
         # _back_off = 60
 

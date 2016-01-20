@@ -154,7 +154,8 @@ def get_tasks():
     tasks = [
         ProcessInboxTask(),
         StreamTweetsTask(TwitterHelper.get_streamer()),
-        StreamTweetsTask(TwitterHelper.get_streamer(topic="#Magic8Ball"), core=True)
+        StreamTweetsTask(TwitterHelper.get_streamer(
+            topic="magic eight ball#MagicEightBall,magic 8 ball,#Magic8Ball", topic_name="#Magic8Ball"),core=True)
     ]
     if hardware.is_piglow_attached or hardware.is_unicornhat_attached or hardware.is_blinksticknano_attached:
         tasks.extend([

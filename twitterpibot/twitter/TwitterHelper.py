@@ -97,8 +97,8 @@ def _upload_media(twitter, file_path):
             file.close()
 
 
-def get_streamer(topic=None):
-    return MyStreamer(_screen_name, topic)
+def get_streamer(topic=None, topic_name=None):
+    return MyStreamer(_screen_name, topic, topic_name)
 
 
 def _upload_video(file_path):
