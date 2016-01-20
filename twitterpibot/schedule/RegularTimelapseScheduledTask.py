@@ -20,7 +20,7 @@ class RegularTimelapseScheduledTask(ScheduledTask):
         return CronTrigger(hour='3')
 
     def onRun(self):
-        n = 6
+        n = 8
 
         sun = MyAstral.get_today_times()
 
