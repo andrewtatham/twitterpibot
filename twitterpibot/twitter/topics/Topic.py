@@ -2,13 +2,15 @@ import datetime
 import re
 import logging
 
+logger = logging.getLogger(__name__)
+
 
 def _init_regex(regular_expression_list):
     def make_spaces_optional(rx):
         return r"\b" + rx.replace(" ", r" ?") + r"\b"
 
     regex = "|".join(map(make_spaces_optional, regular_expression_list))
-    logging.debug(regex)
+    logger.debug(regex)
     return re.compile(regex, re.IGNORECASE)
 
 

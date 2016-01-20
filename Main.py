@@ -1,4 +1,5 @@
 import sys
+import twitterpibot.MyLogging as MyLogging
 import logging
 
 import colorama
@@ -8,7 +9,6 @@ import twitterpibot.Identity as Identity
 import twitterpibot.tasks.Tasks as Tasks
 import twitterpibot.schedule.MySchedule as MySchedule
 import twitterpibot.MyUI as MyUI
-import twitterpibot.MyLogging as MyLogging
 
 MyLogging.init()
 logger = logging.getLogger(__name__)

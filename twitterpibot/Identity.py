@@ -82,7 +82,7 @@ def get_scheduled_jobs():
     from twitterpibot.schedule.Wikipedia import Wikipedia
     from twitterpibot.schedule.MonitorScheduledTask import MonitorScheduledTask
     from twitterpibot.schedule.TrendsScheduledTask import TrendsScheduledTask
-    from twitterpibot.schedule.SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
+    # from twitterpibot.schedule.SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
     from twitterpibot.schedule.UserListsScheduledTask import UserListsScheduledTask
     from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
     from twitterpibot.schedule.JokesScheduledTask import JokesScheduledTask
@@ -98,7 +98,7 @@ def get_scheduled_jobs():
 
     scheduledjobs = [
         MonitorScheduledTask(),
-        SuggestedUsersScheduledTask(),
+        #  SuggestedUsersScheduledTask(),
         UserListsScheduledTask(),
         SavedSearchScheduledTask(),
         MidnightScheduledTask(),
@@ -155,7 +155,7 @@ def get_tasks():
         ProcessInboxTask(),
         StreamTweetsTask(TwitterHelper.get_streamer()),
         StreamTweetsTask(TwitterHelper.get_streamer(
-            topic="magic eight ball#MagicEightBall,magic 8 ball,#Magic8Ball", topic_name="#Magic8Ball"),core=True)
+            topic="magic eight ball,#MagicEightBall,magic 8 ball,#Magic8Ball", topic_name="#Magic8Ball"), core=True)
     ]
     if hardware.is_piglow_attached or hardware.is_unicornhat_attached or hardware.is_blinksticknano_attached:
         tasks.extend([
