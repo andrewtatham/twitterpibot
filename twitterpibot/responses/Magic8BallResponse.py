@@ -8,8 +8,6 @@ from PIL import Image, ImageDraw, ImageFont
 from twitterpibot.responses.Response import Response
 from twitterpibot.twitter.TwitterHelper import reply_with
 
-
-
 responses = ['Signs point to yes',
              'Yes',
              'Reply hazy, try again',
@@ -45,7 +43,28 @@ responses = ['Signs point to yes',
              'Go for it!',
              'Don\'t bet on it',
              'Forget about it']
-file_paths = {}
+
+
+def build_images():
+    images_dir = "twitterpibot" + os.sep + "images" + os.sep
+    template_path = images_dir + "magic8ball" + os.extsep + "png"
+    print (template_path)
+    template = Image.open(template_path)
+    f = {}
+    for r in responses:
+        img = template.copy()
+        draw = ImageDraw.Draw(img)
+        wrapped = os.linesep.join(textwrap.wrap(r, width=12))
+        draw.multiline_text((165, 180), wrapped, align="center")
+        filename = images_dir + re.sub('[^\w]', '_', r).lower() + os.extsep + "png"
+        print (r, filename)
+        img.save(filename, decoder="png")
+        f[r] = filename
+    return f
+
+file_paths = build_images()
+
+
 
 class Magic8BallResponse(Response):
     def condition(self, inbox_item):
@@ -58,26 +77,5 @@ class Magic8BallResponse(Response):
         response = random.choice(responses) + " #Magic8Ball"
         file_path = file_paths[response]
         text = response + " #Magic8Ball"
-        reply_with(inbox_item=inbox_item, text=text, file_paths=[file_path] )
+        reply_with(inbox_item=inbox_item, text=text, file_paths=[file_path])
 
-
-if __name__ == "__main__":
-
-    cwd = os.getcwd()
-    print(cwd)
-    root = os.path.dirname(cwd)
-    print (root)
-    images_dir = root + os.sep + "images" + os.sep
-    print (images_dir)
-    template_path = images_dir + "magic8ball" + os.extsep + "png"
-    print (template_path)
-    template = Image.open(template_path)
-    for r in responses:
-        img = template.copy()
-        draw = ImageDraw.Draw(img)
-        wrapped = os.linesep.join(textwrap.wrap(r, width=12))
-        draw.multiline_text((165, 180), wrapped, align="center")
-        filename = images_dir + re.sub('[^\w]', '_', r).lower() + os.extsep + "png"
-        print (r, filename)
-        img.save(filename, decoder="png")
-        file_paths[r] = filename
