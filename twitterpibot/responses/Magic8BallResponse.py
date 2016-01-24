@@ -74,7 +74,7 @@ class Magic8BallResponse(Response):
         return (super(Magic8BallResponse, self).condition(inbox_item) or stream) and "?" in inbox_item.text
 
     def respond(self, inbox_item):
-        response = random.choice(responses) + " #Magic8Ball"
+        response = random.choice(responses)
         file_path = file_paths[response]
         text = response + " #Magic8Ball"
         reply_with(inbox_item=inbox_item, text=text, file_paths=[file_path])

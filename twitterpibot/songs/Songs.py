@@ -396,7 +396,7 @@ class Songs(object):
         time.sleep(5)
 
         lyricsfile = song["lyrics"]
-        lyrics = open(self.songsfolder + lyricsfile, "rb").readlines()
+        lyrics = open(self.songsfolder + lyricsfile, "r").readlines()
         lastlyrics = set([])
         for lyric in lyrics:
             lyric = lyric.strip()
