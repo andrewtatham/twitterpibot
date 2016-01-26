@@ -43,12 +43,12 @@ class RetweetResponse(Response):
                         and inbox_item.retweeted_status.sender.is_do_not_retweet) \
                and not bool(self.rx.match(inbox_item.text)) \
                and (not inbox_item.topics or inbox_item.topics.retweet()) \
-               and ((inbox_item.sender.is_bot and random.randint(0, 50) == 0) or
+               and ((inbox_item.sender.is_bot and random.randint(0, 99) == 0) or
                     (inbox_item.sender.is_friend and random.randint(0, 3) == 0) or
-                    (inbox_item.sender.is_retweet_more and random.randint(0, 9) == 0) or
-                    (inbox_item.sourceIsTrend and random.randint(0, 20) == 0) or
-                    (inbox_item.sourceIsSearch and random.randint(0, 20) == 0) or
-                    (random.randint(0, 99) == 0))
+                    (inbox_item.sender.is_retweet_more and random.randint(0, 99) == 0) or
+                    (inbox_item.sourceIsTrend and random.randint(0, 99) == 0) or
+                    (inbox_item.sourceIsSearch and random.randint(0, 99) == 0) or
+                    (random.randint(0, 999) == 0))
 
     def respond(self, inbox_item):
         logger.info("retweeting status id %s", inbox_item.status_id)
