@@ -81,18 +81,18 @@ def get_scheduled_jobs():
     from twitterpibot.schedule.EdBallsDay import EdBallsDay
     from twitterpibot.schedule.Wikipedia import Wikipedia
     from twitterpibot.schedule.MonitorScheduledTask import MonitorScheduledTask
-    from twitterpibot.schedule.TrendsScheduledTask import TrendsScheduledTask
+    # from twitterpibot.schedule.TrendsScheduledTask import TrendsScheduledTask
     # from twitterpibot.schedule.SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
     from twitterpibot.schedule.UserListsScheduledTask import UserListsScheduledTask
     from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
     from twitterpibot.schedule.JokesScheduledTask import JokesScheduledTask
-    from twitterpibot.schedule.SavedSearchScheduledTask import SavedSearchScheduledTask
+    # from twitterpibot.schedule.SavedSearchScheduledTask import SavedSearchScheduledTask
     from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
     from twitterpibot.schedule.MidnightScheduledTask import MidnightScheduledTask
     from twitterpibot.schedule.SongScheduledTask import SongScheduledTask
     # from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
     from twitterpibot.schedule.LightsScheduledTask import LightsScheduledTask
-    from twitterpibot.schedule.StreamTrendsScheduledTask import StreamTrendsScheduledTask
+    # from twitterpibot.schedule.StreamTrendsScheduledTask import StreamTrendsScheduledTask
     from twitterpibot.schedule.BotBlockerScheduledTask import BotBlockerScheduledTask
     from twitterpibot.schedule.ConversationScheduledTask import ConversationScheduledTask
 
@@ -100,10 +100,10 @@ def get_scheduled_jobs():
         MonitorScheduledTask(),
         #  SuggestedUsersScheduledTask(),
         UserListsScheduledTask(),
-        SavedSearchScheduledTask(),
+        # SavedSearchScheduledTask(),
         MidnightScheduledTask(),
         BotBlockerScheduledTask(),
-        TrendsScheduledTask(),
+        # TrendsScheduledTask(),
         Wikipedia(),
         EdBallsDay(),
         TalkLikeAPirateDayScheduledTask(),
@@ -114,12 +114,12 @@ def get_scheduled_jobs():
         ConversationScheduledTask()
     ]
 
-    if is_andrewtathampi:
-        pass
-    elif is_andrewtathampi2:
-        scheduledjobs.extend([
-            StreamTrendsScheduledTask()
-        ])
+    # if is_andrewtathampi:
+    #     pass
+    # elif is_andrewtathampi2:
+    #     scheduledjobs.extend([
+    #         StreamTrendsScheduledTask()
+    #     ])
 
     if hardware.is_linux and (hardware.is_webcam_attached or hardware.is_picam_attached):
         from twitterpibot.schedule.PhotoScheduledTask import PhotoScheduledTask
