@@ -1,5 +1,4 @@
 import threading
-from multiprocessing import Lock
 import logging
 
 from twitterpibot.ExceptionHandler import handle
@@ -9,7 +8,6 @@ logger = logging.getLogger(__name__)
 _global_running = False
 _task_running = {}
 _task_dic = {}
-_lock = Lock()
 
 
 def start():

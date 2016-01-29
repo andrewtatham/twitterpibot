@@ -1,14 +1,11 @@
 from twitterpibot.twitter import TwitterHelper
-from multiprocessing import Lock
+
 import datetime
 
 _saved_searches = []
-_lock = Lock()
 _updated = None
 
-
 def get_saved_searches():
-    with _lock:
 
         if _updated:
             delta = datetime.datetime.now() - _updated

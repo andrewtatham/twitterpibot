@@ -8,6 +8,7 @@ class InboxItem(object):
         self.is_direct_message = False
         self.is_event = False
         self.is_retweet_of_my_status = False
+        self.words = None
 
     def display(self):
         pass

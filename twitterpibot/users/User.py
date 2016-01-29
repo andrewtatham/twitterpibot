@@ -1,5 +1,4 @@
 import datetime
-import threading
 from twitterpibot import Identity
 
 
@@ -31,13 +30,10 @@ class User(object):
         self.is_friend = False
         self.is_reply_less = False
 
-        self.lock = threading.Lock()
-
     def isStale(self):
-        with self.lock:
-            if self.updated:
-                delta = datetime.datetime.utcnow() - self.updated
-                mins = divmod(delta.days * 86400 + delta.seconds, 60)[0]
-                return mins > 45
-            else:
-                return True
+        if self.updated:
+            delta = datetime.datetime.utcnow() - self.updated
+            mins = divmod(delta.days * 86400 + delta.seconds, 60)[0]
+            return mins > 45
+        else:
+            return True

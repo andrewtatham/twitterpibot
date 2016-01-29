@@ -1,7 +1,7 @@
 import os
 from twitterpibot.twitter.topics import Topics
 from twitterpibot.twitter import TwitterHelper
-from multiprocessing import Lock
+
 import datetime
 import logging
 
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 _trending = []
 _updated = None
-_lock = Lock()
+
 
 
 class TrendingTopic(object):
@@ -57,7 +57,6 @@ def _update():
 
 
 def get():
-    with _lock:
         if _updated:
             delta = datetime.datetime.now() - _updated
             mins = divmod(delta.days * 86400 + delta.seconds, 60)[0]
