@@ -1,3 +1,4 @@
+giphypop
 blinkstick
 picamera
 unicornhat

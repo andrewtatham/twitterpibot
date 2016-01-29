@@ -38,6 +38,7 @@ def get_responses():
     from twitterpibot.responses.BotBlockerResponse import BotBlockerResponse
     from twitterpibot.responses.ConversationResponse import ConversationResponse
     from twitterpibot.responses.FavoriteResponse import FavoriteResponse
+    from twitterpibot.responses.GifResponse import GifResponse
 
     responses = [
         RestartResponse(),
@@ -69,6 +70,7 @@ def get_responses():
         pass
 
     responses.extend([
+        GifResponse(),
         FatherTedResponse(),
         FavoriteResponse(),
         RetweetResponse()

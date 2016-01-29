@@ -52,18 +52,19 @@ def build_images():
     template = Image.open(template_path)
     f = {}
     for r in responses:
-        img = template.copy()
-        draw = ImageDraw.Draw(img)
-        wrapped = os.linesep.join(textwrap.wrap(r, width=12))
-        draw.multiline_text((165, 180), wrapped, align="center")
         filename = images_dir + re.sub('[^\w]', '_', r).lower() + os.extsep + "png"
+        if not os.path.isfile(filename):
+            img = template.copy()
+            draw = ImageDraw.Draw(img)
+            wrapped = os.linesep.join(textwrap.wrap(r, width=12))
+            draw.multiline_text((165, 180), wrapped, align="center")
+            img.save(filename, decoder="png")
         print (r, filename)
-        img.save(filename, decoder="png")
         f[r] = filename
     return f
 
-file_paths = build_images()
 
+file_paths = build_images()
 
 
 class Magic8BallResponse(Response):
@@ -71,11 +72,16 @@ class Magic8BallResponse(Response):
         stream = inbox_item.is_tweet and not inbox_item.from_me and not inbox_item.is_retweet_of_my_status \
                  and inbox_item.source and "#Magic8Ball" in inbox_item.source and random.randint(0, 3) == 0
 
-        return (super(Magic8BallResponse, self).condition(inbox_item) or stream) and "?" in inbox_item.text
+        without_mention = inbox_item.is_tweet and not inbox_item.from_me and not inbox_item.is_retweet_of_my_status \
+            and ((inbox_item.sender.is_bot and random.randint(0, 3) == 0)
+                or (inbox_item.sender.is_friend and random.randint(0, 1) == 0)
+                or (inbox_item.sender.is_retweet_more and random.randint(0, 9) == 0)
+                or random.randint(0, 99) == 0)
+
+        return (super(Magic8BallResponse, self).condition(inbox_item) or without_mention or stream) and "?" in inbox_item.text
 
     def respond(self, inbox_item):
         response = random.choice(responses)
         file_path = file_paths[response]
         text = response + " #Magic8Ball"
         reply_with(inbox_item=inbox_item, text=text, file_paths=[file_path])
-

@@ -5,8 +5,7 @@ import random
 
 class FatherTedResponse(Response):
     def condition(self, inbox_item):
-        return super(FatherTedResponse, self).condition(inbox_item) \
-               and inbox_item.to_me
+        return super(FatherTedResponse, self).condition(inbox_item)
 
     def respond(self, inbox_item):
         responses = [

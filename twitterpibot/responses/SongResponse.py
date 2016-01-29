@@ -9,7 +9,6 @@ class SongResponse(Response):
 
     def condition(self, inbox_item):
         return super(SongResponse, self).condition(inbox_item) \
-               and inbox_item.to_me \
                and self.contains(inbox_item.words, self.songnames)
 
     def contains(self, list_a, list_b):

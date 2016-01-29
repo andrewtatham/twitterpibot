@@ -12,9 +12,7 @@ class HelloResponse(Response):
         self.rx = re.compile("|".join(HelloWords), re.IGNORECASE)
 
     def condition(self, inbox_item):
-        return not inbox_item.from_me \
-               and (inbox_item.is_direct_message or inbox_item.is_tweet) \
-               and inbox_item.to_me \
+        return super(HelloResponse, self).condition(inbox_item) \
                and bool(self.rx.match(inbox_item.text))
 
     def respond(self, inbox_item):
