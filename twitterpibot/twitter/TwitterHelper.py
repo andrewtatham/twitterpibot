@@ -13,7 +13,6 @@ except ImportError:
     # noinspection PyUnresolvedReferences
     from urllib import quote_plus
 
-
 _screen_name = None
 
 
@@ -64,7 +63,8 @@ def send(outbox_item):
     return None
 
 
-def reply_with(inbox_item, text=None, as_tweet=False, as_direct_message=False, file_paths=None, in_reply_to_status_id=None):
+def reply_with(inbox_item, text=None, as_tweet=False, as_direct_message=False, file_paths=None,
+               in_reply_to_status_id=None):
     reply_as_tweet = as_tweet or not as_direct_message and inbox_item.is_tweet
 
     reply_as_dm = as_direct_message or not as_tweet and inbox_item.is_direct_message
@@ -206,3 +206,17 @@ def retweet(id):
 def add_user_to_list(list_id, user_id, screen_name):
     with MyTwitter() as twitter:
         twitter.create_list_members(list_id=list_id, user_id=user_id, screen_name=screen_name)
+
+
+def block_user(user_id, user_screen_name):
+    with MyTwitter() as twitter:
+        twitter.create_block(user_id=user_id, screen_name=user_screen_name)
+
+
+def get_user_timeline(user):
+    with MyTwitter() as twitter:
+        last_tweets = twitter.get_user_timeline(user_id=user.id,
+                                                screen_name=user.screen_name,
+                                                trim_user=True,
+                                                count=20)
+    return last_tweets

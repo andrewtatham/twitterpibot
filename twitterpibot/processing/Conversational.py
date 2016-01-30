@@ -8,7 +8,7 @@ how_are_you_responses = [
     "I'm fine. How are you?",
     "I'm as well as can be.",
     "I'm trying really hard to avoid ambiguous questions at the moment.",
-    "(Just answer with the same question:) How are you?",
+    "How are you?",
     "I could complain, but I'm not going to.",
     "Upright and still breathing.",
     "Thanks for caring babe! Glad to be here with you.",
