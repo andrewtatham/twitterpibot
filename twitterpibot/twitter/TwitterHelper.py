@@ -64,7 +64,7 @@ def send(outbox_item):
     return None
 
 
-def reply_with(inbox_item, text, as_tweet=False, as_direct_message=False, file_paths=None, in_reply_to_status_id=None):
+def reply_with(inbox_item, text=None, as_tweet=False, as_direct_message=False, file_paths=None, in_reply_to_status_id=None):
     reply_as_tweet = as_tweet or not as_direct_message and inbox_item.is_tweet
 
     reply_as_dm = as_direct_message or not as_tweet and inbox_item.is_direct_message
