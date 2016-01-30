@@ -2,24 +2,31 @@ import datetime
 from twitterpibot import Identity
 
 
+def parse_int(param):
+    if param:
+        return int(param)
+    else:
+        return 0
+
+
 class User(object):
     def __init__(self, data):
 
-        self.id = data["id_str"]
-        self.name = data["name"]
-        self.screen_name = data["screen_name"]
-        self.description = data["description"]
+        self.id = data.get("id_str")
+        self.name = data.get("name")
+        self.screen_name = data.get("screen_name")
+        self.description = data.get("description")
 
         self.isMe = bool(self.screen_name == Identity.screen_name)
 
-        self.following = bool(data["following"])
-        self.verified = bool(data["verified"])
-        self.location = data["location"]
-        self.protected = bool(data["protected"])
+        self.following = bool(data.get("following"))
+        self.verified = bool(data.get("verified"))
+        self.location = data.get("location")
+        self.protected = bool(data.get("protected"))
 
-        self.friends_count = int(data["friends_count"])
-        self.followers_count = int(data["followers_count"])
-        self.statuses_count = int(data["statuses_count"])
+        self.friends_count = parse_int(data.get("friends_count"))
+        self.followers_count = parse_int(data.get("followers_count"))
+        self.statuses_count = parse_int(data.get("statuses_count"))
 
         self.updated = None
 
