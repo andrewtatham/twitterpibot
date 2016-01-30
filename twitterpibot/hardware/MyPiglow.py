@@ -94,7 +94,10 @@ class FlashMode(PiglowMode):
 _maxbright = 255
 _piglow = PyGlow()
 _piglow.all(0)
-_buffer = [0 for led in range(18)]
+
+_buffer = {}
+for led in range(18):
+    _buffer[led] = 0
 
 _modes = itertools.cycle([
     DotsMode(),
