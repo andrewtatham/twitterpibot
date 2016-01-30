@@ -28,4 +28,4 @@ class BotBlockerScheduledTask(ScheduledTask):
             if any(self._myFollowers):
                 follower_id = self._myFollowers.pop()
                 usr = Users.get_user(user_id=follower_id)
-                BotBlocker.whatever(usr)
+                BotBlocker.check_user(usr)

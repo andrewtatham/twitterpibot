@@ -56,6 +56,6 @@ def block_user(user):
     TwitterHelper.block_user(user.id, user.screen_name)
 
 
-def whatever(user):
+def check_user(user):
     if is_user_bot(user):
         block_user(user)

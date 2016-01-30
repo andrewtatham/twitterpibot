@@ -9,4 +9,4 @@ class BotBlockerResponse(Response):
         return is_new_follower
 
     def respond(self, inbox_item):
-        BotBlocker.whatever(inbox_item.source)
+        BotBlocker.check_user(inbox_item.source)
