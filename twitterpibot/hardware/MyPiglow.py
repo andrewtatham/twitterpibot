@@ -96,8 +96,8 @@ _piglow = PyGlow()
 _piglow.all(0)
 
 _buffer = {}
-for led in range(18):
-    _buffer[led] = 0
+for l in range(18):
+    _buffer[l] = 0
 
 _modes = itertools.cycle([
     DotsMode(),
