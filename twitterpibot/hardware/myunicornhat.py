@@ -1,10 +1,8 @@
 import random
-import unicornhat
 import time
 import itertools
-from multiprocessing import Lock
-
 import colorsys
+import unicornhat
 
 
 def _write_pixel(x, y):
@@ -24,42 +22,42 @@ def _write_all():
 
 class UnicornHatMode(object):
     def camera_flash(self, on):
-        with _lock:
-            for y in range(8):
-                for x in range(8):
-                    if on:
-                        r = 255
-                        g = 255
-                        b = 255
-                    else:
-                        pixel = _buffer[x][y]
-                        r = pixel[0]
-                        g = pixel[1]
-                        b = pixel[2]
-                    unicornhat.set_pixel(x, y, r, g, b)
-            unicornhat.show()
+
+        for y in range(8):
+            for x in range(8):
+                if on:
+                    r = 255
+                    g = 255
+                    b = 255
+                else:
+                    pixel = _buffer[x][y]
+                    r = pixel[0]
+                    g = pixel[1]
+                    b = pixel[2]
+                unicornhat.set_pixel(x, y, r, g, b)
+        unicornhat.show()
 
     def fade(self):
-        with _lock:
-            for y in range(8):
-                for x in range(8):
-                    pixel = _buffer[x][y]
-                    r = max(pixel[0] - 1, 0)
-                    g = max(pixel[1] - 1, 0)
-                    b = max(pixel[2] - 1, 0)
-                    _buffer[x][y] = (r, g, b)
-                    unicornhat.set_pixel(x, y, r, g, b)
-            unicornhat.show()
+
+        for y in range(8):
+            for x in range(8):
+                pixel = _buffer[x][y]
+                r = max(pixel[0] - 1, 0)
+                g = max(pixel[1] - 1, 0)
+                b = max(pixel[2] - 1, 0)
+                _buffer[x][y] = (r, g, b)
+                unicornhat.set_pixel(x, y, r, g, b)
+        unicornhat.show()
 
     def close(self):
-        with _lock:
-            r = 0
-            g = 0
-            b = 0
-            for y in range(8):
-                for x in range(8):
-                    unicornhat.set_pixel(x, y, r, g, b)
-            unicornhat.show()
+
+        r = 0
+        g = 0
+        b = 0
+        for y in range(8):
+            for x in range(8):
+                unicornhat.set_pixel(x, y, r, g, b)
+        unicornhat.show()
 
     def lights(self):
         time.sleep(10)
@@ -70,53 +68,52 @@ class UnicornHatMode(object):
 
 class DotsMode(UnicornHatMode):
     def lights(self):
-        with _lock:
-            x = random.randint(0, 7)
-            y = random.randint(0, 7)
-            r = random.randint(1, 255)
-            g = random.randint(1, 255)
-            b = random.randint(1, 255)
-            _buffer[x][y] = (r, g, b)
-            unicornhat.set_pixel(x, y, r, g, b)
-            unicornhat.show()
-        time.sleep(2)
+        x = random.randint(0, 7)
+        y = random.randint(0, 7)
+        r = random.randint(1, 255)
+        g = random.randint(1, 255)
+        b = random.randint(1, 255)
+        _buffer[x][y] = (r, g, b)
+        unicornhat.set_pixel(x, y, r, g, b)
+        unicornhat.show()
+
+    time.sleep(2)
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
-        with _lock:
-            x = random.randint(0, 7)
-            y = random.randint(0, 7)
-            r = random.randint(1, 255)
-            g = random.randint(1, 255)
-            b = random.randint(1, 255)
-            _buffer[x][y] = (r, g, b)
-            unicornhat.set_pixel(x, y, r, g, b)
-            unicornhat.show()
+        x = random.randint(0, 7)
+        y = random.randint(0, 7)
+        r = random.randint(1, 255)
+        g = random.randint(1, 255)
+        b = random.randint(1, 255)
+        _buffer[x][y] = (r, g, b)
+        unicornhat.set_pixel(x, y, r, g, b)
+        unicornhat.show()
 
 
 class FlashMode(UnicornHatMode):
     def lights(self):
 
-        with _lock:
-            r = random.randint(1, 255)
-            g = random.randint(1, 255)
-            b = random.randint(1, 255)
-            for y in range(8):
-                for x in range(8):
-                    _buffer[x][y] = (r, g, b)
-            _write_all()
-        time.sleep(2)
+        r = random.randint(1, 255)
+        g = random.randint(1, 255)
+        b = random.randint(1, 255)
+        for y in range(8):
+            for x in range(8):
+                _buffer[x][y] = (r, g, b)
+        _write_all()
+
+    time.sleep(2)
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
-        with _lock:
-            r = random.randint(1, 255)
-            g = random.randint(1, 255)
-            b = random.randint(1, 255)
-            for y in range(8):
-                for x in range(8):
-                    _buffer[x][y] = (r, g, b)
-            _write_all()
+
+        r = random.randint(1, 255)
+        g = random.randint(1, 255)
+        b = random.randint(1, 255)
+        for y in range(8):
+            for x in range(8):
+                _buffer[x][y] = (r, g, b)
+        _write_all()
 
 
 class RainMode(UnicornHatMode):
@@ -124,10 +121,10 @@ class RainMode(UnicornHatMode):
         self._rain = Rain()
 
     def lights(self):
-        with _lock:
-            self._rain.WriteToBuffer(True)
-            _write_all()
-        time.sleep(0.25)
+        self._rain.WriteToBuffer(True)
+        _write_all()
+
+    time.sleep(0.25)
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
@@ -142,10 +139,10 @@ class MatrixMode(UnicornHatMode):
         self._rain = Rain(direction="right")
 
     def lights(self):
-        with _lock:
-            self._rain.WriteToBuffer(True)
-            _write_all()
-        time.sleep(0.5)
+        self._rain.WriteToBuffer(True)
+        _write_all()
+
+    time.sleep(0.5)
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
@@ -160,9 +157,8 @@ class FireMode(UnicornHatMode):
         self._rain = Rain(direction="up")
 
     def lights(self):
-        with _lock:
-            self._rain.WriteToBuffer(True)
-            _write_all()
+        self._rain.WriteToBuffer(True)
+        _write_all()
         time.sleep(0.4)
 
     # noinspection PyUnusedLocal
@@ -181,9 +177,8 @@ class SnowMode(UnicornHatMode):
         self._rain = Rain()
 
     def lights(self):
-        with _lock:
-            self._rain.WriteToBuffer(True)
-            _write_all()
+        self._rain.WriteToBuffer(True)
+        _write_all()
         time.sleep(2)
 
     # noinspection PyUnusedLocal
@@ -279,9 +274,8 @@ class RainbowRainMode(UnicornHatMode):
         self.h = 0.0
 
     def lights(self):
-        with _lock:
-            self._rain.WriteToBuffer(True)
-            _write_all()
+        self._rain.WriteToBuffer(True)
+        _write_all()
         time.sleep(0.25)
 
     # noinspection PyUnusedLocal
@@ -333,8 +327,6 @@ _modes = itertools.cycle([
 ])
 _mode = next(_modes)
 
-_lock = Lock()
-
 
 def lights():
     _mode.lights()
@@ -349,9 +341,8 @@ def inbox_item_received(inbox_item):
 
 
 def on_lights_scheduled_task():
-    with _lock:
-        global _mode
-        _mode = next(_modes)
+    global _mode
+    _mode = next(_modes)
 
 
 def fade():

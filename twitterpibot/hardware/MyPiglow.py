@@ -1,6 +1,5 @@
 import time
 import random
-from multiprocessing import Lock
 import itertools
 
 from PyGlow import PyGlow
@@ -26,24 +25,24 @@ def _write_led(led):
 
 class PiglowMode(object):
     def camera_flash(self, on):
-        with _lock:
-            if on:
-                _piglow.color("white", brightness=255)
-            else:
-                _write_all()
+
+        if on:
+            _piglow.color("white", brightness=255)
+        else:
+            _write_all()
 
     def fade(self):
-        with _lock:
-            for led in range(18):
-                if _buffer[led] > 1:
-                    _buffer[led] = max(0, _buffer[led] - 5)
-            _write_all()
+
+        for led in range(18):
+            if _buffer[led] > 1:
+                _buffer[led] = max(0, _buffer[led] - 5)
+        _write_all()
 
     def close(self):
-        with _lock:
-            for led in range(18):
-                _buffer[led] = 0
-            _write_all()
+
+        for led in range(18):
+            _buffer[led] = 0
+        _write_all()
 
     def lights(self):
         time.sleep(10)
@@ -54,52 +53,48 @@ class PiglowMode(object):
 
 class DotsMode(PiglowMode):
     def lights(self):
-        with _lock:
-            led = random.randint(0, 17)
-            _buffer[led] = max(0, min((_buffer[led] + 1), 255))
-            _write_led(led)
+        led = random.randint(0, 17)
+        _buffer[led] = max(0, min((_buffer[led] + 1), 255))
+        _write_led(led)
 
-        time.sleep(2)
+    time.sleep(2)
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
-        with _lock:
-            led = random.randint(0, 17)
-            _buffer[led] = max(0, min((_buffer[led] + 1), 255))
-            _write_led(led)
+        led = random.randint(0, 17)
+        _buffer[led] = max(0, min((_buffer[led] + 1), 255))
+        _write_led(led)
 
 
 class FlashMode(PiglowMode):
     def lights(self):
 
-        with _lock:
-            for led in range(18):
-                if _buffer[led] > 1:
-                    if random.randint(0, 1) == 0:
-                        _buffer[led] = 255
-                    else:
-                        _buffer[led] = 0
-            _write_all()
+        for led in range(18):
+            if _buffer[led] > 1:
+                if random.randint(0, 1) == 0:
+                    _buffer[led] = 255
+                else:
+                    _buffer[led] = 0
+        _write_all()
 
-        time.sleep(0.25)
+    time.sleep(0.25)
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
-        with _lock:
-            for led in range(18):
-                if _buffer[led] > 1:
-                    if random.randint(0, 1) == 0:
-                        _buffer[led] = 255
-                    else:
-                        _buffer[led] = 0
-            _write_all()
+
+        for led in range(18):
+            if _buffer[led] > 1:
+                if random.randint(0, 1) == 0:
+                    _buffer[led] = 255
+                else:
+                    _buffer[led] = 0
+        _write_all()
 
 
 _maxbright = 255
 _piglow = PyGlow()
 _piglow.all(0)
 _buffer = [0 for led in range(18)]
-_lock = Lock()
 
 _modes = itertools.cycle([
     DotsMode(),
@@ -121,9 +116,8 @@ def inbox_item_received(inbox_item):
 
 
 def on_lights_scheduled_task():
-    with _lock:
-        global _mode
-        _mode = next(_modes)
+    global _mode
+    _mode = next(_modes)
 
 
 def fade():

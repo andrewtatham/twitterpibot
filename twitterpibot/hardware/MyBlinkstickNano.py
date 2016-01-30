@@ -1,5 +1,4 @@
 import random
-from threading import Lock
 import time
 from blinkstick import blinkstick
 import colorsys
@@ -11,7 +10,7 @@ _led = next(_leds)
 
 class BlinkstickNanoMode(object):
     def camera_flash(self, on):
-        with _lock:
+
             for led in range(2):
                 if on:
                     _blinkstick.set_color(channel=0, index=led, red=255, green=255, blue=255)
@@ -19,7 +18,7 @@ class BlinkstickNanoMode(object):
                     _blinkstick.set_color(channel=0, index=led, red=0, green=0, blue=0)
 
     def fade(self):
-        with _lock:
+
             for led in range(2):
                 r, g, b = _blinkstick.get_color(led)
                 h, s, v = colorsys.rgb_to_hsv(r, g, b)
@@ -31,7 +30,7 @@ class BlinkstickNanoMode(object):
                 _blinkstick.set_color(channel=0, index=led, red=r, green=g, blue=b)
 
     def close(self):
-        with _lock:
+
             for led in range(2):
                 _blinkstick.set_color(channel=0, index=led, red=0, green=0, blue=0)
             _blinkstick.turn_off()
@@ -49,9 +48,9 @@ class AlternateMode(BlinkstickNanoMode):
         r = random.randint(0, _maxbright)
         g = random.randint(0, _maxbright)
         b = random.randint(0, _maxbright)
-        with _lock:
-            _blinkstick.set_color(channel=0, index=_led, red=r, green=g, blue=b)
-            _led = next(_leds)
+
+        _blinkstick.set_color(channel=0, index=_led, red=r, green=g, blue=b)
+        _led = next(_leds)
 
 
 class BothMode(BlinkstickNanoMode):
@@ -59,9 +58,9 @@ class BothMode(BlinkstickNanoMode):
         r = random.randint(0, _maxbright)
         g = random.randint(0, _maxbright)
         b = random.randint(0, _maxbright)
-        with _lock:
-            for led in range(2):
-                _blinkstick.set_color(channel=0, index=led, red=r, green=g, blue=b)
+
+        for led in range(2):
+            _blinkstick.set_color(channel=0, index=led, red=r, green=g, blue=b)
 
 
 _maxbright = 32
@@ -69,7 +68,7 @@ _blinkstick = blinkstick.find_first()
 
 for led in range(2):
     _blinkstick.set_color(channel=0, index=led, red=0, green=0, blue=0)
-_lock = Lock()
+
 
 _modes = itertools.cycle([
     AlternateMode(),
@@ -91,9 +90,8 @@ def inbox_item_received(inbox_item):
 
 
 def on_lights_scheduled_task():
-    with _lock:
-        global _mode
-        _mode = next(_modes)
+    global _mode
+    _mode = next(_modes)
 
 
 def fade():
