@@ -1,10 +1,10 @@
 import datetime
 import logging
+
 from twitterpibot.twitter import TwitterHelper
 from twitterpibot.twitter.MyTwitter import MyTwitter
 
 __author__ = 'andrewtatham'
-
 
 _sets = {}
 _list_ids = {}
@@ -20,8 +20,8 @@ _lists = [
 ]
 logger = logging.getLogger(__name__)
 
-def update_lists():
 
+def update_lists():
     with MyTwitter() as twitter:
         logger.info("Getting lists")
         twitter_lists = twitter.show_owned_lists()["lists"]
@@ -58,11 +58,11 @@ def update_user(user):
     if not _sets or not _list_ids:
         update_lists()
 
-    user.is_arsehole = user.id in _sets["Arseholes"]
-    user.is_reply_less = user.id in _sets["Reply Less"]
-    user.is_do_not_retweet = user.id in _sets["Dont Retweet"]
-    user.is_retweet_more = user.id in _sets["Retweet More"]
-    user.is_bot = user.id in _sets["Awesome Bots"]
-    user.is_friend = user.id in _sets["Friends"]
+    user.is_arsehole = user.id in _sets.get("Arseholes")
+    user.is_reply_less = user.id in _sets.get("Reply Less")
+    user.is_do_not_retweet = user.id in _sets.get("Dont Retweet")
+    user.is_retweet_more = user.id in _sets.get("Retweet More")
+    user.is_bot = user.id in _sets.get("Awesome Bots")
+    user.is_friend = user.id in _sets.get("Friends")
 
     user.updated = datetime.datetime.utcnow()

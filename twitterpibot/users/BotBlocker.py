@@ -74,7 +74,7 @@ def check_user(user):
 
         if text2:
             txt += os.linesep + text2
-            
+
         logger.warn(txt)
         TwitterHelper.send(OutgoingDirectMessage(text=txt))
 
