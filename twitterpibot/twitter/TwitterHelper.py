@@ -1,5 +1,6 @@
 import logging
 import os
+import pprint
 
 from twitterpibot import Statistics
 from twitterpibot.twitter.MyTwitter import MyTwitter
@@ -235,3 +236,18 @@ def unblock_users():
         for user_id in user_ids["ids"]:
             print(user_id)
             twitter.destroy_block(user_id=user_id)
+
+
+config = None
+
+
+def get_configuration():
+    global config
+    with MyTwitter() as twitter:
+        config = twitter.get_twitter_configuration()
+        pprint.pprint(config)
+
+
+if __name__ == "__main__":
+    os.chdir("../../")
+    get_configuration()

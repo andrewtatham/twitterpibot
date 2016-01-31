@@ -1,3 +1,5 @@
+import logging
+import os
 from apscheduler.triggers.interval import IntervalTrigger
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 import twitterpibot.users.BotBlocker as BotBlocker
@@ -12,7 +14,7 @@ class BotBlockerScheduledTask(ScheduledTask):
         self._myFollowers = []
 
     def GetTrigger(self):
-        return IntervalTrigger(minutes=24)
+        return IntervalTrigger(minutes=6)
 
     def onRun(self):
         with MyTwitter() as twitter:
@@ -29,3 +31,11 @@ class BotBlockerScheduledTask(ScheduledTask):
                 follower_id = self._myFollowers.pop()
                 usr = Users.get_user(user_id=follower_id)
                 BotBlocker.check_user(usr)
+
+if __name__ == "__main__":
+    os.chdir("../../")
+    logging.basicConfig(level=logging.WARNING)
+    logger = logging.getLogger(__name__)
+    task = BotBlockerScheduledTask()
+    for i in range(100):
+        task.onRun()

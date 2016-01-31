@@ -22,7 +22,7 @@ def _is_user_bot(user):
         if user.name:
             profile_text += user.name
         if user.screen_name:
-            profile_text += " " + user.screen_name
+            profile_text += " @" + user.screen_name
         if user.description:
             profile_text += " " + user.description
 
@@ -30,7 +30,7 @@ def _is_user_bot(user):
 
         profile_topics = Topics.get_topics(profile_text)
         if profile_topics:
-            logger.info("Profile topics:" + str(profile_topics))
+            logger.info("Profile topics: " + str(profile_topics))
             block_follower = profile_topics.spam()
             reasons.append(str(profile_topics))
 
@@ -40,10 +40,10 @@ def _is_user_bot(user):
 
             for tweet in last_tweets:
                 tweets_text += tweet["text"] + os.linesep
-            logger.info("Checking user tweets" + tweets_text)
+            logger.info("Checking user tweets: " + tweets_text)
             tweet_topics = Topics.get_topics(tweets_text)
             if tweet_topics:
-                logger.info("User tweet topics" + str(tweet_topics))
+                logger.info("User tweet topics: " + str(tweet_topics))
                 block_follower = tweet_topics.spam()
                 reasons.append(str(tweet_topics))
     return block_follower, reasons, profile_text, tweets_text
@@ -70,7 +70,7 @@ def _block_user(user, reasons, text1, text2):
 
     logger.warn(txt)
     TwitterHelper.send(OutgoingDirectMessage(text=txt))
-    Lists.add_user(list_name="Bad Bots", user_id=user.id, screen_name=user.screen_name)
+    Lists.add_user(list_name="Blocked Users", user_id=user.id, screen_name=user.screen_name)
     TwitterHelper.block_user(user.id, user.screen_name)
 
 

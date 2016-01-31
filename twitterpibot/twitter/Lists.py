@@ -15,7 +15,7 @@ _lists = [
     "Retweet More",
     "Awesome Bots",
     "Friends",
-    "Bad Bots"
+    "Blocked Users"
 
 ]
 logger = logging.getLogger(__name__)

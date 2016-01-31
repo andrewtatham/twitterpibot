@@ -53,18 +53,26 @@ class IncomingTweet(InboxTextItem):
             self.to_me = False
             self.targets = []
             self.text_stripped = self.text
+            self.hashtags = None
+            self.mentions = None
+            self.urls = None
             if "entities" in data:
                 entities = data["entities"]
                 if "user_mentions" in entities:
-                    mentions = entities["user_mentions"]
-                    for mention in mentions:
 
+                    mentions = entities["user_mentions"]
+                    self.mentions = list(map(lambda m: m["screen_name"], mentions))
+                    for mention in mentions:
                         self.text_stripped = self.text_stripped.replace("@" + mention["screen_name"], "").strip()
 
                         if mention["id_str"] != Identity.twid:
                             self.targets.append(mention["screen_name"])
                         if mention["id_str"] == Identity.twid:
                             self.to_me = True
+                if "hashtags" in entities:
+                    self.hashtags = list(map(lambda h: h["text"], entities["hashtags"]))
+                if "urls" in entities:
+                    self.urls = list(map(lambda u: u["expanded_url"], entities["urls"]))
 
         self.retweeted_status = None
         self.is_retweet_of_my_status = False
