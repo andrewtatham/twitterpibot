@@ -8,10 +8,9 @@ from twitterpibot.twitter.TwitterHelper import send
 
 class PhotoScheduledTask(ScheduledTask):
     def GetTrigger(self):
-        return CronTrigger(hour="8-22/3")
+        return CronTrigger(hour="8-22", minute="*/20")
 
     def onRun(self):
         photos = hardware.take_photo("temp", "PhotoScheduledTask", "jpg")
         if any(photos):
-            tweet = OutgoingTweet(file_paths=photos)
-            send(tweet)
+            send(OutgoingTweet(file_paths=photos))

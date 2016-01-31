@@ -20,7 +20,7 @@ class RegularTimelapseScheduledTask(ScheduledTask):
         return CronTrigger(hour='3')
 
     def onRun(self):
-        n = 8
+        n = 20
 
         sun = MyAstral.get_today_times()
 
@@ -36,7 +36,7 @@ class RegularTimelapseScheduledTask(ScheduledTask):
                 name='timelapse%s' % i,
                 start_time=start,
                 end_time=end,
-                interval_seconds=300,
+                interval_seconds=120,
                 tweet_text=random.choice(messages))
 
             import twitterpibot.schedule.MySchedule as Schedule
