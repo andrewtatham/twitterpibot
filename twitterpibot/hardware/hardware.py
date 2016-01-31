@@ -83,9 +83,9 @@ def take_photo(folder, name, ext, use_flash=False):
         if use_flash:
             camera_flash(True)
         photos = []
-        if is_webcam_attached and webcam:
+        if is_webcam_attached:
             photos.append(MyWebcam.take_photo(folder, name, ext))
-        if is_picam_attached and picam:
+        if is_picam_attached:
             photos.append(MyPicam.take_photo(folder, name, ext))
         return photos
     finally:
