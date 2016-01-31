@@ -6,7 +6,7 @@ import random
 
 class FatherTedResponse(Response):
     def condition(self, inbox_item):
-        return super(FatherTedResponse, self).condition(inbox_item)
+        return super(FatherTedResponse, self).reply_condition(inbox_item)
 
     def respond(self, inbox_item):
         response = random.choice(FatherTed.responses)

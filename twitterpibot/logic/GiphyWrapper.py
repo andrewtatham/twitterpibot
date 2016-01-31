@@ -1,6 +1,6 @@
 import logging
 import os
-import random
+
 import requests
 import giphypop
 
@@ -27,6 +27,7 @@ g = giphypop.Giphy()
 
 
 def get_random_gif(text=None):
+    gif = None
     if text:
         gif = g.translate(text)
     if not gif:

@@ -2,8 +2,6 @@ from twitterpibot.twitter import Lists
 from twitterpibot.users.User import User
 from twitterpibot.twitter.MyTwitter import MyTwitter
 
-import threading
-
 _users = {}
 
 

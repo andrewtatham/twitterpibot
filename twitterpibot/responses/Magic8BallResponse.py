@@ -1,9 +1,9 @@
 import os
 import random
-
 import re
 import textwrap
-from PIL import Image, ImageDraw, ImageFont
+
+from PIL import Image, ImageDraw
 
 from twitterpibot.responses.Response import Response
 from twitterpibot.twitter.TwitterHelper import reply_with
@@ -73,12 +73,13 @@ class Magic8BallResponse(Response):
                  and inbox_item.source and "#Magic8Ball" in inbox_item.source and random.randint(0, 3) == 0
 
         without_mention = inbox_item.is_tweet and not inbox_item.from_me and not inbox_item.is_retweet_of_my_status \
-            and ((inbox_item.sender.is_bot and random.randint(0, 3) == 0)
-                or (inbox_item.sender.is_friend and random.randint(0, 1) == 0)
-                or (inbox_item.sender.is_retweet_more and random.randint(0, 9) == 0)
-                or random.randint(0, 99) == 0)
+                          and ((inbox_item.sender.is_bot and random.randint(0, 3) == 0)
+                               or (inbox_item.sender.is_friend and random.randint(0, 1) == 0)
+                               or (inbox_item.sender.is_retweet_more and random.randint(0, 9) == 0)
+                               or random.randint(0, 99) == 0)
 
-        return (super(Magic8BallResponse, self).condition(inbox_item) or without_mention or stream) and "?" in inbox_item.text
+        return (super(Magic8BallResponse, self).reply_condition(inbox_item) or without_mention or stream) \
+               and "?" in inbox_item.text
 
     def respond(self, inbox_item):
         response = random.choice(responses)

@@ -1,4 +1,5 @@
 from unittest import TestCase
+
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.responses.Magic8BallResponse import Magic8BallResponse
 
@@ -18,4 +19,3 @@ class TestMagic8BallResponse(TestCase):
         self.assertFalse(response.condition(IncomingTweet({
             "text": "blah?"
         })))
-

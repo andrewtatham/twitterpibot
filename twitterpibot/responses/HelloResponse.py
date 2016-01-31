@@ -12,7 +12,7 @@ class HelloResponse(Response):
         self.rx = re.compile("|".join(HelloWords), re.IGNORECASE)
 
     def condition(self, inbox_item):
-        return super(HelloResponse, self).condition(inbox_item) \
+        return super(HelloResponse, self).reply_condition(inbox_item) \
                and bool(self.rx.match(inbox_item.text))
 
     def respond(self, inbox_item):
