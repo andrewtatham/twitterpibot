@@ -1,5 +1,6 @@
 import logging
 import os
+
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 from twitterpibot.twitter import Lists
 import twitterpibot.twitter.TwitterHelper as TwitterHelper
@@ -7,26 +8,26 @@ from twitterpibot.twitter.topics import Topics
 
 logger = logging.getLogger(__name__)
 
-
 get_tweets = TwitterHelper.get_user_timeline
+
 
 def _is_user_bot(user):
     block_follower = False
-    reasons=[]
+    reasons = []
 
     if not user.following and not user.verified:
 
-        search_text = ""
+        search_text1 = ""
         if user.name:
-            search_text += user.name
+            search_text1 += user.name
         if user.screen_name:
-            search_text += " " + user.screen_name
+            search_text1 += " " + user.screen_name
         if user.description:
-            search_text += " " + user.description
+            search_text1 += " " + user.description
 
-        logger.info("Checking user profile: " + search_text)
+        logger.info("Checking user profile: " + search_text1)
 
-        topics1 = Topics.get_topics(search_text)
+        topics1 = Topics.get_topics(search_text1)
         if topics1:
             logger.info("Profile topics:" + str(topics1))
             block_follower = topics1.spam()
@@ -36,16 +37,16 @@ def _is_user_bot(user):
 
             last_tweets = get_tweets(user)
 
-            search_text = ""
+            search_text2 = ""
             for tweet in last_tweets:
-                search_text += tweet["text"]
-            logger.info("Checking user tweets" + search_text)
-            topics2 = Topics.get_topics(search_text)
+                search_text2 += tweet["text"] + os.linesep
+            logger.info("Checking user tweets" + search_text2)
+            topics2 = Topics.get_topics(search_text2)
             if topics2:
                 logger.info("User tweet topics" + str(topics2))
                 block_follower = topics2.spam()
                 reasons.append(str(topics2))
-    return block_follower, reasons
+    return block_follower, reasons, search_text1, search_text2
 
 
 def _block_user(user):
@@ -54,7 +55,7 @@ def _block_user(user):
 
 
 def check_user(user):
-    block, reasons = _is_user_bot(user)
+    block, reasons, text1, text2 = _is_user_bot(user)
     if block:
 
         txt = "[Botblock] BLOCKED: "
@@ -62,13 +63,18 @@ def check_user(user):
             txt += user.name + " "
         if user.screen_name:
             txt += "[@" + user.screen_name + "] "
-        if user.description:
-            txt += os.linesep + user.description
+
         if reasons:
             txt += os.linesep + "Reasons:"
             for reason in reasons:
                 txt += os.linesep + reason
 
+        if text1:
+            txt += os.linesep + text1
+
+        if text2:
+            txt += os.linesep + text2
+            
         logger.warn(txt)
         TwitterHelper.send(OutgoingDirectMessage(text=txt))
 
