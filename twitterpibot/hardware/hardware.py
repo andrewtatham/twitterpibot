@@ -11,8 +11,7 @@ is_brightpi_attached = False
 is_unicornhat_attached = False
 is_blinksticknano_attached = False
 
-picam = None
-webcam = None
+
 brightpi = None
 
 _platform = platform.platform()
@@ -65,12 +64,8 @@ logger.info("is_brightpi_attached: %s", is_brightpi_attached)
 
 if is_webcam_attached:
     import twitterpibot.hardware.MyWebcam as MyWebcam
-
-    webcam = MyWebcam.Webcam()
 if is_picam_attached:
     import twitterpibot.hardware.MyPicam as MyPicam
-
-    picam = MyPicam.MyPicam()
 if is_unicornhat_attached:
     import twitterpibot.hardware.myunicornhat as myunicornhat
 if is_piglow_attached:
@@ -83,15 +78,15 @@ if is_blinksticknano_attached:
     import twitterpibot.hardware.MyBlinkstickNano as MyBlinkstickNano
 
 
-def take_photo(dir, name, ext, use_flash=False):
+def take_photo(folder, name, ext, use_flash=False):
     try:
         if use_flash:
             camera_flash(True)
         photos = []
         if is_webcam_attached and webcam:
-            photos.append(webcam.TakePhotoToDisk(dir, name, ext))
+            photos.append(MyWebcam.take_photo(folder, name, ext))
         if is_picam_attached and picam:
-            photos.append(picam.TakePhotoToDisk(dir, name, ext))
+            photos.append(MyPicam.take_photo(folder, name, ext))
         return photos
     finally:
         if use_flash:
@@ -147,10 +142,6 @@ def on_inbox_item_received(inbox_item):
 
 def stop():
     logger.info("Stopping")
-    if is_webcam_attached and webcam:
-        webcam.close()
-    if is_picam_attached and picam:
-        picam.close()
     if is_unicornhat_attached:
         myunicornhat.close()
     if is_piglow_attached:

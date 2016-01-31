@@ -17,5 +17,6 @@ def get_random_gif(text=None):
         gif = g.translate(text)
     if not gif:
         gif = g.random_gif()
-    path = FileSystemHelper.download_file(gif.media_url)
-    return path
+    if gif:
+        path = FileSystemHelper.download_file(url=gif.media_url)
+        return path
