@@ -1,6 +1,9 @@
 import random
+import logging
 
 import wikipedia
+
+logger = logging.getLogger(__name__)
 
 
 def GetRandomPage():

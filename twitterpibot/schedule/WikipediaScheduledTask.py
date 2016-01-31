@@ -30,8 +30,18 @@ class WikipediaScheduledTask(ScheduledTask):
             text = cap(page.summary, 100) + page.url
             file_paths = None
             if any(page.images):
-                url = page.images[0]
-                path = FileSystemHelper.download_file(folder, url)
-                file_paths = [path]
+                # filter to PNG, JPEG, WEBP and GIF.
+                images = filter(lambda url: FileSystemHelper.check_extension(url), page.images)
+                if any(images):
+                    url = images[0]
+                    print ("downloading " + url)
+                    path = FileSystemHelper.download_file(folder, url)
+                    file_paths = [path]
 
             send(OutgoingTweet(text=text, file_paths=file_paths))
+
+
+if __name__ == "__main__":
+    os.chdir("../../")
+    task = WikipediaScheduledTask()
+    task.onRun()

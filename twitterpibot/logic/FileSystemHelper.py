@@ -1,6 +1,9 @@
 import logging
-import os
 import shutil
+import six.moves.urllib.parse
+
+
+import os
 
 import requests
 
@@ -38,3 +41,17 @@ def remove_directory_and_contents(folder):
     if os.path.exists(folder):
         logger.info("Removing " + folder)
         shutil.rmtree(folder)
+
+
+valid_extensions = {".jpg", ".jpeg", ".gif", ".png"}
+
+
+def check_extension(url):
+    ext = get_url_extension(url).lower()
+    return ext in valid_extensions
+
+
+def get_url_extension(url):
+    path = six.moves.urllib.parse.urlparse(url).path
+    ext = os.path.splitext(path)[1]
+    return ext

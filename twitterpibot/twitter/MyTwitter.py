@@ -12,8 +12,8 @@ class MyTwitter(object):
         global _screen_name
         if not _screen_name:
             if not screen_name:
-                raise Exception("_screen_name is required on first use")
-                # _screen_name = "andrewtathampi"
+                _screen_name = "andrewtathampi"
+                # raise Exception("_screen_name is required on first use")
             else:
                 _screen_name = screen_name
 
