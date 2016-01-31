@@ -67,7 +67,7 @@ how_are_you_responses = [
     "Remembering to stay patient.",
     "Trying not to burst into tears. I get an A for effort, right?",
     "In need of some me-time.",
-    "I feel like crap! Know any good dirty jokes to cheer me up?",
+    "I feel like crap! Know any good jokes to cheer me up?",
     "Taking all the love and support I can get, thanks!",
     "As happy as a clam, a clam that's been cracked open, doused in lemon and shot down the gullet.",
     "Appreciating the things I have.",

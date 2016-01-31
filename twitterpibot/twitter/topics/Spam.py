@@ -11,9 +11,10 @@ class TooKeen(SpamTopic):
 class SmutSpam(SpamTopic):
     def __init__(self):
         super(SmutSpam, self).__init__(
-            ["sexy", "naughty", "kinky", "frisky", "bored", "cum", "horny", "housewi(fe|ves?)", "teen",
-             "latina", "ass", "boobs?", "tits?", "puss(y|ies)",
-             "milf", "hoes?", "boot(y|ies)", "18+", "xxx", "slut", "babe", "dirty", "naked", "bitch", "sex"]
+            ["kinky", "frisky", "cum", "horny", "housewi(fe|ves?)",
+             "boobs?", "tits?", "puss(y|ies)",
+             "milf", "hoes?", "boot(y|ies)", "18+", "xxx", "slut", "babe", "bitch"],
+            ["latina", "sexy", "ass", "dirty", "naked", "naughty", "bored", "teen", "sex"]
         )
 
 
