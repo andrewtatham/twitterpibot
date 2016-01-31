@@ -1,10 +1,12 @@
 import logging
+import os
+import pprint
+
 from twitterpibot import Statistics
 from twitterpibot.twitter.MyTwitter import MyTwitter
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 from twitterpibot.twitter.MyStreamer import MyStreamer
-import os
 
 logger = logging.getLogger(__name__)
 try:
@@ -220,3 +222,17 @@ def get_user_timeline(user):
                                                 trim_user=True,
                                                 count=20)
     return last_tweets
+
+
+def unblock_user(user):
+    with MyTwitter() as twitter:
+        twitter.destroy_block(user_id=user.id, screen_name=user.screen_name)
+
+
+def unblock_users():
+    with MyTwitter() as twitter:
+        user_ids = twitter.list_block_ids(stringify_ids=True)
+        # pprint.pprint(user_ids["ids"])
+        for user_id in user_ids["ids"]:
+            print(user_id)
+            twitter.destroy_block(user_id=user_id)
