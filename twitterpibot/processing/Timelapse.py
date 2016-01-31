@@ -1,13 +1,15 @@
 import logging
-from apscheduler.triggers.interval import IntervalTrigger
 import datetime
-from apscheduler.triggers.date import DateTrigger
 import os
-import shutil
 import glob
+
+from apscheduler.triggers.interval import IntervalTrigger
+from apscheduler.triggers.date import DateTrigger
 import images2gif
+
 # noinspection PyPackageRequirements,PyUnresolvedReferences
 import cv2
+from twitterpibot.logic import FileSystemHelper
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.twitter.TwitterHelper import send
@@ -69,12 +71,7 @@ class TimelapsePhotoInitTask(ScheduledTask):
 
     def onRun(self):
         logger.info("[Timelapse] Init ")
-        if os.path.exists(self.timelapse.dirPath):
-            logger.info("[Timelapse] Removing " + self.timelapse.dirPath)
-            shutil.rmtree(self.timelapse.dirPath, True)
-        if not os.path.exists(self.timelapse.dirPath):
-            logger.info("[Timelapse] Creating " + self.timelapse.dirPath)
-            os.makedirs(self.timelapse.dirPath)
+        FileSystemHelper.ensure_directory_exists_and_is_empty(self.timelapse.dirPath)
 
 
 class TimelapsePhotoScheduledTask(ScheduledTask):
@@ -181,6 +178,4 @@ class TimelapseUploadScheduledTask(ScheduledTask):
             text=self.timelapse.tweetText,
             file_paths=[filename]))
 
-        if os.path.exists(self.timelapse.dirPath):
-            logger.info("[Timelapse] Removing " + self.timelapse.dirPath)
-            shutil.rmtree(self.timelapse.dirPath, True)
+        FileSystemHelper.remove_directory_and_contents(self.timelapse.dirPath)

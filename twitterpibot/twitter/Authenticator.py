@@ -1,5 +1,6 @@
 import os
 import webbrowser
+from twitterpibot.logic import FileSystemHelper
 
 try:
     # noinspection PyUnresolvedReferences,PyShadowingBuiltins
@@ -15,15 +16,14 @@ logger = logging.getLogger(__name__)
 
 
 def get_tokens(screen_name):
-    dir = "temp" + os.sep + "tokens" + os.sep
+    tokens_dir = "temp" + os.sep + "tokens" + os.sep
 
-    if not os.path.exists(dir):
-        os.makedirs(dir)
+    FileSystemHelper.ensure_directory_exists(tokens_dir)
 
-    app_key_path = dir + "APP_KEY.pkl"
-    app_secret_path = dir + "APP_SECRET.pkl"
-    final_oauth_token_path = dir + screen_name + "_FINAL_OAUTH_TOKEN.pkl"
-    final_oauth_token_secret_path = dir + screen_name + "_FINAL_OAUTH_TOKEN_SECRET.pkl"
+    app_key_path = tokens_dir + "APP_KEY.pkl"
+    app_secret_path = tokens_dir + "APP_SECRET.pkl"
+    final_oauth_token_path = tokens_dir + screen_name + "_FINAL_OAUTH_TOKEN.pkl"
+    final_oauth_token_secret_path = tokens_dir + screen_name + "_FINAL_OAUTH_TOKEN_SECRET.pkl"
 
     exists = os.path.isfile(app_key_path) and os.path.isfile(app_secret_path)
 

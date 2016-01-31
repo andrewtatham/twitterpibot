@@ -81,7 +81,7 @@ def get_responses():
 
 def get_scheduled_jobs():
     from twitterpibot.schedule.EdBallsDay import EdBallsDay
-    from twitterpibot.schedule.Wikipedia import Wikipedia
+    from twitterpibot.schedule.WikipediaScheduledTask import WikipediaScheduledTask
     from twitterpibot.schedule.MonitorScheduledTask import MonitorScheduledTask
     # from twitterpibot.schedule.TrendsScheduledTask import TrendsScheduledTask
     # from twitterpibot.schedule.SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
@@ -106,7 +106,7 @@ def get_scheduled_jobs():
         MidnightScheduledTask(),
         BotBlockerScheduledTask(),
         # TrendsScheduledTask(),
-        Wikipedia(),
+        WikipediaScheduledTask(),
         EdBallsDay(),
         TalkLikeAPirateDayScheduledTask(),
         WeatherScheduledTask(),

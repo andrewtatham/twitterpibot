@@ -11,7 +11,7 @@ class GifResponse(Response):
 
     def respond(self, inbox_item):
         response = random.choice(FatherTed.responses)
-        url, path = GiphyWrapper.get_random_gif(inbox_item.text_stripped)
+        file_paths = [GiphyWrapper.get_random_gif(inbox_item.text_stripped)]
         reply_with(inbox_item=inbox_item,
                    text=response,
-                   file_paths=[path])
+                   file_paths=file_paths)
