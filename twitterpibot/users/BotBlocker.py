@@ -49,7 +49,27 @@ def _is_user_bot(user):
     return block_follower, reasons, profile_text, tweets_text
 
 
-def _block_user(user):
+def _block_user(user, reasons, text1, text2):
+    txt = "[Botblock] BLOCKED: "
+    txt += user.name + " [@" + user.screen_name + "] "
+    txt += " Following: " + str(user.following)
+    txt += " Verified: " + str(user.verified)
+
+    if reasons:
+        txt += os.linesep + "Reasons:"
+        for reason in reasons:
+            txt += os.linesep + reason
+
+    if text1:
+        txt += os.linesep + "Profile:"
+        txt += os.linesep + text1
+
+    if text2:
+        txt += os.linesep + "Tweets:"
+        txt += os.linesep + text2
+
+    logger.warn(txt)
+    TwitterHelper.send(OutgoingDirectMessage(text=txt))
     Lists.add_user(list_name="Bad Bots", user_id=user.id, screen_name=user.screen_name)
     TwitterHelper.block_user(user.id, user.screen_name)
 
@@ -57,25 +77,4 @@ def _block_user(user):
 def check_user(user):
     block, reasons, text1, text2 = _is_user_bot(user)
     if block:
-        txt = "[Botblock] BLOCKED: "
-        txt += user.name + " [@" + user.screen_name + "] "
-        txt += " Following: " + str(user.following)
-        txt += " Verified: " + str(user.verified)
-
-        if reasons:
-            txt += os.linesep + "Reasons:"
-            for reason in reasons:
-                txt += os.linesep + reason
-
-        if text1:
-            txt += os.linesep + "Profile:"
-            txt += os.linesep + text1
-
-        if text2:
-            txt += os.linesep + "Tweets:"
-            txt += os.linesep + text2
-
-        logger.warn(txt)
-        TwitterHelper.send(OutgoingDirectMessage(text=txt))
-
-    _block_user(user)
+        _block_user(user, reasons, text1, text2)
