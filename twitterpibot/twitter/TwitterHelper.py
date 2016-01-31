@@ -1,6 +1,5 @@
 import logging
 import os
-import pprint
 
 from twitterpibot import Statistics
 from twitterpibot.twitter.MyTwitter import MyTwitter

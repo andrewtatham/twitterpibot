@@ -1,16 +1,24 @@
 import logging
 import os
+import pprint
 
 from apscheduler.triggers.cron import CronTrigger
 
 from twitterpibot.logic import WikipediaWrapper, FileSystemHelper
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
+from twitterpibot.twitter import TwitterHelper
 from twitterpibot.twitter.TwitterHelper import send
 
+link = 21
+space = 1
+ellipsis = 3
+length = 140-(link + space + ellipsis)
 
 def cap(s, l):
     return s if len(s) <= l else s[0:l - 3] + '...'
+
+
 
 
 logger = logging.getLogger(__name__)
@@ -27,14 +35,14 @@ class WikipediaScheduledTask(ScheduledTask):
         page = WikipediaWrapper.GetRandomPage()
 
         if page:
-            text = cap(page.summary, 100) + page.url
+            text = cap(page.url + " " + cap(page.summary, length), 140)
             file_paths = None
             if any(page.images):
                 # filter to PNG, JPEG, WEBP and GIF.
-                images = filter(lambda url: FileSystemHelper.check_extension(url), page.images)
+                images = list(filter(lambda url: FileSystemHelper.check_extension(url), page.images))
                 if any(images):
+                    pprint.pprint(images)
                     url = images[0]
-                    print ("downloading " + url)
                     path = FileSystemHelper.download_file(folder, url)
                     file_paths = [path]
 
