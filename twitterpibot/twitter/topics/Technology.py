@@ -1,10 +1,16 @@
 from twitterpibot.twitter.topics.Topic import NewsTopic, GoodTopic
 
 
+class FlyingThings(GoodTopic):
+    def __init__(self):
+        super(FlyingThings, self).__init__(
+            ["Drone", "(quad|hexa?)copter"]
+        )
+
 class RaspberryPi(GoodTopic):
     def __init__(self):
         super(RaspberryPi, self).__init__(
-            ["Raspberry pi"]
+            ["Raspberry pi", "PiZero", "raspbian"]
         )
 
 

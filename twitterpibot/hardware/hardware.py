@@ -144,6 +144,10 @@ def stop():
     logger.info("Stopping")
     if is_unicornhat_attached:
         myunicornhat.close()
+    if is_picam_attached:
+        MyPicam.close()
+    if is_webcam_attached:
+        MyWebcam.close()
     if is_piglow_attached:
         MyPiglow.close()
     if is_brightpi_attached and brightpi:

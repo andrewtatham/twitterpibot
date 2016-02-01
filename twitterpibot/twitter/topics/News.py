@@ -24,7 +24,8 @@ class BadThings(NewsTopic):
                 "arson",
                 "(child|sex) abuse",
                 "rap(e|ed|ist|ing)'",
-                "RIP"
+                "RIP",
+                "drone strike"
 
             ], [
                 "fire",
