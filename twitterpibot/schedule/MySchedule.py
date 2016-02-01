@@ -19,7 +19,7 @@ def start():
 
 def stop():
     logger.info("Stopping")
-    _scheduler.shutdown(wait=False)
+    _scheduler.shutdown()
     for scheduled_job in _scheduled_jobs:
         scheduled_job.onStop()
     logger.info("Stopped")

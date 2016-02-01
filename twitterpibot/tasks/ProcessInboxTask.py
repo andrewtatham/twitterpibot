@@ -31,6 +31,8 @@ class ProcessInboxTask(Task):
                     if type(inbox_item) is IncomingDirectMessage:
                         record_incoming_direct_message()
                     _process_inbox_item(self, inbox_item)
+            else:
+                logger.info("None in inbox, exiting")
         except Exception:
             if data:
                 logger.warn(data)
@@ -39,7 +41,9 @@ class ProcessInboxTask(Task):
             twitterpibot.MyQueues.inbox.task_done()
 
     def onStop(self):
+        logger.info("putting None in inbox")
         twitterpibot.MyQueues.inbox.put(None)
+        logger.info("put None in inbox")
 
 
 def _process_inbox_item(args, inbox_item):
