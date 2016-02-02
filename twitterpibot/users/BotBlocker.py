@@ -1,3 +1,4 @@
+from collections import Counter
 import logging
 import os
 
@@ -40,12 +41,28 @@ def _is_user_bot(user):
 
             for tweet in last_tweets:
                 tweets_text += tweet["text"] + os.linesep
-            logger.info("Checking user tweets: " + tweets_text)
-            tweet_topics = Topics.get_topics(tweets_text)
-            if tweet_topics:
-                logger.info("User tweet topics: " + str(tweet_topics))
-                block_follower = tweet_topics.spam()
-                reasons.append(str(tweet_topics))
+
+            if tweets_text:
+                logger.info("Checking user tweets: " + tweets_text)
+
+                word_count = Counter(tweets_text.split())
+                n_count = len(word_count.keys())
+                sum_count = sum(word_count.values())
+                max_count = max(word_count.values())
+                avg_count = sum_count / n_count
+                if max_count > 20 or avg_count > 2:
+                    r = "User word count: " + str(word_count) + os.linesep \
+                        + "User word count max: " + str(max_count) + " avg: " + str(avg_count)
+                    logger.info(r)
+                    block_follower = True
+                    reasons.append(str(r))
+
+                if not block_follower:
+                    tweet_topics = Topics.get_topics(tweets_text)
+                    if tweet_topics:
+                        logger.info("User tweet topics: " + str(tweet_topics))
+                        block_follower = tweet_topics.spam()
+                        reasons.append(str(tweet_topics))
     return block_follower, reasons, profile_text, tweets_text
 
 

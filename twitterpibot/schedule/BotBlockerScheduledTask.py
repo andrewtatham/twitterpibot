@@ -34,8 +34,8 @@ class BotBlockerScheduledTask(ScheduledTask):
 
 if __name__ == "__main__":
     os.chdir("../../")
-    logging.basicConfig(level=logging.WARNING)
+    logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
     task = BotBlockerScheduledTask()
-    for i in range(100):
+    for i in range(5):
         task.onRun()
