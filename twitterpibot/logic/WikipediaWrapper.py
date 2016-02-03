@@ -1,3 +1,4 @@
+import pprint
 import random
 import logging
 
@@ -13,15 +14,13 @@ def _parse_content_tree(page_content):
     content_tree = {current_heading: []}
     for line in page_content.split('\n'):
         if line:
-
             is_heading, heading = _parse_heading(line)
             if is_heading:
                 current_heading = heading
                 content_tree[current_heading] = []
             else:
                 content_tree[current_heading].append(line)
-                # print(line)
-
+    logger.info(pprint.pformat(content_tree))
     return content_tree
 
 
@@ -63,13 +62,19 @@ def get_random_page():
 logger = logging.getLogger(__name__)
 
 misconceptions = _parse_content_flat(wikipedia.page("List of common misconceptions").content)
+python_facts = _parse_content_flat(wikipedia.page("Python (programming language)").content)
 
 
 def get_random_misconception():
     return random.choice(misconceptions)
 
 
+def get_random_python_fact():
+    return random.choice(python_facts)
+
+
 if __name__ == "__main__":
 
+    logging.basicConfig(level=logging.INFO)
     for i in range(3):
-        print(get_random_misconception())
+        print(random.choice(python_facts))

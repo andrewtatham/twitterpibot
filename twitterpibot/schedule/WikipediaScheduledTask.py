@@ -1,7 +1,7 @@
+from itertools import cycle
 import logging
 import os
 import pprint
-import random
 import textwrap
 
 from apscheduler.triggers.cron import CronTrigger
@@ -22,7 +22,7 @@ folder = "temp" + os.sep + "wikipedia" + os.sep
 FileSystemHelper.ensure_directory_exists(folder)
 
 
-def split_text(large_text):
+def _split_text(large_text):
     lines = textwrap.wrap(large_text, 140 - 6)
     lines_count = len(lines)
     line_number = 0
@@ -41,10 +41,9 @@ def split_text(large_text):
     return return_value
 
 
-def tweet_random_wikipedia_page():
-    page = WikipediaWrapper.get_random_page()
+def _tweet_page(page):
     if page:
-        lines = split_text(cap(page.url + " " + page.summary, 140 * 5))
+        lines = _split_text(cap(page.url + " " + page.summary, 140 * 5))
         line_number = 0
         reply_to_id = None
         file_paths = None
@@ -65,12 +64,29 @@ def tweet_random_wikipedia_page():
         FileSystemHelper.delete_files(file_paths)
 
 
-def tweet_random_misconception():
+def _tweet_text(misconception):
     reply_to_id = None
-    misconception = WikipediaWrapper.get_random_misconception()
-    lines = split_text(misconception)
+    lines = _split_text(misconception)
     for line in lines:
         reply_to_id = send(OutgoingTweet(text=line, in_reply_to_status_id=reply_to_id))
+
+
+def tweet_random_wikipedia_page():
+    _tweet_page(WikipediaWrapper.get_random_page())
+
+
+def tweet_random_misconception():
+    _tweet_text(WikipediaWrapper.get_random_misconception())
+
+
+def tweet_random_python_fact():
+    _tweet_text(WikipediaWrapper.get_random_python_fact())
+
+
+funcs = cycle([
+    tweet_random_wikipedia_page,
+    tweet_random_misconception,
+    tweet_random_python_fact])
 
 
 class WikipediaScheduledTask(ScheduledTask):
@@ -78,14 +94,13 @@ class WikipediaScheduledTask(ScheduledTask):
         return CronTrigger(hour="*", minute="15,45")
 
     def onRun(self):
-        if random.randint(0, 1) == 0:
-            tweet_random_misconception()
-        else:
-            tweet_random_wikipedia_page()
+        func = next(funcs)
+        func()
 
 
 if __name__ == "__main__":
     os.chdir("../../")
     logging.basicConfig(level=logging.INFO)
     task = WikipediaScheduledTask()
-    task.onRun()
+    for i in range(3):
+        task.onRun()

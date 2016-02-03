@@ -1,4 +1,5 @@
 import logging
+
 import twitterpibot.hardware.hardware as hardware
 import twitterpibot.twitter.TwitterHelper as TwitterHelper
 
@@ -97,6 +98,7 @@ def get_scheduled_jobs():
     # from twitterpibot.schedule.StreamTrendsScheduledTask import StreamTrendsScheduledTask
     from twitterpibot.schedule.BotBlockerScheduledTask import BotBlockerScheduledTask
     from twitterpibot.schedule.ConversationScheduledTask import ConversationScheduledTask
+    from twitterpibot.schedule.ZenOfPythonScheduledTask import ZenOfPythonScheduledTask
 
     scheduledjobs = [
         MonitorScheduledTask(),
@@ -113,7 +115,8 @@ def get_scheduled_jobs():
         JokesScheduledTask(),
         SongScheduledTask(),
         # HappyBirthdayScheduledTask(),
-        ConversationScheduledTask()
+        ConversationScheduledTask(),
+        ZenOfPythonScheduledTask()
     ]
 
     # if is_andrewtathampi:
