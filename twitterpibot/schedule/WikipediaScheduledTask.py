@@ -86,7 +86,8 @@ def tweet_random_python_fact():
 funcs = cycle([
     tweet_random_wikipedia_page,
     tweet_random_misconception,
-    tweet_random_python_fact])
+    # tweet_random_python_fact
+])
 
 
 class WikipediaScheduledTask(ScheduledTask):
