@@ -22,32 +22,11 @@ folder = "temp" + os.sep + "wikipedia" + os.sep
 FileSystemHelper.ensure_directory_exists(folder)
 
 
-def tweet_random_wikipedia_page():
-    page = WikipediaWrapper.get_random_page()
-    if page:
-
-        text = cap(page.url + " " + page.summary, 140)
-
-        file_paths = None
-        if any(page.images):
-            # filter to PNG, JPEG, WEBP and GIF.
-            images = list(filter(lambda url: FileSystemHelper.check_extension(url), page.images))
-            if any(images):
-                pprint.pprint(images)
-                url = images[0]
-                path = FileSystemHelper.download_file(folder, url)
-                file_paths = [path]
-
-        send(OutgoingTweet(text=text, file_paths=file_paths))
-
-
-def tweet_random_misconception():
-    reply_to_id = None
-    misconception = WikipediaWrapper.get_random_misconception()
-    lines = textwrap.wrap(misconception, 140 - 6)
+def split_text(large_text):
+    lines = textwrap.wrap(large_text, 140 - 6)
     lines_count = len(lines)
     line_number = 0
-
+    return_value = []
     for line in lines:
         is_continuation = lines_count > 1 and line_number != 0
         has_continuation = lines_count > 1 and line_number != lines_count - 1
@@ -57,8 +36,41 @@ def tweet_random_misconception():
         text += line
         if has_continuation:
             text += "..."
-        reply_to_id = send(OutgoingTweet(text=text, in_reply_to_status_id=reply_to_id))
+        return_value.append(text)
         line_number += 1
+    return return_value
+
+
+def tweet_random_wikipedia_page():
+    page = WikipediaWrapper.get_random_page()
+    if page:
+        lines = split_text(cap(page.url + " " + page.summary, 140 * 5))
+        line_number = 0
+        reply_to_id = None
+        file_paths = None
+        if any(page.images):
+            logger.info(pprint.pformat(page.images))
+            images = list(filter(lambda url: FileSystemHelper.check_extension(url), page.images))
+            if any(images):
+                logger.info(pprint.pformat(images))
+                file_paths = list(map(lambda url: FileSystemHelper.download_file(folder, url), images[:4]))
+                logger.info(pprint.pformat(file_paths))
+        for line in lines:
+            logger.info(line)
+            if line_number == 0 and file_paths:
+                reply_to_id = send(OutgoingTweet(text=line, file_paths=file_paths, in_reply_to_status_id=reply_to_id))
+            else:
+                reply_to_id = send(OutgoingTweet(text=line, in_reply_to_status_id=reply_to_id))
+            line_number += 1
+        FileSystemHelper.delete_files(file_paths)
+
+
+def tweet_random_misconception():
+    reply_to_id = None
+    misconception = WikipediaWrapper.get_random_misconception()
+    lines = split_text(misconception)
+    for line in lines:
+        reply_to_id = send(OutgoingTweet(text=line, in_reply_to_status_id=reply_to_id))
 
 
 class WikipediaScheduledTask(ScheduledTask):
@@ -74,5 +86,6 @@ class WikipediaScheduledTask(ScheduledTask):
 
 if __name__ == "__main__":
     os.chdir("../../")
+    logging.basicConfig(level=logging.INFO)
     task = WikipediaScheduledTask()
     task.onRun()

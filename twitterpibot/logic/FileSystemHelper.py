@@ -55,3 +55,11 @@ def get_url_extension(url):
     path = six.moves.urllib.parse.urlparse(url).path
     ext = os.path.splitext(path)[1]
     return ext
+
+
+def delete_files(files_list):
+    if files_list:
+        for file in files_list:
+            if os.path.exists(file):
+                logger.info("Removing " + file)
+                os.remove(file)
