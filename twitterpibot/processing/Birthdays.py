@@ -27,4 +27,4 @@ def get_birthday_users():
 
 
 def sing_birthday_song(screen_name):
-    _songs.SingBirthdaySong(screen_name)
+    _songs.sing_birthday_song(screen_name)

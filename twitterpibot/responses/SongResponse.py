@@ -5,7 +5,7 @@ from twitterpibot.songs.Songs import Songs
 class SongResponse(Response):
     def __init__(self):
         self.songs = Songs()
-        self.songnames = self.songs.AllKeys()
+        self.songnames = self.songs.all_keys()
 
     def condition(self, inbox_item):
         return super(SongResponse, self).reply_condition(inbox_item) \
@@ -22,4 +22,4 @@ class SongResponse(Response):
         for word in inbox_item.words:
             for songname in self.songnames:
                 if word.lower() == songname.lower():
-                    self.songs.Send(song_key=songname, inbox_item=inbox_item)
+                    self.songs.sing_song(song_key=songname, inbox_item=inbox_item)

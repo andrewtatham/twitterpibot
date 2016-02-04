@@ -13,10 +13,10 @@ class BotBlockerScheduledTask(ScheduledTask):
         self._page = "-1"
         self._myFollowers = []
 
-    def GetTrigger(self):
+    def get_trigger(self):
         return IntervalTrigger(minutes=6)
 
-    def onRun(self):
+    def on_run(self):
         with MyTwitter() as twitter:
             if not any(self._myFollowers):
                 response = twitter.get_followers_ids(cursor=self._page, stringify_ids=True)
@@ -38,4 +38,4 @@ if __name__ == "__main__":
     logger = logging.getLogger(__name__)
     task = BotBlockerScheduledTask()
     for i in range(5):
-        task.onRun()
+        task.on_run()

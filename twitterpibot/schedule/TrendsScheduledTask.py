@@ -11,10 +11,10 @@ class TrendsScheduledTask(ScheduledTask):
         self._trendsList = []
         super(TrendsScheduledTask, self).__init__()
 
-    def GetTrigger(self):
+    def get_trigger(self):
         return IntervalTrigger(minutes=45)
 
-    def onRun(self):
+    def on_run(self):
         if not self._trendsList:
             self._trendsList = TrendingTopics.get()
 

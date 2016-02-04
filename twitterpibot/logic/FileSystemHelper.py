@@ -1,6 +1,6 @@
 import logging
 import shutil
-import six.moves.urllib.parse
+import six
 
 
 import os

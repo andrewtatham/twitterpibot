@@ -46,7 +46,7 @@ def _is_user_bot(user):
                 logger.info("Checking user tweets: " + tweets_text)
 
                 word_count = Counter(tweets_text.split())
-                n_count = len(word_count.keys())
+                n_count = len(list(word_count.keys()))
                 sum_count = sum(word_count.values())
                 max_count = max(word_count.values())
                 avg_count = sum_count / n_count

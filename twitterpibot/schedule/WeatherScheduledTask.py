@@ -6,8 +6,8 @@ from twitterpibot.twitter.TwitterHelper import send
 
 
 class WeatherScheduledTask(ScheduledTask):
-    def GetTrigger(self):
+    def get_trigger(self):
         return CronTrigger(hour=7)
 
-    def onRun(self):
+    def on_run(self):
         send(OutgoingTweet(text="@BBCWeatherBot Leeds Today"))

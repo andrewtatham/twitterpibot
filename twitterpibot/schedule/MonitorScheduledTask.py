@@ -13,10 +13,10 @@ logger = logging.getLogger(__name__)
 
 
 class MonitorScheduledTask(ScheduledTask):
-    def GetTrigger(self):
+    def get_trigger(self):
         return CronTrigger(minute='*/5')
 
-    def onRun(self):
+    def on_run(self):
         text = datetime.datetime.now().strftime("%c")
         text += os.linesep + 'cpu = ' + str(psutil.cpu_percent()) + ' memory = ' + str(psutil.virtual_memory().percent)
 

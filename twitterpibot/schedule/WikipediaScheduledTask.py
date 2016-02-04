@@ -91,10 +91,10 @@ funcs = cycle([
 
 
 class WikipediaScheduledTask(ScheduledTask):
-    def GetTrigger(self):
+    def get_trigger(self):
         return CronTrigger(hour="*", minute="15,45")
 
-    def onRun(self):
+    def on_run(self):
         func = next(funcs)
         func()
 
@@ -104,4 +104,4 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     task = WikipediaScheduledTask()
     for i in range(3):
-        task.onRun()
+        task.on_run()

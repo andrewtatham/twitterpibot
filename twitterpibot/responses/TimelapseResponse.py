@@ -19,6 +19,6 @@ class TimelapseResponse(Response):
             interval_seconds=30,
             tweet_text="")
 
-        tasks = timelapse.GetScheduledTasks()
+        tasks = timelapse.get_scheduled_tasks()
         for task in tasks:
             MySchedule.add(task)

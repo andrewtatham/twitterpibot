@@ -5,14 +5,14 @@ from twitterpibot.processing.christmas import is_christmas
 
 class TestSongs(TestCase):
     def test_AllKeys(self):
-        k = Songs.Songs().AllKeys()
+        k = Songs.Songs().all_keys()
         self.assertTrue("hammertime" in k)
         self.assertTrue("jinglebells" in k)
         self.assertTrue("indaclub" in k)
 
     def test_Keys(self):
 
-        k = Songs.Songs().Keys()
+        k = Songs.Songs().keys()
 
         self.assertTrue("hammertime" in k)
 

@@ -52,7 +52,7 @@ class Timelapse(object):
             if duration_seconds > 30:
                 raise Exception("Video is too long")
 
-    def GetScheduledTasks(self):
+    def get_scheduled_tasks(self):
         tasks = [
             TimelapsePhotoInitTask(self),
             TimelapsePhotoScheduledTask(self),
@@ -66,10 +66,10 @@ class TimelapsePhotoInitTask(ScheduledTask):
         super(TimelapsePhotoInitTask, self).__init__()
         self.timelapse = timelapse
 
-    def GetTrigger(self):
+    def get_trigger(self):
         return DateTrigger(run_date=self.timelapse.initTime[0])
 
-    def onRun(self):
+    def on_run(self):
         logger.info("[Timelapse] Init ")
         FileSystemHelper.ensure_directory_exists_and_is_empty(self.timelapse.dirPath)
 
@@ -80,14 +80,14 @@ class TimelapsePhotoScheduledTask(ScheduledTask):
         self.timelapse = timelapse
         self.i = 0
 
-    def GetTrigger(self):
+    def get_trigger(self):
         return IntervalTrigger(
             start_date=self.timelapse.startTime,
             end_date=self.timelapse.endTime,
             seconds=self.timelapse.intervalSeconds
         )
 
-    def onRun(self):
+    def on_run(self):
         logger.info("[Timelapse] " + self.timelapse.name + " Photo " + str(self.i))
 
         name = self.timelapse.name + "_img_" + "{0:05d}".format(self.i)
@@ -105,10 +105,10 @@ class TimelapseUploadScheduledTask(ScheduledTask):
         super(TimelapseUploadScheduledTask, self).__init__()
         self.timelapse = timelapse
 
-    def GetTrigger(self):
+    def get_trigger(self):
         return DateTrigger(run_date=self.timelapse.uploadTime)
 
-    def onRun(self):
+    def on_run(self):
 
         search_path = self.timelapse.dirPath + os.path.sep + self.timelapse.name + "*" + os.extsep + self.timelapse.imageExtension
 

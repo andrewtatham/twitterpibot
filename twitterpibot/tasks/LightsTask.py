@@ -7,5 +7,5 @@ class LightsTask(Task):
         Task.__init__(self)
         self.core = True
 
-    def onRun(self):
+    def on_run(self):
         hardware.on_lights_task()

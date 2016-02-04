@@ -16,7 +16,7 @@ def get_user(user_id=None, user_data=None):
         if user_id not in _users:
             _users[user_id] = User(user_data)
 
-        if _users[user_id].isStale():
+        if _users[user_id].is_stale():
             Lists.update_user(user=_users[user_id])
 
         return _users[user_id]

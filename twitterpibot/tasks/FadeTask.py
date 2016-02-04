@@ -8,6 +8,6 @@ class FadeTask(Task):
         Task.__init__(self) 
         self.core = True
 
-    def onRun(self):
+    def on_run(self):
         hardware.on_fade_task()
         time.sleep(1)

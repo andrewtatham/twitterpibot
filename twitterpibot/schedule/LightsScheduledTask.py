@@ -4,8 +4,8 @@ import twitterpibot.hardware.hardware as hardware
 
 
 class LightsScheduledTask(ScheduledTask):
-    def GetTrigger(self):
+    def get_trigger(self):
         return IntervalTrigger(minutes=3)
 
-    def onRun(self):
+    def on_run(self):
         hardware.on_lights_scheduled_task()

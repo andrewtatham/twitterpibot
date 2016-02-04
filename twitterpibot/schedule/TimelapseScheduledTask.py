@@ -7,10 +7,10 @@ import twitterpibot.schedule.MySchedule as MySchedule
 
 
 class TimelapseScheduledTask(ScheduledTask):
-    def GetTrigger(self):
+    def get_trigger(self):
         return IntervalTrigger(minutes=9)
 
-    def onRun(self):
+    def on_run(self):
         now = datetime.datetime.now()
         timelapse = Timelapse(
             name='now',
@@ -19,6 +19,6 @@ class TimelapseScheduledTask(ScheduledTask):
             interval_seconds=1,
             tweet_text="")
 
-        tasks = timelapse.GetScheduledTasks()
+        tasks = timelapse.get_scheduled_tasks()
         for task in tasks:
             MySchedule.add(task)

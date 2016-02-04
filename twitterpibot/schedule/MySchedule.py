@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 def _run_wrapper(task):
     try:
-        task.onRun()
+        task.on_run()
     except Exception as e:
         handle(e)
 
@@ -21,12 +21,12 @@ def stop():
     logger.info("Stopping")
     _scheduler.shutdown()
     for scheduled_job in _scheduled_jobs:
-        scheduled_job.onStop()
+        scheduled_job.on_stop()
     logger.info("Stopped")
 
 
 def add(scheduled_job):
-    trigger = scheduled_job.GetTrigger()
+    trigger = scheduled_job.get_trigger()
     logger.info("[MySchedule] adding " + str(type(scheduled_job)) + " @ " + str(trigger))
     _scheduler.add_job(_run_wrapper, args=[scheduled_job], trigger=trigger, name=str(scheduled_job))
 

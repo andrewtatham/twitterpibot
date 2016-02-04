@@ -37,7 +37,7 @@ class User(object):
         self.is_friend = False
         self.is_reply_less = False
 
-    def isStale(self):
+    def is_stale(self):
         if self.updated:
             delta = datetime.datetime.utcnow() - self.updated
             mins = divmod(delta.days * 86400 + delta.seconds, 60)[0]

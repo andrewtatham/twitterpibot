@@ -6,10 +6,10 @@ import datetime
 
 
 class SunsetTimelapseScheduledTask(ScheduledTask):
-    def GetTrigger(self):
+    def get_trigger(self):
         return CronTrigger(hour=15)
 
-    def onRun(self):
+    def on_run(self):
         sun = MyAstral.get_today_times()
 
         timelapse = Timelapse(
@@ -20,6 +20,6 @@ class SunsetTimelapseScheduledTask(ScheduledTask):
             tweet_text="Goodnight!")
 
         from twitterpibot.schedule.MySchedule import add
-        tasks = timelapse.GetScheduledTasks()
+        tasks = timelapse.get_scheduled_tasks()
         for task in tasks:
             add(task)

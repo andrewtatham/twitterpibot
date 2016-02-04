@@ -14,10 +14,10 @@ class SuggestedUsersScheduledTask(ScheduledTask):
         super(SuggestedUsersScheduledTask, self).__init__()
         self._slugList = []
 
-    def GetTrigger(self):
+    def get_trigger(self):
         return IntervalTrigger(minutes=17)
 
-    def onRun(self):
+    def on_run(self):
 
         with MyTwitter() as twitter:
             if not self._slugList:

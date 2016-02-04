@@ -4,10 +4,10 @@ import twitterpibot.processing.Birthdays as Birthdays
 
 
 class HappyBirthdayScheduledTask(ScheduledTask):
-    def GetTrigger(self):
+    def get_trigger(self):
         return CronTrigger(hour="8-20/2")
 
-    def onRun(self):
+    def on_run(self):
         birthday_users = Birthdays.get_birthday_users()
         if birthday_users:
             for birthdayUser in birthday_users:

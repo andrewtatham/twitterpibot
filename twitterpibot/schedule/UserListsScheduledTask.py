@@ -4,8 +4,8 @@ from twitterpibot.twitter import Lists
 
 
 class UserListsScheduledTask(ScheduledTask):
-    def GetTrigger(self):
+    def get_trigger(self):
         return CronTrigger(minute="5/15")
 
-    def onRun(self):
+    def on_run(self):
         Lists.update_lists()

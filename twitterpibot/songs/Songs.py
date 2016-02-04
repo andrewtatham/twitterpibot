@@ -370,20 +370,20 @@ class Songs(object):
         random.shuffle(self._birthdaySongKeys)
         self._birthdaySongKeys = itertools.cycle(self._birthdaySongKeys)
 
-    def AllKeys(self):
+    def all_keys(self):
         # always returns all keys
         return self._songs.keys()
 
-    def Keys(self):
+    def keys(self):
         is_christmas = twitterpibot.processing.christmas.is_christmas()
         keys = [k for k, v in self._songs.items() if "birthday" not in v and (is_christmas or "christmas" not in v)]
         return keys
 
-    def SingBirthdaySong(self, screen_name):
+    def sing_birthday_song(self, screen_name):
         song_key = self._birthdaySongKeys.next()
-        self.Send(song_key, screen_name, text="Happy Birthday @" + screen_name + " !!!", hashtag="#HappyBirthday")
+        self.sing_song(song_key, screen_name, text="Happy Birthday @" + screen_name + " !!!", hashtag="#HappyBirthday")
 
-    def Send(self, song_key, target=None, inbox_item=None, text=None, hashtag=None):
+    def sing_song(self, song_key, target=None, inbox_item=None, text=None, hashtag=None):
         song = self._songs[song_key]
 
         if not text:

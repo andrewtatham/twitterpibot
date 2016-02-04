@@ -7,10 +7,10 @@ from twitterpibot.twitter.TwitterHelper import send
 
 
 class EdBallsDay(ScheduledTask):
-    def GetTrigger(self):
+    def get_trigger(self):
         return CronTrigger(month=4, day=28, hour=16, minute=20)
 
-    def onRun(self):
+    def on_run(self):
         year = str(datetime.date.today().year)
         text = "@edballs ED BALLS #EdBallsDay #EdBallsDay" + year
         tweet = OutgoingTweet(text=text)

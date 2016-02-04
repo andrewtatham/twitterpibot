@@ -19,7 +19,7 @@ class ProcessInboxTask(Task):
         self.core = True
         self.responseFactory = ResponseFactory()
 
-    def onRun(self):
+    def on_run(self):
         data = None
         try:
             data = twitterpibot.MyQueues.inbox.get()
@@ -40,7 +40,7 @@ class ProcessInboxTask(Task):
         finally:
             twitterpibot.MyQueues.inbox.task_done()
 
-    def onStop(self):
+    def on_stop(self):
         logger.info("putting None in inbox")
         twitterpibot.MyQueues.inbox.put(None)
         logger.info("put None in inbox")

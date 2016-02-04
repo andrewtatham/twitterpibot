@@ -16,7 +16,7 @@ class StreamTweetsTask(Task):
             # user stream is a core task
             self.core = True
 
-    def onRun(self):
+    def on_run(self):
         if self._topic:
             logger.info("starting topic stream = " + self._topic)
             self._streamer.statuses.filter(track=self._topic, filter_level="low", language="en")
@@ -24,7 +24,7 @@ class StreamTweetsTask(Task):
             logger.info("starting user stream")
             self._streamer.user()
 
-    def onStop(self):
+    def on_stop(self):
         if self._topic:
             logger.info("stopping topic stream = " + self._topic)
         else:

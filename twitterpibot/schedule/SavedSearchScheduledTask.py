@@ -10,10 +10,10 @@ class SavedSearchScheduledTask(ScheduledTask):
         super(SavedSearchScheduledTask, self).__init__()
         self._savedSearches = []
 
-    def GetTrigger(self):
+    def get_trigger(self):
         return IntervalTrigger(minutes=7)
 
-    def onRun(self):
+    def on_run(self):
         if not self._savedSearches:
             searches = SavedSearches.get_saved_searches()
             self._savedSearches.extend(searches)

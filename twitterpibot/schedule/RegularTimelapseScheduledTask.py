@@ -16,10 +16,10 @@ messages = [
 
 
 class RegularTimelapseScheduledTask(ScheduledTask):
-    def GetTrigger(self):
+    def get_trigger(self):
         return CronTrigger(hour='3')
 
-    def onRun(self):
+    def on_run(self):
         n = 20
 
         sun = MyAstral.get_today_times()
@@ -40,6 +40,6 @@ class RegularTimelapseScheduledTask(ScheduledTask):
                 tweet_text=random.choice(messages))
 
             import twitterpibot.schedule.MySchedule as Schedule
-            tasks = timelapse.GetScheduledTasks()
+            tasks = timelapse.get_scheduled_tasks()
             for task in tasks:
                 Schedule.add(task)

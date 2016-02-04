@@ -7,10 +7,10 @@ from twitterpibot.twitter.TwitterHelper import send
 
 
 class MidnightScheduledTask(ScheduledTask):
-    def GetTrigger(self):
+    def get_trigger(self):
         return CronTrigger(hour=0)
 
-    def onRun(self):
+    def on_run(self):
         stats = get_statistics()
         send(OutgoingDirectMessage(text=stats))
         reset()

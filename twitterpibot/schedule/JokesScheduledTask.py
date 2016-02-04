@@ -6,9 +6,9 @@ from twitterpibot.twitter.TwitterHelper import send
 
 
 class JokesScheduledTask(ScheduledTask):
-    def GetTrigger(self):
+    def get_trigger(self):
         return CronTrigger(hour="*/2")
 
-    def onRun(self):
+    def on_run(self):
         text = pyjokes.get_joke()
         send(OutgoingTweet(text=text))
