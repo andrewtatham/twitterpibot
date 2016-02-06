@@ -36,14 +36,14 @@ def get_responses():
     from twitterpibot.responses.HelloResponse import HelloResponse
     from twitterpibot.responses.RestartResponse import RestartResponse
     from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
-    from twitterpibot.responses.BotBlockerResponse import BotBlockerResponse
+    # from twitterpibot.responses.BotBlockerResponse import BotBlockerResponse
     from twitterpibot.responses.ConversationResponse import ConversationResponse
     from twitterpibot.responses.FavoriteResponse import FavoriteResponse
     from twitterpibot.responses.GifResponse import GifResponse
 
     responses = [
         RestartResponse(),
-        BotBlockerResponse(),
+        # BotBlockerResponse(),
         SongResponse(),
         TalkLikeAPirateDayResponse(),
         ConversationResponse(),
@@ -96,7 +96,7 @@ def get_scheduled_jobs():
     # from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
     from twitterpibot.schedule.LightsScheduledTask import LightsScheduledTask
     # from twitterpibot.schedule.StreamTrendsScheduledTask import StreamTrendsScheduledTask
-    from twitterpibot.schedule.BotBlockerScheduledTask import BotBlockerScheduledTask
+    # from twitterpibot.schedule.BotBlockerScheduledTask import BotBlockerScheduledTask
     from twitterpibot.schedule.ConversationScheduledTask import ConversationScheduledTask
     from twitterpibot.schedule.ZenOfPythonScheduledTask import ZenOfPythonScheduledTask
 
@@ -106,7 +106,7 @@ def get_scheduled_jobs():
         UserListsScheduledTask(),
         # SavedSearchScheduledTask(),
         MidnightScheduledTask(),
-        BotBlockerScheduledTask(),
+        # BotBlockerScheduledTask(),
         # TrendsScheduledTask(),
         WikipediaScheduledTask(),
         EdBallsDay(),
