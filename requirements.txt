@@ -1,3 +1,4 @@
+pyMarkov
 giphypop
 blinkstick
 picamera

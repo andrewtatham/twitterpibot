@@ -78,3 +78,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     for i in range(3):
         print(random.choice(python_facts))
+
+
+def get_all_misconceptions():
+    return misconceptions
