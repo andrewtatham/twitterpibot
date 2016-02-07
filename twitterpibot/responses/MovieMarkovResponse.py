@@ -1,16 +1,13 @@
-from twitterpibot.logic import markovhelper
 from twitterpibot.movies import moviehelper
-from twitterpibot.responses.Response import Response
-from twitterpibot.twitter.TwitterHelper import reply_with
+from twitterpibot.responses.MarkovResponse import MarkovResponse
 
 
-class MovieMarkovResponse(Response):
+class MovieMarkovResponse(MarkovResponse):
     def __init__(self, movie_name):
-        movie_lines = moviehelper.get_lines(movie_name)
-        self.markov = markovhelper.train(movie_lines)
+        super(MovieMarkovResponse, self).__init__(moviehelper.get_lines(movie_name))
 
     def condition(self, inbox_item):
-        return super(MovieMarkovResponse, self).reply_condition(inbox_item)
+        return super(MovieMarkovResponse, self).reply_condition(inbox_item=inbox_item)
 
     def respond(self, inbox_item):
-        reply_with(inbox_item=inbox_item, text=self.markov.speak())
+        super(MovieMarkovResponse, self).respond(inbox_item=inbox_item)

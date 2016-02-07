@@ -20,7 +20,7 @@ def _parse_content_tree(page_content):
                 content_tree[current_heading] = []
             else:
                 content_tree[current_heading].append(line)
-    logger.info(pprint.pformat(content_tree))
+    logger.debug(pprint.pformat(content_tree))
     return content_tree
 
 

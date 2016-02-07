@@ -2,11 +2,14 @@ import os
 import random
 import re
 import textwrap
+import logging
 
 from PIL import Image, ImageDraw
 
 from twitterpibot.responses.Response import Response
 from twitterpibot.twitter.TwitterHelper import reply_with
+
+logger = logging.getLogger(__name__)
 
 responses = ['Signs point to yes',
              'Yes',
@@ -48,7 +51,7 @@ responses = ['Signs point to yes',
 def build_images():
     images_dir = "twitterpibot" + os.sep + "images" + os.sep
     template_path = images_dir + "magic8ball" + os.extsep + "png"
-    print (template_path)
+    logger.debug(template_path)
     template = Image.open(template_path)
     f = {}
     for r in responses:
@@ -59,7 +62,7 @@ def build_images():
             wrapped = os.linesep.join(textwrap.wrap(r, width=12))
             draw.multiline_text((165, 180), wrapped, align="center")
             img.save(filename, decoder="png")
-        print (r, filename)
+        logger.debug(r + " " + filename)
         f[r] = filename
     return f
 

@@ -1,7 +1,6 @@
 import logging
 
 import twitterpibot.hardware.hardware as hardware
-
 import twitterpibot.twitter.TwitterHelper as TwitterHelper
 
 logger = logging.getLogger(__name__)
@@ -42,6 +41,8 @@ def get_responses():
     from twitterpibot.responses.FavoriteResponse import FavoriteResponse
     from twitterpibot.responses.GifResponse import GifResponse
     from twitterpibot.responses.MovieMarkovResponse import MovieMarkovResponse
+    from twitterpibot.responses.MalcolmTuckerResponse import MalcolmTuckerResponse
+
     responses = [
         RestartResponse(),
         # BotBlockerResponse(),
@@ -50,7 +51,8 @@ def get_responses():
         ConversationResponse(),
         ThanksResponse(),
         HelloResponse(),
-        Magic8BallResponse()
+        Magic8BallResponse(),
+        MalcolmTuckerResponse()
     ]
 
     if is_andrewtathampi:

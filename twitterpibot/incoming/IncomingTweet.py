@@ -1,4 +1,5 @@
 from twitterpibot.incoming.InboxTextItem import InboxTextItem
+from twitterpibot.logic import english
 from twitterpibot.twitter.topics import Topics
 
 try:
@@ -47,8 +48,6 @@ class IncomingTweet(InboxTextItem):
         self.text = data.get("text")
         if self.text:
             self.text = h.unescape(self.text)
-            self.words = self.text.split()
-
             self.topics = Topics.get_topics(self.text)
             self.to_me = False
             self.targets = []
@@ -59,20 +58,31 @@ class IncomingTweet(InboxTextItem):
             if "entities" in data:
                 entities = data["entities"]
                 if "user_mentions" in entities:
-
                     mentions = entities["user_mentions"]
                     self.mentions = list(map(lambda m: m["screen_name"], mentions))
                     for mention in mentions:
                         self.text_stripped = self.text_stripped.replace("@" + mention["screen_name"], "").strip()
-
                         if mention["id_str"] != Identity.twid:
                             self.targets.append(mention["screen_name"])
                         if mention["id_str"] == Identity.twid:
                             self.to_me = True
                 if "hashtags" in entities:
                     self.hashtags = list(map(lambda h: h["text"], entities["hashtags"]))
+                    self.text_stripped = self.text_stripped.replace("#", "").strip()
                 if "urls" in entities:
-                    self.urls = list(map(lambda u: u["expanded_url"], entities["urls"]))
+                    for url in entities["urls"]:
+                        # pprint.pprint(url)
+                        self.text_stripped = self.text_stripped.replace(url["url"], "").strip()
+                if "media" in entities:
+                    for media in entities["media"]:
+                        # pprint.pprint(media)
+                        self.text_stripped = self.text_stripped.replace(media["url"], "").strip()
+
+            self.words = self.text_stripped.split()
+            self.words_interesting = list(filter(lambda w: w.lower() not in english.common_words, self.words))
+            self.text_interesting = ""
+            for word_interesting in self.words_interesting:
+                self.text_interesting += " " + word_interesting
 
         self.retweeted_status = None
         self.is_retweet_of_my_status = False
@@ -97,7 +107,8 @@ class IncomingTweet(InboxTextItem):
             colour = next(tweetcolours)
             text += "[user] "
 
-        text += self.sender.name + ' [@' + self.sender.screen_name + '] ' + self.text.replace('\n', ' ')
+        text += self.sender.name + ' [@' + self.sender.screen_name + '] ' \
+                + self.text.replace('\n', ' ')
 
         if self.topics:
             text += "{topic: " + str(self.topics) + "} "
