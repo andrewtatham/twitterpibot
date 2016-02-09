@@ -47,10 +47,10 @@ class Cricket(DontCareTopic):
         teams = ["England", "Pakistan", "India", "Australia"]
         ["%s to (bat|field|bowl)".format(team) for team in teams]
         super(Cricket, self).__init__({
-              "Cricket", "wicket", "the toss", "ODIs?", "batsman", "bowler", "field(ing|er)"
-        } | set(["%s to (bat|field|bowl)".format(team) for team in teams]), [
-            "tests?", "field", "bowl(ing)?"
-        ])
+                                          "Cricket", "wicket", "the toss", "ODIs?", "batsman", "bowler", "field(ing|er)"
+                                      } | set(["%s to (bat|field|bowl)".format(team) for team in teams]), [
+                                          "tests?", "field", "bowl(ing)?"
+                                      ])
 
 
 class Golf(DontCareTopic):

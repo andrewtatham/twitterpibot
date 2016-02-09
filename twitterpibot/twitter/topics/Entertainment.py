@@ -1,8 +1,6 @@
 from twitterpibot.twitter.topics.Topic import DontCareTopic
 
 
-
-
 class XFactor(DontCareTopic):
     def __init__(self):
         super(XFactor, self).__init__([

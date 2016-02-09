@@ -7,6 +7,7 @@ class FlyingThings(GoodTopic):
             ["Drone", "(quad|hexa?)copter"]
         )
 
+
 class RaspberryPi(GoodTopic):
     def __init__(self):
         super(RaspberryPi, self).__init__(

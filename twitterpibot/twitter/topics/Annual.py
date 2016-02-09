@@ -3,9 +3,34 @@ from twitterpibot.twitter.topics.Topic import NewsTopic, DontCareTopic
 
 class NewYear(NewsTopic):
     def __init__(self):
-        super(NewYear, self).__init__({"New Year"},
-                                      on_date="01/01",
-                                      on_date_range=7)
+        super(NewYear, self).__init__(
+            {"New Year"},
+            on_date="01/01",
+            on_date_range=7)
+
+
+class GroundhogDay(NewsTopic):
+    def __init__(self):
+        super(GroundhogDay, self).__init__(
+            {"Groundhog", "Punxsutawney", "Bill Murray"},
+            on_date="02/02",
+            on_date_range=2)
+
+
+class PancakeDay(NewsTopic):
+    def __init__(self):
+        super(PancakeDay, self).__init__(
+            ["Pancake"],
+            from_date="01/02",
+            to_date="15/02")
+
+
+class ValentinesDay(NewsTopic):
+    def __init__(self):
+        super(ValentinesDay, self).__init__(
+            {"Valentines?"},
+            on_date="14/02",
+            on_date_range=2)
 
 
 class Easter(NewsTopic):
@@ -18,7 +43,7 @@ class Easter(NewsTopic):
             "Palm Sunday"
         },
             from_date="01/03",
-            to_date="31/04")
+            to_date="01/05")
 
 
 class Halloween(NewsTopic):
@@ -93,6 +118,9 @@ class Christmas(NewsTopic):
 def get():
     return [
         NewYear(),
+        GroundhogDay(),
+        PancakeDay(),
+        ValentinesDay(),
         Easter(),
         Halloween(),
         BonfireNight(),
