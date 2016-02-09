@@ -12,7 +12,7 @@ class TestMagic8BallResponse(TestCase):
 
         # Always respond to streamed tweets
         self.assertTrue(response.condition(IncomingTweet({
-            "tweetsource": "stream:#Magic8Ball",
+            "tweet_source": "stream:#Magic8Ball",
             "text": "blah?"
         })))
 

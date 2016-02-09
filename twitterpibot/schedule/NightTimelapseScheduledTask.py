@@ -11,12 +11,12 @@ class NightTimelapseScheduledTask(ScheduledTask):
 
     def on_run(self):
         today = MyAstral.get_today_times()
-        tommorrow = MyAstral.get_tomorrow_times()
+        tomorrow = MyAstral.get_tomorrow_times()
 
         timelapse = Timelapse(
             name='night',
             start_time=today['sunset'],
-            end_time=tommorrow['sunrise'],
+            end_time=tomorrow['sunrise'],
             interval_seconds=600,
             tweet_text="The cosmic ballet goes on...")
 

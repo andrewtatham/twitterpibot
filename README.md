@@ -1,10 +1,10 @@
 twitterpibot
 ============
 
-This is my Twiter Bot, for running on my Raspberry Pi. You can follow it at [@andrewtathampi](https://twitter.com/andrewtathampi).
+This is my Twitter Bot, for running on my Raspberry Pi. You can follow it at [@andrewtathampi](https://twitter.com/andrewtathampi).
 
 # Features
-* Uses [Twthon](https://github.com/ryanmcgrath/twython) to connect to Twitter via the streaming interface
+* Uses [Twython](https://github.com/ryanmcgrath/twython) to connect to Twitter via the streaming interface
 * Multithreaded
 * Runs on raspbian or windows
 * Uses piglow and brightpi

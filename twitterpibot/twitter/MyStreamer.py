@@ -30,7 +30,7 @@ class MyStreamer(TwythonStreamer):
     def on_success(self, data):
         # global _back_off_seconds
         if self._topic_name:
-            data['tweetsource'] = "stream:" + self._topic_name
+            data['tweet_source'] = "stream:" + self._topic_name
         MyQueues.inbox.put(data)
         # _back_off = 60
 

@@ -12,8 +12,8 @@ class PhotoResponse(Response):
     def respond(self, inbox_item):
         photos = hardware.take_photo("temp", "PhotoResponse", "jpg")
         if any(photos):
-            photomessages = ["cheese!", "smile!"]
+            messages = ["cheese!", "smile!"]
             reply_with(inbox_item=inbox_item,
-                       text=random.choice(photomessages),
+                       text=random.choice(messages),
                        as_tweet=True,
                        file_paths=photos)

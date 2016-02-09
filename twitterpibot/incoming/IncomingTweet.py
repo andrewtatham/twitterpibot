@@ -40,7 +40,7 @@ class IncomingTweet(InboxTextItem):
         self.favorited = bool(data.get("favorited"))
         self.retweeted = bool(data.get("retweeted"))
 
-        self.source = data.get('tweetsource')
+        self.source = data.get('tweet_source')
         self.sourceIsTrend = self.source and 'trend' in self.source
         self.sourceIsSearch = self.source and 'search' in self.source
         self.sourceIsStream = self.source and 'stream' in self.source
