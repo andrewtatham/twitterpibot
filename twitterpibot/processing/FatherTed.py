@@ -37,7 +37,11 @@ responses = [
 
     # simpsons
     # "DOH!",
-    "Dont have a cow man!",
+    "Don't have a cow man!",
+    "A noble spirit embiggens the smallest man.",
+    "I don't know why; it’s a perfectly cromulent word.",
+    "He's embiggened that role with his cromulent performance.",
+
 
     # Robot Noises
     "BEEP BOOP.",
