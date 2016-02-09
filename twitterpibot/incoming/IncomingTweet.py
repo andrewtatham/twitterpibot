@@ -1,3 +1,4 @@
+from twitterpibot.Identity import my_twitter_user_id
 from twitterpibot.incoming.InboxTextItem import InboxTextItem
 from twitterpibot.logic import english
 from twitterpibot.twitter.topics import Topics
@@ -16,7 +17,7 @@ except ImportError:
 from itertools import cycle
 from colorama import Fore, Style
 import twitterpibot.users.Users as Users
-import twitterpibot.Identity as Identity
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -62,9 +63,9 @@ class IncomingTweet(InboxTextItem):
                     self.mentions = list(map(lambda m: m["screen_name"], mentions))
                     for mention in mentions:
                         self.text_stripped = self.text_stripped.replace("@" + mention["screen_name"], "").strip()
-                        if mention["id_str"] != Identity.my_twitter_user_id:
+                        if mention["id_str"] != my_twitter_user_id:
                             self.targets.append(mention["screen_name"])
-                        if mention["id_str"] == Identity.my_twitter_user_id:
+                        if mention["id_str"] == my_twitter_user_id:
                             self.to_me = True
                 if "hashtags" in entities:
                     self.hashtags = list(map(lambda h: h["text"], entities["hashtags"]))

@@ -1,6 +1,8 @@
 import random
+
 from apscheduler.triggers.interval import IntervalTrigger
-from twitterpibot import Identity
+
+from twitterpibot.Identity import converse_with
 from twitterpibot.processing.Conversational import prompts_list_cold
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
@@ -12,5 +14,5 @@ class ConversationScheduledTask(ScheduledTask):
         return IntervalTrigger(hours=17)
 
     def on_run(self):
-        text = "@" + Identity.converse_with + " " + random.choice(prompts_list_cold)
+        text = "@" + converse_with + " " + random.choice(prompts_list_cold)
         send(OutgoingTweet(text=text))

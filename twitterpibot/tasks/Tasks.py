@@ -2,6 +2,7 @@ import threading
 import logging
 
 from twitterpibot.ExceptionHandler import handle
+from twitterpibot.Identity import get_tasks
 
 logger = logging.getLogger(__name__)
 
@@ -13,8 +14,7 @@ _task_dic = {}
 def start():
     global _global_running
     _global_running = True
-    import twitterpibot.Identity as Identity
-    tasks = Identity.get_tasks()
+    tasks = get_tasks()
     for task in tasks:
         add(task)
 

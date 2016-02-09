@@ -1,6 +1,5 @@
 markovgen
-bs4
-pyMarkov
+beautifulsoup4
 giphypop
 blinkstick
 picamera
@@ -10,7 +9,6 @@ astral
 colorama
 images2gif
 numpy
-pil
 Pillow
 psutil
 pyjokes

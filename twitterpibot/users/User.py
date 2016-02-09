@@ -1,5 +1,6 @@
 import datetime
-from twitterpibot import Identity
+
+from twitterpibot.Identity import screen_name
 
 
 def parse_int(param):
@@ -17,7 +18,7 @@ class User(object):
         self.screen_name = data.get("screen_name")
         self.description = data.get("description")
 
-        self.isMe = bool(self.screen_name == Identity.screen_name)
+        self.isMe = bool(self.screen_name == screen_name)
 
         self.following = bool(data.get("following"))
         self.verified = bool(data.get("verified"))

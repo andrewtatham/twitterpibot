@@ -1,7 +1,9 @@
-from twitterpibot.ExceptionHandler import handle
-import twitterpibot.Identity as Identity
-from apscheduler.schedulers.background import BackgroundScheduler
 import logging
+
+from apscheduler.schedulers.background import BackgroundScheduler
+
+from twitterpibot.ExceptionHandler import handle
+from twitterpibot.Identity import get_scheduled_jobs
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +34,7 @@ def add(scheduled_job):
 
 
 _scheduler = BackgroundScheduler()
-_scheduled_jobs = Identity.get_scheduled_jobs()
+_scheduled_jobs = get_scheduled_jobs()
 
 for job in _scheduled_jobs:
     add(job)

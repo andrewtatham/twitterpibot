@@ -1,13 +1,12 @@
 import logging
-
-import twitterpibot.Identity as Identity
+from twitterpibot.Identity import get_responses
 
 logger = logging.getLogger(__name__)
 
 
 class ResponseFactory(object):
     def __init__(self):
-        self.responses = Identity.get_responses()
+        self.responses = get_responses()
         for response in self.responses:
             logger.info("[ResponseFactory] adding " + str(type(response)))
 

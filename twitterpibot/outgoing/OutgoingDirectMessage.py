@@ -1,4 +1,4 @@
-from twitterpibot import Identity
+
 from twitterpibot.outgoing.OutboxTextItem import OutboxTextItem
 import logging
 
@@ -17,8 +17,9 @@ class OutgoingDirectMessage(OutboxTextItem):
             self.user_id = user_id
             self.screen_name = screen_name
         else:
-            self.user_id = Identity.admin_user_id
-            self.screen_name = Identity.admin_screen_name
+            from twitterpibot.Identity import admin_user_id, admin_screen_name
+            self.user_id = admin_user_id
+            self.screen_name = admin_screen_name
 
         self.text = text
 
