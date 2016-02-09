@@ -1,5 +1,6 @@
 import os
 import webbrowser
+import sys
 from twitterpibot.logic import FileSystemHelper
 
 try:
@@ -16,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_tokens(screen_name):
-    tokens_dir = "temp" + os.sep + "tokens" + os.sep
+    tokens_dir = "temp" + os.sep + "tokens" + os.sep + str(sys.version_info[0]) + os.sep
 
     FileSystemHelper.ensure_directory_exists(tokens_dir)
 
