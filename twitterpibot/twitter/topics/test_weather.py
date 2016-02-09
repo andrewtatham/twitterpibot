@@ -1,7 +1,7 @@
 from unittest import TestCase
 from twitterpibot.twitter.topics.News import Weather
 
-__author__ = 'andrewtatham'
+
 
 
 class TestWeather(TestCase):

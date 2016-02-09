@@ -62,9 +62,9 @@ class IncomingTweet(InboxTextItem):
                     self.mentions = list(map(lambda m: m["screen_name"], mentions))
                     for mention in mentions:
                         self.text_stripped = self.text_stripped.replace("@" + mention["screen_name"], "").strip()
-                        if mention["id_str"] != Identity.twid:
+                        if mention["id_str"] != Identity.my_twitter_user_id:
                             self.targets.append(mention["screen_name"])
-                        if mention["id_str"] == Identity.twid:
+                        if mention["id_str"] == Identity.my_twitter_user_id:
                             self.to_me = True
                 if "hashtags" in entities:
                     self.hashtags = list(map(lambda h: h["text"], entities["hashtags"]))

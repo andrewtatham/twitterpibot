@@ -1,4 +1,3 @@
-__author__ = 'andrewtatham'
 responses = [
     # exclaimation
     # "WOW!",

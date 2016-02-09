@@ -2,8 +2,6 @@ from unittest import TestCase
 
 from twitterpibot.logic import FileSystemHelper
 
-__author__ = 'andrewtatham'
-
 
 class TestGet_url_extension(TestCase):
     def test_get_url_extension(self):

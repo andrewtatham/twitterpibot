@@ -1,6 +1,6 @@
 from twitterpibot.twitter.topics.Topic import DontCareTopic
 
-__author__ = 'andrewtatham'
+
 
 
 class XFactor(DontCareTopic):

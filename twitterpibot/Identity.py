@@ -19,12 +19,14 @@ elif is_andrewtathampi2:
 
 logger.info("Identity: " + screen_name)
 
-twid = None
+my_twitter_user_id = None
+admin_screen_name = "andrewtatham"
+admin_user_id = "19201332"
 
 
 def init():
-    global twid
-    twid = TwitterHelper.init(screen_name)
+    global my_twitter_user_id
+    my_twitter_user_id = TwitterHelper.init(screen_name)
 
 
 def get_responses():

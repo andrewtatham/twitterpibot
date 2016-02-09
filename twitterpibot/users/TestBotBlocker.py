@@ -4,7 +4,7 @@ from twitterpibot.users import BotBlocker
 from twitterpibot.users.BotBlocker import _is_user_bot
 from twitterpibot.users.User import User
 
-__author__ = 'andrewtatham'
+
 
 
 class TestBotBlocker(TestCase):

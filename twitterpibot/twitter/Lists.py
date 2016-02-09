@@ -4,7 +4,7 @@ import logging
 from twitterpibot.twitter import TwitterHelper
 from twitterpibot.twitter.MyTwitter import MyTwitter
 
-__author__ = 'andrewtatham'
+
 
 _sets = {}
 _list_ids = {}
