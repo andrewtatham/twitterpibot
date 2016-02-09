@@ -42,7 +42,7 @@ def get_responses():
     from twitterpibot.responses.ConversationResponse import ConversationResponse
     from twitterpibot.responses.FavoriteResponse import FavoriteResponse
     from twitterpibot.responses.GifResponse import GifResponse
-    from twitterpibot.responses.MovieMarkovResponse import MovieMarkovResponse
+    # from twitterpibot.responses.MovieMarkovResponse import MovieMarkovResponse
     from twitterpibot.responses.MalcolmTuckerResponse import MalcolmTuckerResponse
 
     responses = [
@@ -72,11 +72,11 @@ def get_responses():
 
     if is_andrewtathampi:
         responses.extend([
-            MovieMarkovResponse("dodgeball")
+            # MovieMarkovResponse("dodgeball")
         ])
     elif is_andrewtathampi2:
         responses.extend([
-            MovieMarkovResponse("matrix")
+            # MovieMarkovResponse("matrix")
         ])
     responses.extend([
         GifResponse(),
