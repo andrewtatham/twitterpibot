@@ -31,7 +31,6 @@ class TwitterHelper(object):
         self.identity.twid = self.twitter.lookup_user(screen_name=identity.screen_name)[0]["id_str"]
 
     def send(self, outbox_item):
-        outbox_item.display()
         if type(outbox_item) is OutgoingTweet:
 
             if outbox_item.filePaths and any(outbox_item.filePaths):
@@ -48,6 +47,7 @@ class TwitterHelper(object):
                 if media_ids:
                     outbox_item.media_ids = media_ids
 
+            outbox_item.display()
             response = self.identity.twitter.update_status(
                 status=outbox_item.status,
                 in_reply_to_status_id=outbox_item.in_reply_to_status_id,
@@ -61,6 +61,7 @@ class TwitterHelper(object):
                 outbox_item.screen_name = self.identity.admin_screen_name
                 outbox_item.user_id = self.identity.admin_user_id
 
+            outbox_item.display()
             self.identity.twitter.send_direct_message(
                 text=outbox_item.text,
                 screen_name=outbox_item.screen_name,
