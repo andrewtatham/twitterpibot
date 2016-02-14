@@ -6,4 +6,4 @@ __author__ = 'Andrew'
 
 class TestIncomingEvent(TestCase):
     def test_ctor(self):
-        self.assertIsNotNone(IncomingEvent({}))
+        self.assertIsNotNone(IncomingEvent({}, None))

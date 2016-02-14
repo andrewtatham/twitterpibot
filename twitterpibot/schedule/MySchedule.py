@@ -3,7 +3,6 @@ import logging
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from twitterpibot.ExceptionHandler import handle
-from twitterpibot.Identity import get_scheduled_jobs
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +11,7 @@ def _run_wrapper(task):
     try:
         task.on_run()
     except Exception as e:
-        handle(e)
+        handle(task.identity, e)
 
 
 def start():
@@ -34,7 +33,12 @@ def add(scheduled_job):
 
 
 _scheduler = BackgroundScheduler()
-_scheduled_jobs = get_scheduled_jobs()
+_scheduled_jobs = []
 
 for job in _scheduled_jobs:
     add(job)
+
+
+def set_scheduled_jobs(scheduled_jobs):
+    global _scheduled_jobs
+    _scheduled_jobs.extend(scheduled_jobs)

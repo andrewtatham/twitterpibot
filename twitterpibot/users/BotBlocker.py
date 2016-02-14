@@ -3,7 +3,7 @@ import logging
 import os
 
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
-from twitterpibot.twitter import Lists
+from twitterpibot.users import Lists
 import twitterpibot.twitter.TwitterHelper as TwitterHelper
 from twitterpibot.twitter.topics import Topics
 
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 get_tweets = TwitterHelper.get_user_timeline
 
 
-def _is_user_bot(user):
+def _is_user_bot(identity, user):
     block_follower = False
     reasons = []
     profile_text = ""
@@ -37,7 +37,7 @@ def _is_user_bot(user):
 
         if not block_follower and (user.following or not user.protected):
 
-            last_tweets = get_tweets(user)
+            last_tweets = get_tweets(identity, user)
 
             for tweet in last_tweets:
                 tweets_text += tweet["text"] + os.linesep
@@ -66,7 +66,7 @@ def _is_user_bot(user):
     return block_follower, reasons, profile_text, tweets_text
 
 
-def _block_user(user, reasons, text1, text2):
+def _block_user(identity, user, reasons, text1, text2):
     txt = "[Botblock] BLOCKED: "
     txt += user.name + " [@" + user.screen_name + "] "
     txt += " Following: " + str(user.following)
@@ -86,12 +86,12 @@ def _block_user(user, reasons, text1, text2):
         txt += os.linesep + text2
 
     logger.warn(txt)
-    TwitterHelper.send(OutgoingDirectMessage(text=txt))
+    TwitterHelper.send(identity, OutgoingDirectMessage(text=txt))
     Lists.add_user(list_name="Blocked Users", user_id=user.id, screen_name=user.screen_name)
-    TwitterHelper.block_user(user.id, user.screen_name)
+    TwitterHelper.block_user(identity, user.id, user.screen_name)
 
 
-def check_user(user):
-    block, reasons, text1, text2 = _is_user_bot(user)
+def check_user(identity, user):
+    block, reasons, text1, text2 = _is_user_bot(identity, user)
     if block:
-        _block_user(user, reasons, text1, text2)
+        _block_user(identity, user, reasons, text1, text2)

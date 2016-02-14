@@ -1,6 +1,6 @@
-from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from apscheduler.triggers.cron import CronTrigger
-from twitterpibot.twitter import Lists
+
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
 
 class UserListsScheduledTask(ScheduledTask):
@@ -8,4 +8,4 @@ class UserListsScheduledTask(ScheduledTask):
         return CronTrigger(minute="5/15")
 
     def on_run(self):
-        Lists.update_lists()
+        self.identity.lists.update_lists()

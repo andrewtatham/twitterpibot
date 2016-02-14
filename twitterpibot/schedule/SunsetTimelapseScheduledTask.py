@@ -13,6 +13,7 @@ class SunsetTimelapseScheduledTask(ScheduledTask):
         sun = MyAstral.get_today_times()
 
         timelapse = Timelapse(
+            identity=self.identity,
             name='sunset',
             start_time=sun['sunset'] + datetime.timedelta(minutes=-20),
             end_time=sun['dusk'] + datetime.timedelta(minutes=+20),

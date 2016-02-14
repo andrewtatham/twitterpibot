@@ -1,20 +1,21 @@
-from twitterpibot.incoming.InboxTextItem import InboxTextItem
-import twitterpibot.users.Users as Users
 import logging
+
+from twitterpibot.incoming.InboxTextItem import InboxTextItem
+
 logger = logging.getLogger(__name__)
 
 
 class IncomingDirectMessage(InboxTextItem):
     # https://dev.twitter.com/streaming/overview/messages-types#Direct_Messages
     # https://dev.twitter.com/rest/reference/get/direct_messages
-    def __init__(self, data):
+    def __init__(self, data, identity):
         super(IncomingDirectMessage, self).__init__()
         self.is_direct_message = "direct_message" in data
 
         dm = data.get("direct_message")
         if dm:
-            self.sender = Users.get_user(user_data=dm.get("sender"))
-            self.recipient = Users.get_user(user_data=dm["recipient"])
+            self.sender = identity.users.get_user(user_data=dm.get("sender"))
+            self.recipient = identity.users.get_user(user_data=dm["recipient"])
             self.from_me = self.sender.isMe
             self.to_me = self.recipient.isMe
             self.targets = [self.sender.screen_name]

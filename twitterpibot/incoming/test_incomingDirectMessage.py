@@ -6,4 +6,4 @@ __author__ = 'Andrew'
 
 class TestIncomingDirectMessage(TestCase):
     def test_ctor(self):
-        self.assertIsNotNone(IncomingDirectMessage({}))
+        self.assertIsNotNone(IncomingDirectMessage({}, None))

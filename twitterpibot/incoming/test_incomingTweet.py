@@ -6,5 +6,5 @@ __author__ = 'Andrew'
 
 class TestIncomingTweet(TestCase):
     def test_ctor(self):
-        self.assertIsNotNone(IncomingTweet({}))
+        self.assertIsNotNone(IncomingTweet({}, None))
 

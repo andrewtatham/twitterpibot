@@ -26,5 +26,5 @@ def get_birthday_users():
         return None
 
 
-def sing_birthday_song(screen_name):
-    _songs.sing_birthday_song(screen_name)
+def sing_birthday_song(identity, screen_name):
+    _songs.sing_birthday_song(identity, screen_name)

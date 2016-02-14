@@ -8,14 +8,14 @@ __author__ = 'Andrew'
 
 class TestMagic8BallResponse(TestCase):
     def test_condition(self):
-        response = Magic8BallResponse()
+        response = Magic8BallResponse(None)
 
         # Always respond to streamed tweets
         self.assertTrue(response.condition(IncomingTweet({
             "tweet_source": "stream:#Magic8Ball",
             "text": "blah?"
-        })))
+        }, None)))
 
         self.assertFalse(response.condition(IncomingTweet({
             "text": "blah?"
-        })))
+        }, None)))

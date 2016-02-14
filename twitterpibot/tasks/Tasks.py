@@ -2,20 +2,20 @@ import threading
 import logging
 
 from twitterpibot.ExceptionHandler import handle
-from twitterpibot.Identity import get_tasks
+
 
 logger = logging.getLogger(__name__)
 
 _global_running = False
 _task_running = {}
 _task_dic = {}
+_tasks = []
 
 
 def start():
     global _global_running
     _global_running = True
-    tasks = get_tasks()
-    for task in tasks:
+    for task in _tasks:
         add(task)
 
 
@@ -33,7 +33,7 @@ def _run_wrapper(task):
             task.on_run()
         except Exception as e:
             logger.warn("[Tasks] exception in thread %s", task.key)
-            handle(e)
+            handle(task.identity, e)
     logger.info("[Tasks] exiting thread %s", task.key)
 
 
@@ -66,3 +66,8 @@ def stop():
         remove(task)
 
     logger.info("Stopped")
+
+
+def set_tasks(tasks):
+    global _tasks
+    _tasks.extend(tasks)

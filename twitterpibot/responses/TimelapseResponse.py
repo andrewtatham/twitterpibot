@@ -13,6 +13,7 @@ class TimelapseResponse(Response):
     def respond(self, inbox_item):
         now = datetime.datetime.now()
         timelapse = Timelapse(
+            identity=self.identity,
             name='now',
             start_time=now + datetime.timedelta(seconds=1),
             end_time=now + datetime.timedelta(minutes=2),

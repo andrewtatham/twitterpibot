@@ -14,6 +14,9 @@ def one_in(prob):
 
 
 class Response(object):
+    def __init__(self, identity):
+        self.identity = identity
+
     @abc.abstractmethod
     def condition(self, inbox_item):
         return False

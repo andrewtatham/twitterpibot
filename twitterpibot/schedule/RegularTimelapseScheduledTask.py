@@ -33,6 +33,7 @@ class RegularTimelapseScheduledTask(ScheduledTask):
             end = dawn + delta * (i + 1)
 
             timelapse = Timelapse(
+                identity=self.identity,
                 name='timelapse%s' % i,
                 start_time=start,
                 end_time=end,

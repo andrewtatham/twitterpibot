@@ -9,7 +9,6 @@ from apscheduler.triggers.cron import CronTrigger
 from twitterpibot.logic import WikipediaWrapper, FileSystemHelper
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
-from twitterpibot.twitter.TwitterHelper import send
 
 
 def cap(s, l):
@@ -41,7 +40,7 @@ def _split_text(large_text):
     return return_value
 
 
-def _tweet_page(page):
+def _tweet_page(identity, page):
     if page:
         lines = _split_text(cap(page.url + " " + page.summary, 140 * 5))
         line_number = 0
@@ -57,30 +56,35 @@ def _tweet_page(page):
         for line in lines:
             logger.info(line)
             if line_number == 0 and file_paths:
-                reply_to_id = send(OutgoingTweet(text=line, file_paths=file_paths, in_reply_to_status_id=reply_to_id))
+                reply_to_id = identity.twitter.send(OutgoingTweet(
+                    text=line,
+                    file_paths=file_paths,
+                    in_reply_to_status_id=reply_to_id))
             else:
-                reply_to_id = send(OutgoingTweet(text=line, in_reply_to_status_id=reply_to_id))
+                reply_to_id = identity.twitter.send(OutgoingTweet(
+                    text=line,
+                    in_reply_to_status_id=reply_to_id))
             line_number += 1
-        FileSystemHelper.delete_files(file_paths)
+            FileSystemHelper.delete_files(file_paths)
 
 
-def _tweet_text(misconception):
+def _tweet_text(identity, misconception):
     reply_to_id = None
     lines = _split_text(misconception)
     for line in lines:
-        reply_to_id = send(OutgoingTweet(text=line, in_reply_to_status_id=reply_to_id))
+        reply_to_id = identity.twitter.send(OutgoingTweet(text=line, in_reply_to_status_id=reply_to_id))
 
 
-def tweet_random_wikipedia_page():
-    _tweet_page(WikipediaWrapper.get_random_page())
+def tweet_random_wikipedia_page(identity):
+    _tweet_page(identity, WikipediaWrapper.get_random_page())
 
 
-def tweet_random_misconception():
-    _tweet_text(WikipediaWrapper.get_random_misconception())
+def tweet_random_misconception(identity):
+    _tweet_text(identity, WikipediaWrapper.get_random_misconception())
 
 
-def tweet_random_python_fact():
-    _tweet_text(WikipediaWrapper.get_random_python_fact())
+def tweet_random_python_fact(identity):
+    _tweet_text(identity, WikipediaWrapper.get_random_python_fact())
 
 
 funcs = cycle([
@@ -96,12 +100,12 @@ class WikipediaScheduledTask(ScheduledTask):
 
     def on_run(self):
         func = next(funcs)
-        func()
+        func(self.identity)
 
 
 if __name__ == "__main__":
     os.chdir("../../")
     logging.basicConfig(level=logging.INFO)
-    task = WikipediaScheduledTask()
+    task = WikipediaScheduledTask(None)
     for i in range(3):
         task.on_run()

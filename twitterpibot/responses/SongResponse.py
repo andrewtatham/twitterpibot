@@ -3,7 +3,8 @@ from twitterpibot.songs.Songs import Songs
 
 
 class SongResponse(Response):
-    def __init__(self):
+    def __init__(self, identity):
+        Response.__init__(self, identity)
         self.songs = Songs()
         self.songnames = self.songs.all_keys()
 
@@ -22,4 +23,4 @@ class SongResponse(Response):
         for word in inbox_item.words:
             for songname in self.songnames:
                 if word.lower() == songname.lower():
-                    self.songs.sing_song(song_key=songname, inbox_item=inbox_item)
+                    self.songs.sing_song(self.identity, song_key=songname, inbox_item=inbox_item)

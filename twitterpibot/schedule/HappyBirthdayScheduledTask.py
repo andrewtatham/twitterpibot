@@ -11,4 +11,4 @@ class HappyBirthdayScheduledTask(ScheduledTask):
         birthday_users = Birthdays.get_birthday_users()
         if birthday_users:
             for birthdayUser in birthday_users:
-                Birthdays.sing_birthday_song(birthdayUser)
+                Birthdays.sing_birthday_song(self.identity, screen_name=birthdayUser)

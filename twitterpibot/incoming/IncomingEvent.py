@@ -1,16 +1,18 @@
-from twitterpibot.incoming.InboxItem import InboxItem
 from itertools import cycle
-from colorama import Fore, Style
 import os
-import twitterpibot.users.Users as Users
 import logging
+
+from colorama import Fore, Style
+
+from twitterpibot.incoming.InboxItem import InboxItem
+
 logger = logging.getLogger(__name__)
 
 eventcolours = cycle([Fore.MAGENTA, Fore.CYAN])
 
 
 class IncomingEvent(InboxItem):
-    def __init__(self, data):
+    def __init__(self, data, identity):
 
         super(IncomingEvent, self).__init__()
 
@@ -18,8 +20,8 @@ class IncomingEvent(InboxItem):
 
         # https://dev.twitter.com/streaming/overview/messages-types#Events_event
 
-        self.source = Users.get_user(user_data=data.get("source"))
-        self.target = Users.get_user(user_data=data.get("target"))
+        self.source = identity.users.get_user(user_data=data.get("source"))
+        self.target = identity.users.get_user(user_data=data.get("target"))
 
         self.from_me = self.source and self.source.isMe
         self.to_me = self.target and self.target.isMe

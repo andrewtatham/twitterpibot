@@ -12,14 +12,15 @@ import cv2
 from twitterpibot.logic import FileSystemHelper
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
-from twitterpibot.twitter.TwitterHelper import send
+
 import twitterpibot.hardware.hardware as hardware
 
 logger = logging.getLogger(__name__)
 
 
 class Timelapse(object):
-    def __init__(self, name, start_time, end_time, interval_seconds=1, tweet_text=''):
+    def __init__(self, identity,  name, start_time, end_time, interval_seconds=1, tweet_text=''):
+        self.identity = identity
         self.name = name
         self.imageExtension = 'jpg'
         self.folderName = "temp" + os.path.sep + 'timelapse' + os.path.sep + self.name
@@ -63,7 +64,7 @@ class Timelapse(object):
 
 class TimelapsePhotoInitTask(ScheduledTask):
     def __init__(self, timelapse):
-        super(TimelapsePhotoInitTask, self).__init__()
+        super(TimelapsePhotoInitTask, self).__init__(timelapse.identity)
         self.timelapse = timelapse
 
     def get_trigger(self):
@@ -76,7 +77,7 @@ class TimelapsePhotoInitTask(ScheduledTask):
 
 class TimelapsePhotoScheduledTask(ScheduledTask):
     def __init__(self, timelapse):
-        super(TimelapsePhotoScheduledTask, self).__init__()
+        super(TimelapsePhotoScheduledTask, self).__init__(timelapse.identity)
         self.timelapse = timelapse
         self.i = 0
 
@@ -102,7 +103,7 @@ class TimelapsePhotoScheduledTask(ScheduledTask):
 
 class TimelapseUploadScheduledTask(ScheduledTask):
     def __init__(self, timelapse):
-        super(TimelapseUploadScheduledTask, self).__init__()
+        super(TimelapseUploadScheduledTask, self).__init__(timelapse.identity)
         self.timelapse = timelapse
 
     def get_trigger(self):
@@ -174,7 +175,7 @@ class TimelapseUploadScheduledTask(ScheduledTask):
                 or (self.timelapse.targetExtension == "mp4" and file_size > (15 * 1024 * 1024)):
             raise Exception("File size {0} MB is too big ".format(file_size / (1024 * 1024)))
         logger.info("[Timelapse]" + self.timelapse.name + " Sending")
-        send(OutgoingTweet(
+        send(self.timelapse.identity, OutgoingTweet(
             text=self.timelapse.tweetText,
             file_paths=[filename]))
 

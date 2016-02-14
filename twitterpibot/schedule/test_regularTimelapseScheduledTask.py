@@ -6,5 +6,5 @@ from twitterpibot.schedule.RegularTimelapseScheduledTask import RegularTimelapse
 
 class TestRegularTimelapseScheduledTask(TestCase):
     def test_onRun(self):
-        task = RegularTimelapseScheduledTask()
+        task = RegularTimelapseScheduledTask(None)
         task.on_run()

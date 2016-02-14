@@ -1,6 +1,5 @@
 from twitterpibot.processing import Conversational
 from twitterpibot.responses.Response import Response
-from twitterpibot.twitter.TwitterHelper import reply_with
 
 
 class ConversationResponse(Response):
@@ -11,4 +10,4 @@ class ConversationResponse(Response):
     def respond(self, inbox_item):
         response = Conversational.response(inbox_item.text_stripped)
         if response:
-            reply_with(inbox_item, response)
+            self.identity.twitter.reply_with(inbox_item, response)

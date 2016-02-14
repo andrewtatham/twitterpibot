@@ -1,4 +1,4 @@
-from twitterpibot.Identity import my_twitter_user_id
+
 from twitterpibot.incoming.InboxTextItem import InboxTextItem
 from twitterpibot.logic import english
 from twitterpibot.twitter.topics import Topics
@@ -16,7 +16,6 @@ except ImportError:
 
 from itertools import cycle
 from colorama import Fore, Style
-import twitterpibot.users.Users as Users
 
 import logging
 
@@ -29,14 +28,14 @@ streamcolours = cycle([Fore.YELLOW, Fore.WHITE])
 
 
 class IncomingTweet(InboxTextItem):
-    def __init__(self, data):
+    def __init__(self, data, identity):
         # https://dev.twitter.com/overview/api/tweets
 
         super(IncomingTweet, self).__init__()
 
         self.is_tweet = True
         self.status_id = data.get("id_str")
-        self.sender = Users.get_user(user_data=data.get("user"))
+        self.sender = identity.users.get_user(user_data=data.get("user"))
         self.from_me = self.sender and self.sender.isMe
         self.favorited = bool(data.get("favorited"))
         self.retweeted = bool(data.get("retweeted"))
@@ -63,9 +62,9 @@ class IncomingTweet(InboxTextItem):
                     self.mentions = list(map(lambda m: m["screen_name"], mentions))
                     for mention in mentions:
                         self.text_stripped = self.text_stripped.replace("@" + mention["screen_name"], "").strip()
-                        if mention["id_str"] != my_twitter_user_id:
+                        if mention["screen_name"] != identity.screen_name:
                             self.targets.append(mention["screen_name"])
-                        if mention["id_str"] == my_twitter_user_id:
+                        if mention["screen_name"] == identity.screen_name:
                             self.to_me = True
                 if "hashtags" in entities:
                     self.hashtags = list(map(lambda h: h["text"], entities["hashtags"]))
@@ -88,7 +87,7 @@ class IncomingTweet(InboxTextItem):
         self.retweeted_status = None
         self.is_retweet_of_my_status = False
         if "retweeted_status" in data:
-            self.retweeted_status = IncomingTweet(data["retweeted_status"])  # retweet recursion!
+            self.retweeted_status = IncomingTweet(data["retweeted_status"], identity)  # retweet recursion!
 
             if self.retweeted_status.from_me:
                 self.is_retweet_of_my_status = True

@@ -63,3 +63,13 @@ def delete_files(files_list):
             if os.path.exists(file):
                 logger.info("Removing " + file)
                 os.remove(file)
+
+
+def bytes_from_file(file_path, chunk_size):
+    with open(file_path, "rb") as f:
+        while True:
+            chunk = f.read(chunk_size)
+            if chunk:
+                yield chunk
+            else:
+                break

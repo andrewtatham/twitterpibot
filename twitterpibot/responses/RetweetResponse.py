@@ -12,4 +12,4 @@ class RetweetResponse(Response):
 
     def respond(self, inbox_item):
         logger.info("retweeting status id %s", inbox_item.status_id)
-        TwitterHelper.retweet(inbox_item.status_id)
+        self.identity.twitter.retweet(inbox_item.status_id)

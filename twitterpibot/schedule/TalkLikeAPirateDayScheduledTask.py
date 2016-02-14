@@ -4,7 +4,7 @@ from apscheduler.triggers.cron import CronTrigger
 
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
-from twitterpibot.twitter.TwitterHelper import send
+
 
 piracy = [
     "You can always trust the untrustworthy because you can always trust that they will be untrustworthy. Its the trustworthy you can't trust.",
@@ -22,6 +22,4 @@ class TalkLikeAPirateDayScheduledTask(ScheduledTask):
         return CronTrigger(month=9, day=19, minute="*/10")
 
     def on_run(self):
-        text = random.choice(piracy) + " #TalkLikeAPirateDay"
-        tweet = OutgoingTweet(text=text)
-        send(tweet)
+        self.identity.twitter.send(OutgoingTweet(text=random.choice(piracy) + " #TalkLikeAPirateDay"))

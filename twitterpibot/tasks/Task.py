@@ -2,8 +2,9 @@ import abc
 
 
 class Task(object):
-    def __init__(self):
-        self.key = str(type(self))
+    def __init__(self, identity):
+        self.identity = identity
+        self.key = str(type(self)) + identity.screen_name # must be unique
         self.core = False
 
     @abc.abstractmethod

@@ -54,6 +54,7 @@ def get_tokens(screen_name):
         oauth_token = auth["oauth_token"]
         oauth_token_secret = auth["oauth_token_secret"]
 
+        logger.info("Please ensure you are logged in as :" + screen_name)
         url = auth["auth_url"]
         logger.info(url)
         webbrowser.open(url)

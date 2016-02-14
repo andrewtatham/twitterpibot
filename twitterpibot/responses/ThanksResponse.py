@@ -2,11 +2,11 @@ import re
 import random
 
 from twitterpibot.responses.Response import Response
-from twitterpibot.twitter.TwitterHelper import reply_with
 
 
 class ThanksResponse(Response):
-    def __init__(self):
+    def __init__(self, identity):
+        Response.__init__(self, identity)
         self.rx = re.compile("thx|thank(s|you)", re.IGNORECASE)
 
     def condition(self, inbox_item):
@@ -20,4 +20,4 @@ class ThanksResponse(Response):
             "thankyou",
             "thank u",
         ]
-        reply_with(inbox_item, random.choice(thanks) + " for the " + random.choice(thanks))
+        self.identity.twitter.reply_with(inbox_item, random.choice(thanks) + " for the " + random.choice(thanks))

@@ -3,7 +3,6 @@ import logging
 
 import colorama
 
-import twitterpibot.Identity
 import twitterpibot.MyLogging as MyLogging
 import twitterpibot.hardware.hardware as hardware
 import twitterpibot.tasks.Tasks as Tasks
@@ -13,10 +12,14 @@ import twitterpibot.MyUI as MyUI
 MyLogging.init()
 logger = logging.getLogger(__name__)
 
-twitterpibot.Identity.init()
+import twitterpibot.identitymanager as identitymanager
 
 if not hardware.is_andrew_desktop:
     colorama.init(autoreset=True)
+
+identitymanager.init()
+Tasks.set_tasks(identitymanager.get_tasks())
+MySchedule.set_scheduled_jobs(identitymanager.get_scheduled_jobs())
 
 Tasks.start()
 MySchedule.start()

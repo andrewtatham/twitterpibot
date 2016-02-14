@@ -2,11 +2,10 @@ import os
 import random
 import time
 import itertools
-import twitterpibot
 
+import twitterpibot
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.processing.christmas import is_christmas
-from twitterpibot.twitter.TwitterHelper import send, reply_with
 from twitterpibot.users import User
 
 
@@ -300,8 +299,6 @@ class Songs(object):
                     "video": "https://youtu.be/m_sJmIQrH54"
                 },
 
-
-
                 # Birthday songs
                 "indaclub": {
                     "artist": "50 Cent",
@@ -379,11 +376,12 @@ class Songs(object):
         keys = [k for k, v in self._songs.items() if "birthday" not in v and (is_christmas or "christmas" not in v)]
         return keys
 
-    def sing_birthday_song(self, screen_name):
+    def sing_birthday_song(self, identity, screen_name):
         song_key = self._birthdaySongKeys.next()
-        self.sing_song(song_key, screen_name, text="Happy Birthday @" + screen_name + " !!!", hashtag="#HappyBirthday")
+        self.sing_song(identity, song_key, screen_name, text="Happy Birthday @" + screen_name + " !!!",
+                       hashtag="#HappyBirthday")
 
-    def sing_song(self, song_key, target=None, inbox_item=None, text=None, hashtag=None):
+    def sing_song(self, identity, song_key, target=None, inbox_item=None, text=None, hashtag=None):
         song = self._songs[song_key]
 
         if not text:
@@ -392,7 +390,12 @@ class Songs(object):
         if hashtag:
             text += ' ' + hashtag
 
-        in_reply_to_status_id = self._send(inbox_item, text, target, None)
+        in_reply_to_status_id = self._send(
+            identity=identity,
+            inbox_item=inbox_item,
+            lyric=text,
+            target=target,
+            in_reply_to_status_id=None)
         time.sleep(5)
 
         lyricsfile = song["lyrics"]
@@ -409,15 +412,16 @@ class Songs(object):
                     lyric += random.choice(self.mutation)
                 lastlyrics.add(lyric)
                 in_reply_to_status_id = self._send(
+                    identity,
                     inbox_item,
                     lyric,
                     target,
                     in_reply_to_status_id)
                 time.sleep(2)
 
-    def _send(self, inbox_item, lyric, target, in_reply_to_status_id):
+    def _send(self, identity, inbox_item, lyric, target, in_reply_to_status_id):
         if inbox_item:
-            return reply_with(
+            return identity.twitter.reply_with(
                 inbox_item=inbox_item,
                 text=lyric,
                 in_reply_to_status_id=in_reply_to_status_id)
@@ -433,7 +437,7 @@ class Songs(object):
             tweet = OutgoingTweet(
                 text=text,
                 in_reply_to_status_id=in_reply_to_status_id)
-            return send(tweet)
+            return identity.twitter.send(tweet)
 
 
 class CaseInsensitiveDict(dict):

@@ -16,10 +16,6 @@ class OutgoingDirectMessage(OutboxTextItem):
         elif user_id or screen_name:
             self.user_id = user_id
             self.screen_name = screen_name
-        else:
-            from twitterpibot.Identity import admin_user_id, admin_screen_name
-            self.user_id = admin_user_id
-            self.screen_name = admin_screen_name
 
         self.text = text
 

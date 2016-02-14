@@ -14,6 +14,7 @@ class NightTimelapseScheduledTask(ScheduledTask):
         tomorrow = MyAstral.get_tomorrow_times()
 
         timelapse = Timelapse(
+            identity=self.identity,
             name='night',
             start_time=today['sunset'],
             end_time=tomorrow['sunrise'],

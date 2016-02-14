@@ -3,8 +3,8 @@ from twitterpibot.text import textfilehelper
 
 
 class TextMarkovResponse(MarkovResponse):
-    def __init__(self, text_name):
-        super(TextMarkovResponse, self).__init__(textfilehelper.get_text(text_name))
+    def __init__(self, identity, text_name):
+        super(TextMarkovResponse, self).__init__(identity, textfilehelper.get_text(text_name))
 
     def condition(self, inbox_item):
         return super(TextMarkovResponse, self).reply_condition(inbox_item=inbox_item)

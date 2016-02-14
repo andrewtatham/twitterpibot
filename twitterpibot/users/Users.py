@@ -1,22 +1,22 @@
-from twitterpibot.twitter import Lists
 from twitterpibot.users.User import User
-from twitterpibot.twitter.MyTwitter import MyTwitter
-
-_users = {}
 
 
-def get_user(user_id=None, user_data=None):
-    if user_id and not user_data:
-        with MyTwitter() as twitter:
-            user_data = twitter.lookup_user(user_id=user_id)[0]
+class Users(object):
+    def __init__(self, identity):
+        self._identity = identity
+        self._users = {}
 
-    if user_data:
-        user_id = user_data["id_str"]
+    def get_user(self, user_id=None, user_data=None):
+        if user_id and not user_data:
+            user_data = self._identity.twitter.lookup_user(user_id=user_id)[0]
 
-        if user_id not in _users:
-            _users[user_id] = User(user_data)
+        if user_data:
+            user_id = user_data["id_str"]
 
-        if _users[user_id].is_stale():
-            Lists.update_user(user=_users[user_id])
+            if user_id not in self._users:
+                self._users[user_id] = User(user_data, self._identity.screen_name)
 
-        return _users[user_id]
+            if self._users[user_id].is_stale():
+                self._identity.lists.update_user(user=self._users[user_id])
+
+            return self._users[user_id]
