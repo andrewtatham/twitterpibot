@@ -48,7 +48,7 @@ class TwitterHelper(object):
                     outbox_item.media_ids = media_ids
 
             outbox_item.display()
-            response = self.identity.twitter.update_status(
+            response = self.twitter.update_status(
                 status=outbox_item.status,
                 in_reply_to_status_id=outbox_item.in_reply_to_status_id,
                 media_ids=outbox_item.media_ids)
@@ -59,10 +59,9 @@ class TwitterHelper(object):
         if type(outbox_item) is OutgoingDirectMessage:
             if not outbox_item.screen_name and not outbox_item.user_id:
                 outbox_item.screen_name = self.identity.admin_screen_name
-                outbox_item.user_id = self.identity.admin_user_id
 
             outbox_item.display()
-            self.identity.twitter.send_direct_message(
+            self.twitter.send_direct_message(
                 text=outbox_item.text,
                 screen_name=outbox_item.screen_name,
                 user_id=outbox_item.user_id)

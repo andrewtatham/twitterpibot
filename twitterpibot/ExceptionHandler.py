@@ -5,7 +5,7 @@ from colorama import Fore, Style, Back
 
 from twython import TwythonError
 
-from twitterpibot.Statistics import record_warning, record_error
+import twitterpibot.Statistics
 
 from twitterpibot.hardware import hardware
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
@@ -34,13 +34,13 @@ def handle(identity, exception):
 def _record_warning(exception):
     print(Style.DIM + Fore.BLACK + Back.YELLOW + str(exception))
     logger.warn(exception)
-    record_warning()
+    twitterpibot.Statistics.record_warning()
 
 
 def _record_error(identity, exception):
     print(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
     logger.exception(exception)
-    record_error()
+    twitterpibot.Statistics.record_error()
     _try_send_exception(identity)
 
 
