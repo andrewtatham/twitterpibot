@@ -4,7 +4,6 @@ from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
 
-
 class BlankTweetScheduledTask(ScheduledTask):
     def get_trigger(self):
         return IntervalTrigger(hours=35)

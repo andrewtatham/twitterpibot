@@ -15,6 +15,8 @@ def _run_wrapper(task):
 
 
 def start():
+    for job in _scheduled_jobs:
+        add(job)
     _scheduler.start()
 
 
@@ -34,9 +36,6 @@ def add(scheduled_job):
 
 _scheduler = BackgroundScheduler()
 _scheduled_jobs = []
-
-for job in _scheduled_jobs:
-    add(job)
 
 
 def set_scheduled_jobs(scheduled_jobs):

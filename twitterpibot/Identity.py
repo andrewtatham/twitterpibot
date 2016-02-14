@@ -23,6 +23,8 @@ from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirat
 from twitterpibot.schedule.UserListsScheduledTask import UserListsScheduledTask
 from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
 from twitterpibot.schedule.ZenOfPythonScheduledTask import ZenOfPythonScheduledTask
+from twitterpibot.schedule.BlankTweetScheduledTask import BlankTweetScheduledTask
+from twitterpibot.schedule.WikipediaScheduledTask import WikipediaScheduledTask
 from twitterpibot.tasks.FadeTask import FadeTask
 from twitterpibot.tasks.LightsTask import LightsTask
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
@@ -32,7 +34,6 @@ from twitterpibot.users.Users import Users
 
 
 def get_scheduled_jobs(identity, is_andrewtathampi=False, is_andrewtathampi2=False):
-    from twitterpibot.schedule.WikipediaScheduledTask import WikipediaScheduledTask
     scheduledjobs = [
         MonitorScheduledTask(identity),
         #  SuggestedUsersScheduledTask(identity),
@@ -49,7 +50,8 @@ def get_scheduled_jobs(identity, is_andrewtathampi=False, is_andrewtathampi2=Fal
         SongScheduledTask(identity),
         # HappyBirthdayScheduledTask(identity),
         ConversationScheduledTask(identity),
-        ZenOfPythonScheduledTask(identity)
+        ZenOfPythonScheduledTask(identity),
+        BlankTweetScheduledTask(identity)
     ]
 
     # if is_andrewtathampi:
