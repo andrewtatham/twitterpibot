@@ -1,4 +1,3 @@
-
 from twitterpibot.incoming.InboxTextItem import InboxTextItem
 from twitterpibot.logic import english
 from twitterpibot.twitter.topics import Topics
@@ -32,13 +31,14 @@ class IncomingTweet(InboxTextItem):
         # https://dev.twitter.com/overview/api/tweets
 
         super(IncomingTweet, self).__init__()
-
+        self.identity_screen_name = identity.screen_name
         self.is_tweet = True
         self.status_id = data.get("id_str")
         self.sender = identity.users.get_user(user_data=data.get("user"))
         self.from_me = self.sender and self.sender.isMe
         self.favorited = bool(data.get("favorited"))
         self.retweeted = bool(data.get("retweeted"))
+        self.in_reply_to_status_id_str = data.get("in_reply_to_status_id_str")
 
         self.source = data.get('tweet_source')
         self.sourceIsTrend = self.source and 'trend' in self.source
@@ -105,7 +105,7 @@ class IncomingTweet(InboxTextItem):
                 colour = next(streamcolours)
         else:
             colour = next(tweetcolours)
-            text += "[user] "
+            text += "[" + self.identity_screen_name + "] "
 
         text += self.sender.name + ' [@' + self.sender.screen_name + '] ' \
                 + self.text.replace('\n', ' ')

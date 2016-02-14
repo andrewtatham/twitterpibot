@@ -1,7 +1,6 @@
 from apscheduler.triggers.interval import IntervalTrigger
 
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
-import twitterpibot.MyQueues as MyQueues
 
 
 class SavedSearchScheduledTask(ScheduledTask):
@@ -22,4 +21,3 @@ class SavedSearchScheduledTask(ScheduledTask):
             search_tweets = self.identity.twitter.search(search)
             for search_tweet in search_tweets:
                 search_tweet['tweet_source'] = "search:" + search
-                MyQueues.inbox.put(search_tweet)

@@ -175,7 +175,7 @@ class TimelapseUploadScheduledTask(ScheduledTask):
                 or (self.timelapse.targetExtension == "mp4" and file_size > (15 * 1024 * 1024)):
             raise Exception("File size {0} MB is too big ".format(file_size / (1024 * 1024)))
         logger.info("[Timelapse]" + self.timelapse.name + " Sending")
-        send(self.timelapse.identity, OutgoingTweet(
+        self.timelapse.identity.send(OutgoingTweet(
             text=self.timelapse.tweetText,
             file_paths=[filename]))
 

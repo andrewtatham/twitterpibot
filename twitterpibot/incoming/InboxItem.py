@@ -9,6 +9,7 @@ class InboxItem(object):
         self.is_event = False
         self.is_retweet_of_my_status = False
         self.words = None
+        self.in_reply_to_status_id_str = None
 
     def display(self):
         pass

@@ -2,6 +2,7 @@ import abc
 
 from twitterpibot.hardware import hardware
 # from twitterpibot.responses.BotBlockerResponse import BotBlockerResponse
+from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
 from twitterpibot.responses.ConversationResponse import ConversationResponse
 from twitterpibot.responses.FatherTedResponse import FatherTedResponse
 from twitterpibot.responses.FavoriteResponse import FavoriteResponse
@@ -241,7 +242,37 @@ class numberwang_host(Identity):
         super(numberwang_host, self).init()
 
     def get_tasks(self):
-        return [StreamTweetsTask(self)]
+        return []
+
+    def get_scheduled_jobs(self):
+        return [NumberwangHostScheduledTask(self)]
+
+    def get_responses(self):
+        return []
+
+class JulieNumberwang(Identity):
+    def init(self):
+        self.admin_screen_name = "andrewtatham"
+        self.screen_name = "JulieNumberwang"
+        super(JulieNumberwang, self).init()
+
+    def get_tasks(self):
+        return []
+
+    def get_scheduled_jobs(self):
+        return []
+
+    def get_responses(self):
+        return []
+
+class SimonNumberwang(Identity):
+    def init(self):
+        self.admin_screen_name = "andrewtatham"
+        self.screen_name = "SimonNumberwang"
+        super(SimonNumberwang, self).init()
+
+    def get_tasks(self):
+        return []
 
     def get_scheduled_jobs(self):
         return []

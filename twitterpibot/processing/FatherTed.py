@@ -74,7 +74,7 @@ responses = [
     "I came here to drink milk and kick ass... and I've just finished my milk.",
 
     # Anchorman
-    "I'm very important. I have many leather-bound books and my apartment smells of rich mahogany."
+    "I'm very important. I have many leather-bound books and my apartment smells of rich mahogany.",
     "I immediately regret this decision.",
     "Baxter, is that you? Baxter! Bark twice if you're in Milwaukee.",
     "I would like to extend to you an invitation to the pants party.",

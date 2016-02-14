@@ -86,9 +86,9 @@ def _block_user(identity, user, reasons, text1, text2):
         txt += os.linesep + text2
 
     logger.warn(txt)
-    TwitterHelper.send(identity, OutgoingDirectMessage(text=txt))
-    Lists.add_user(list_name="Blocked Users", user_id=user.id, screen_name=user.screen_name)
-    TwitterHelper.block_user(identity, user.id, user.screen_name)
+    identity.twitter.send(OutgoingDirectMessage(text=txt))
+    identity.lists.add_user(list_name="Blocked Users", user_id=user.id, screen_name=user.screen_name)
+    identity.twitter.block_user(identity, user.id, user.screen_name)
 
 
 def check_user(identity, user):

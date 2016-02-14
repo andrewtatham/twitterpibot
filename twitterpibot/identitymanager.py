@@ -14,14 +14,21 @@ def init():
     elif hardware.is_raspberry_pi_2:
         identities.extend([
             twitterpibot.Identity.andrewtatham(),
-            twitterpibot.Identity.andrewtathampi2(),
-            twitterpibot.Identity.numberwang_host()])
-    else:
-        identities.extend([
             twitterpibot.Identity.andrewtathampi(),
             twitterpibot.Identity.andrewtathampi2(),
-            twitterpibot.Identity.andrewtatham(),
-            twitterpibot.Identity.numberwang_host()
+            twitterpibot.Identity.numberwang_host(),
+            twitterpibot.Identity.JulieNumberwang(),
+            twitterpibot.Identity.SimonNumberwang()
+        ])
+    else:
+        identities.extend([
+            # twitterpibot.Identity.andrewtatham(),
+            # twitterpibot.Identity.andrewtathampi(),
+            # twitterpibot.Identity.andrewtathampi2(),
+            twitterpibot.Identity.numberwang_host(),
+            twitterpibot.Identity.JulieNumberwang(),
+            twitterpibot.Identity.SimonNumberwang(),
+
         ])
 
     for identity in identities:

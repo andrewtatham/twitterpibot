@@ -21,6 +21,6 @@ class TestBotBlocker(TestCase):
             # 'Monkey patch' function to get users tweets
             BotBlocker.get_tweets = lambda identity, user: testcase[1]
 
-            block, reasons = _is_user_bot(None, User(testcase[0]))
+            block, reasons = _is_user_bot(None, User(testcase[0], None))
 
             self.assertEqual(block, testcase[2])

@@ -1,5 +1,14 @@
 from itertools import cycle
 import random
+import threading
+import logging
+from apscheduler.triggers.interval import IntervalTrigger
+
+import six
+
+import twitterpibot.Identity
+from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
 ep1 = "https://youtu.be/qjOZtWZ56lc"
 ep2 = "https://youtu.be/zJDu5D_IXbc"
@@ -10,124 +19,183 @@ numberwang_meeting = "https://youtu.be/oVItKzP6IBY"
 wordwang = "https://youtu.be/gCHktd1VrGY"
 numberwang_live = "https://youtu.be/gq3wWpGJymM"
 
+contestant_locations = [
+    "Somerset",
+    "Berkshire",
+    "Buckinghamshire",
+    "Essex",
+    "Hertfordshire",
+    "Kent",
+    "Surrey",
+    "Sussex",
+    "Bedfordshire",
+    "Cambridgeshire",
+    "Hampshire",
+    "Oxfordshire",
+    ["Northampton", "Southampton"],
+    ["Durham", "Space"]
+]
+
+questions = ["Any funny stories?", "Any hobbies?", "Any pets?", "Ever killed a man?"]
+contestant_replies = ["Yes", "No"]
+host_replies = [
+    "Good",
+    "Great",
+    "Right",
+    "Splendid",
+    "Marvellous",
+    "Fantastic"]
+logger = logging.getLogger(__name__)
+
+event = threading.Event()
+host_waiting_on_response_to_id = None
+response_id = None
 
 
+class NumberwangHostScheduledTask(ScheduledTask):
+    def __init__(self, identity):
+        ScheduledTask.__init__(self, identity)
 
+    def get_trigger(self):
+        return IntervalTrigger(minutes=35)
 
+    def on_run(self):
+        contestants = random.choice([
+            [twitterpibot.Identity.JulieNumberwang(), twitterpibot.Identity.SimonNumberwang()],
+            [twitterpibot.Identity.JulieNumberwang(), twitterpibot.Identity.SimonNumberwang()],
+            [twitterpibot.Identity.JulieNumberwang(), twitterpibot.Identity.SimonNumberwang()],
+            [twitterpibot.Identity.andrewtatham(), twitterpibot.Identity.JulieNumberwang()],
+            [twitterpibot.Identity.andrewtatham(), twitterpibot.Identity.SimonNumberwang()],
+            [twitterpibot.Identity.andrewtathampi(), twitterpibot.Identity.andrewtathampi2()]
+        ])
 
-def numberwang(prev_answers):
-    if prev_answers:
-        r = random.randint(0, 9)
-        c = len(prev_answers)
+        for c in contestants:
+            c.init()
 
-        # same-number-loop
-        if c >= 2 and prev_answers[c - 2] == prev_answers[c - 1]:
-            if random.randint(0, 9) == 0:
-                # end the same-number-loop
-                return random.randint(1, 10)
-            else:
-                # continue the same-number-loop
-                return prev_answers[c - 1]
-        elif c >= 1 and r == 0:
-            # start a same-number-loop
-            return prev_answers[c - 1]
-        elif r == 1:
-            # decimal
-            return round(random.uniform(-10, 10), 1)
-        elif r == 2:
-            # negative
-            return random.randint(-10, -1)
-        elif r == 3:
-            # large
-            return random.randint(100, 10000)
+        self.play_numberwang(contestants)
+
+    def play_numberwang(self, contestants):
+        intro = [
+            # "Now you can play the maths quiz that simply everyone is talking about!",
+            # "Hello! Welcome to the maths quiz that's simply everyone.",
+            "Hello! Welcome to Numberwang. Today is a very exciting edition, because its our "
+            + str(random.randint(9000, 9999)) + "th programme."]
+        self.identity.twitter.send(OutgoingTweet(text=random.choice(intro)))
+
+        location = random.choice(contestant_locations)
+        if isinstance(location, six.string_types):
+            locations = None
         else:
-            return random.randint(1, 10)
-    else:
-        return random.randint(1, 10)
+            locations = cycle(location)
+            location = None
+        random.shuffle(contestants)
+        intro2 = "Our contestants today are "
+        first = True
+        for contestant in contestants:
+            if not first:
+                intro2 += " and "
+            intro2 += "@" + contestant.screen_name
+            if locations:
+                location = next(locations)
+                if first:
+                    intro2 += " who is from " + location
+                else:
+                    intro2 += " who is also from " + location
+            elif location:
+                intro2 += " who is from " + location
+            first = False
+        self.identity.twitter.send(OutgoingTweet(text=intro2))
 
+        question = random.choice(questions)
+        random.shuffle(contestant_replies)
+        replies = cycle(contestant_replies)
 
-def play_numberwang_round(contestants, round_type):
-    c = cycle(contestants)
-    prev_answers = []
-    for n in range(random.randint(1, 10)):
+        for contestant in contestants:
+            q = ".@" + contestant.screen_name + " " + question
+            reply_to_id = self.identity.twitter.send(OutgoingTweet(text=q))
+            reply_to_id = contestant.twitter.send(OutgoingTweet(text=next(replies), in_reply_to_status_id=reply_to_id))
+            self.identity.twitter.send(
+                OutgoingTweet(text=random.choice(host_replies), in_reply_to_status_id=reply_to_id))
+
+        for r in range(random.randint(2, 5)):
+            self.play_numberwang_round(contestants, "Numberwang")
+
+            # TODO maths board, imaginary numbers, numberbounce, all same digits (4, 44, 444, 4.444)
+
+        self.identity.twitter.send(OutgoingTweet(text="Everything hinges on this final round!"))
+        self.identity.twitter.send(OutgoingTweet(text="Let's rotate the board!"))
+        self.play_numberwang_round(contestants, "Wangernumb")
+        self.identity.twitter.send(
+            OutgoingTweet(text="That's all from Numberwang! Until tomorrows edition: Stay Numberwang!"))
+
+    def play_numberwang_round(self, contestants, round_type):
+        round_start = "Let's play " + round_type + "!" * random.randint(1, 15)
+        self.identity.twitter.send(OutgoingTweet(text=round_start))
+        answers = []
+        random.shuffle(contestants)
+        c = cycle(contestants)
         contestant = next(c)
 
-        answer = numberwang(prev_answers)
-        print(contestant + ": " + str(answer))
-        prev_answers.append(answer)
-        if random.randint(0, 49) == 0:
-            print ("[KLAXON] Thats the " + round_type + " bonus. Triple " + round_type + " to " + contestant + "!")
-            break
+        turn_prompt = ".@" + contestant.screen_name + " it's your turn" + "." * random.randint(3, 7)
+        reply_to_id = self.identity.twitter.send(OutgoingTweet(text=turn_prompt))
 
-    print("That's " + round_type + "!")
-    if round_type == "Numberwang":
-        for c in contestants:
-            print(c + " you are " + random.choice(["ahead", "behind"]) + " with " + str(random.randint(-10, 100)))
-    elif round_type == "Wanganum":
-        random.shuffle(contestants)
-        winner = contestants[len(contestants) - 1]
-        for c in contestants:
-            if c == winner:
-                print(c + " you are todays Numberwang!")
+        for n in range(random.randint(1, 10)):
+            answer = self.numberwang(answers)
+            reply_to_id = contestant.twitter.send(OutgoingTweet(text=str(answer), in_reply_to_status_id=reply_to_id))
+            answers.append(answer)
+
+            if random.randint(0, 49) == 0:
+                bonus = "[KLAXON] Thats the " + round_type + " bonus. " + \
+                        "Triple " + round_type + " to @" + contestant.screen_name + "!"
+                reply_to_id = self.identity.twitter.send(OutgoingTweet(text=bonus, in_reply_to_status_id=reply_to_id))
+                break
+            contestant = next(c)
+        thats_numberwang = "That's " + round_type + "!" * random.randint(1, 15)
+        self.identity.twitter.send(OutgoingTweet(text=thats_numberwang, in_reply_to_status_id=reply_to_id))
+
+        if round_type == "Numberwang":
+            for c in contestants:
+                score = ".@" + c.screen_name + " you are " + random.choice(["ahead", "behind"]) \
+                        + " with " + str(random.randint(-10, 100))
+                self.identity.twitter.send(OutgoingTweet(text=score))
+        elif round_type == "Wangernumb":
+            random.shuffle(contestants)
+            winner = contestants[len(contestants) - 1]
+            for c in contestants:
+                if c == winner:
+                    winner = ".@" + c.screen_name + " you are todays Numberwang!"
+                    self.identity.twitter.send(OutgoingTweet(text=winner))
+                else:
+                    loser = "Bad luck @" + c.screen_name + " you've been Wangernumbed!"
+                    self.identity.twitter.send(OutgoingTweet(text=loser))
+
+    @staticmethod
+    def numberwang(prev_answers):
+        if prev_answers:
+            r = random.randint(0, 9)
+            c = len(prev_answers)
+
+            # same-number-loop
+            if c >= 2 and prev_answers[c - 2] == prev_answers[c - 1]:
+                if random.randint(0, 9) == 0:
+                    # end the same-number-loop
+                    return random.randint(1, 10)
+                else:
+                    # continue the same-number-loop
+                    return prev_answers[c - 1]
+            elif c >= 1 and r == 0:
+                # start a same-number-loop
+                return prev_answers[c - 1]
+            elif r == 1:
+                # decimal
+                return round(random.uniform(-10, 10), 1)
+            elif r == 2:
+                # negative
+                return random.randint(-10, -1)
+            elif r == 3:
+                # large
+                return random.randint(100, 10000)
             else:
-                print("Bad luck " + c + " you've been Wanganumed!")
-
-
-def play_numberwang(contestants):
-    intro = "Now you can play the maths quiz that simply everyone is talking about!"
-    print(intro)
-
-    contestant_locations = [
-        "Somerset",
-        ["Northampton", "Southampton"]
-    ]
-
-    location = random.choice(contestant_locations)
-    if isinstance(location, basestring):
-        locations = None
-    else:
-        locations = cycle(location)
-        location = None
-
-    intro2 = "Our contestants today are "
-    first = True
-    for contestant in contestants:
-        if not first:
-            intro2 += " and "
-        intro2 += contestant
-        if locations:
-            location = next(locations)
-            if first:
-                intro2 += " who is from " + location
-            else:
-                intro2 += " who is also from " + location
-        elif location:
-            intro2 += " who is from " + location
-        first = False
-    print(intro2)
-
-    question = random.choice(["Any funny stories?", "Any hobbies?", "Any pets?", "Ever killed a man?"])
-    contestant_replies = ["Yes", "No"]
-    random.shuffle(contestant_replies)
-    contestant_replies = cycle(contestant_replies)
-    for contestant in contestants:
-        print (contestant + " " + question)
-        print (contestant + ": " + next(contestant_replies))
-        print (random.choice(["Good", "Great", "Right"]))
-
-    print ("Let's play Numberwang!")
-
-    for round in range(random.randint(2,5)):
-        play_numberwang_round(contestants, "Numberwang")
-
-    # TODO maths board, imaginary numbers, numberbounce, all same digits (4, 44, 444, 4.444)
-
-    print ("Everthing hinges on this final round. Yes its time for Wanganum.")
-    print ("Let's rotate the board!")
-    play_numberwang_round(contestants, "Wanganum")
-    print("That's all from Numberwang! Until tommorrows edition: Stay Numberwang!")
-
-
-contestants_list = ["@andrewtathampi", "@andrewtathampi2"]
-
-play_numberwang(contestants_list)
+                return random.randint(1, 10)
+        else:
+            return random.randint(1, 10)
