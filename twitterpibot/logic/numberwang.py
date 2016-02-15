@@ -2,8 +2,8 @@ from itertools import cycle
 import random
 import threading
 import logging
-from apscheduler.triggers.interval import IntervalTrigger
 
+from apscheduler.triggers.interval import IntervalTrigger
 import six
 
 import twitterpibot.Identity
@@ -57,7 +57,7 @@ class NumberwangHostScheduledTask(ScheduledTask):
         ScheduledTask.__init__(self, identity)
 
     def get_trigger(self):
-        return IntervalTrigger(minutes=35)
+        return IntervalTrigger(hours=13)
 
     def on_run(self):
         contestants = random.choice([
