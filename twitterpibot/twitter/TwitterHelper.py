@@ -208,3 +208,6 @@ class TwitterHelper(object):
 
     def get_list_members(self, list_id):
         return self.twitter.get_list_members(list_id=list_id)
+
+    def create_list(self, name, mode):
+        return self.twitter.create_list(name=name, mode=mode)
