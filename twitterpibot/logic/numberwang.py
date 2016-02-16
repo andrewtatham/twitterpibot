@@ -2,8 +2,10 @@ from itertools import cycle
 import random
 import threading
 import logging
+import time
 
 from apscheduler.triggers.interval import IntervalTrigger
+
 import six
 
 import twitterpibot.Identity
@@ -81,7 +83,7 @@ class NumberwangHostScheduledTask(ScheduledTask):
             "Hello! Welcome to Numberwang. Today is a very exciting edition, because its our "
             + str(random.randint(9000, 9999)) + "th programme."]
         self.identity.twitter.send(OutgoingTweet(text=random.choice(intro)))
-
+        time.sleep(5)
         location = random.choice(contestant_locations)
         if isinstance(location, six.string_types):
             locations = None
@@ -105,6 +107,7 @@ class NumberwangHostScheduledTask(ScheduledTask):
                 intro2 += " who is from " + location
             first = False
         self.identity.twitter.send(OutgoingTweet(text=intro2))
+        time.sleep(5)
 
         question = random.choice(questions)
         random.shuffle(contestant_replies)
@@ -113,9 +116,14 @@ class NumberwangHostScheduledTask(ScheduledTask):
         for contestant in contestants:
             q = ".@" + contestant.screen_name + " " + question
             reply_to_id = self.identity.twitter.send(OutgoingTweet(text=q))
-            reply_to_id = contestant.twitter.send(OutgoingTweet(text=next(replies), in_reply_to_status_id=reply_to_id))
-            self.identity.twitter.send(
-                OutgoingTweet(text=random.choice(host_replies), in_reply_to_status_id=reply_to_id))
+            time.sleep(1)
+            reply_to_id = contestant.twitter.send(OutgoingTweet(
+                text=next(replies), in_reply_to_status_id=reply_to_id))
+            time.sleep(1)
+            self.identity.twitter.send(OutgoingTweet(
+                text=random.choice(host_replies),
+                in_reply_to_status_id=reply_to_id))
+            time.sleep(2)
 
         for r in range(random.randint(2, 5)):
             self.play_numberwang_round(contestants, "Numberwang")
@@ -123,7 +131,9 @@ class NumberwangHostScheduledTask(ScheduledTask):
             # TODO maths board, imaginary numbers, numberbounce, all same digits (4, 44, 444, 4.444)
 
         self.identity.twitter.send(OutgoingTweet(text="Everything hinges on this final round!"))
+        time.sleep(5)
         self.identity.twitter.send(OutgoingTweet(text="Let's rotate the board!"))
+        time.sleep(5)
         self.play_numberwang_round(contestants, "Wangernumb")
         self.identity.twitter.send(
             OutgoingTweet(text="That's all from Numberwang! Until tomorrows edition: Stay Numberwang!"))
@@ -131,6 +141,7 @@ class NumberwangHostScheduledTask(ScheduledTask):
     def play_numberwang_round(self, contestants, round_type):
         round_start = "Let's play " + round_type + "!" * random.randint(1, 15)
         self.identity.twitter.send(OutgoingTweet(text=round_start))
+        time.sleep(5)
         answers = []
         random.shuffle(contestants)
         c = cycle(contestants)
@@ -138,21 +149,23 @@ class NumberwangHostScheduledTask(ScheduledTask):
 
         turn_prompt = ".@" + contestant.screen_name + " it's your turn" + "." * random.randint(3, 7)
         reply_to_id = self.identity.twitter.send(OutgoingTweet(text=turn_prompt))
-
+        time.sleep(1)
         for n in range(random.randint(1, 10)):
             answer = self.numberwang(answers)
             reply_to_id = contestant.twitter.send(OutgoingTweet(text=str(answer), in_reply_to_status_id=reply_to_id))
+            time.sleep(1)
             answers.append(answer)
 
             if random.randint(0, 49) == 0:
                 bonus = "[KLAXON] Thats the " + round_type + " bonus. " + \
                         "Triple " + round_type + " to @" + contestant.screen_name + "!"
                 reply_to_id = self.identity.twitter.send(OutgoingTweet(text=bonus, in_reply_to_status_id=reply_to_id))
+                time.sleep(1)
                 break
             contestant = next(c)
         thats_numberwang = "That's " + round_type + "!" * random.randint(1, 15)
         self.identity.twitter.send(OutgoingTweet(text=thats_numberwang, in_reply_to_status_id=reply_to_id))
-
+        time.sleep(2)
         if round_type == "Numberwang":
             for c in contestants:
                 score = ".@" + c.screen_name + " you are " + random.choice(["ahead", "behind"]) \
@@ -168,6 +181,8 @@ class NumberwangHostScheduledTask(ScheduledTask):
                 else:
                     loser = "Bad luck @" + c.screen_name + " you've been Wangernumbed!"
                     self.identity.twitter.send(OutgoingTweet(text=loser))
+        time.sleep(5)
+
 
     @staticmethod
     def numberwang(prev_answers):
