@@ -1,11 +1,18 @@
 import logging
 import shutil
-import six
-
-
 import os
+import sys
 
+import six
 import requests
+
+try:
+    # noinspection PyUnresolvedReferences,PyShadowingBuiltins
+    input = raw_input
+except NameError:
+    pass
+
+import pickle
 
 logger = logging.getLogger(__name__)
 
@@ -73,3 +80,16 @@ def bytes_from_file(file_path, chunk_size):
                 yield chunk
             else:
                 break
+
+
+def get_key(key_name):
+    keys_dir = "temp" + os.sep + "keys" + os.sep + str(sys.version_info[0]) + os.sep
+    ensure_directory_exists(keys_dir)
+    key_path = keys_dir + key_name + ".pkl"
+    exists = os.path.isfile(key_path)
+    if exists:
+        key = pickle.load(open(key_path, "rb"))
+    else:
+        key = input("Enter your key for " + key_name + ": ")
+        pickle.dump(key, open(key_path, "wb"))
+    return key
