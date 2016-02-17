@@ -16,7 +16,7 @@ def cap(s, l):
 
 
 logger = logging.getLogger(__name__)
-folder = "temp" + os.sep + "wikipedia" + os.sep
+folder = FileSystemHelper.root + "temp" + os.sep + "wikipedia" + os.sep
 
 FileSystemHelper.ensure_directory_exists(folder)
 

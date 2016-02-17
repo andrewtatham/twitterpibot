@@ -28,7 +28,7 @@ class TwitterHelper(object):
             self.identity.tokens[1],
             self.identity.tokens[2],
             self.identity.tokens[3])
-        self.identity.twid = self.twitter.lookup_user(screen_name=identity.screen_name)[0]["id_str"]
+        # self.identity.twid = self.twitter.lookup_user(screen_name=identity.screen_name)[0]["id_str"]
 
     def send(self, outbox_item):
         if type(outbox_item) is OutgoingTweet:

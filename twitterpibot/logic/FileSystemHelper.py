@@ -93,3 +93,13 @@ def get_key(key_name):
         key = input("Enter your key for " + key_name + ": ")
         pickle.dump(key, open(key_path, "wb"))
     return key
+
+
+def get_root():
+    path = ""
+    while not os.path.exists(path + "Main.py"):
+        path += "../"
+    return path
+
+
+root = get_root()

@@ -6,7 +6,7 @@ import giphypop
 from twitterpibot.logic import FileSystemHelper
 
 logger = logging.getLogger(__name__)
-folder = "temp" + os.sep + "gif" + os.sep
+folder = FileSystemHelper.root + "temp" + os.sep + "gif" + os.sep
 FileSystemHelper.ensure_directory_exists(folder)
 g = giphypop.Giphy()
 

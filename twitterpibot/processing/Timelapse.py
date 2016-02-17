@@ -23,7 +23,7 @@ class Timelapse(object):
         self.identity = identity
         self.name = name
         self.imageExtension = 'jpg'
-        self.folderName = "temp" + os.path.sep + 'timelapse' + os.path.sep + self.name
+        self.folderName = FileSystemHelper.root + "temp" + os.path.sep + 'timelapse' + os.path.sep + self.name
         self.dirPath = os.path.abspath(self.folderName)
         self.startTime = start_time
         self.endTime = end_time

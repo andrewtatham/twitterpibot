@@ -1,4 +1,3 @@
-import pprint
 import logging
 
 from wordnik import swagger, WordApi, WordsApi
@@ -21,4 +20,3 @@ for word in random_words:
     print(" definitons:")
     for definition in definitions:
         print("  " + definition.text)
-

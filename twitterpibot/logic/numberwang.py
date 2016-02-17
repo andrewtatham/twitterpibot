@@ -8,7 +8,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 
 import six
 
-import twitterpibot.Identity
+import twitterpibot.identities
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
@@ -63,16 +63,13 @@ class NumberwangHostScheduledTask(ScheduledTask):
 
     def on_run(self):
         contestants = random.choice([
-            [twitterpibot.Identity.JulieNumberwang(), twitterpibot.Identity.SimonNumberwang()],
-            [twitterpibot.Identity.JulieNumberwang(), twitterpibot.Identity.SimonNumberwang()],
-            [twitterpibot.Identity.JulieNumberwang(), twitterpibot.Identity.SimonNumberwang()],
-            [twitterpibot.Identity.andrewtatham(), twitterpibot.Identity.JulieNumberwang()],
-            [twitterpibot.Identity.andrewtatham(), twitterpibot.Identity.SimonNumberwang()],
-            [twitterpibot.Identity.andrewtathampi(), twitterpibot.Identity.andrewtathampi2()]
+            [twitterpibot.identities.ids["JulieNumberwang"], twitterpibot.identities.ids["SimonNumberwang"]],
+            [twitterpibot.identities.ids["JulieNumberwang"], twitterpibot.identities.ids["SimonNumberwang"]],
+            [twitterpibot.identities.ids["JulieNumberwang"], twitterpibot.identities.ids["SimonNumberwang"]],
+            [twitterpibot.identities.ids["andrewtatham"], twitterpibot.identities.ids["JulieNumberwang"]],
+            [twitterpibot.identities.ids["andrewtatham"], twitterpibot.identities.ids["SimonNumberwang"]],
+            [twitterpibot.identities.ids["andrewtathampi"], twitterpibot.identities.ids["andrewtathampi2"]]
         ])
-
-        for c in contestants:
-            c.init()
 
         self.play_numberwang(contestants)
 
@@ -182,7 +179,6 @@ class NumberwangHostScheduledTask(ScheduledTask):
                     loser = "Bad luck @" + c.screen_name + " you've been Wangernumbed!"
                     self.identity.twitter.send(OutgoingTweet(text=loser))
         time.sleep(5)
-
 
     @staticmethod
     def numberwang(prev_answers):

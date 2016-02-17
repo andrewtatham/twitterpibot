@@ -4,6 +4,7 @@ import re
 import textwrap
 import logging
 
+# noinspection PyPackageRequirements
 from PIL import Image, ImageDraw
 
 from twitterpibot.responses.Response import Response

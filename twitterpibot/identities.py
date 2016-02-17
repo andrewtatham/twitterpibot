@@ -1,6 +1,6 @@
 import abc
 
-from twitterpibot.hardware import hardware
+import twitterpibot.hardware.hardware as hardware
 # from twitterpibot.responses.BotBlockerResponse import BotBlockerResponse
 from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
 from twitterpibot.responses.ConversationResponse import ConversationResponse
@@ -21,7 +21,7 @@ from twitterpibot.schedule.MidnightScheduledTask import MidnightScheduledTask
 from twitterpibot.schedule.MonitorScheduledTask import MonitorScheduledTask
 from twitterpibot.schedule.SongScheduledTask import SongScheduledTask
 from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
-from twitterpibot.schedule.UserListsScheduledTask import UserListsScheduledTask
+import twitterpibot.schedule.UserListsScheduledTask
 from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
 from twitterpibot.schedule.ZenOfPythonScheduledTask import ZenOfPythonScheduledTask
 from twitterpibot.schedule.BlankTweetScheduledTask import BlankTweetScheduledTask
@@ -33,12 +33,22 @@ from twitterpibot.twitter import TwitterHelper
 from twitterpibot.users.Lists import Lists
 from twitterpibot.users.Users import Users
 
+default_lists = [
+    "Reply Less",
+    "Arseholes",
+    "Dont Retweet",
+    "Retweet More",
+    "Awesome Bots",
+    "Friends",
+    "Blocked Users"
+]
 
-def get_scheduled_jobs(identity, is_andrewtathampi=False, is_andrewtathampi2=False):
+
+def get_bot_scheduled_jobs(identity, is_andrewtathampi=False, is_andrewtathampi2=False):
     scheduledjobs = [
         MonitorScheduledTask(identity),
         #  SuggestedUsersScheduledTask(identity),
-        UserListsScheduledTask(identity),
+
         # SavedSearchScheduledTask(identity),
         MidnightScheduledTask(identity),
         # BotBlockerScheduledTask(identity),
@@ -87,7 +97,7 @@ def get_scheduled_jobs(identity, is_andrewtathampi=False, is_andrewtathampi2=Fal
     return scheduledjobs
 
 
-def get_responses(identity, is_andrewtathampi=False, is_andrewtathampi2=False):
+def get_bot_responses(identity, is_andrewtathampi=False, is_andrewtathampi2=False):
     responses = [
         RestartResponse(identity),
         # BotBlockerResponse(identity),
@@ -127,18 +137,15 @@ def get_responses(identity, is_andrewtathampi=False, is_andrewtathampi2=False):
 
 
 class Identity(object):
-    def __init__(self):
+    def __init__(self, screen_name):
+        self.screen_name = screen_name
         self.admin_screen_name = None
-        self.screen_name = None
         self.converse_with = None
         self.twitter = None
         self.tokens = None
         self.streamer = None
         self.users = Users(self)
         self.lists = Lists(self, list_names=[])
-
-    @abc.abstractmethod
-    def init(self):
         self.twitter = TwitterHelper.TwitterHelper(self)
 
     @abc.abstractmethod
@@ -155,37 +162,34 @@ class Identity(object):
 
 
 class andrewtatham(Identity):
-    def init(self):
+    def __init__(self):
+        super(andrewtatham, self).__init__("andrewtatham")
         self.admin_screen_name = "andrewtatham"
-        self.screen_name = "andrewtatham"
-        super(andrewtatham, self).init()
+        self.lists = Lists(self, default_lists)
 
     def get_tasks(self):
         return [StreamTweetsTask(self)]
 
     def get_scheduled_jobs(self):
-        return []
+        identities = [
+            ids["andrewtatham"],
+            ids["andrewtathampi"],
+            ids["andrewtathampi2"]
+        ]
+        return [
+            twitterpibot.schedule.UserListsScheduledTask.UserListsScheduledTask(identities, default_lists)
+        ]
 
     def get_responses(self):
         return []
 
 
 class andrewtathampi(Identity):
-    def init(self):
+    def __init__(self):
+        super(andrewtathampi, self).__init__("andrewtathampi")
         self.admin_screen_name = "andrewtatham"
-        self.screen_name = "andrewtathampi"
         self.converse_with = "andrewtathampi2"
-        self.lists = Lists(self, [
-            "Reply Less",
-            "Arseholes",
-            "Dont Retweet",
-            "Retweet More",
-            "Awesome Bots",
-            "Friends",
-            "Blocked Users"
-        ])
-
-        super(andrewtathampi, self).init()
+        self.lists = Lists(self, default_lists)
 
     def get_tasks(self):
         tasks = [StreamTweetsTask(self)]
@@ -197,27 +201,18 @@ class andrewtathampi(Identity):
         return tasks
 
     def get_scheduled_jobs(self):
-        return get_scheduled_jobs(self, is_andrewtathampi=True)
+        return get_bot_scheduled_jobs(self, is_andrewtathampi=True)
 
     def get_responses(self):
-        return get_responses(self, is_andrewtathampi=True)
+        return get_bot_responses(self, is_andrewtathampi=True)
 
 
 class andrewtathampi2(Identity):
-    def init(self):
+    def __init__(self):
+        super(andrewtathampi2, self).__init__("andrewtathampi2")
         self.admin_screen_name = "andrewtatham"
-        self.screen_name = "andrewtathampi2"
         self.converse_with = "andrewtathampi"
-        self.lists = Lists(self, [
-            "Reply Less",
-            "Arseholes",
-            "Dont Retweet",
-            "Retweet More",
-            "Awesome Bots",
-            "Friends",
-            "Blocked Users"
-        ])
-        super(andrewtathampi2, self).init()
+        self.lists = Lists(self, default_lists)
 
     def get_tasks(self):
         tasks = [StreamTweetsTask(self)]
@@ -229,17 +224,16 @@ class andrewtathampi2(Identity):
         return tasks
 
     def get_scheduled_jobs(self):
-        return get_scheduled_jobs(self, is_andrewtathampi2=True)
+        return get_bot_scheduled_jobs(self, is_andrewtathampi2=True)
 
     def get_responses(self):
-        return get_responses(self, is_andrewtathampi2=True)
+        return get_bot_responses(self, is_andrewtathampi2=True)
 
 
 class numberwang_host(Identity):
-    def init(self):
+    def __init__(self):
+        super(numberwang_host, self).__init__("numberwang_host")
         self.admin_screen_name = "andrewtatham"
-        self.screen_name = "numberwang_host"
-        super(numberwang_host, self).init()
 
     def get_tasks(self):
         return []
@@ -250,11 +244,11 @@ class numberwang_host(Identity):
     def get_responses(self):
         return []
 
+
 class JulieNumberwang(Identity):
-    def init(self):
+    def __init__(self):
+        super(JulieNumberwang, self).__init__("JulieNumberwang")
         self.admin_screen_name = "andrewtatham"
-        self.screen_name = "JulieNumberwang"
-        super(JulieNumberwang, self).init()
 
     def get_tasks(self):
         return []
@@ -264,12 +258,12 @@ class JulieNumberwang(Identity):
 
     def get_responses(self):
         return []
+
 
 class SimonNumberwang(Identity):
-    def init(self):
+    def __init__(self):
+        super(SimonNumberwang, self).__init__("SimonNumberwang")
         self.admin_screen_name = "andrewtatham"
-        self.screen_name = "SimonNumberwang"
-        super(SimonNumberwang, self).init()
 
     def get_tasks(self):
         return []
@@ -279,3 +273,38 @@ class SimonNumberwang(Identity):
 
     def get_responses(self):
         return []
+
+
+ids = {}
+if hardware.is_raspberry_pi:
+    ids["andrewtathampi"] = andrewtathampi(),
+elif hardware.is_raspberry_pi_2:
+
+    ids["andrewtatham"] = andrewtatham()
+    ids["andrewtathampi"] = andrewtathampi()
+    ids["andrewtathampi2"] = andrewtathampi2()
+    ids["numberwang_host"] = numberwang_host()
+    ids["JulieNumberwang"] = JulieNumberwang()
+    ids["SimonNumberwang"] = SimonNumberwang()
+
+else:
+    ids["andrewtatham"] = andrewtatham()
+    ids["andrewtathampi"] = andrewtathampi()
+    ids["andrewtathampi2"] = andrewtathampi2()
+    ids["numberwang_host"] = numberwang_host()
+    ids["JulieNumberwang"] = JulieNumberwang()
+    ids["SimonNumberwang"] = SimonNumberwang()
+
+
+def get_all_tasks():
+    tasks = []
+    for key, identity in ids.items():
+        tasks.extend(identity.get_tasks())
+    return tasks
+
+
+def get_all_scheduled_jobs():
+    scheduled_jobs = []
+    for key, identity in ids.items():
+        scheduled_jobs.extend(identity.get_scheduled_jobs())
+    return scheduled_jobs
