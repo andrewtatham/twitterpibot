@@ -1,5 +1,6 @@
 import sys
 import logging
+import webbrowser
 
 import colorama
 
@@ -8,7 +9,9 @@ import twitterpibot.hardware.hardware as hardware
 import twitterpibot.identities
 import twitterpibot.tasks.Tasks as Tasks
 import twitterpibot.schedule.MySchedule as MySchedule
-import twitterpibot.MyUI as MyUI
+
+# import twitterpibot.MyUI as MyUI
+import twitterpibot.ui.MyWebUI
 
 MyLogging.init()
 logger = logging.getLogger(__name__)
@@ -26,7 +29,9 @@ MySchedule.set_scheduled_jobs(jobs)
 Tasks.start()
 MySchedule.start()
 
-MyUI.start()
+# MyUI.start()
+twitterpibot.ui.MyWebUI.start()
+
 
 MySchedule.stop()
 Tasks.stop()

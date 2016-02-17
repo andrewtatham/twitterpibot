@@ -1,0 +1,22 @@
+<html>
+<head>
+    <link rel="stylesheet" href='/static/styles.css'/>
+    <script type="text/javascript" src="/static/angular.min.js"></script>
+    <script type="text/javascript" src="/static/app.js"></script>
+</head>
+<body>
+<div ng-app="">
+    <h1>Hello from a template!</h1>
+
+    <p>Name: <input type="text" ng-model="name"></p>
+
+    <p ng-bind="name"></p>
+
+
+    <a href="/">index</a>
+    <a href="/identity">identity</a>
+    <br>
+    <a href="/shutdown">shutdown</a>
+</div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-from twitterpibot import MyUI
+from twitterpibot.ui import MyUI
 
 from twitterpibot.responses.Response import Response
 
