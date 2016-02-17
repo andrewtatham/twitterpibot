@@ -7,6 +7,8 @@ from twitterpibot.tasks.Task import Task
 
 
 class ScheduledTask(Task):
+    def __init__(self, identity):
+        Task.__init__(self, identity)
 
     @abc.abstractmethod
     def get_trigger(self):

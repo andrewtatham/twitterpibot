@@ -63,12 +63,12 @@ class NumberwangHostScheduledTask(ScheduledTask):
 
     def on_run(self):
         contestants = random.choice([
-            [twitterpibot.identities.ids["JulieNumberwang"], twitterpibot.identities.ids["SimonNumberwang"]],
-            [twitterpibot.identities.ids["JulieNumberwang"], twitterpibot.identities.ids["SimonNumberwang"]],
-            [twitterpibot.identities.ids["JulieNumberwang"], twitterpibot.identities.ids["SimonNumberwang"]],
-            [twitterpibot.identities.ids["andrewtatham"], twitterpibot.identities.ids["JulieNumberwang"]],
-            [twitterpibot.identities.ids["andrewtatham"], twitterpibot.identities.ids["SimonNumberwang"]],
-            [twitterpibot.identities.ids["andrewtathampi"], twitterpibot.identities.ids["andrewtathampi2"]]
+            [twitterpibot.identities.julienumberwang, twitterpibot.identities.simonnumberwang],
+            [twitterpibot.identities.julienumberwang, twitterpibot.identities.simonnumberwang],
+            [twitterpibot.identities.julienumberwang, twitterpibot.identities.simonnumberwang],
+            [twitterpibot.identities.andrewtatham, twitterpibot.identities.julienumberwang],
+            [twitterpibot.identities.andrewtatham, twitterpibot.identities.simonnumberwang],
+            [twitterpibot.identities.andrewtathampi, twitterpibot.identities.andrewtathampi2]
         ])
 
         self.play_numberwang(contestants)

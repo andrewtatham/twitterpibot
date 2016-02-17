@@ -1,5 +1,7 @@
 class InboxItem(object):
-    def __init__(self):
+    def __init__(self, data, identity):
+        self.data = data
+        self.identity = identity
         self.sender = None
         self.from_me = False
         self.to_me = False

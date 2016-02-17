@@ -61,15 +61,21 @@ def get_random_page():
 
 logger = logging.getLogger(__name__)
 
-misconceptions = _parse_content_flat(wikipedia.page("List of common misconceptions").content)
-python_facts = _parse_content_flat(wikipedia.page("Python (programming language)").content)
+misconceptions = None
+python_facts = None
 
 
 def get_random_misconception():
+    global misconceptions
+    if not misconceptions:
+        misconceptions = _parse_content_flat(wikipedia.page("List of common misconceptions").content)
     return random.choice(misconceptions)
 
 
 def get_random_python_fact():
+    global python_facts
+    if not python_facts:
+        python_facts = _parse_content_flat(wikipedia.page("Python (programming language)").content)
     return random.choice(python_facts)
 
 

@@ -1,15 +1,15 @@
 import logging
 
-from twitterpibot.incoming.InboxTextItem import InboxTextItem
+from twitterpibot.incoming.InboxItem import InboxItem
 
 logger = logging.getLogger(__name__)
 
 
-class IncomingDirectMessage(InboxTextItem):
+class IncomingDirectMessage(InboxItem):
     # https://dev.twitter.com/streaming/overview/messages-types#Direct_Messages
     # https://dev.twitter.com/rest/reference/get/direct_messages
     def __init__(self, data, identity):
-        super(IncomingDirectMessage, self).__init__()
+        super(IncomingDirectMessage, self).__init__(data, identity)
         self.is_direct_message = "direct_message" in data
 
         dm = data.get("direct_message")

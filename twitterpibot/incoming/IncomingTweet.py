@@ -1,4 +1,4 @@
-from twitterpibot.incoming.InboxTextItem import InboxTextItem
+from twitterpibot.incoming.InboxItem import InboxItem
 from twitterpibot.logic import english
 from twitterpibot.twitter.topics import Topics
 
@@ -26,11 +26,11 @@ searchcolours = cycle([Fore.CYAN, Fore.WHITE])
 streamcolours = cycle([Fore.YELLOW, Fore.WHITE])
 
 
-class IncomingTweet(InboxTextItem):
+class IncomingTweet(InboxItem):
     def __init__(self, data, identity):
         # https://dev.twitter.com/overview/api/tweets
 
-        super(IncomingTweet, self).__init__()
+        super(IncomingTweet, self).__init__(data, identity)
         self.identity_screen_name = identity.screen_name
         self.is_tweet = True
         self.status_id = data.get("id_str")
