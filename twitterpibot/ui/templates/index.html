@@ -6,15 +6,17 @@
 </head>
 <body>
 <div ng-app="myApp" ng-controller="MainCtrl">
-    <h1>Hello from a template!</h1>
-
-    <p>Name: <input type="text" ng-model="name"></p>
-
-    <p ng-bind="name"></p>
-
-
     <a href="/">index</a>
-    <a href="/identity">identity</a>
+
+
+    <div>
+        <ul>
+            <li ng-repeat="identity in identities">
+                <a href="[[identity.url]]">[[identity.screen_name]]</a>
+            </li>
+        </ul>
+    </div>
+    <a href="/status">status</a>
     <br>
     <a href="/shutdown">shutdown</a>
 </div>

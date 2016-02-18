@@ -283,14 +283,24 @@ numberwang_host = NumberwangHostIdentity()
 julienumberwang = JulieNumberwangIdentity()
 simonnumberwang = SimonNumberwangIdentity()
 
-all_identities = [
-    andrewtatham,
-    andrewtathampi,
-    andrewtathampi2,
-    numberwang_host,
-    julienumberwang,
-    simonnumberwang
-]
+if hardware.is_raspberry_pi_2:
+    all_identities = [
+        andrewtatham,
+        andrewtathampi,
+        andrewtathampi2,
+        numberwang_host,
+        julienumberwang,
+        simonnumberwang
+    ]
+else:
+    all_identities = [
+        andrewtatham,
+        # andrewtathampi,
+        # andrewtathampi2,
+        # numberwang_host,
+        # julienumberwang,
+        # simonnumberwang
+    ]
 
 
 def get_all_tasks():

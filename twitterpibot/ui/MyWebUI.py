@@ -1,13 +1,29 @@
 import webbrowser
 
-from flask import Flask, render_template, request
+import flask
 
-app = Flask(__name__)
+from twitterpibot import identities
+
+app = flask.Flask(__name__)
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return flask.render_template('index.html')
+
+
+@app.route('/status')
+@app.route('/status/<screen_name>')
+def status(screen_name=None):
+    retval = [
+        {
+            "screen_name": i.screen_name,
+            "url": "status/" + i.screen_name,
+        } for i in identities.all_identities
+        if screen_name is None or screen_name == i.screen_name
+        ]
+
+    return flask.jsonify(result=retval)
 
 
 @app.route('/shutdown')
@@ -23,7 +39,7 @@ def start():
 
 
 def shutdown_server():
-    func = request.environ.get('werkzeug.server.shutdown')
+    func = flask.request.environ.get('werkzeug.server.shutdown')
     if func is None:
         raise RuntimeError('Not running with the Werkzeug Server')
     func()
