@@ -1,4 +1,5 @@
 import logging
+
 from twitterpibot.tasks.Task import Task
 
 logger = logging.getLogger(__name__)
@@ -11,9 +12,9 @@ class StreamTweetsTask(Task):
         self._streamer = identity.twitter.get_streamer()
 
     def on_run(self):
-        logger.info("starting user stream")
+        logger.info("starting %s stream" % self.identity.screen_name)
         self._streamer.user()
 
     def on_stop(self):
-        logger.info("stopping user stream")
+        logger.info("disconnecting %s stream" % self.identity.screen_name)
         self._streamer.disconnect()

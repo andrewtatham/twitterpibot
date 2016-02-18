@@ -18,10 +18,10 @@ class HiveMindResponse(Response):
 
             if inbox_item.is_favorite:
                 for identity in self.identity.slave_identities:
-                    funcs.append(lambda: identity.twitter.create_favorite(id=inbox_item.targetObjectID))
+                    funcs.append(lambda i=identity: i.twitter.create_favorite(id=inbox_item.targetObjectID))
             elif inbox_item.is_retweet:
                 for identity in self.identity.slave_identities:
-                    funcs.append(lambda: identity.twitter.retweet(id=inbox_item.targetObjectID))
+                    funcs.append(lambda i=identity: i.twitter.retweet(id=inbox_item.targetObjectID))
         if funcs:
             for f in funcs:
                 if f:

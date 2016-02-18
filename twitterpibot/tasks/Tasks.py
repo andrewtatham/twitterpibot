@@ -1,5 +1,6 @@
 import threading
 import logging
+import time
 
 from twitterpibot.ExceptionHandler import handle
 
@@ -16,6 +17,7 @@ def start():
     global _global_running
     _global_running = True
     for task in _tasks:
+        time.sleep(1)
         add(task)
 
 

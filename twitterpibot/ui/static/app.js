@@ -1,7 +1,6 @@
-.factory("talksService", function(Restangular){
-    return {
-        getTalks: function(){
-            return Restangular.all("talks").getList();
-        },
-    };
-})
+
+var app = angular.module( 'myApp', [] );
+
+app.controller( 'MainCtrl', function( $scope ) {
+  // we control our app from here
+});
