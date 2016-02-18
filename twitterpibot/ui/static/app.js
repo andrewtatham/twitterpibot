@@ -8,9 +8,9 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
 }]);
 
 app.controller( 'MainCtrl', function($scope, $http) {
-    console.log('status');
-    $http.get('/status').then(function successCallback(response) {
+    $http.get('init').then(function(response) {
         console.log(response);
-        $scope.identities = response.data.result;
+        $scope.actions = response.data.result.actions;
+        $scope.identities = response.data.result.identities;
     });
 });

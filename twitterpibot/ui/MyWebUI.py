@@ -2,9 +2,11 @@ import webbrowser
 
 import flask
 
-from twitterpibot import identities
+from twitterpibot.ui.Controller import Controller
 
 app = flask.Flask(__name__)
+
+controller = Controller()
 
 
 @app.route('/')
@@ -12,17 +14,19 @@ def index():
     return flask.render_template('index.html')
 
 
-@app.route('/status')
-@app.route('/status/<screen_name>')
-def status(screen_name=None):
-    retval = [
-        {
-            "screen_name": i.screen_name,
-            "url": "status/" + i.screen_name,
-        } for i in identities.all_identities
-        if screen_name is None or screen_name == i.screen_name
-        ]
+@app.route('/init')
+def init():
+    retval = {
+        "actions": controller.get_actions(),
+        "identities": controller.get_identities()
+    }
+    return flask.jsonify(result=retval)
 
+
+@app.route('/identity')
+@app.route('/identity/<screen_name>')
+def identity(screen_name=None):
+    retval = controller.get_identities(screen_name)
     return flask.jsonify(result=retval)
 
 
