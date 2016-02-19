@@ -1,8 +1,11 @@
-import webbrowser
+import logging
+import pprint
 
 import flask
 
 from twitterpibot.ui.Controller import Controller
+
+logger = logging.getLogger(__name__)
 
 app = flask.Flask(__name__)
 
@@ -20,14 +23,16 @@ def init():
         "actions": controller.get_actions(),
         "identities": controller.get_identities()
     }
-    return flask.jsonify(result=retval)
+    logger.info(pprint.pformat(retval))
+    return flask.jsonify(retval)
 
 
 @app.route('/identity')
 @app.route('/identity/<screen_name>')
 def identity(screen_name=None):
-    retval = controller.get_identities(screen_name)
-    return flask.jsonify(result=retval)
+    retval = {}
+    retval["identities"] = controller.get_identities(screen_name)
+    return flask.jsonify(retval)
 
 
 @app.route('/shutdown')
@@ -37,8 +42,8 @@ def shutdown():
 
 
 def start():
-    url = "http://0.0.0.0:5000/"
-    webbrowser.open(url)
+    # url = "http://0.0.0.0:5000/"
+    # webbrowser.open(url)
     app.run(debug=True, host='0.0.0.0')
 
 

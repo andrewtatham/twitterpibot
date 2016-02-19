@@ -20,21 +20,20 @@ if not hardware.is_andrew_desktop:
     colorama.init(autoreset=True)
 
 
+logger.info("Starting")
 tasks = twitterpibot.identities.get_all_tasks()
 Tasks.set_tasks(tasks)
-
 jobs = twitterpibot.identities.get_all_scheduled_jobs()
 MySchedule.set_scheduled_jobs(jobs)
-
 Tasks.start()
 MySchedule.start()
 
+logger.info("Starting UI")
 # MyUI.start()
 twitterpibot.ui.MyWebUI.start()
-
-
+logger.info("Stopping")
 MySchedule.stop()
 Tasks.stop()
 hardware.stop()
-logger.info("Done")
+logger.info("Stopped")
 sys.exit(0)

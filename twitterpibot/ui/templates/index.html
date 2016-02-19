@@ -16,23 +16,17 @@
         <h1>Yo</h1>
     </div>
     <div class="row">
-
         <div class="col-md-4">
-            <h2>Identities</h2>
-            <ul>
-                <li ng-repeat="identity in identities">
-                    <a href="[[identity.url]]">[[identity.screen_name]]</a>
-                </li>
-            </ul>
+            {% include "identities.html" %}
         </div>
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <h2>Actions</h2>
-            <ul>
-                <li ng-repeat="action in actions">
-                    <a href="[[action.url]]">[[action.label]]</a>
-                </li>
-            </ul>
+            {% include "actions.html" %}
+        </div>
+    </div>
+        <div class="row">
+        <div class="col-md-12">
+            {% include "following.html" %}
         </div>
     </div>
 </div>

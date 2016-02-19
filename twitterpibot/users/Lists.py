@@ -13,27 +13,28 @@ class Lists(object):
 
     def update_lists(self):
 
-        logger.info("Getting lists")
+        logger.info("[%s] Getting lists" % self._identity.screen_name)
         twitter_lists = self._identity.twitter.show_owned_lists()
         twitter_lists_names_set = set(map(lambda tl: tl["name"], twitter_lists))
         any_new_lists_created = False
         for list_name in self._list_names:
             if list_name not in twitter_lists_names_set:
-                logger.info("Creating list: " + list_name)
+                logger.info("[%s] Creating list: %s" % (self._identity.screen_name, list_name))
                 self._identity.twitter.create_list(name=list_name, mode="private")
                 any_new_lists_created = True
 
         if any_new_lists_created:
-            logger.info("Getting lists again")
+            logger.info("[%s] Getting lists" % self._identity.screen_name)
             twitter_lists = self._identity.twitter.show_owned_lists()
 
         for twitter_list in twitter_lists:
             list_id = twitter_list["id_str"]
             list_name = twitter_list["name"]
-            logger.info("Getting List Members: " + list_name)
+            logger.info("[%s] Getting list members: %s" % (self._identity.screen_name, list_name))
             members = self._identity.twitter.get_list_members(list_id=list_id)
             self._list_ids[list_name] = list_id
             self._sets[list_name] = set(map(lambda member: member["id_str"], members["users"]))
+            logger.info("[%s] %s members: %s" % (self._identity.screen_name, list_name, str(self._sets[list_name])))
 
     def add_user(self, list_name, user_id, screen_name):
         if not self._sets or not self._list_ids:

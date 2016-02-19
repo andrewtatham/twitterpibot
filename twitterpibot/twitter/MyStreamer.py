@@ -65,6 +65,8 @@ class MyStreamer(TwythonStreamer):
         elif "event" in data:
             return IncomingEvent(data, self.identity)
         elif "friends" in data:
+            logger.info("[%s] Following %s" % (self.identity.screen_name, data))
+            self.identity.following = data["friends"]
             logger.info("[%s] Connected" % self.identity.screen_name)
         else:
             logger.debug(data)

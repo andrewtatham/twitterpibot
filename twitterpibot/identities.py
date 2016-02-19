@@ -147,6 +147,7 @@ class Identity(object):
         self.users = Users(self)
         self.lists = Lists(self, list_names=[])
         self.twitter = TwitterHelper.TwitterHelper(self)
+        self.following = None
 
     @abc.abstractmethod
     def get_tasks(self):
@@ -294,9 +295,9 @@ if hardware.is_raspberry_pi_2:
     ]
 else:
     all_identities = [
-        andrewtatham,
-        # andrewtathampi,
-        # andrewtathampi2,
+        # andrewtatham,
+        andrewtathampi,
+        andrewtathampi2,
         # numberwang_host,
         # julienumberwang,
         # simonnumberwang
