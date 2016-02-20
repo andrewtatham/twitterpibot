@@ -196,11 +196,8 @@ class TwitterHelper(object):
         self.twitter.destroy_block(user_id=user.id, screen_name=user.screen_name)
 
     def unblock_users(self):
-
         user_ids = self.twitter.list_block_ids(stringify_ids=True)
-        # pprint.pprint(user_ids["ids"])
         for user_id in user_ids["ids"]:
-            print(user_id)
             self.twitter.destroy_block(user_id=user_id)
 
     def show_owned_lists(self):

@@ -1,4 +1,5 @@
 import logging
+import colorama
 
 from twitterpibot.incoming.InboxItem import InboxItem
 
@@ -24,5 +25,6 @@ class IncomingDirectMessage(InboxItem):
             self.words = self.text.split()
 
     def display(self):
+        colour = self.identity.colour + colorama.Style.BRIGHT
         text = u" * DM from @" + self.sender.screen_name + u" to @" + self.recipient.screen_name + u": " + self.text
-        logger.info(text)
+        logger.info(colour + text)

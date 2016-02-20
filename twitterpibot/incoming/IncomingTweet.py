@@ -93,25 +93,11 @@ class IncomingTweet(InboxItem):
                 self.is_retweet_of_my_status = True
 
     def display(self):
-        colour = ""
-        text = ""
-        if self.source:
-            text += '[' + self.source + '] '
-            if self.sourceIsTrend:
-                colour = next(trendcolours)
-            elif self.sourceIsSearch:
-                colour = next(searchcolours)
-            elif self.sourceIsStream:
-                colour = next(streamcolours)
-        else:
-            colour = next(tweetcolours)
-            text += "[" + self.identity_screen_name + "] "
+        colour = self.identity.colour
+        text = "[" + self.identity_screen_name + "] "
 
         text += self.sender.name + ' [@' + self.sender.screen_name + '] ' \
                 + self.text.replace('\n', ' ')
-
-        if self.topics:
-            text += "{topic: " + str(self.topics) + "} "
 
         if self.to_me:
             colour += Style.BRIGHT

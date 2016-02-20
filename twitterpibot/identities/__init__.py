@@ -1,4 +1,5 @@
 import abc
+import colorama
 import twitterpibot
 
 from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
@@ -97,6 +98,7 @@ class Identity(object):
         self.lists = Lists(self, list_names=[])
         self.twitter = TwitterHelper(self)
         self.following = None
+        self.colour = colorama.Fore.WHITE
 
     @abc.abstractmethod
     def get_tasks(self):
@@ -140,6 +142,7 @@ class AndrewTathamPiIdentity(Identity):
         self.admin_screen_name = "andrewtatham"
         self.converse_with = "andrewtathampi2"
         self.lists = Lists(self, default_lists)
+        self.colour= colorama.Fore.MAGENTA
 
     def get_tasks(self):
         return get_bot_tasks(self)
@@ -157,6 +160,7 @@ class AndrewTathamPi2Identity(Identity):
         self.admin_screen_name = "andrewtatham"
         self.converse_with = "andrewtathampi"
         self.lists = Lists(self, default_lists)
+        self.colour = colorama.Fore.CYAN
 
     def get_tasks(self):
         return get_bot_tasks(self)
@@ -246,7 +250,6 @@ if not all_identities:
 def get_all_tasks():
     tasks = []
     for i in all_identities:
-        print(str(i))
         t = i.get_tasks()
         tasks.extend(t)
     return tasks

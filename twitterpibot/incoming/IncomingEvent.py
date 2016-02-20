@@ -50,7 +50,7 @@ class IncomingEvent(InboxItem):
 
     def display(self):
 
-        colour = next(eventcolours)
+        colour = self.identity.colour
 
         if self.to_me:
             colour += Style.BRIGHT
