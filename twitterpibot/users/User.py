@@ -17,6 +17,11 @@ class User(object):
         self.name = data.get("name")
         self.screen_name = data.get("screen_name")
         self.description = data.get("description")
+        self.url = data.get("url")
+        self.profile_image_url = data.get("profile_image_url")
+        self.profile_banner_url = data.get("profile_banner_url")
+        if self.profile_banner_url:
+            self.profile_banner_url += "/300x100"
 
         self.isMe = bool(self.screen_name == my_screen_name)
 

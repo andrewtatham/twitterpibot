@@ -1,10 +1,19 @@
-<h2>Following</h2>
+<h2>Users</h2>
 <ul>
     <li ng-repeat="identity in identities">
         <a href="[[identity.url]]">[[identity.screen_name]]</a>
         <ul>
-            <li ng-repeat="following in identity.following">
-                [[following]]
+            <li ng-repeat="user in identity.users">
+                <div>
+                    <a href="[[user.url]]">
+                        <img src="[[user.profile_banner_url]]">
+                        <img src="[[user.profile_image_url]]" style="z-index:1">
+
+                        <div>[[user.name]]</div>
+                        <div>[[user.screen_name]]</div>
+                        <div>[[user.description]]</div>
+                    </a>
+                </div>
             </li>
         </ul>
     </li>

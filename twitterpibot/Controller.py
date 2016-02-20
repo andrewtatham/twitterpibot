@@ -46,6 +46,10 @@ class Controller(object):
                     "name": user.name,
                     "screen_name": user.screen_name,
                     "description": user.description,
+                    "url": user.url,
+                    "profile_image_url": user.profile_image_url,
+                    "profile_banner_url": user.profile_banner_url
+
                 } for user_id, user in identity.users._users.items()]
         return dto
 
