@@ -21,6 +21,9 @@ if not hardware.is_andrew_desktop:
 
 
 logger.info("Starting")
+for identity in twitterpibot.identities.all_identities:
+    identity.lists.update_lists()
+
 tasks = twitterpibot.identities.get_all_tasks()
 Tasks.set_tasks(tasks)
 jobs = twitterpibot.identities.get_all_scheduled_jobs()
