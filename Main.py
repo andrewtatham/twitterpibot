@@ -1,42 +1,61 @@
+import pprint
 import sys
 import logging
-import webbrowser
 
-import colorama
+import flask
 
-import twitterpibot.MyLogging as MyLogging
-import twitterpibot.hardware.hardware as hardware
-import twitterpibot.identities
-import twitterpibot.tasks.Tasks as Tasks
-import twitterpibot.schedule.MySchedule as MySchedule
+import twitterpibot.Controller as c
+from twitterpibot.hardware import hardware
 
-# import twitterpibot.MyUI as MyUI
-import twitterpibot.ui.MyWebUI
+import twitterpibot.schedule.MySchedule as myschedule
+import twitterpibot.tasks.tasks as mytasks
 
-MyLogging.init()
+app = flask.Flask("twitterpibot")
+
+controller = c.Controller()
 logger = logging.getLogger(__name__)
 
-if not hardware.is_andrew_desktop:
-    colorama.init(autoreset=True)
+
+@app.route('/')
+def index():
+    return flask.render_template('index.html')
 
 
-logger.info("Starting")
-for identity in twitterpibot.identities.all_identities:
-    identity.lists.update_lists()
+@app.route('/init')
+def init():
+    retval = {
+        "actions": controller.get_actions(),
+        "identities": controller.get_identities()
+    }
+    logger.debug(pprint.pformat(retval))
+    return flask.jsonify(retval)
 
-tasks = twitterpibot.identities.get_all_tasks()
-Tasks.set_tasks(tasks)
-jobs = twitterpibot.identities.get_all_scheduled_jobs()
-MySchedule.set_scheduled_jobs(jobs)
-Tasks.start()
-MySchedule.start()
+
+@app.route('/identity')
+@app.route('/identity/<screen_name>')
+def identity(screen_name=None):
+    retval = {"identities": controller.get_identities(screen_name)}
+    return flask.jsonify(retval)
+
+
+@app.route('/shutdown')
+def shutdown():
+    shutdown_server()
+    return 'Server shutting down...'
+
+
+def shutdown_server():
+    func = flask.request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
+
 
 logger.info("Starting UI")
-# MyUI.start()
-twitterpibot.ui.MyWebUI.start()
+app.run(debug=True, host='0.0.0.0')
 logger.info("Stopping")
-MySchedule.stop()
-Tasks.stop()
+myschedule.stop()
+mytasks.stop()
 hardware.stop()
 logger.info("Stopped")
 sys.exit(0)

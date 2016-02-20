@@ -1,9 +1,9 @@
 import os
-from twitterpibot.twitter.topics import Topics
-from twitterpibot.twitter import TwitterHelper
-
 import datetime
 import logging
+
+from twitterpibot.twitter.topics import Topics
+from twitterpibot.twitter import TwitterHelper
 
 try:
     from functools import reduce
@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 
 _trending = []
 _updated = None
-
 
 
 class TrendingTopic(object):
@@ -57,11 +56,11 @@ def _update():
 
 
 def get():
-        if _updated:
-            delta = datetime.datetime.now() - _updated
-            mins = divmod(delta.days * 86400 + delta.seconds, 60)[0]
-            if mins > 45:
-                _update()
-        else:
+    if _updated:
+        delta = datetime.datetime.now() - _updated
+        mins = divmod(delta.days * 86400 + delta.seconds, 60)[0]
+        if mins > 45:
             _update()
-        return _trending
+    else:
+        _update()
+    return _trending

@@ -1,4 +1,5 @@
 from unittest import TestCase
+
 from twitterpibot.twitter.topics.Sport import SportOther
 
 __author__ = 'Andrew'
@@ -15,5 +16,3 @@ class TestSportOther(TestCase):
                 self.assertTrue(actual)
             else:
                 self.assertIsNone(actual)
-
-

@@ -1,7 +1,6 @@
 from unittest import TestCase
+
 from twitterpibot.twitter.topics.Politics import PoliticsUK
-
-
 
 
 class TestPoliticsUK(TestCase):

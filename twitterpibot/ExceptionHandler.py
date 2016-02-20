@@ -6,8 +6,8 @@ from colorama import Fore, Style, Back
 from twython import TwythonError
 
 import twitterpibot.Statistics
-
 from twitterpibot.hardware import hardware
+
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 
 logger = logging.getLogger(__name__)

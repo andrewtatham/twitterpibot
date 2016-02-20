@@ -1,4 +1,4 @@
-from twitterpibot.ui import MyUI
+import twitterpibot
 
 from twitterpibot.responses.Response import Response
 
@@ -10,4 +10,4 @@ class RestartResponse(Response):
                and inbox_item.words and "restart" in inbox_item.words
 
     def respond(self, inbox_item):
-        MyUI.close()
+        twitterpibot.shutdown()

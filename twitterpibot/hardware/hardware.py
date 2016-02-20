@@ -11,7 +11,6 @@ is_brightpi_attached = False
 is_unicornhat_attached = False
 is_blinksticknano_attached = False
 
-
 brightpi = None
 
 _platform = platform.platform()

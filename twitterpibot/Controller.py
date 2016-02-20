@@ -1,4 +1,4 @@
-import twitterpibot.identities
+import twitterpibot.identities as identities
 
 __author__ = 'andrewtatham'
 
@@ -12,7 +12,7 @@ class Controller(object):
         #     pprint.pprint(identity.lists._sets)
         #     pprint.pprint(identity.users._users)
 
-        return [self.get_identity_dto(i) for i in twitterpibot.identities.all_identities
+        return [self.get_identity_dto(i) for i in identities.all_identities
                 if screen_name is None or screen_name == i.screen_name]
 
     def get_actions(self):
@@ -31,9 +31,22 @@ class Controller(object):
         if identity.following:
             dto["following"] = [{"follower_id": f} for f in identity.following]
         if identity.lists:
-            dto["lists"] = [{"list_name": l} for l in identity.lists._sets]
+            dto["lists"] = [
+                {
+                    "list_name": l,
+                    "members": [
+                        {
+                            "list_member_id": list_member_id
+                        } for list_member_id in identity.lists._sets[l]]
+                } for l in identity.lists._sets]
         if identity.users:
-            dto["users"] = [{"user_id": u} for u in identity.users._users]
+            dto["users"] = [
+                {
+                    "user_id": user.id,
+                    "name": user.name,
+                    "screen_name": user.screen_name,
+                    "description": user.description,
+                } for user_id, user in identity.users._users.items()]
         return dto
 
     def get_action_dto(self, label, url):

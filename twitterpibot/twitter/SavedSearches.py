@@ -1,21 +1,21 @@
-from twitterpibot.twitter import TwitterHelper
-
 import datetime
+
+from twitterpibot.twitter import TwitterHelper
 
 _saved_searches = []
 _updated = None
 
+
 def get_saved_searches(identity):
-
-        if _updated:
-            delta = datetime.datetime.now() - _updated
-            mins = divmod(delta.days * 86400 + delta.seconds, 60)[0]
-            if mins > 15:
-                _update(identity)
-        else:
+    if _updated:
+        delta = datetime.datetime.now() - _updated
+        mins = divmod(delta.days * 86400 + delta.seconds, 60)[0]
+        if mins > 15:
             _update(identity)
+    else:
+        _update(identity)
 
-        return _saved_searches
+    return _saved_searches
 
 
 def _update(identity):

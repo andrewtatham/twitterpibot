@@ -5,7 +5,7 @@ import time
 from twython.streaming.api import TwythonStreamer
 
 from twitterpibot.Statistics import record_incoming_direct_message, record_incoming_tweet
-from twitterpibot.hardware import hardware
+import twitterpibot.hardware.hardware as hardware
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingEvent import IncomingEvent
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
@@ -35,7 +35,7 @@ class MyStreamer(TwythonStreamer):
     def on_success(self, data):
         self.backoff = default_backoff
         if self._topic_name:
-            data['tweet_source'] = "stream:"+ self._topic_name
+            data['tweet_source'] = "stream:" + self._topic_name
         inbox_item = self.create_inbox_item(data)
         if inbox_item:
             hardware.on_inbox_item_received(inbox_item)

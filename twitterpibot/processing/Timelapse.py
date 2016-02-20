@@ -7,19 +7,20 @@ from apscheduler.triggers.interval import IntervalTrigger
 from apscheduler.triggers.date import DateTrigger
 import images2gif
 
-# noinspection PyPackageRequirements,PyUnresolvedReferences
-import cv2
 from twitterpibot.logic import FileSystemHelper
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
-
 import twitterpibot.hardware.hardware as hardware
 
 logger = logging.getLogger(__name__)
 
+if hardware.is_webcam_attached:
+    # noinspection PyPackageRequirements,PyUnresolvedReferences
+    import cv2
+
 
 class Timelapse(object):
-    def __init__(self, identity,  name, start_time, end_time, interval_seconds=1, tweet_text=''):
+    def __init__(self, identity, name, start_time, end_time, interval_seconds=1, tweet_text=''):
         self.identity = identity
         self.name = name
         self.imageExtension = 'jpg'

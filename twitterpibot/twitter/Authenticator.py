@@ -1,6 +1,7 @@
 import os
 import webbrowser
 import sys
+
 from twitterpibot.logic import FileSystemHelper
 
 try:

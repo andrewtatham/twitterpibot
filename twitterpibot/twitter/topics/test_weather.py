@@ -1,7 +1,6 @@
 from unittest import TestCase
+
 from twitterpibot.twitter.topics.News import Weather
-
-
 
 
 class TestWeather(TestCase):
@@ -23,4 +22,3 @@ class TestWeather(TestCase):
                 self.assertTrue(testcase[0] in actual[testcase[1]])
             else:
                 self.assertIsNone(actual)
-
