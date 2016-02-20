@@ -20,5 +20,5 @@ class Users(object):
 
             if self._users[user_id].is_stale():
                 self._identity.lists.update_user(user=self._users[user_id])
-           
+
             return self._users[user_id]

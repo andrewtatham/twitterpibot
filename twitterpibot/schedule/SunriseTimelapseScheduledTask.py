@@ -20,7 +20,7 @@ class SunriseTimelapseScheduledTask(ScheduledTask):
             interval_seconds=90,
             tweet_text="Morning!")
 
-        from twitterpibot.schedule.MySchedule import add
+
         tasks = timelapse.get_scheduled_tasks()
         for task in tasks:
-            add(task)
+            twitterpibot.schedule.add(task)

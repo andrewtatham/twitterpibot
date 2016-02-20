@@ -4,15 +4,11 @@ import logging
 
 import flask
 
-import twitterpibot.Controller as c
-from twitterpibot.hardware import hardware
-
-import twitterpibot.schedule.MySchedule as myschedule
-import twitterpibot.tasks.tasks as mytasks
+import twitterpibot
 
 app = flask.Flask("twitterpibot")
 
-controller = c.Controller()
+controller = twitterpibot.Controller.Controller()
 logger = logging.getLogger(__name__)
 
 
@@ -50,12 +46,10 @@ def shutdown_server():
         raise RuntimeError('Not running with the Werkzeug Server')
     func()
 
-
+twitterpibot.start()
 logger.info("Starting UI")
 app.run(debug=True, host='0.0.0.0')
-logger.info("Stopping")
-myschedule.stop()
-mytasks.stop()
-hardware.stop()
-logger.info("Stopped")
+logger.info("Stopped UI")
+twitterpibot.stop()
+
 sys.exit(0)

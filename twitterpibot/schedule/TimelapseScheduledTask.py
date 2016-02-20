@@ -1,9 +1,10 @@
 import datetime
 from apscheduler.triggers.interval import IntervalTrigger
+import twitterpibot
 
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.processing.Timelapse import Timelapse
-import twitterpibot.schedule.MySchedule as MySchedule
+
 
 
 class TimelapseScheduledTask(ScheduledTask):
@@ -22,4 +23,4 @@ class TimelapseScheduledTask(ScheduledTask):
 
         tasks = timelapse.get_scheduled_tasks()
         for task in tasks:
-            MySchedule.add(task)
+            twitterpibot.schedule.add(task)

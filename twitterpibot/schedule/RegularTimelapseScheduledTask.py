@@ -1,6 +1,7 @@
 import random
 
 from apscheduler.triggers.cron import CronTrigger
+import twitterpibot
 
 from twitterpibot.processing import MyAstral
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
@@ -40,7 +41,6 @@ class RegularTimelapseScheduledTask(ScheduledTask):
                 interval_seconds=120,
                 tweet_text=random.choice(messages))
 
-            import twitterpibot.schedule.MySchedule as Schedule
             tasks = timelapse.get_scheduled_tasks()
             for task in tasks:
-                Schedule.add(task)
+                twitterpibot.schedule.add(task)

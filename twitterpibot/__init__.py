@@ -8,18 +8,27 @@ import twitterpibot.Controller as c
 import twitterpibot.MyLogging as mylogging
 import twitterpibot.hardware.hardware as hardware
 import twitterpibot.identities as identities
-import twitterpibot.schedule.MySchedule as myschedule
-import twitterpibot.tasks.tasks as mytasks
-
 
 mylogging.init()
 logger = logging.getLogger(__name__)
 
 if not hardware.is_andrew_desktop:
     colorama.init(autoreset=True)
+def start():
+    
 
-logger.info("Starting")
-mytasks.set_tasks(identities.get_all_tasks())
-myschedule.set_scheduled_jobs(identities.get_all_scheduled_jobs())
-mytasks.start()
-myschedule.start()
+    
+    logger.info("Starting")
+    twitterpibot.tasks.set_tasks(twitterpibot.identities.get_all_tasks())
+    twitterpibot.schedule.set_scheduled_jobs(identities.get_all_scheduled_jobs())
+    twitterpibot.tasks.start()
+    twitterpibot.schedule.start()
+    logger.info("Started")
+
+
+def stop():
+    logger.info("Stopping")
+    twitterpibot.schedule.stop()
+    twitterpibot.tasks.stop()
+    twitterpibot.hardware.stop()
+    logger.info("Stopped")

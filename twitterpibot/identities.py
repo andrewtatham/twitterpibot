@@ -2,15 +2,11 @@ import abc
 
 import twitterpibot
 
-from twitterpibot.schedule import *
-from twitterpibot.responses import *
-from twitterpibot.tasks import *
-
 import twitterpibot.hardware.hardware as hardware
-from twitterpibot.twitter import TwitterHelper
+import twitterpibot.twitter.TwitterHelper
 from twitterpibot.users.Lists import Lists
 from twitterpibot.users.Users import Users
-import twitterpibot.logic.numberwang as numberwang
+from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
 
 default_lists = [
     "Reply Less",
@@ -96,7 +92,7 @@ class Identity(object):
         self.streamer = None
         self.users = Users(self)
         self.lists = Lists(self, list_names=[])
-        self.twitter = TwitterHelper.TwitterHelper(self)
+        self.twitter = twitterpibot.twitter.TwitterHelper.TwitterHelper(self)
         self.following = None
 
     @abc.abstractmethod
@@ -178,7 +174,7 @@ class NumberwangHostIdentity(Identity):
         return []
 
     def get_scheduled_jobs(self):
-        return [numberwang.NumberwangHostScheduledTask(self)]
+        return [NumberwangHostScheduledTask(self)]
 
     def get_responses(self):
         return []
