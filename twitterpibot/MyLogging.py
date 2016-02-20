@@ -35,6 +35,3 @@ console_log.setLevel(logging.INFO)
 console_log.setFormatter(console_formatter)
 root_logger.addHandler(console_log)
 
-
-def init():
-    pass

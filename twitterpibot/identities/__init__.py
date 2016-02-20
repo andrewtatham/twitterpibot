@@ -1,12 +1,10 @@
 import abc
-
 import twitterpibot
 
-import twitterpibot.hardware.hardware as hardware
-import twitterpibot.twitter.TwitterHelper
+from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
+from twitterpibot.twitter.TwitterHelper import TwitterHelper
 from twitterpibot.users.Lists import Lists
 from twitterpibot.users.Users import Users
-from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
 
 default_lists = [
     "Reply Less",
@@ -34,14 +32,17 @@ def get_bot_scheduled_jobs(identity, is_andrewtathampi=False, is_andrewtathampi2
         twitterpibot.schedule.BlankTweetScheduledTask.BlankTweetScheduledTask(identity)
     ]
 
-    if hardware.is_linux and (hardware.is_webcam_attached or hardware.is_picam_attached):
+    if twitterpibot.hardware.is_linux \
+            and (twitterpibot.hardware.is_webcam_attached or twitterpibot.hardware.is_picam_attached):
         scheduledjobs.extend([
             twitterpibot.schedule.PhotoScheduledTask.PhotoScheduledTask(identity),
             twitterpibot.schedule.SunriseTimelapseScheduledTask.SunriseTimelapseScheduledTask(identity),
             twitterpibot.schedule.SunsetTimelapseScheduledTask.SunsetTimelapseScheduledTask(identity),
             twitterpibot.schedule.RegularTimelapseScheduledTask.RegularTimelapseScheduledTask(identity)
         ])
-    if hardware.is_piglow_attached or hardware.is_unicornhat_attached or hardware.is_blinksticknano_attached:
+    if twitterpibot.hardware.is_piglow_attached \
+            or twitterpibot.hardware.is_unicornhat_attached \
+            or twitterpibot.hardware.is_blinksticknano_attached:
         scheduledjobs.extend([
             twitterpibot.schedule.LightsScheduledTask.LightsScheduledTask(identity)
         ])
@@ -58,7 +59,7 @@ def get_bot_responses(identity, is_andrewtathampi=False, is_andrewtathampi2=Fals
         twitterpibot.responses.HelloResponse.HelloResponse(identity),
         twitterpibot.responses.Magic8BallResponse.Magic8BallResponse(identity)
     ]
-    if hardware.is_picam_attached or hardware.is_webcam_attached:
+    if twitterpibot.hardware.is_picam_attached or twitterpibot.hardware.is_webcam_attached:
         responses.extend([
             twitterpibot.responses.PhotoResponse.PhotoResponse(identity),
             twitterpibot.responses.TimelapseResponse.TimelapseResponse(identity)
@@ -75,7 +76,9 @@ def get_bot_tasks(identity):
     tasks = [
         twitterpibot.tasks.StreamTweetsTask.StreamTweetsTask(identity)
     ]
-    if hardware.is_piglow_attached or hardware.is_unicornhat_attached or hardware.is_blinksticknano_attached:
+    if twitterpibot.hardware.is_piglow_attached \
+            or twitterpibot.hardware.is_unicornhat_attached\
+            or twitterpibot.hardware.is_blinksticknano_attached:
         tasks.extend([
             twitterpibot.tasks.LightsTask.LightsTask(),
             twitterpibot.tasks.FadeTask.FadeTask()
@@ -92,7 +95,7 @@ class Identity(object):
         self.streamer = None
         self.users = Users(self)
         self.lists = Lists(self, list_names=[])
-        self.twitter = twitterpibot.twitter.TwitterHelper.TwitterHelper(self)
+        self.twitter = TwitterHelper(self)
         self.following = None
 
     @abc.abstractmethod
@@ -220,7 +223,7 @@ if not all_identities:
     julienumberwang = JulieNumberwangIdentity()
     simonnumberwang = SimonNumberwangIdentity()
 
-    if hardware.is_raspberry_pi_2:
+    if twitterpibot.hardware.is_raspberry_pi_2:
         all_identities = [
             andrewtatham,
             andrewtathampi,

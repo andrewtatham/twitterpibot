@@ -1,5 +1,5 @@
 from twitterpibot.tasks.Task import Task
-import twitterpibot.hardware.hardware as hardware
+import twitterpibot.hardware
 
 
 class LightsTask(Task):
@@ -8,4 +8,4 @@ class LightsTask(Task):
         self.core = True
 
     def on_run(self):
-        hardware.on_lights_task()
+        twitterpibot.hardware.on_lights_task()

@@ -10,11 +10,11 @@ import images2gif
 from twitterpibot.logic import FileSystemHelper
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
-import twitterpibot.hardware.hardware as hardware
+import twitterpibot.hardware
 
 logger = logging.getLogger(__name__)
 
-if hardware.is_webcam_attached:
+if twitterpibot.hardware.is_webcam_attached:
     # noinspection PyPackageRequirements,PyUnresolvedReferences
     import cv2
 
@@ -94,7 +94,7 @@ class TimelapsePhotoScheduledTask(ScheduledTask):
 
         name = self.timelapse.name + "_img_" + "{0:05d}".format(self.i)
 
-        hardware.take_photo(
+        twitterpibot.hardware.take_photo(
             folder=self.timelapse.dirPath,
             name=name,
             ext=self.timelapse.imageExtension)
@@ -122,9 +122,9 @@ class TimelapseUploadScheduledTask(ScheduledTask):
 
         if self.timelapse.targetExtension == "gif":
 
-            if hardware.is_webcam_attached:
+            if twitterpibot.hardware.is_webcam_attached:
                 images = [cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB) for bgr in images]
-            if hardware.is_picam_attached:
+            if twitterpibot.hardware.is_picam_attached:
                 images = [cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY) for bgr in images]
 
             images2gif.writeGif(

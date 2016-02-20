@@ -1,6 +1,6 @@
 from twitterpibot.tasks.Task import Task
 import time
-import twitterpibot.hardware.hardware as hardware
+import twitterpibot.hardware
 
 
 class FadeTask(Task):
@@ -9,5 +9,5 @@ class FadeTask(Task):
         self.core = True
 
     def on_run(self):
-        hardware.on_fade_task()
+        twitterpibot.hardware.on_fade_task()
         time.sleep(1)

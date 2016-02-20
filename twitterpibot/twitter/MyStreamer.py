@@ -5,7 +5,7 @@ import time
 from twython.streaming.api import TwythonStreamer
 
 from twitterpibot.Statistics import record_incoming_direct_message, record_incoming_tweet
-import twitterpibot.hardware.hardware as hardware
+import twitterpibot.hardware
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingEvent import IncomingEvent
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
@@ -38,7 +38,7 @@ class MyStreamer(TwythonStreamer):
             data['tweet_source'] = "stream:" + self._topic_name
         inbox_item = self.create_inbox_item(data)
         if inbox_item:
-            hardware.on_inbox_item_received(inbox_item)
+            twitterpibot.hardware.on_inbox_item_received(inbox_item)
             responded = self.create_response(inbox_item)
             if not responded and random.randint(0, 9) == 0:
                 inbox_item.display()

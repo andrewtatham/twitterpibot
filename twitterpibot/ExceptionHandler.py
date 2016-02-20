@@ -6,7 +6,8 @@ from colorama import Fore, Style, Back
 from twython import TwythonError
 
 import twitterpibot.Statistics
-from twitterpibot.hardware import hardware
+
+import twitterpibot.hardware
 
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 
@@ -46,7 +47,7 @@ def _record_error(identity, exception):
 
 def _try_send_exception(identity):
     try:
-        if hardware.is_linux:
+        if twitterpibot.hardware.is_linux:
             identity.twitter.send(OutgoingDirectMessage(text=traceback.format_exc()))
     except Exception as e:
         logger.exception(e)

@@ -1,3 +1,4 @@
+import twitterpibot
 import twitterpibot.processing.MyAstral as MyAstral
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from apscheduler.triggers.cron import CronTrigger

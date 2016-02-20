@@ -2,14 +2,13 @@ from collections import Counter
 import logging
 import os
 
-from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
-from twitterpibot.users import Lists
-import twitterpibot.twitter.TwitterHelper as TwitterHelper
+import twitterpibot.outgoing.OutgoingDirectMessage
+import twitterpibot.twitter.TwitterHelper
 from twitterpibot.twitter.topics import Topics
 
 logger = logging.getLogger(__name__)
 
-get_tweets = TwitterHelper.get_user_timeline
+get_tweets = get_user_timeline
 
 
 def _is_user_bot(identity, user):
@@ -86,7 +85,7 @@ def _block_user(identity, user, reasons, text1, text2):
         txt += os.linesep + text2
 
     logger.warn(txt)
-    identity.twitter.send(OutgoingDirectMessage(text=txt))
+    identity.twitter.send(twitterpibot.outgoing.OutgoingDirectMessage.OutgoingDirectMessage(text=txt))
     identity.lists.add_user(list_name="Blocked Users", user_id=user.id, screen_name=user.screen_name)
     identity.twitter.block_user(identity, user.id, user.screen_name)
 

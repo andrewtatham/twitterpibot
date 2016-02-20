@@ -5,7 +5,7 @@ import logging
 import flask
 
 import twitterpibot
-
+import twitterpibot.Controller
 app = flask.Flask("twitterpibot")
 
 controller = twitterpibot.Controller.Controller()
