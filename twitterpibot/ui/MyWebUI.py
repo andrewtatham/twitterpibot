@@ -23,15 +23,14 @@ def init():
         "actions": controller.get_actions(),
         "identities": controller.get_identities()
     }
-    logger.info(pprint.pformat(retval))
+    logger.debug(pprint.pformat(retval))
     return flask.jsonify(retval)
 
 
 @app.route('/identity')
 @app.route('/identity/<screen_name>')
 def identity(screen_name=None):
-    retval = {}
-    retval["identities"] = controller.get_identities(screen_name)
+    retval = {"identities": controller.get_identities(screen_name)}
     return flask.jsonify(retval)
 
 
