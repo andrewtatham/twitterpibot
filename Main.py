@@ -33,11 +33,37 @@ def init():
     return flask.jsonify(retval)
 
 
-@app.route('/identity')
-@app.route('/identity/<screen_name>')
-def identity(screen_name=None):
-    retval = {"identities": controller.get_identities(screen_name)}
+@app.route('/actions')
+def actions():
+    retval = {
+        "actions": controller.get_actions(),
+    }
+    logger.debug(pprint.pformat(retval))
     return flask.jsonify(retval)
+
+
+@app.route('/identities')
+def identities():
+    retval = {"identities": controller.get_identities()}
+    return flask.jsonify(retval)
+
+
+@app.route('/identity/<screen_name>')
+def identity(screen_name):
+    retval = {"identity": controller.get_identity(screen_name)}
+    return flask.jsonify(retval)
+
+
+@app.route('/following')
+def following():
+    retval = {"following": controller.get_following()}
+    return flask.jsonify(retval)
+
+@app.route('/followinggraph')
+def following_graph():
+    retval = {"followinggraph": controller.get_following_graph()}
+    return flask.jsonify(retval)
+
 
 
 @app.route('/shutdown')

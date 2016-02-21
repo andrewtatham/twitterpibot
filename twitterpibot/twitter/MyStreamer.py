@@ -29,8 +29,12 @@ class MyStreamer(TwythonStreamer):
             self._topic_name = topic_name
         else:
             self._topic_name = topic
-        super(MyStreamer, self).__init__(self.identity.tokens[0], self.identity.tokens[1], self.identity.tokens[2],
-                                         self.identity.tokens[3])
+        super(MyStreamer, self).__init__(
+            self.identity.tokens[0],
+            self.identity.tokens[1],
+            self.identity.tokens[2],
+            self.identity.tokens[3]
+        )
 
     def on_success(self, data):
         self.backoff = default_backoff
@@ -65,8 +69,8 @@ class MyStreamer(TwythonStreamer):
         elif "event" in data:
             return IncomingEvent(data, self.identity)
         elif "friends" in data:
-            logger.debug("[%s] Following %s" % (self.identity.screen_name, data))
-            self.identity.following = data["friends"]
+            logger.info("[%s] Following %s" % (self.identity.screen_name, data))
+            self.identity.following = [str(f) for f in data["friends"]]
             logger.info("[%s] Connected" % self.identity.screen_name)
         else:
             logger.debug(data)

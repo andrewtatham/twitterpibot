@@ -4,12 +4,9 @@
 //  A project template for using arbor.js
 //
 
+(function($){
 
-console.log("in followers.js")
-
-
-
-var Renderer = function(canvas){
+  var Renderer = function(canvas){
     var canvas = $(canvas).get(0)
     var ctx = canvas.getContext("2d");
     var particleSystem
@@ -27,15 +24,15 @@ var Renderer = function(canvas){
         // inform the system of the screen dimensions so it can map coords for us.
         // if the canvas is ever resized, screenSize should be called again with
         // the new dimensions
-        particleSystem.screenSize(canvas.width, canvas.height)
+        particleSystem.screenSize(canvas.width, canvas.height) 
         particleSystem.screenPadding(80) // leave an extra 80px of whitespace per side
-
+        
         // set up some event handlers to allow for node-dragging
         that.initMouseHandling()
       },
-
+      
       redraw:function(){
-        //
+        // 
         // redraw will be called repeatedly during the run whenever the node positions
         // change. the new positions for the nodes can be accessed by looking at the
         // .p attribute of a given node. however the p.x & p.y values are in the coordinates
@@ -43,10 +40,10 @@ var Renderer = function(canvas){
         // the screen yourself, or use the convenience iterators .eachNode (and .eachEdge)
         // which allow you to step through the actual node objects but also pass an
         // x,y point in the screen's coordinate system
-        //
+        // 
         ctx.fillStyle = "white"
         ctx.fillRect(0,0, canvas.width, canvas.height)
-
+        
         particleSystem.eachEdge(function(edge, pt1, pt2){
           // edge: {source:Node, target:Node, length:#, data:{}}
           // pt1:  {x:#, y:#}  source position in screen coords
@@ -69,9 +66,9 @@ var Renderer = function(canvas){
           var w = 10
           ctx.fillStyle = (node.data.alone) ? "orange" : "black"
           ctx.fillRect(pt.x-w/2, pt.y-w/2, w,w)
-        })
+        })    			
       },
-
+      
       initMouseHandling:function(){
         // no-nonsense drag and drop (thanks springy.js)
         var dragged = null;
@@ -117,21 +114,21 @@ var Renderer = function(canvas){
             return false
           }
         }
-
+        
         // start listening
         $(canvas).mousedown(handler.clicked);
 
       },
-
+      
     }
     return that
-}
+  }    
 
-$(document).ready(function(){
-
+  $(document).ready(function(){
     var sys = arbor.ParticleSystem(1000, 600, 0.5) // create the system with sensible repulsion/stiffness/friction
     sys.parameters({gravity:true}) // use center-gravity to make the graph settle nicely (ymmv)
-    sys.renderer = Renderer($("#viewport")) // our newly created renderer will have its .init() method called shortly by sys...
+    sys.renderer = Renderer("#viewport") // our newly created renderer will have its .init() method called shortly by sys...
+
 
 
     // add some nodes to the graph and watch it go...
@@ -156,4 +153,6 @@ $(document).ready(function(){
     //   }
     // })
 
-})
+  })
+
+})(this.jQuery)

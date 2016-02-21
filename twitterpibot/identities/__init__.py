@@ -99,6 +99,7 @@ class Identity(object):
         self.twitter = TwitterHelper(self)
         self.following = None
         self.colour = colorama.Fore.WHITE
+        self.id_str = None
 
     @abc.abstractmethod
     def get_tasks(self):
@@ -119,6 +120,7 @@ class AndrewTathamIdentity(Identity):
         self.admin_screen_name = "andrewtatham"
         self.lists = Lists(self, default_lists)
         self.slave_identities = slave_identities
+        self.id_str="19201332"
 
     def get_tasks(self):
         return [
@@ -143,6 +145,7 @@ class AndrewTathamPiIdentity(Identity):
         self.converse_with = "andrewtathampi2"
         self.lists = Lists(self, default_lists)
         self.colour= colorama.Fore.MAGENTA
+        self.id_str="2935295111"
 
     def get_tasks(self):
         return get_bot_tasks(self)
@@ -161,6 +164,7 @@ class AndrewTathamPi2Identity(Identity):
         self.converse_with = "andrewtathampi"
         self.lists = Lists(self, default_lists)
         self.colour = colorama.Fore.CYAN
+        self.id_str="3892161801"
 
     def get_tasks(self):
         return get_bot_tasks(self)
@@ -176,6 +180,7 @@ class NumberwangHostIdentity(Identity):
     def __init__(self):
         Identity.__init__(self, "numberwang_host")
         self.admin_screen_name = "andrewtatham"
+        self.id_str = "4904547543"
 
     def get_tasks(self):
         return []
@@ -191,6 +196,7 @@ class JulieNumberwangIdentity(Identity):
     def __init__(self):
         Identity.__init__(self, "JulieNumberwang")
         self.admin_screen_name = "andrewtatham"
+        self.id_str = "4912246174"
 
     def get_tasks(self):
         return []
@@ -206,6 +212,7 @@ class SimonNumberwangIdentity(Identity):
     def __init__(self):
         Identity.__init__(self, "SimonNumberwang")
         self.admin_screen_name = "andrewtatham"
+        self.id_str = "4912203173"
 
     def get_tasks(self):
         return []
