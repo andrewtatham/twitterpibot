@@ -1,3 +1,5 @@
+import random
+
 import twitterpibot.identities
 
 __author__ = 'andrewtatham'
@@ -74,13 +76,13 @@ class Controller(object):
     def get_following(self):
         dto = []
         for identity in twitterpibot.identities.all_identities:
-            for following in identity.following:
-                dto.append((identity.id_str, following))
+            if identity.following:
+                for following in identity.following:
+                    dto.append((identity.id_str, following))
 
         return dto
 
     def get_following_graph(self):
-
         nodes = {}
         edges = {}
         for identity in twitterpibot.identities.all_identities:
@@ -91,14 +93,19 @@ class Controller(object):
                     "screen_name": identity.screen_name
                 }
             edges[identity.id_str] = {}
-            for following in identity.following:
-                node = {
-                    "id_str": following,
-                    "screen_name": None
-                }
-                nodes[following] = node
-                edge = {}
-                edges[identity.id_str][following] = edge
+            if identity.following:
+                random.shuffle(identity.following)
+                for following in identity.following[:10]:
+                    node = {
+                        "id_str": following
+                    }
+                    user = identity.users.get_user(user_id=following)
+                    if user:
+                        node["screen_name"] = user.screen_name
+
+                    nodes[following] = node
+                    edge = {}
+                    edges[identity.id_str][following] = edge
 
         dto = {
             "nodes": nodes,

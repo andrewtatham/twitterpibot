@@ -125,18 +125,18 @@
   }    
 
   $(document).ready(function(){
-    var sys = arbor.ParticleSystem(1000, 600, 0.5) // create the system with sensible repulsion/stiffness/friction
-    sys.parameters({gravity:true}) // use center-gravity to make the graph settle nicely (ymmv)
-    sys.renderer = Renderer("#viewport") // our newly created renderer will have its .init() method called shortly by sys...
+    sys = arbor.ParticleSystem({repulsion:10, stiffness:60, friction:0.1, fps:30}); // create the system with sensible repulsion/stiffness/friction
+    sys.parameters({gravity:false}); // use center-gravity to make the graph settle nicely (ymmv)
+    sys.renderer = Renderer("#viewport"); // our newly created renderer will have its .init() method called shortly by sys...
 
 
-
-    // add some nodes to the graph and watch it go...
-    sys.addEdge('a','b')
-    sys.addEdge('a','c')
-    sys.addEdge('a','d')
-    sys.addEdge('a','e')
-    sys.addNode('f', {alone:true, mass:.25})
+//
+//    // add some nodes to the graph and watch it go...
+//    sys.addEdge('a','b')
+//    sys.addEdge('a','c')
+//    sys.addEdge('a','d')
+//    sys.addEdge('a','e')
+//    sys.addNode('f', {alone:true, mass:.25})
 
     // or, equivalently:
     //

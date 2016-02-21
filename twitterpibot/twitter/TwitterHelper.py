@@ -212,3 +212,6 @@ class TwitterHelper(object):
 
     def follow(self, screen_name, user_id):
         return self.twitter.create_friendship(screen_name=screen_name, user_id=user_id)
+
+    def lookup_user(self, user_id):
+        return self.twitter.lookup_user(user_id=user_id)
