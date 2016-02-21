@@ -6,6 +6,7 @@ import flask
 
 import twitterpibot
 import twitterpibot.Controller
+
 app = flask.Flask("twitterpibot")
 
 controller = twitterpibot.Controller.Controller()
@@ -15,6 +16,11 @@ logger = logging.getLogger(__name__)
 @app.route('/')
 def index():
     return flask.render_template('index.html')
+
+
+@app.route('/demo')
+def demo():
+    return flask.render_template('demo.html')
 
 
 @app.route('/init')
@@ -45,6 +51,7 @@ def shutdown_server():
     if func is None:
         raise RuntimeError('Not running with the Werkzeug Server')
     func()
+
 
 twitterpibot.start()
 logger.info("Starting UI")

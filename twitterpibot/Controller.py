@@ -18,6 +18,7 @@ class Controller(object):
     def get_actions(self):
         return [self.get_action_dto(a[0], a[1]) for a in [
             ("home", "/"),
+            ("demo", "/demo"),
             ("init", "/init"),
             ("identity", "/identity"),
             ("shutdown", "/shutdown")

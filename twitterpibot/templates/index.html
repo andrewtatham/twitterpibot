@@ -1,13 +1,10 @@
 <html>
 <head>
-
-    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.min.js"></script>
-    <script type="text/javascript" src="/static/app.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"/>
     <link rel="stylesheet" href='/static/styles.css'/>
+
+
 </head>
 <body>
 <div class="container" ng-app="myApp" ng-controller="MainCtrl">
@@ -24,11 +21,20 @@
             {% include "actions.html" %}
         </div>
     </div>
-        <div class="row">
+    <div class="row">
         <div class="col-md-12">
             {% include "following.html" %}
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.min.js"></script>
+<script src="/static/arbor.js"></script>
+<script src="/static/app.js"></script>
+<script src="/static/followers.js"></script>
+
+
 </body>
 </html>
