@@ -6,8 +6,8 @@ import time
 
 from apscheduler.triggers.interval import IntervalTrigger
 import six
-import twitterpibot.identities
 
+import twitterpibot.identities
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
@@ -117,7 +117,7 @@ class NumberwangHostScheduledTask(ScheduledTask):
                 text=".@numberwang_host " + next(replies), in_reply_to_status_id=reply_to_id))
             time.sleep(5)
             self.identity.twitter.send(OutgoingTweet(
-                text=random.choice(host_replies),
+                text=".@" + contestant.screen_name + " " + random.choice(host_replies),
                 in_reply_to_status_id=reply_to_id))
             time.sleep(5)
 
@@ -135,31 +135,38 @@ class NumberwangHostScheduledTask(ScheduledTask):
             OutgoingTweet(text="That's all from Numberwang! Until tomorrows edition: Stay Numberwang!"))
 
     def play_numberwang_round(self, contestants, round_type):
-        round_start = "Let's play " + round_type + "!" * random.randint(1, 15)
+
+        contestants_mention = ""
+        for c in contestants:
+            contestants_mention += "@" + c.screen_name + " "
+
+        round_start = "." + contestants_mention + "Let's play " + round_type + "!" * random.randint(1, 15)
         self.identity.twitter.send(OutgoingTweet(text=round_start))
         time.sleep(5)
         answers = []
         random.shuffle(contestants)
         c = cycle(contestants)
+        other_contestant = next(c)
         contestant = next(c)
 
         turn_prompt = ".@" + contestant.screen_name + " it's your turn" + "." * random.randint(3, 7)
         reply_to_id = self.identity.twitter.send(OutgoingTweet(text=turn_prompt))
         time.sleep(5)
         for n in range(random.randint(1, 10)):
-            answer = ".@numberwang_host " + str(self.numberwang(answers))
+            answer = ".@numberwang_host @" + other_contestant.screen_name + " " + str(self.numberwang(answers))
             reply_to_id = contestant.twitter.send(OutgoingTweet(text=answer, in_reply_to_status_id=reply_to_id))
-            time.sleep(5)
             answers.append(answer)
+            time.sleep(5)
 
             if random.randint(0, 49) == 0:
-                bonus = "[KLAXON] Thats the " + round_type + " bonus. " + \
+                bonus = "[KLAXON] " + contestants_mention + " Thats the " + round_type + " bonus. " + \
                         "Triple " + round_type + " to @" + contestant.screen_name + "!"
                 reply_to_id = self.identity.twitter.send(OutgoingTweet(text=bonus, in_reply_to_status_id=reply_to_id))
                 time.sleep(5)
                 break
+            other_contestant = contestant
             contestant = next(c)
-        thats_numberwang = "That's " + round_type + "!" * random.randint(1, 15)
+        thats_numberwang = "." + contestants_mention + "That's " + round_type + "!" * random.randint(1, 15)
         self.identity.twitter.send(OutgoingTweet(text=thats_numberwang, in_reply_to_status_id=reply_to_id))
         time.sleep(5)
         if round_type == "Numberwang":
