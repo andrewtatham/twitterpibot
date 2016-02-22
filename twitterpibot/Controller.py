@@ -94,8 +94,9 @@ class Controller(object):
                 }
             edges[identity.id_str] = {}
             if identity.following:
-                random.shuffle(identity.following)
-                for following in identity.following[:10]:
+                following_list = list(identity.following)
+                random.shuffle(following_list)
+                for following in following_list[:10]:
                     node = {
                         "id_str": following
                     }
