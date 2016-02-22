@@ -96,7 +96,7 @@ funcs = cycle([
 
 class WikipediaScheduledTask(ScheduledTask):
     def get_trigger(self):
-        return CronTrigger(hour="*", minute="15,45")
+        return CronTrigger(hour="*/3", minute="15,45")
 
     def on_run(self):
         func = next(funcs)

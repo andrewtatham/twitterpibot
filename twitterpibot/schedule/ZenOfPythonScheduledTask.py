@@ -12,7 +12,7 @@ mantra = cycle(zen_of_python)
 
 class ZenOfPythonScheduledTask(ScheduledTask):
     def get_trigger(self):
-        return IntervalTrigger(hours=13)
+        return IntervalTrigger(hours=2, minutes=1)
 
     def on_run(self):
         self.identity.twitter.send(OutgoingTweet(text=next(mantra) + " #ZenOfPython"))

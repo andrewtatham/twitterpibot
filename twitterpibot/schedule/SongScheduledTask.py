@@ -11,7 +11,7 @@ class SongScheduledTask(ScheduledTask):
         self.songs = Songs()
 
     def get_trigger(self):
-        return IntervalTrigger(hours=32)
+        return IntervalTrigger(hours=32, minutes=3)
 
     def on_run(self):
 
