@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class UserListsScheduledTask(ScheduledTask):
     def __init__(self, master_identity, lists):
         ScheduledTask.__init__(self, master_identity)
-        self.lists = lists
+        self._lists = lists
 
     def get_trigger(self):
         return IntervalTrigger(hours=2)
@@ -21,7 +21,7 @@ class UserListsScheduledTask(ScheduledTask):
         for identity in self.identity.slave_identities:
             identity.lists.update_lists()
 
-        for user_list in self.lists:
+        for user_list in self._lists:
             logger.info("Synchronizing " + user_list)
             master_list = set()
             for identity in self.identity.slave_identities:

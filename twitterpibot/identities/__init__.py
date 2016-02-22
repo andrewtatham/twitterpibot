@@ -30,7 +30,9 @@ def get_bot_scheduled_jobs(identity, is_andrewtathampi=False, is_andrewtathampi2
         twitterpibot.schedule.SongScheduledTask.SongScheduledTask(identity),
         twitterpibot.schedule.ConversationScheduledTask.ConversationScheduledTask(identity),
         twitterpibot.schedule.ZenOfPythonScheduledTask.ZenOfPythonScheduledTask(identity),
-        twitterpibot.schedule.BlankTweetScheduledTask.BlankTweetScheduledTask(identity)
+        twitterpibot.schedule.BlankTweetScheduledTask.BlankTweetScheduledTask(identity),
+        twitterpibot.schedule.FollowScheduledTask.FollowScheduledTask(identity)
+
     ]
 
     if twitterpibot.hardware.is_linux \
@@ -97,7 +99,7 @@ class Identity(object):
         self.users = Users(self)
         self.lists = Lists(self, list_names=[])
         self.twitter = TwitterHelper(self)
-        self.following = None
+        self.following = {}
         self.colour = colorama.Fore.WHITE
         self.id_str = None
 

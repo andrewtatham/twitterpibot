@@ -210,7 +210,7 @@ class TwitterHelper(object):
     def create_list(self, name, mode):
         return self.twitter.create_list(name=name, mode=mode)
 
-    def follow(self, screen_name, user_id):
+    def follow(self, screen_name=None, user_id=None):
         return self.twitter.create_friendship(screen_name=screen_name, user_id=user_id)
 
     def lookup_user(self, user_id):

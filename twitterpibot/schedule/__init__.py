@@ -15,7 +15,7 @@ import twitterpibot.schedule.PhotoScheduledTask
 import twitterpibot.schedule.SunriseTimelapseScheduledTask
 import twitterpibot.schedule.SunsetTimelapseScheduledTask
 import twitterpibot.schedule.RegularTimelapseScheduledTask
-
+import twitterpibot.schedule.FollowScheduledTask
 
 import logging
 
