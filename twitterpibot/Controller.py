@@ -85,32 +85,46 @@ class Controller(object):
     def get_following_graph(self):
         nodes = {}
         edges = {}
-        for identity in twitterpibot.identities.all_identities:
 
+        # add identity nodes
+        for identity in twitterpibot.identities.all_identities:
             nodes[identity.id_str] = \
                 {
-                    "id_str": identity.id_str,
                     "screen_name": identity.screen_name,
                     "profile_image_url": identity.profile_image_url
                 }
+            # init identity edges
             edges[identity.id_str] = {}
-            if identity.following:
-                following_list = list(identity.following)
-                random.shuffle(following_list)
-                for following in following_list[:10]:
-                    node = {
-                        "id_str": following
-                    }
-                    user = identity.users.get_user(user_id=following)
-                    if user:
-                        node["name"] = user.name
-                        node["screen_name"] = user.screen_name
-                        node["description"] = user.description
-                        node["profile_image_url"] = user.profile_image_url
 
-                    nodes[following] = node
-                    edge = {}
-                    edges[identity.id_str][following] = edge
+            # add edges between identities
+            # for identity2 in twitterpibot.identities.all_identities:
+            #     if identity2.id_str in identity.following:
+            #         edge_data = {}
+            #         edges[identity.id_str][identity2.id_str] = edge_data
+
+
+        # get a list of users to add
+        users_list = []
+        for identity in twitterpibot.identities.all_identities:
+            identity_users_list = []
+            for k, v in identity.users._users.items():
+                identity_users_list.append(v)
+            random.shuffle(identity_users_list)
+            users_list.extend(identity_users_list[:10])
+
+        # add user nodes
+        for user in users_list:
+            nodes[user.id_str] = \
+                {
+                    "screen_name": user.screen_name,
+                    "profile_image_url": user.profile_image_url
+                }
+
+            # add following edges
+            for identity in twitterpibot.identities.all_identities:
+                if user.id_str in identity.following:
+                    edge_data = {}
+                    edges[identity.id_str][user.id_str] = edge_data
 
         dto = {
             "nodes": nodes,

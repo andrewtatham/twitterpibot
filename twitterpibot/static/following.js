@@ -65,7 +65,7 @@
           // pt:   {x:#, y:#}  node position in screen coords
 
           var label = "@" + node.data.screen_name;
-           
+
           // determine the box size and round off the coords if we'll be
           // drawing a text label (awful alignment jitter otherwise...)
           var w = ctx.measureText(label||"").width + 6
@@ -153,7 +153,7 @@
   }    
 
   $(document).ready(function(){
-    sys = arbor.ParticleSystem({repulsion:10, stiffness:60, friction:0.8, fps:20}); // create the system with sensible repulsion/stiffness/friction
+    sys = arbor.ParticleSystem({repulsion:250000, stiffness:1, friction:0.9, fps:50}); // create the system with sensible repulsion/stiffness/friction
     sys.parameters({gravity:false}); // use center-gravity to make the graph settle nicely (ymmv)
     sys.renderer = Renderer("#viewport"); // our newly created renderer will have its .init() method called shortly by sys...
 

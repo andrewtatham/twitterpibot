@@ -50,11 +50,11 @@ class Lists(object):
         if not self._sets or not self._list_ids:
             self.update_lists()
 
-        user.is_arsehole = "Arseholes" in self._sets and user.id in self._sets.get("Arseholes")
-        user.is_reply_less = "Reply Less" in self._sets and user.id in self._sets.get("Reply Less")
-        user.is_do_not_retweet = "Dont Retweet" in self._sets and user.id in self._sets.get("Dont Retweet")
-        user.is_retweet_more = "Retweet More" in self._sets and user.id in self._sets.get("Retweet More")
-        user.is_bot = "Awesome Bots" in self._sets and user.id in self._sets.get("Awesome Bots")
-        user.is_friend = "Friends" in self._sets and user.id in self._sets.get("Friends")
+        user.is_arsehole = "Arseholes" in self._sets and user.id_str in self._sets.get("Arseholes")
+        user.is_reply_less = "Reply Less" in self._sets and user.id_str in self._sets.get("Reply Less")
+        user.is_do_not_retweet = "Dont Retweet" in self._sets and user.id_str in self._sets.get("Dont Retweet")
+        user.is_retweet_more = "Retweet More" in self._sets and user.id_str in self._sets.get("Retweet More")
+        user.is_bot = "Awesome Bots" in self._sets and user.id_str in self._sets.get("Awesome Bots")
+        user.is_friend = "Friends" in self._sets and user.id_str in self._sets.get("Friends")
 
         user.updated = datetime.datetime.utcnow()

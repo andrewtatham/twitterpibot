@@ -187,7 +187,9 @@ class NumberwangHostIdentity(Identity):
         self.id_str = "4904547543"
 
     def get_tasks(self):
-        return []
+        return [
+            twitterpibot.tasks.StreamTweetsTask.StreamTweetsTask(self)
+        ]
 
     def get_scheduled_jobs(self):
         return [NumberwangHostScheduledTask(self)]
@@ -203,7 +205,9 @@ class JulieNumberwangIdentity(Identity):
         self.id_str = "4912246174"
 
     def get_tasks(self):
-        return []
+        return [
+            twitterpibot.tasks.StreamTweetsTask.StreamTweetsTask(self)
+        ]
 
     def get_scheduled_jobs(self):
         return []
@@ -219,7 +223,9 @@ class SimonNumberwangIdentity(Identity):
         self.id_str = "4912203173"
 
     def get_tasks(self):
-        return []
+        return [
+            twitterpibot.tasks.StreamTweetsTask.StreamTweetsTask(self)
+        ]
 
     def get_scheduled_jobs(self):
         return []
@@ -249,12 +255,12 @@ if not all_identities:
         ]
     else:
         all_identities = [
-            # andrewtatham,
+            andrewtatham,
             andrewtathampi,
             andrewtathampi2,
-            # numberwang_host,
-            # julienumberwang,
-            # simonnumberwang
+            numberwang_host,
+            julienumberwang,
+            simonnumberwang
         ]
 
 

@@ -13,7 +13,7 @@ def parse_int(param):
 class User(object):
     def __init__(self, data, my_screen_name):
 
-        self.id = data.get("id_str")
+        self.id_str = data.get("id_str")
         self.name = data.get("name")
         self.screen_name = data.get("screen_name")
         self.description = data.get("description")
