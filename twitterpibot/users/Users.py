@@ -1,7 +1,10 @@
 import logging
+
 from twitterpibot.users.User import User
 
 logger = logging.getLogger(__name__)
+
+
 class Users(object):
     def __init__(self, identity):
         self._identity = identity
@@ -9,7 +12,7 @@ class Users(object):
 
     def get_user(self, user_id=None, user_data=None):
         if user_id and not user_data:
-            logger.debug("looking up user %s"  % user_id)
+            logger.debug("looking up user %s" % user_id)
             user_data = self._identity.twitter.lookup_user(user_id=user_id)[0]
 
         if user_data:

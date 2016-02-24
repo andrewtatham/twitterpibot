@@ -90,7 +90,8 @@ class Controller(object):
             nodes[identity.id_str] = \
                 {
                     "id_str": identity.id_str,
-                    "screen_name": identity.screen_name
+                    "screen_name": identity.screen_name,
+                    "profile_image_url": identity.profile_image_url
                 }
             edges[identity.id_str] = {}
             if identity.following:
@@ -102,7 +103,10 @@ class Controller(object):
                     }
                     user = identity.users.get_user(user_id=following)
                     if user:
+                        node["name"] = user.name
                         node["screen_name"] = user.screen_name
+                        node["description"] = user.description
+                        node["profile_image_url"] = user.profile_image_url
 
                     nodes[following] = node
                     edge = {}

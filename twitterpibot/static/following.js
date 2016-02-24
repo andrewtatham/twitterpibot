@@ -29,8 +29,11 @@
         
         // set up some event handlers to allow for node-dragging
         that.initMouseHandling()
-      },
-      
+
+
+
+        },
+
       redraw:function(){
         // 
         // redraw will be called repeatedly during the run whenever the node positions
@@ -57,15 +60,41 @@
           ctx.lineTo(pt2.x, pt2.y)
           ctx.stroke()
         })
-
         particleSystem.eachNode(function(node, pt){
           // node: {mass:#, p:{x,y}, name:"", data:{}}
           // pt:   {x:#, y:#}  node position in screen coords
 
-          // draw a rectangle centered at pt
-          var w = 10
-          ctx.fillStyle = (node.data.alone) ? "orange" : "black"
-          ctx.fillRect(pt.x-w/2, pt.y-w/2, w,w)
+          var label = "@" + node.data.screen_name;
+           
+          // determine the box size and round off the coords if we'll be
+          // drawing a text label (awful alignment jitter otherwise...)
+          var w = ctx.measureText(label||"").width + 6
+          if (!(label||"").match(/^[ \t]*$/)){
+            pt.x = Math.floor(pt.x)
+            pt.y = Math.floor(pt.y)
+          }else{
+            label = null
+          }
+
+          // clear any edges below the text label
+          // ctx.fillStyle = 'rgba(255,255,255,.6)'
+          // ctx.fillRect(pt.x-w/2, pt.y-7, w,14)
+
+          ctx.clearRect(pt.x-w/2, pt.y-7, w,14)
+
+          // draw the text
+          if (label){
+            ctx.font = "bold 11px Arial"
+            ctx.textAlign = "center"
+
+            // if (node.data.region) ctx.fillStyle = palette[node.data.region]
+            // else ctx.fillStyle = "#888888"
+            ctx.fillStyle = "#888888"
+
+            // ctx.fillText(label||"", pt.x, pt.y+4)
+            ctx.fillText(label||"", pt.x, pt.y+4)
+          }
+
         })    			
       },
       
@@ -102,7 +131,6 @@
 
             return false
           },
-
           dropped:function(e){
             if (dragged===null || dragged.node===undefined) return
             if (dragged.node !== null) dragged.node.fixed = false
@@ -125,33 +153,9 @@
   }    
 
   $(document).ready(function(){
-    sys = arbor.ParticleSystem({repulsion:10, stiffness:60, friction:0.1, fps:30}); // create the system with sensible repulsion/stiffness/friction
+    sys = arbor.ParticleSystem({repulsion:10, stiffness:60, friction:0.8, fps:20}); // create the system with sensible repulsion/stiffness/friction
     sys.parameters({gravity:false}); // use center-gravity to make the graph settle nicely (ymmv)
     sys.renderer = Renderer("#viewport"); // our newly created renderer will have its .init() method called shortly by sys...
-
-
-//
-//    // add some nodes to the graph and watch it go...
-//    sys.addEdge('a','b')
-//    sys.addEdge('a','c')
-//    sys.addEdge('a','d')
-//    sys.addEdge('a','e')
-//    sys.addNode('f', {alone:true, mass:.25})
-
-    // or, equivalently:
-    //
-    // sys.graft({
-    //   nodes:{
-    //     f:{alone:true, mass:.25}
-    //   },
-    //   edges:{
-    //     a:{ b:{},
-    //         c:{},
-    //         d:{},
-    //         e:{}
-    //     }
-    //   }
-    // })
 
   })
 

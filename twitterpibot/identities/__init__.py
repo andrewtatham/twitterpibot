@@ -1,7 +1,8 @@
 import abc
-import colorama
-import twitterpibot
 
+import colorama
+
+import twitterpibot
 from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
 from twitterpibot.twitter.TwitterHelper import TwitterHelper
 from twitterpibot.users.Lists import Lists
@@ -80,7 +81,7 @@ def get_bot_tasks(identity):
         twitterpibot.tasks.StreamTweetsTask.StreamTweetsTask(identity)
     ]
     if twitterpibot.hardware.is_piglow_attached \
-            or twitterpibot.hardware.is_unicornhat_attached\
+            or twitterpibot.hardware.is_unicornhat_attached \
             or twitterpibot.hardware.is_blinksticknano_attached:
         tasks.extend([
             twitterpibot.tasks.LightsTask.LightsTask(),
@@ -102,6 +103,7 @@ class Identity(object):
         self.following = {}
         self.colour = colorama.Fore.WHITE
         self.id_str = None
+        self.profile_image_url = None  # todo init
 
     @abc.abstractmethod
     def get_tasks(self):
@@ -122,7 +124,7 @@ class AndrewTathamIdentity(Identity):
         self.admin_screen_name = "andrewtatham"
         self.lists = Lists(self, default_lists)
         self.slave_identities = slave_identities
-        self.id_str="19201332"
+        self.id_str = "19201332"
 
     def get_tasks(self):
         return [
@@ -146,8 +148,8 @@ class AndrewTathamPiIdentity(Identity):
         self.admin_screen_name = "andrewtatham"
         self.converse_with = "andrewtathampi2"
         self.lists = Lists(self, default_lists)
-        self.colour= colorama.Fore.MAGENTA
-        self.id_str="2935295111"
+        self.colour = colorama.Fore.MAGENTA
+        self.id_str = "2935295111"
 
     def get_tasks(self):
         return get_bot_tasks(self)
@@ -166,7 +168,7 @@ class AndrewTathamPi2Identity(Identity):
         self.converse_with = "andrewtathampi"
         self.lists = Lists(self, default_lists)
         self.colour = colorama.Fore.CYAN
-        self.id_str="3892161801"
+        self.id_str = "3892161801"
 
     def get_tasks(self):
         return get_bot_tasks(self)
