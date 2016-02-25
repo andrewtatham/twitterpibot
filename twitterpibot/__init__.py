@@ -15,17 +15,22 @@ if not hardware.is_andrew_desktop:
 
 
 def start():
-    logger.info("Starting")
+    logger.info("Setting tasks")
     twitterpibot.tasks.set_tasks(twitterpibot.identities.get_all_tasks())
+    logger.info("Setting schedule")
     twitterpibot.schedule.set_scheduled_jobs(twitterpibot.identities.get_all_scheduled_jobs())
+    logger.info("Setting tasks")
     twitterpibot.tasks.start()
+    logger.info("Setting schedule")
     twitterpibot.schedule.start()
     logger.info("Started")
 
 
 def stop():
-    logger.info("Stopping")
+    logger.info("Stopping schedule")
     twitterpibot.schedule.stop()
+    logger.info("Stopping tasks")
     twitterpibot.tasks.stop()
+    logger.info("Stopping hardware")
     twitterpibot.hardware.stop()
     logger.info("Stopped")

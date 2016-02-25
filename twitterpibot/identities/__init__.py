@@ -258,9 +258,9 @@ if not all_identities:
             andrewtatham,
             andrewtathampi,
             andrewtathampi2,
-            numberwang_host,
-            julienumberwang,
-            simonnumberwang
+            # numberwang_host,
+            # julienumberwang,
+            # simonnumberwang
         ]
 
 

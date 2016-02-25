@@ -91,16 +91,17 @@ class Controller(object):
             nodes[identity.id_str] = \
                 {
                     "screen_name": identity.screen_name,
-                    "profile_image_url": identity.profile_image_url
+                    "profile_image_url": identity.profile_image_url,
+                    "mass": 10
                 }
             # init identity edges
             edges[identity.id_str] = {}
 
             # add edges between identities
-            # for identity2 in twitterpibot.identities.all_identities:
-            #     if identity2.id_str in identity.following:
-            #         edge_data = {}
-            #         edges[identity.id_str][identity2.id_str] = edge_data
+            for identity2 in twitterpibot.identities.all_identities:
+                if identity2.id_str in identity.following:
+                    edge_data = {"length": 50}
+                    edges[identity.id_str][identity2.id_str] = edge_data
 
 
         # get a list of users to add
@@ -110,7 +111,7 @@ class Controller(object):
             for k, v in identity.users._users.items():
                 identity_users_list.append(v)
             random.shuffle(identity_users_list)
-            users_list.extend(identity_users_list[:10])
+            users_list.extend(identity_users_list)
 
         # add user nodes
         for user in users_list:
@@ -123,7 +124,7 @@ class Controller(object):
             # add following edges
             for identity in twitterpibot.identities.all_identities:
                 if user.id_str in identity.following:
-                    edge_data = {}
+                    edge_data = {"length": 30}
                     edges[identity.id_str][user.id_str] = edge_data
 
         dto = {
