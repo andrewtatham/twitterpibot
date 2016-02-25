@@ -85,9 +85,10 @@ class Controller(object):
     def get_following_graph(self):
         nodes = {}
         edges = {}
-
+        identity_ids = set()
         # add identity nodes
         for identity in twitterpibot.identities.all_identities:
+            identity_ids.add(identity.id_str)
             nodes[identity.id_str] = \
                 {
                     "screen_name": identity.screen_name,
@@ -100,7 +101,7 @@ class Controller(object):
             # add edges between identities
             for identity2 in twitterpibot.identities.all_identities:
                 if identity2.id_str in identity.following:
-                    edge_data = {"length": 50}
+                    edge_data = {"length": random.randint(50,70)}
                     edges[identity.id_str][identity2.id_str] = edge_data
 
 
@@ -115,17 +116,18 @@ class Controller(object):
 
         # add user nodes
         for user in users_list:
-            nodes[user.id_str] = \
-                {
-                    "screen_name": user.screen_name,
-                    "profile_image_url": user.profile_image_url
-                }
+            if user.id_str not in identity_ids:
+                nodes[user.id_str] = \
+                    {
+                        "screen_name": user.screen_name,
+                        "profile_image_url": user.profile_image_url
+                    }
 
-            # add following edges
-            for identity in twitterpibot.identities.all_identities:
-                if user.id_str in identity.following:
-                    edge_data = {"length": 30}
-                    edges[identity.id_str][user.id_str] = edge_data
+                # add following edges
+                for identity in twitterpibot.identities.all_identities:
+                    if user.id_str in identity.following:
+                        edge_data = {"length": random.randint(20,40)}
+                        edges[identity.id_str][user.id_str] = edge_data
 
         dto = {
             "nodes": nodes,
