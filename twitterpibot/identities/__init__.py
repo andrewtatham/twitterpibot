@@ -1,4 +1,5 @@
 import abc
+import random
 
 import colorama
 
@@ -277,3 +278,14 @@ def get_all_scheduled_jobs():
     for i in all_identities:
         scheduled_jobs.extend(i.get_scheduled_jobs())
     return scheduled_jobs
+
+
+def get_numberwang_contestants():
+    return random.choice([
+        [julienumberwang, simonnumberwang],
+        [julienumberwang, simonnumberwang],
+        [julienumberwang, simonnumberwang],
+        [andrewtatham, twitterpibot.identities.julienumberwang],
+        [andrewtatham, twitterpibot.identities.simonnumberwang],
+        [andrewtathampi, twitterpibot.identities.andrewtathampi2]
+    ])

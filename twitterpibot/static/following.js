@@ -154,7 +154,7 @@
 
   $(document).ready(function(){
     sys = arbor.ParticleSystem({repulsion:1000, stiffness:600, friction:0.5, fps:50}); // create the system with sensible repulsion/stiffness/friction
-    sys.parameters({gravity:false}); // use center-gravity to make the graph settle nicely (ymmv)
+    sys.parameters({gravity:true}); // use center-gravity to make the graph settle nicely (ymmv)
     sys.renderer = Renderer("#viewport"); // our newly created renderer will have its .init() method called shortly by sys...
 
   })
