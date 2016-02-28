@@ -7,6 +7,7 @@ import twitterpibot.responses
 import twitterpibot.schedule
 import twitterpibot.tasks
 import twitterpibot.MyLogging
+import twitterpibot.controller
 
 logger = logging.getLogger(__name__)
 
@@ -19,9 +20,9 @@ def start():
     twitterpibot.tasks.set_tasks(twitterpibot.identities.get_all_tasks())
     logger.info("Setting schedule")
     twitterpibot.schedule.set_scheduled_jobs(twitterpibot.identities.get_all_scheduled_jobs())
-    logger.info("Setting tasks")
+    logger.info("Starting tasks")
     twitterpibot.tasks.start()
-    logger.info("Setting schedule")
+    logger.info("Starting schedule")
     twitterpibot.schedule.start()
     logger.info("Started")
 

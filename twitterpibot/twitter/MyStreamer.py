@@ -13,7 +13,7 @@ import twitterpibot.twitter.Authenticator as Authenticator
 
 logger = logging.getLogger(__name__)
 
-default_backoff = 8
+default_backoff = 30
 max_backoff = 300
 
 

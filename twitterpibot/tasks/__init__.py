@@ -1,15 +1,11 @@
-import twitterpibot.tasks.FadeTask
-import twitterpibot.tasks.LightsTask
-import twitterpibot.tasks.StreamTweetsTask
-
-
-
 import threading
 import logging
 import time
 
+import twitterpibot.tasks.FadeTask
+import twitterpibot.tasks.LightsTask
+import twitterpibot.tasks.StreamTweetsTask
 from twitterpibot.ExceptionHandler import handle
-
 
 logger = logging.getLogger(__name__)
 
@@ -78,4 +74,4 @@ def stop():
 
 def set_tasks(tasks):
     global _tasks
-    _tasks.extend(tasks)
+    _tasks = tasks

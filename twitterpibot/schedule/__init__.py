@@ -1,3 +1,7 @@
+import logging
+
+from apscheduler.schedulers.background import BackgroundScheduler
+
 import twitterpibot.schedule.ConversationScheduledTask
 import twitterpibot.schedule.EdBallsDay
 import twitterpibot.schedule.JokesScheduledTask
@@ -16,11 +20,6 @@ import twitterpibot.schedule.SunriseTimelapseScheduledTask
 import twitterpibot.schedule.SunsetTimelapseScheduledTask
 import twitterpibot.schedule.RegularTimelapseScheduledTask
 import twitterpibot.schedule.FollowScheduledTask
-
-import logging
-
-from apscheduler.schedulers.background import BackgroundScheduler
-
 from twitterpibot.ExceptionHandler import handle
 
 logger = logging.getLogger(__name__)
@@ -59,4 +58,4 @@ _scheduled_jobs = []
 
 def set_scheduled_jobs(scheduled_jobs):
     global _scheduled_jobs
-    _scheduled_jobs.extend(scheduled_jobs)
+    _scheduled_jobs = scheduled_jobs
