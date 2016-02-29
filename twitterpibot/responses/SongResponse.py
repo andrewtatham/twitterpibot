@@ -23,4 +23,6 @@ class SongResponse(Response):
         for word in inbox_item.words:
             for songname in self.songnames:
                 if word.lower() == songname.lower():
-                    self.songs.sing_song(self.identity, song_key=songname, inbox_item=inbox_item)
+                    song_key = songname
+                    song = self.songs.get_song(song_key)
+                    self.identity.twitter.sing_song(song=song, inbox_item=inbox_item)

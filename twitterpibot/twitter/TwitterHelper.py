@@ -1,5 +1,7 @@
 import logging
 import os
+import random
+import time
 
 from twython import Twython
 
@@ -30,6 +32,7 @@ class TwitterHelper(object):
             self.identity.tokens[3]
         )
         # self.identity.twid = self.twitter.lookup_user(screen_name=identity.screen_name)[0]["id_str"]
+        self.mutation = [" ,", " .", " *", " `", " -", " _"]
 
     def send(self, outbox_item):
         if type(outbox_item) is OutgoingTweet:
@@ -215,3 +218,55 @@ class TwitterHelper(object):
 
     def lookup_user(self, user_id):
         return self.twitter.lookup_user(user_id=user_id)
+
+    def sing_song(self, song, target=None, inbox_item=None, text=None, hashtag=None):
+        if not text:
+            text = random.choice(["All together now!", "Sing along!"])
+        text += ' ' + song["video"]
+        if hashtag:
+            text += ' ' + hashtag
+
+        in_reply_to_status_id = self._send_to(
+            inbox_item=inbox_item,
+            lyric=text,
+            target=target,
+            in_reply_to_status_id=None)
+        time.sleep(5)
+
+        lastlyrics = set([])
+        for lyric in song["lyrics"]:
+            lyric = lyric.strip()
+            if lyric:
+                if "<<screen_name>>" in lyric:
+                    lyric = lyric.replace("<<screen_name>>", "@" + target)
+                if hashtag:
+                    lyric += " " + hashtag
+                while lyric in lastlyrics:
+                    lyric += random.choice(self.mutation)
+                lastlyrics.add(lyric)
+                in_reply_to_status_id = self._send_to(
+                    inbox_item,
+                    lyric,
+                    target,
+                    in_reply_to_status_id)
+                time.sleep(5)
+
+    def _send_to(self, inbox_item, lyric, target, in_reply_to_status_id):
+        if inbox_item:
+            return self.reply_with(
+                inbox_item=inbox_item,
+                text=lyric,
+                in_reply_to_status_id=in_reply_to_status_id)
+        else:
+            text = ""
+            if target:
+                # noinspection PyUnresolvedReferences
+                if isinstance(target, basestring):
+                    text = "@" + target
+                elif isinstance(target, User.User):
+                    text = "@" + target.screen_name
+            text += " " + lyric
+            tweet = OutgoingTweet(
+                text=text,
+                in_reply_to_status_id=in_reply_to_status_id)
+            return self.send(tweet)

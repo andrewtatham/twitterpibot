@@ -1,39 +1,36 @@
 import os
 import random
-import time
 import itertools
 
 import twitterpibot
-from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
-from twitterpibot.processing.christmas import is_christmas
-from twitterpibot.users import User
+import twitterpibot.logic.FileSystemHelper
+import twitterpibot.processing.christmas
 
 
 class Songs(object):
     def __init__(self):
-        self.songsfolder = "twitterpibot" + os.sep + "songs" + os.sep
-        self.mutation = [" ,", " .", " *", " `", " -", " _"]
+        self.songsfolder = twitterpibot.logic.FileSystemHelper.get_root() + "twitterpibot" + os.sep + "songs" + os.sep
         self._songs = CaseInsensitiveDict(
             {
                 "500miles": {
                     "artist": "The Proclaimers",
                     "screen_name": "@The_Proclaimers",
                     "title": "I'm Gonna Be (500 Miles)",
-                    "lyrics": "500miles.txt",
+                    "lyrics_file": "500miles.txt",
                     "video": "https://youtu.be/tM0sTNtWDiI"
                 },
                 "dontstopbelieving": {
                     "artist": "Journey",
                     "screen_name": "@JourneyOfficial",
                     "title": "Don't Stop Believin'",
-                    "lyrics": "believin.txt",
+                    "lyrics_file": "believin.txt",
                     "video": "https://youtu.be/KCy7lLQwToI"
                 },
                 "surfinbird": {
                     "artist": "The Trashmen",
                     "screen_name": "@TheTrashmenBand",
                     "title": "Surfin' Bird",
-                    "lyrics": "bird.txt",
+                    "lyrics_file": "bird.txt",
                     "video": "https://youtu.be/9Gc4QTqslN4",
                     "hashtag": "#PapaOohmowmow"
                 },
@@ -41,35 +38,35 @@ class Songs(object):
                     "artist": "New Order",
                     "screen_name": "@neworder",
                     "title": "Blue Monday",
-                    "lyrics": "bluemonday.txt",
+                    "lyrics_file": "bluemonday.txt",
                     "video": "https://youtu.be/FYH8DsU2WCk"
                 },
                 "bohrap": {
                     "artist": "Queen ",
                     "screen_name": "@QueenRockBand",
                     "title": "Bohemian Rhapsody ",
-                    "lyrics": "bohrap.txt",
+                    "lyrics_file": "bohrap.txt",
                     "video": "https://youtu.be/fJ9rUzIMcZQ"
                 },
                 "boomshackalack": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "boomshackalack.txt",
+                    "lyrics_file": "boomshackalack.txt",
                     "video": "https://youtu.be/kZzBd41NuZw"
                 },
                 "commonpeople": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "common.txt",
+                    "lyrics_file": "common.txt",
                     "video": "https://youtu.be/yuTMWgOduFM"
                 },
                 "compton": {
                     "artist": "N.W.A.",
                     "screen_name": "@mcrencpt @icecube @drdre",
                     "title": "",
-                    "lyrics": "compton.txt",
+                    "lyrics_file": "compton.txt",
                     "video": "https://youtu.be/TMZi25Pq3T8"
 
                 },
@@ -77,70 +74,70 @@ class Songs(object):
                     "artist": "R.E.M.",
                     "screen_name": None,
                     "title": "It's The End Of The World As We Know It (And I Feel Fine)",
-                    "lyrics": "endoftheworld.txt",
+                    "lyrics_file": "endoftheworld.txt",
                     "video": "https://youtu.be/Z0GFRcFm-aY"
                 },
                 "forgotaboutdre": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "forgot.txt",
+                    "lyrics_file": "forgot.txt",
                     "video": "https://youtu.be/QFcv5Ma8u8k"
                 },
                 "freshprince": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "freshprince.txt",
+                    "lyrics_file": "freshprince.txt",
                     "video": "https://youtu.be/hBe0VCso0qs"
                 },
                 "gangstersparadise": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "gangsters.txt",
+                    "lyrics_file": "gangsters.txt",
                     "video": "https://youtu.be/cpGbzYlnz7c"
                 },
                 "hammertime": {
                     "artist": "MC Hammer",
                     "screen_name": "@MCHammer",
                     "title": "U Can't Touch This",
-                    "lyrics": "hammertime.txt",
+                    "lyrics_file": "hammertime.txt",
                     "video": "https://youtu.be/otCpCn0l4Wo"
                 },
                 "icebaby": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "ice.txt",
+                    "lyrics_file": "ice.txt",
                     "video": "https://youtu.be/rog8ou-ZepE"
                 },
                 "incredible": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "incredible.txt",
+                    "lyrics_file": "incredible.txt",
                     "video": "https://youtu.be/mL2Bgj-za5k"
                 },
                 "informer": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "informer.txt",
+                    "lyrics_file": "informer.txt",
                     "video": "https://youtu.be/StlMdNcvCJo"
                 },
                 "japanese": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "japanese.txt",
+                    "lyrics_file": "japanese.txt",
                     "video": "https://youtu.be/mgekmOqCFTU"
                 },
                 "jinglebells": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "jingle.txt",
+                    "lyrics_file": "jingle.txt",
                     "video": "https://youtu.be/FVJskPa2a3s",
                     "christmas": "true"
                 },
@@ -148,154 +145,154 @@ class Songs(object):
                     "artist": "Guns N' Roses",
                     "screen_name": "@gunsnroses",
                     "title": "",
-                    "lyrics": "jungle.txt",
+                    "lyrics_file": "jungle.txt",
                     "video": "https://youtu.be/o1tj2zJ2Wvg"
                 },
                 "nighttrain": {
                     "artist": "Guns N' Roses",
                     "screen_name": "@gunsnroses",
                     "title": "",
-                    "lyrics": "nighttrain.txt",
+                    "lyrics_file": "nighttrain.txt",
                     "video": "https://youtu.be/Qyf8oRF6Trg"
                 },
                 "novemberrain": {
                     "artist": "Guns N' Roses",
                     "screen_name": "@gunsnroses",
                     "title": "",
-                    "lyrics": "novemberrain.txt",
+                    "lyrics_file": "novemberrain.txt",
                     "video": "https://youtu.be/8SbUC-UaAxE"
                 },
                 "paradisecity": {
                     "artist": "Guns N' Roses",
                     "screen_name": "@gunsnroses",
                     "title": "",
-                    "lyrics": "paradise.txt",
+                    "lyrics_file": "paradise.txt",
                     "video": "https://youtu.be/Rbm6GXllBiw"
                 },
                 "fuckthepolice": {
                     "artist": "N.W.A.",
                     "screen_name": "@mcrencpt @icecube @drdre",
                     "title": "",
-                    "lyrics": "police.txt",
+                    "lyrics_file": "police.txt",
                     "video": "https://youtu.be/Z7-TTWgiYL4"
                 },
                 "rickroll": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "rickroll.txt",
+                    "lyrics_file": "rickroll.txt",
                     "video": "https://youtu.be/dQw4w9WgXcQ"
                 },
                 "rocklobster": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "rocklobster.txt",
+                    "lyrics_file": "rocklobster.txt",
                     "video": "https://youtu.be/tDZy6-fMCw4"
                 },
                 "toosexy": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "sexy.txt",
+                    "lyrics_file": "sexy.txt",
                     "video": "https://youtu.be/YFmsgHfuXpA"
                 },
                 "spinmeround": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "spinmeround.txt",
+                    "lyrics_file": "spinmeround.txt",
                     "video": "https://youtu.be/PGNiXGX2nLU"
                 },
                 "stilldre": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "stilldre.txt",
+                    "lyrics_file": "stilldre.txt",
                     "video": "https://youtu.be/_CL6n0FJZpk"
                 },
                 "stuckinthemiddle": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "stuckinthemiddle.txt",
+                    "lyrics_file": "stuckinthemiddle.txt",
                     "video": "https://youtu.be/DohRa9lsx0Q"
                 },
                 "sweetchildomine": {
                     "artist": "Guns N' Roses",
                     "screen_name": "@gunsnroses",
                     "title": "",
-                    "lyrics": "sweet.txt",
+                    "lyrics_file": "sweet.txt",
                     "video": "https://youtu.be/1w7OgIMMRc4"
                 },
                 "wonderwall": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "wonderwall.txt",
+                    "lyrics_file": "wonderwall.txt",
                     "video": "https://youtu.be/6hzrDeceEKc"
                 },
                 "wedidntstartthefire": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "wedidntstartthefire.txt",
+                    "lyrics_file": "wedidntstartthefire.txt",
                     "video": "https://youtu.be/eFTLKWw542g"
                 },
                 "gangnamstyle": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "gangnamstyle.txt",
+                    "lyrics_file": "gangnamstyle.txt",
                     "video": "https://youtu.be/9bZkp7q19f0"
                 },
                 "americafuckyeah": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "americafuckyeah.txt",
+                    "lyrics_file": "americafuckyeah.txt",
                     "video": "https://youtu.be/7R5A0pg4oN8"
                 },
                 "ronery": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "ronery.txt",
+                    "lyrics_file": "ronery.txt",
                     "video": "https://youtu.be/UEaKX9YYHiQ"
                 },
                 "aids": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "aids.txt",
+                    "lyrics_file": "aids.txt",
                     "video": "https://youtu.be/StPTCo5qk8E"
                 },
                 "jumparound": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "jumparound.txt",
+                    "lyrics_file": "jumparound.txt",
                     "video": "https://youtu.be/KZaz7OqyTHQ"
                 },
                 "jump": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "jump.txt",
+                    "lyrics_file": "jump.txt",
                     "video": "https://youtu.be/010KyIQjkTk"
                 },
                 "tribute": {
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "tribute.txt",
+                    "lyrics_file": "tribute.txt",
                     "video": "https://youtu.be/_lK4cX5xGiQ"
                 },
                 "rhumble": {
                     "artist": "",
                     "screen_name": None,
                     "title": "Let's Get Ready To Rhumble",
-                    "lyrics": "rhumble.txt",
+                    "lyrics_file": "rhumble.txt",
                     "video": "https://youtu.be/m_sJmIQrH54"
                 },
 
@@ -304,7 +301,7 @@ class Songs(object):
                     "artist": "50 Cent",
                     "screen_name": None,
                     "title": "In Da Club",
-                    "lyrics": "indaclub.txt",
+                    "lyrics_file": "indaclub.txt",
                     "video": "https://youtu.be/5qm8PH4xAss",
                     "birthday": "true"
 
@@ -313,7 +310,7 @@ class Songs(object):
                     "artist": "",
                     "screen_name": None,
                     "title": "For He's a Jolly Good Fellow",
-                    "lyrics": "jollygoodfellow.txt",
+                    "lyrics_file": "jollygoodfellow.txt",
                     "video": "https://youtu.be/RYLtBFQDAGE",
                     "birthday": "true"
                 },
@@ -321,7 +318,7 @@ class Songs(object):
                     "artist": "Stevie Wonder",
                     "screen_name": None,
                     "title": "Happy Birthday",
-                    "lyrics": "happybirthdaytoya.txt",
+                    "lyrics_file": "happybirthdaytoya.txt",
                     "video": "https://youtu.be/inS9gAgSENE",
                     "birthday": "true"
                 },
@@ -329,7 +326,7 @@ class Songs(object):
                     "artist": "",
                     "screen_name": None,
                     "title": "",
-                    "lyrics": "happybirthdaytoyou.txt",
+                    "lyrics_file": "happybirthdaytoyou.txt",
                     "video": "https://youtu.be/xxOviBI-8fc",
                     "birthday": "true"
                 },
@@ -337,7 +334,7 @@ class Songs(object):
                     "artist": "Jimmi Hendrix",
                     "screen_name": None,
                     "title": "Happy Birthday",
-                    "lyrics": "happybirthdayhendrix.txt",
+                    "lyrics_file": "happybirthdayhendrix.txt",
                     "video": "https://youtu.be/USip2Phpy60",
                     "birthday": "true"
                 },
@@ -345,7 +342,7 @@ class Songs(object):
                     "artist": "The Beatles",
                     "screen_name": None,
                     "title": "Happy Birthday",
-                    "lyrics": "happybirthdaybeatles.txt",
+                    "lyrics_file": "happybirthdaybeatles.txt",
                     "video": "https://youtu.be/wNcJ3jYOQGg",
                     "birthday": "true"
                 },
@@ -353,7 +350,7 @@ class Songs(object):
                     "artist": "Katy Perry",
                     "screen_name": None,
                     "title": "Birthday",
-                    "lyrics": "birthdaykatyperry.txt",
+                    "lyrics_file": "birthdaykatyperry.txt",
                     "video": "https://youtu.be/jqYxyd1iSNk",
                     "birthday": "true"
                 },
@@ -376,68 +373,17 @@ class Songs(object):
         keys = [k for k, v in self._songs.items() if "birthday" not in v and (is_christmas or "christmas" not in v)]
         return keys
 
-    def sing_birthday_song(self, identity, screen_name):
-        song_key = self._birthdaySongKeys.next()
-        self.sing_song(identity, song_key, screen_name, text="Happy Birthday @" + screen_name + " !!!",
-                       hashtag="#HappyBirthday")
+    def birthday_song_keys(self):
+        return self._birthdaySongKeys
 
-    def sing_song(self, identity, song_key, target=None, inbox_item=None, text=None, hashtag=None):
+    def get_song(self, song_key):
         song = self._songs[song_key]
-
-        if not text:
-            text = random.choice(["All together now!", "Sing along!"])
-        text += ' ' + song["video"]
-        if hashtag:
-            text += ' ' + hashtag
-
-        in_reply_to_status_id = self._send(
-            identity=identity,
-            inbox_item=inbox_item,
-            lyric=text,
-            target=target,
-            in_reply_to_status_id=None)
-        time.sleep(5)
-
-        lyricsfile = song["lyrics"]
-        lyrics = open(self.songsfolder + lyricsfile, "r").readlines()
-        lastlyrics = set([])
-        for lyric in lyrics:
-            lyric = lyric.strip()
-            if lyric:
-                if "<<screen_name>>" in lyric:
-                    lyric = lyric.replace("<<screen_name>>", "@" + target)
-                if hashtag:
-                    lyric += " " + hashtag
-                while lyric in lastlyrics:
-                    lyric += random.choice(self.mutation)
-                lastlyrics.add(lyric)
-                in_reply_to_status_id = self._send(
-                    identity,
-                    inbox_item,
-                    lyric,
-                    target,
-                    in_reply_to_status_id)
-                time.sleep(2)
-
-    def _send(self, identity, inbox_item, lyric, target, in_reply_to_status_id):
-        if inbox_item:
-            return identity.twitter.reply_with(
-                inbox_item=inbox_item,
-                text=lyric,
-                in_reply_to_status_id=in_reply_to_status_id)
-        else:
-            text = ""
-            if target:
-                # noinspection PyUnresolvedReferences
-                if isinstance(target, basestring):
-                    text = "@" + target
-                elif isinstance(target, User.User):
-                    text = "@" + target.screen_name
-            text += " " + lyric
-            tweet = OutgoingTweet(
-                text=text,
-                in_reply_to_status_id=in_reply_to_status_id)
-            return identity.twitter.send(tweet)
+        lyrics_path = self.songsfolder + song["lyrics_file"]
+        lyrics_file = open(lyrics_path, "r")
+        lyrics = lyrics_file.readlines()
+        lyrics_file.close()
+        song["lyrics"] = lyrics
+        return song
 
 
 class CaseInsensitiveDict(dict):

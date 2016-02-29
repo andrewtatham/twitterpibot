@@ -1,7 +1,5 @@
-from twitterpibot.songs.Songs import Songs
 import datetime
 
-_songs = Songs()
 _birthdays = {
     "02/01": ["andrewtatham"],
     "17/03": ["sheriffredleg", "JamesDawg"],
@@ -19,12 +17,7 @@ _birthdays = {
 
 def get_birthday_users():
     today = datetime.date.today().strftime("%d/%m")
-
     if today in _birthdays:
         return _birthdays[today]
     else:
         return None
-
-
-def sing_birthday_song(identity, screen_name):
-    _songs.sing_birthday_song(identity, screen_name)
