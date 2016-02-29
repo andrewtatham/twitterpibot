@@ -1,5 +1,5 @@
 flask
-wordnik
+wordnik-py3
 markovgen
 beautifulsoup4
 giphypop

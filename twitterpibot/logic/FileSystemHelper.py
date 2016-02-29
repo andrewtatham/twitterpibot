@@ -83,7 +83,7 @@ def bytes_from_file(file_path, chunk_size):
 
 
 def get_key(key_name):
-    keys_dir = "temp" + os.sep + "keys" + os.sep + str(sys.version_info[0]) + os.sep
+    keys_dir = get_root() + "temp" + os.sep + "keys" + os.sep + str(sys.version_info[0]) + os.sep
     ensure_directory_exists(keys_dir)
     key_path = keys_dir + key_name + ".pkl"
     exists = os.path.isfile(key_path)
