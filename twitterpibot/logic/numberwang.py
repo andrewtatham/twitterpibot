@@ -144,9 +144,11 @@ class NumberwangHostScheduledTask(ScheduledTask):
         reply_to_id = self.identity.twitter.send(OutgoingTweet(text=turn_prompt))
         time.sleep(5)
         for n in range(random.randint(1, 10)):
-            answer = ".@numberwang_host @" + other_contestant.screen_name + " " + str(self.numberwang(answers))
-            reply_to_id = contestant.twitter.send(OutgoingTweet(text=answer, in_reply_to_status_id=reply_to_id))
+            answer = self.numberwang(answers)
             answers.append(answer)
+            reply_to_id = contestant.twitter.send(OutgoingTweet(
+                text=".@numberwang_host @" + other_contestant.screen_name + " " + str(answer),
+                in_reply_to_status_id=reply_to_id))
             time.sleep(5)
 
             if random.randint(0, 49) == 0:

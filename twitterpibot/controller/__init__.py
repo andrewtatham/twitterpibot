@@ -53,7 +53,7 @@ def get_identity_dto(identity):
     return dto
 
 
-def get_identities(self):
+def get_identities():
     return [get_identities_dto(i) for i in twitterpibot.identities.all_identities]
 
 
