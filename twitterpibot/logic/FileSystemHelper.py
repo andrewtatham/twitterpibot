@@ -83,14 +83,26 @@ def bytes_from_file(file_path, chunk_size):
 
 
 def get_key(key_name):
-    keys_dir = get_root() + "temp" + os.sep + "keys" + os.sep + str(sys.version_info[0]) + os.sep
+    return _get("key", key_name)
+
+
+def get_username(key_name):
+    return _get("username", key_name)
+
+
+def get_password(key_name):
+    return _get("password", key_name)
+
+
+def _get(key_type, key_name):
+    keys_dir = get_root() + "temp" + os.sep + key_type + "s" + os.sep + str(sys.version_info[0]) + os.sep
     ensure_directory_exists(keys_dir)
     key_path = keys_dir + key_name + ".pkl"
     exists = os.path.isfile(key_path)
     if exists:
         key = pickle.load(open(key_path, "rb"))
     else:
-        key = input("Enter your key for " + key_name + ": ")
+        key = input("Enter your " + key_type + " for " + key_name + ": ")
         pickle.dump(key, open(key_path, "wb"))
     return key
 
