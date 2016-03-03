@@ -6,7 +6,7 @@ from twitterpibot.responses.Response import Response
 class EggPunResponse(Response):
     def condition(self, inbox_item):
         return super(EggPunResponse, self).reply_condition(inbox_item) \
-               and "egg" in inbox_item.words
+               and "egg" in inbox_item.text
 
     def respond(self, inbox_item):
         response = eggpuns.get_egg_pun()
