@@ -262,9 +262,9 @@ class TwitterHelper(object):
             if target:
                 # noinspection PyUnresolvedReferences
                 if isinstance(target, basestring):
-                    text = "@" + target
+                    text = ".@" + target
                 elif isinstance(target, User.User):
-                    text = "@" + target.screen_name
+                    text = ".@" + target.screen_name
             text += " " + lyric
             tweet = OutgoingTweet(
                 text=text,
