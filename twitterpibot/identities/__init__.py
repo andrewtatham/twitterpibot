@@ -134,7 +134,8 @@ class AndrewTathamIdentity(Identity):
 
     def get_scheduled_jobs(self):
         return [
-            twitterpibot.schedule.UserListsScheduledTask.UserListsScheduledTask(self, default_lists)
+            twitterpibot.schedule.UserListsScheduledTask.UserListsScheduledTask(self, default_lists),
+            twitterpibot.schedule.SubscribedListsScheduledTask.SubscribedListsScheduledTask(self)
         ]
 
     def get_responses(self):

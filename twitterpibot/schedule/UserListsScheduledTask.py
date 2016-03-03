@@ -16,20 +16,23 @@ class UserListsScheduledTask(ScheduledTask):
         return IntervalTrigger(hours=2)
 
     def on_run(self):
+        self.synchronize_lists()
 
+    def synchronize_lists(self):
         self.identity.lists.update_lists()
-        for identity in self.identity.slave_identities:
-            identity.lists.update_lists()
-
-        for user_list in self._lists:
-            logger.info("Synchronizing " + user_list)
-            master_list = set()
+        if self.identity.slave_identities:
             for identity in self.identity.slave_identities:
-                master_list = master_list.union(identity.lists._sets[user_list])
+                identity.lists.update_lists()
 
-            for identity in self.identity.slave_identities:
-                missing_users = master_list.difference(identity.lists._sets[user_list])
-                if missing_users:
-                    for missing_user in missing_users:
-                        logger.info("adding " + missing_user + " to " + identity.screen_name + " " + user_list)
-                        identity.lists.add_user(user_list, user_id=missing_user, screen_name=None)
+            for user_list in self._lists:
+                logger.info("Synchronizing " + user_list)
+                master_list = set()
+                for identity in self.identity.slave_identities:
+                    master_list = master_list.union(identity.lists._sets[user_list])
+
+                for identity in self.identity.slave_identities:
+                    missing_users = master_list.difference(identity.lists._sets[user_list])
+                    if missing_users:
+                        for missing_user in missing_users:
+                            logger.info("adding " + missing_user + " to " + identity.screen_name + " " + user_list)
+                            identity.lists.add_user(user_list, user_id=missing_user, screen_name=None)

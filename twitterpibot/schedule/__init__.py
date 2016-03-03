@@ -20,6 +20,7 @@ import twitterpibot.schedule.SunriseTimelapseScheduledTask
 import twitterpibot.schedule.SunsetTimelapseScheduledTask
 import twitterpibot.schedule.RegularTimelapseScheduledTask
 import twitterpibot.schedule.FollowScheduledTask
+import twitterpibot.schedule.SubscribedListsScheduledTask
 from twitterpibot.ExceptionHandler import handle
 
 logger = logging.getLogger(__name__)

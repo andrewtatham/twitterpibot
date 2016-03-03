@@ -208,7 +208,7 @@ class TwitterHelper(object):
         return self.twitter.show_owned_lists()["lists"]
 
     def get_list_members(self, list_id):
-        return self.twitter.get_list_members(list_id=list_id)
+        return self.twitter.get_list_members(list_id=list_id, count=5000, include_entities=False, skip_status=True)
 
     def create_list(self, name, mode):
         return self.twitter.create_list(name=name, mode=mode)
@@ -270,3 +270,9 @@ class TwitterHelper(object):
                 text=text,
                 in_reply_to_status_id=in_reply_to_status_id)
             return self.send(tweet)
+
+    def get_list_subscriptions(self):
+        return self.twitter.get_list_subscriptions()
+
+    def subscribe_to_list(self, list_id):
+        return self.twitter.subscribe_to_list(list_id=list_id)
