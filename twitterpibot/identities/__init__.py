@@ -60,6 +60,7 @@ def get_bot_responses(identity, is_andrewtathampi=False, is_andrewtathampi2=Fals
         twitterpibot.responses.SongResponse.SongResponse(identity),
         twitterpibot.responses.TalkLikeAPirateDayResponse.TalkLikeAPirateDayResponse(identity),
         twitterpibot.responses.ConversationResponse.ConversationResponse(identity),
+        twitterpibot.responses.EggPunResponse.EggPunResponse(identity),
         twitterpibot.responses.ThanksResponse.ThanksResponse(identity),
         twitterpibot.responses.HelloResponse.HelloResponse(identity),
         twitterpibot.responses.Magic8BallResponse.Magic8BallResponse(identity)

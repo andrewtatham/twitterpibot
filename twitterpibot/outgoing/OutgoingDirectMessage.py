@@ -11,7 +11,7 @@ class OutgoingDirectMessage(OutboxTextItem):
 
         super(OutgoingDirectMessage, self).__init__()
         if reply_to:
-            self.user_id = reply_to.sender.id
+            self.user_id = reply_to.sender.id_str
             self.screen_name = reply_to.sender.screen_name
         elif user_id or screen_name:
             self.user_id = user_id

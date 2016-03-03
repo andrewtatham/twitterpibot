@@ -1,20 +1,21 @@
 import logging
 
+# noinspection PyPackageRequirements
 from wordnik import swagger, WordApi, WordsApi, WordListApi, WordListsApi, AccountApi
 
-import twitterpibot.logic.FileSystemHelper as fsh
+from twitterpibot.logic.FileSystemHelper import get_username, get_key, get_password
 
 logger = logging.getLogger(__name__)
 
 key_name = "wordnik"
 
 apiUrl = 'http://api.wordnik.com/v4'
-apiKey = fsh.get_key(key_name)
+apiKey = get_key(key_name)
 client = swagger.ApiClient(apiKey, apiUrl)
 
 account_api = AccountApi.AccountApi(client)
-username = fsh.get_username(key_name)
-password = fsh.get_password(key_name)
+username = get_username(key_name)
+password = get_password(key_name)
 auth_token = account_api.authenticate(username, password).token
 
 word_api = WordApi.WordApi(client)
@@ -22,17 +23,72 @@ words_api = WordsApi.WordsApi(client)
 word_list_api = WordListApi.WordListApi(client)
 word_lists_api = WordListsApi.WordListsApi(client)
 
-my_lists = account_api.getWordListsForLoggedInUser(auth_token)
-for my_list in my_lists:
-    print("{username}, {name}, {numberWordsInList}, {description}, {permalink}".format(**my_list.__dict__))
-    list_words = word_list_api.getWordListWords(permalink=my_list.permalink, auth_token=auth_token)
-    for word in list_words:
-        print(word.word)
 
-random_words = words_api.getRandomWords()
-for word in random_words:
-    print(word.word)
-    definitions = word_api.getDefinitions(word.word)
-    print(" definitons:")
-    for definition in definitions:
-        print("  " + definition.text)
+def _get_egg_puns_list():
+    words = []
+    list_words = word_list_api.getWordListWords(permalink="egg-puns", auth_token=auth_token, limit=10000)
+    if list_words:
+        for word in list_words:
+            words.append(word.word)
+    return words
+
+
+def chunks(l, n):
+    """Yield successive n-sized chunks from l."""
+    for i in range(0, len(l), n):
+        yield l[i:i + n]
+
+
+def _build_egg_puns_list():
+    generated = set(_generate_egg_puns())
+    existing = set(_get_egg_puns_list())
+    new_puns = list(generated.difference(existing))
+
+    if new_puns:
+        for chunk in chunks(new_puns, 100):
+            print("adding " + chunk[0] + " to " + chunk[-1])
+            word_list_api.addWordsToWordList(permalink="egg-puns", auth_token=auth_token, body=chunk)
+
+
+def _generate_egg_puns():
+    puns = []
+    for i in range(100):
+        search = words_api.searchWords("*ex*", skip=i * 1000, limit=10000)
+        for w in search.searchResults:
+            if "ex" in w.word:
+                pun = w.word.replace("ex", "eggs")
+                puns.append(pun)
+                # print(egg_word.word + " => " + pun)
+    return puns
+
+
+def get_lists():
+    my_lists = account_api.getWordListsForLoggedInUser(auth_token)
+    for my_list in my_lists:
+        print("{username}, {name}, {numberWordsInList}, {description}, {permalink}".format(**my_list.__dict__))
+        list_words = word_list_api.getWordListWords(permalink=my_list.permalink, auth_token=auth_token, limit=10000)
+        if list_words:
+            for word in list_words:
+                print(" " + word.word)
+
+
+def get_random_words():
+    random_words = words_api.getRandomWords()
+    for word in random_words:
+        print(word.word)
+        definitions = word_api.getDefinitions(word.word)
+        print(" definitons:")
+        for definition in definitions:
+            print("  " + definition.text)
+
+
+if __name__ == "__main__":
+    get_lists()
+    _build_egg_puns_list()
+
+egg_puns = _get_egg_puns_list()
+# print(egg_puns)
+
+
+def get_egg_puns():
+    return egg_puns

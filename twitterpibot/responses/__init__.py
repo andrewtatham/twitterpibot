@@ -11,3 +11,4 @@ import twitterpibot.responses.ConversationResponse
 import twitterpibot.responses.TimelapseResponse
 import twitterpibot.responses.PhotoResponse
 import twitterpibot.responses.GifResponse
+import twitterpibot.responses.EggPunResponse

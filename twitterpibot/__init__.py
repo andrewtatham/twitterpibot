@@ -3,6 +3,8 @@ import logging
 import colorama
 import twitterpibot.hardware
 import twitterpibot.identities
+import twitterpibot.logic
+import twitterpibot.processing
 import twitterpibot.responses
 import twitterpibot.schedule
 import twitterpibot.tasks
