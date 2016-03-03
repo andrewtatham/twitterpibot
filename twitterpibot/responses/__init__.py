@@ -10,3 +10,4 @@ import twitterpibot.responses.ThanksResponse
 import twitterpibot.responses.ConversationResponse
 import twitterpibot.responses.TimelapseResponse
 import twitterpibot.responses.PhotoResponse
+import twitterpibot.responses.GifResponse

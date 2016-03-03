@@ -70,6 +70,7 @@ def get_bot_responses(identity, is_andrewtathampi=False, is_andrewtathampi2=Fals
             twitterpibot.responses.TimelapseResponse.TimelapseResponse(identity)
         ])
     responses.extend([
+        twitterpibot.responses.GifResponse.GifResponse(identity),
         twitterpibot.responses.FatherTedResponse.FatherTedResponse(identity),
         twitterpibot.responses.FavoriteResponse.FavoriteResponse(identity),
         twitterpibot.responses.RetweetResponse.RetweetResponse(identity)
