@@ -101,7 +101,7 @@ class Identity(object):
         self.users = Users(self)
         self.lists = Lists(self, list_names=[])
         self.twitter = TwitterHelper(self)
-        self.following = {}
+        self.following = set()
         self.colour = colorama.Fore.WHITE
         self.id_str = None
         self.profile_image_url = None  # todo init

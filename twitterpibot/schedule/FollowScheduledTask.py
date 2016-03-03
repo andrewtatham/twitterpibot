@@ -32,7 +32,7 @@ class FollowScheduledTask(ScheduledTask):
 
     def _follow_users(self, to_follow):
         if to_follow:
-            for user_id in to_follow[:20]:
+            for user_id in list(to_follow)[:20]:
                 self._follow(user_id)
 
     def _follow(self, user_id):
