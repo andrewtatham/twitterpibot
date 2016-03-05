@@ -13,6 +13,7 @@ class SubscribedListsScheduledTask(ScheduledTask):
     def __init__(self, master_identity):
         ScheduledTask.__init__(self, master_identity)
 
+
     def get_trigger(self):
         return IntervalTrigger(hours=5)
 
