@@ -1,7 +1,7 @@
 import logging
 
 from apscheduler.schedulers.background import BackgroundScheduler
-
+import twitterpibot
 import twitterpibot.schedule.ConversationScheduledTask
 import twitterpibot.schedule.EdBallsDay
 import twitterpibot.schedule.JokesScheduledTask
@@ -21,7 +21,8 @@ import twitterpibot.schedule.SunsetTimelapseScheduledTask
 import twitterpibot.schedule.RegularTimelapseScheduledTask
 import twitterpibot.schedule.FollowScheduledTask
 import twitterpibot.schedule.SubscribedListsScheduledTask
-from twitterpibot.ExceptionHandler import handle
+import twitterpibot.schedule.HappyBirthdayScheduledTask
+
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +31,7 @@ def _run_wrapper(task):
     try:
         task.on_run()
     except Exception as e:
-        handle(task.identity, e)
+        twitterpibot.ExceptionHandler.handle(task.identity, e)
 
 
 def start():

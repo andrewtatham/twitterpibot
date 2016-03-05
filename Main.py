@@ -65,11 +65,11 @@ def following_graph():
 
 @app.route('/shutdown')
 def shutdown():
-    shutdown_server()
-    return 'Server shutting down...'
+    _shutdown_server()
+    logger.info('Server shutting down...')
 
 
-def shutdown_server():
+def _shutdown_server():
     func = flask.request.environ.get('werkzeug.server.shutdown')
     if func is None:
         raise RuntimeError('Not running with the Werkzeug Server')

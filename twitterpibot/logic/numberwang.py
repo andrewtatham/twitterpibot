@@ -1,13 +1,12 @@
 from itertools import cycle
 import random
-import threading
 import logging
 import time
 
 from apscheduler.triggers.interval import IntervalTrigger
 import six
-import twitterpibot
 
+import twitterpibot
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
@@ -47,8 +46,6 @@ host_replies = [
     "Marvellous",
     "Fantastic"]
 logger = logging.getLogger(__name__)
-
-
 
 
 class NumberwangHostScheduledTask(ScheduledTask):

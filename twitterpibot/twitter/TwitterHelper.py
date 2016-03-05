@@ -5,7 +5,6 @@ import time
 
 from twython import Twython
 
-from twitterpibot import Statistics
 from twitterpibot.logic.FileSystemHelper import bytes_from_file
 from twitterpibot.twitter import Authenticator
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
@@ -56,7 +55,7 @@ class TwitterHelper(object):
                 status=outbox_item.status,
                 in_reply_to_status_id=outbox_item.in_reply_to_status_id,
                 media_ids=outbox_item.media_ids)
-            Statistics.record_outgoing_tweet()
+            self.identity.statistics.record_outgoing_tweet()
             id_str = response["id_str"]
             return id_str
 
@@ -69,7 +68,7 @@ class TwitterHelper(object):
                 text=outbox_item.text,
                 screen_name=outbox_item.screen_name,
                 user_id=outbox_item.user_id)
-            Statistics.record_outgoing_direct_message()
+            self.identity.statistics.record_outgoing_direct_message()
         return None
 
     def reply_with(self, inbox_item, text=None, as_tweet=False, as_direct_message=False, file_paths=None,
@@ -99,6 +98,7 @@ class TwitterHelper(object):
         try:
             file = open(file_path, 'rb')
             media = self.twitter.upload_media(media=file)
+            self.identity.statistics.increment("Media Uploads")
             return media["media_id_string"]
         finally:
             if file:
@@ -175,13 +175,13 @@ class TwitterHelper(object):
         query = quote_plus(text)
         return self.twitter.search(q=query, result_type=result_type)["statuses"]
 
-    def create_favorite(self, id):
-        self.twitter.create_favorite(id=id)
-        Statistics.record_favourite()
+    def create_favorite(self, status_id):
+        self.twitter.create_favorite(id=status_id)
+        self.identity.statistics.record_favourite()
 
-    def retweet(self, id):
-        self.twitter.retweet(id=id)
-        Statistics.record_retweet()
+    def retweet(self, status_id):
+        self.twitter.retweet(id=status_id)
+        self.identity.statistics.record_retweet()
 
     def add_user_to_list(self, list_id, user_id, screen_name):
         self.twitter.create_list_members(list_id=list_id, user_id=user_id, screen_name=screen_name)
@@ -214,6 +214,7 @@ class TwitterHelper(object):
         return self.twitter.create_list(name=name, mode=mode)
 
     def follow(self, screen_name=None, user_id=None):
+        self.identity.statistics.increment("Follows")
         return self.twitter.create_friendship(screen_name=screen_name, user_id=user_id)
 
     def lookup_user(self, user_id):
@@ -244,6 +245,7 @@ class TwitterHelper(object):
                 while lyric in lastlyrics:
                     lyric += random.choice(self.mutation)
                 lastlyrics.add(lyric)
+                self.identity.statistics.record_outgoing_song_lyric()
                 in_reply_to_status_id = self._send_to(
                     inbox_item,
                     lyric,

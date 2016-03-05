@@ -10,6 +10,7 @@ import twitterpibot.schedule
 import twitterpibot.tasks
 import twitterpibot.MyLogging
 import twitterpibot.controller
+import twitterpibot.ExceptionHandler
 
 logger = logging.getLogger(__name__)
 

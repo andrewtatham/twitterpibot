@@ -2,13 +2,10 @@ import logging
 import traceback
 
 from colorama import Fore, Style, Back
-
 from twython import TwythonError
 
 import twitterpibot.Statistics
-
 import twitterpibot.hardware
-
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 
 logger = logging.getLogger(__name__)
@@ -20,34 +17,36 @@ logger = logging.getLogger(__name__)
 
 
 def handle_silently(exception):
-    _record_warning(exception)
+    _record_warning(None, exception)
 
 
 def handle(identity, exception):
     if type(exception) is UnicodeEncodeError:
-        _record_warning(exception)
+        _record_warning(identity, exception)
     elif type(exception) is TwythonError:
-        _record_warning(exception)
+        _record_warning(identity, exception)
     else:
         _record_error(identity, exception)
 
 
-def _record_warning(exception):
+def _record_warning(identity, exception):
     print(Style.DIM + Fore.BLACK + Back.YELLOW + str(exception))
     logger.warn(exception)
-    twitterpibot.Statistics.record_warning()
+    if identity:
+        identity.statistics.record_warning()
 
 
 def _record_error(identity, exception):
     print(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
     logger.exception(exception)
-    twitterpibot.Statistics.record_error()
-    _try_send_exception(identity)
+    if identity:
+        identity.statistics.record_error()
+        _try_send_exception(identity)
 
 
 def _try_send_exception(identity):
     try:
-        if twitterpibot.hardware.is_linux:
+        if identity and twitterpibot.hardware.is_linux:
             identity.twitter.send(OutgoingDirectMessage(text=traceback.format_exc()))
     except Exception as e:
         logger.exception(e)

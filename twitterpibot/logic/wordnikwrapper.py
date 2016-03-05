@@ -52,13 +52,15 @@ def _build_egg_puns_list():
 
 def _generate_egg_puns():
     puns = []
-    for i in range(100):
-        search = words_api.searchWords("*ex*", skip=i * 1000, limit=10000)
-        for w in search.searchResults:
-            if "ex" in w.word:
-                pun = w.word.replace("ex", "eggs")
-                puns.append(pun)
-                # print(egg_word.word + " => " + pun)
+
+    for repl in [("ig", "egg"), ("ex", "eggs")]:
+        for i in range(100):
+            search = words_api.searchWords("*" + repl[0] + "*", skip=i * 1000, limit=10000)
+            for w in search.searchResults:
+                if repl[0] in w.word:
+                    pun = w.word.replace(repl[0], repl[1])
+                    puns.append(pun)
+                    # print(egg_word.word + " => " + pun)
     return puns
 
 
@@ -87,6 +89,8 @@ if __name__ == "__main__":
     _build_egg_puns_list()
 
 egg_puns = _get_egg_puns_list()
+
+
 # print(egg_puns)
 
 

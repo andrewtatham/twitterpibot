@@ -1,86 +1,54 @@
 import os
 import datetime
 
-IncomingTweets = 0
-IncomingDirectMessages = 0
-OutgoingTweets = 0
-OutgoingDirectMessages = 0
-Warnings = 0
-Errors = 0
-Retweets = 0
-Favourites = 0
 
+class Statistics(object):
+    def __init__(self):
+        self._stats = {}
 
-def reset():
-    global IncomingTweets
-    global IncomingDirectMessages
-    global OutgoingTweets
-    global OutgoingDirectMessages
-    global Warnings
-    global Errors
-    global Retweets
-    global Favourites
+    def reset(self):
+        self._stats = {}
 
-    IncomingTweets = 0
-    IncomingDirectMessages = 0
-    OutgoingTweets = 0
-    OutgoingDirectMessages = 0
-    Warnings = 0
-    Errors = 0
-    Retweets = 0
-    Favourites = 0
+    def increment(self, key):
+        if key not in self._stats:
+            self._stats[key] = 0
+        self._stats[key] += 1
 
+    def get_statistics(self):
+        text = "Stats at " + datetime.datetime.now().strftime("%x %X") + os.linesep
+        for key, val in self._stats.items():
+            text += str(val) + " " + key + os.linesep
+        return text
 
-def get_statistics():
-    text = "Stats at " + datetime.datetime.now().strftime("%x %X") + os.linesep
+    def record_incoming_tweet(self, tweet):
+        self.increment("Incoming Tweets")
 
-    text += str(IncomingTweets) + " IncomingTweets" + os.linesep
-    text += str(IncomingDirectMessages) + " IncomingDirectMessages" + os.linesep
-    text += str(OutgoingTweets) + " OutgoingTweets: " + os.linesep
-    text += str(OutgoingDirectMessages) + " OutgoingDirectMessages" + os.linesep
-    text += str(Warnings) + " Warnings" + os.linesep
-    text += str(Errors) + " Errors" + os.linesep
-    text += str(Retweets) + " Retweets" + os.linesep
-    text += str(Favourites) + " Favourites" + os.linesep
+    def record_incoming_direct_message(self, dm):
+        self.increment("Incoming Direct Messages")
 
-    return text
+    def record_incoming_event(self, event):
+        self.increment("Incoming Event")
 
+    def record_connection(self):
+        self.increment("Connnections")
 
-def record_incoming_tweet():
-    global IncomingTweets
-    IncomingTweets += 1
+    def record_outgoing_tweet(self):
+        self.increment("Outgoing Tweets")
 
+    def record_outgoing_direct_message(self):
+        self.increment("Outgoing Direct Messages")
 
-def record_incoming_direct_message():
-    global IncomingDirectMessages
-    IncomingDirectMessages += 1
+    def record_outgoing_song_lyric(self):
+        self.increment("Outgoing Song Lyrics")
 
+    def record_warning(self):
+        self.increment("Warnings")
 
-def record_outgoing_tweet():
-    global OutgoingTweets
-    OutgoingTweets += 1
+    def record_error(self):
+        self.increment("Errors")
 
+    def record_retweet(self):
+        self.increment("Retweets")
 
-def record_outgoing_direct_message():
-    global OutgoingDirectMessages
-    OutgoingDirectMessages += 1
-
-
-def record_warning():
-    global Warnings
-    Warnings += 1
-
-
-def record_error():
-    global Errors
-    Errors += 1
-
-
-def record_retweet():
-    global Retweets
-    Retweets += 1
-
-
-def record_favourite():
-    global Favourites
-    Favourites += 1
+    def record_favourite(self):
+        self.increment("Favourites")

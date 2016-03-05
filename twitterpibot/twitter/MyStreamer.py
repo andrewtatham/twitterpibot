@@ -4,7 +4,6 @@ import time
 
 from twython.streaming.api import TwythonStreamer
 
-from twitterpibot.Statistics import record_incoming_direct_message, record_incoming_tweet
 import twitterpibot.hardware
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingEvent import IncomingEvent
@@ -61,16 +60,21 @@ class MyStreamer(TwythonStreamer):
     def create_inbox_item(self, data):
 
         if "text" in data:
-            record_incoming_tweet()
-            return IncomingTweet(data, self.identity)
+            tweet = IncomingTweet(data, self.identity)
+            self.identity.statistics.record_incoming_tweet(tweet)
+            return tweet
         elif "direct_message" in data:
-            record_incoming_direct_message()
-            return IncomingDirectMessage(data, self.identity)
+            dm = IncomingDirectMessage(data, self.identity)
+            self.identity.statistics.record_incoming_direct_message(dm)
+            return dm
         elif "event" in data:
-            return IncomingEvent(data, self.identity)
+            event = IncomingEvent(data, self.identity)
+            self.identity.statistics.record_incoming_event(event)
+            return event
         elif "friends" in data:
             logger.debug("[%s] Following %s" % (self.identity.screen_name, data["friends"]))
             self.identity.following = set([str(f) for f in data["friends"]])
+            self.identity.statistics.record_connection()
             logger.info("[%s] Connected" % self.identity.screen_name)
         else:
             logger.debug(data)
@@ -79,6 +83,7 @@ class MyStreamer(TwythonStreamer):
         if inbox_item and self.responses:
             for response in self.responses:
                 if response.condition(inbox_item):
+                    self.identity.statistics.increment("Responses")
                     inbox_item.display()
                     response.respond(inbox_item)
                     return True

@@ -4,7 +4,7 @@ import random
 import colorama
 
 import twitterpibot
-from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
+from twitterpibot.Statistics import Statistics
 from twitterpibot.twitter.TwitterHelper import TwitterHelper
 from twitterpibot.users.Lists import Lists
 from twitterpibot.users.Users import Users
@@ -33,7 +33,8 @@ def get_bot_scheduled_jobs(identity, is_andrewtathampi=False, is_andrewtathampi2
         twitterpibot.schedule.ConversationScheduledTask.ConversationScheduledTask(identity),
         twitterpibot.schedule.ZenOfPythonScheduledTask.ZenOfPythonScheduledTask(identity),
         twitterpibot.schedule.BlankTweetScheduledTask.BlankTweetScheduledTask(identity),
-        twitterpibot.schedule.FollowScheduledTask.FollowScheduledTask(identity)
+        twitterpibot.schedule.FollowScheduledTask.FollowScheduledTask(identity),
+        twitterpibot.schedule.HappyBirthdayScheduledTask.HappyBirthdayScheduledTask(identity)
 
     ]
 
@@ -93,6 +94,7 @@ def get_bot_tasks(identity):
     return tasks
 
 
+
 class Identity(object):
     def __init__(self, screen_name):
         self.screen_name = screen_name
@@ -107,6 +109,7 @@ class Identity(object):
         self.colour = colorama.Fore.WHITE
         self.id_str = None
         self.profile_image_url = None  # todo init
+        self.statistics = Statistics()
 
     @abc.abstractmethod
     def get_tasks(self):
@@ -196,7 +199,7 @@ class NumberwangHostIdentity(Identity):
         ]
 
     def get_scheduled_jobs(self):
-        return [NumberwangHostScheduledTask(self)]
+        return [twitterpibot.logic.numberwang.NumberwangHostScheduledTask(self)]
 
     def get_responses(self):
         return []
