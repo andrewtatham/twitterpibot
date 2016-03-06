@@ -1,3 +1,4 @@
+import random
 from twitterpibot.logic import GiphyWrapper
 from twitterpibot.logic import eggpuns
 from twitterpibot.responses.Response import Response
@@ -6,13 +7,14 @@ from twitterpibot.responses.Response import Response
 class EggPunResponse(Response):
     def condition(self, inbox_item):
         return super(EggPunResponse, self).reply_condition(inbox_item) \
-               and "egg" in inbox_item.text
+               and eggpuns.is_egg_pun_trigger(inbox_item.text)
 
     def respond(self, inbox_item):
-        response = eggpuns.get_egg_pun()
+        response = eggpuns.make_egg_pun_phrase(inbox_item.text)
         file_paths = None
         if inbox_item.is_tweet:
-            file_paths = [GiphyWrapper.get_gif("egg")]
+            gif_text = random.choice(["egg", "eggs"])
+            file_paths = [GiphyWrapper.get_gif(text=gif_text)]
         self.identity.twitter.reply_with(
             inbox_item=inbox_item,
             text=response,

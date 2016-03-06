@@ -1,11 +1,11 @@
 from twitterpibot.responses.Response import Response
-from twitterpibot.songs.Songs import Songs
+import twitterpibot.songs.Songs
 
 
 class SongResponse(Response):
     def __init__(self, identity):
         Response.__init__(self, identity)
-        self.songs = Songs()
+        self.songs = twitterpibot.songs.Songs.Songs()
         self.songnames = self.songs.all_keys()
 
     def condition(self, inbox_item):

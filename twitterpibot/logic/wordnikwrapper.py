@@ -1,6 +1,7 @@
 import logging
 
 # noinspection PyPackageRequirements
+import random
 from wordnik import swagger, WordApi, WordsApi, WordListApi, WordListsApi, AccountApi
 
 from twitterpibot.logic.FileSystemHelper import get_username, get_key, get_password
@@ -96,3 +97,27 @@ egg_puns = _get_egg_puns_list()
 
 def get_egg_puns():
     return egg_puns
+
+
+def get_word_matching(stem, rx):
+    words = []
+    word = None
+    skip = 0
+    limit = 1000
+    while not word or not rx.match(word):
+        if not words:
+            search = words_api.searchWords("*%s*" % stem, skip=skip, limit=limit)
+            words = list(map(lambda w: w.word, search.searchResults))
+            random.shuffle(words)
+            skip += 1 * limit
+
+            logger.debug(words)
+        word = words.pop()
+
+    return word
+
+
+def get_example(word):
+    examples = word_api.getExamples(word)
+    example = random.choice(examples.examples)
+    return example.text

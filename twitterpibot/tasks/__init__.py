@@ -1,10 +1,6 @@
 import threading
 import logging
 import time
-
-import twitterpibot.tasks.FadeTask
-import twitterpibot.tasks.LightsTask
-import twitterpibot.tasks.StreamTweetsTask
 from twitterpibot.ExceptionHandler import handle
 
 logger = logging.getLogger(__name__)

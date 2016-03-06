@@ -1,11 +1,12 @@
 import logging
 import os
 import random
+import textwrap
 import time
 
 from twython import Twython
+from twitterpibot.logic import FileSystemHelper
 
-from twitterpibot.logic.FileSystemHelper import bytes_from_file
 from twitterpibot.twitter import Authenticator
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
@@ -17,6 +18,29 @@ try:
 except ImportError:
     # noinspection PyUnresolvedReferences
     from urllib import quote_plus
+
+
+def _cap(s, l):
+    return s if len(s) <= l else s[0:l - 3] + '...'
+
+
+def _split_text(large_text):
+    lines = textwrap.wrap(large_text, 140 - 6)
+    lines_count = len(lines)
+    line_number = 0
+    return_value = []
+    for line in lines:
+        is_continuation = lines_count > 1 and line_number != 0
+        has_continuation = lines_count > 1 and line_number != lines_count - 1
+        text = ""
+        if is_continuation:
+            text += "..."
+        text += line
+        if has_continuation:
+            text += "..."
+        return_value.append(text)
+        line_number += 1
+    return return_value
 
 
 class TwitterHelper(object):
@@ -51,13 +75,26 @@ class TwitterHelper(object):
                     outbox_item.media_ids = media_ids
 
             outbox_item.display()
-            response = self.twitter.update_status(
-                status=outbox_item.status,
-                in_reply_to_status_id=outbox_item.in_reply_to_status_id,
-                media_ids=outbox_item.media_ids)
-            self.identity.statistics.record_outgoing_tweet()
-            id_str = response["id_str"]
-            return id_str
+
+            statuses = _split_text(_cap(outbox_item.status, 140 * 100))
+            line_number = 0
+            in_reply_to_status_id = outbox_item.in_reply_to_status_id
+            media_ids = outbox_item.media_ids
+            for status in statuses:
+                # only add media to first tweet
+                if media_ids and line_number != 0:
+                    media_ids = None
+
+                logger.info("status %s: %s chars: %s", line_number, len(status), status)
+                response = self.twitter.update_status(
+                    status=status,
+                    in_reply_to_status_id=in_reply_to_status_id,
+                    media_ids=outbox_item.media_ids)
+                in_reply_to_status_id = response["id_str"]
+                self.identity.statistics.record_outgoing_tweet()
+                line_number += 1
+
+            return in_reply_to_status_id
 
         if type(outbox_item) is OutgoingDirectMessage:
             if not outbox_item.screen_name and not outbox_item.user_id:
@@ -127,7 +164,7 @@ class TwitterHelper(object):
 
         segment = 0
         chunk_size = 4 * 1024 * 1024
-        for chunk in bytes_from_file(file_path, chunk_size):
+        for chunk in FileSystemHelper.bytes_from_file(file_path, chunk_size):
             logger.info('[MyTwitter] Append ' + str(segment))
 
             append_params = {

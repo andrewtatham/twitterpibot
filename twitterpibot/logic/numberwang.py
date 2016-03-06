@@ -6,7 +6,8 @@ import time
 from apscheduler.triggers.interval import IntervalTrigger
 import six
 
-import twitterpibot
+
+import twitterpibot.identities
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 

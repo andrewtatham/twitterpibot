@@ -3,107 +3,63 @@ import random
 
 import colorama
 
-import twitterpibot
+from twitterpibot import hardware
 from twitterpibot.Statistics import Statistics
+from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
+from twitterpibot.responses.ConversationResponse import ConversationResponse
+from twitterpibot.responses.EggPunResponse import EggPunResponse
+from twitterpibot.responses.FatherTedResponse import FatherTedResponse
+from twitterpibot.responses.FavoriteResponse import FavoriteResponse
+from twitterpibot.responses.GifResponse import GifResponse
+from twitterpibot.responses.HelloResponse import HelloResponse
+from twitterpibot.responses.HiveMindResponse import HiveMindResponse
+from twitterpibot.responses.Magic8BallResponse import Magic8BallResponse
+from twitterpibot.responses.PhotoResponse import PhotoResponse
+from twitterpibot.responses.RetweetResponse import RetweetResponse
+from twitterpibot.responses.SongResponse import SongResponse
+from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
+from twitterpibot.responses.ThanksResponse import ThanksResponse
+from twitterpibot.responses.TimelapseResponse import TimelapseResponse
+from twitterpibot.schedule.BlankTweetScheduledTask import BlankTweetScheduledTask
+from twitterpibot.schedule.ConversationScheduledTask import ConversationScheduledTask
+from twitterpibot.schedule.EdBallsDay import EdBallsDay
+from twitterpibot.schedule.EggPunScheduledTask import EggPunScheduledTask
+from twitterpibot.schedule.FollowScheduledTask import FollowScheduledTask
+from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
+from twitterpibot.schedule.JokesScheduledTask import JokesScheduledTask
+from twitterpibot.schedule.LightsScheduledTask import LightsScheduledTask
+from twitterpibot.schedule.MidnightScheduledTask import MidnightScheduledTask
+from twitterpibot.schedule.MonitorScheduledTask import MonitorScheduledTask
+from twitterpibot.schedule.PhotoScheduledTask import PhotoScheduledTask
+from twitterpibot.schedule.RegularTimelapseScheduledTask import RegularTimelapseScheduledTask
+from twitterpibot.schedule.SongScheduledTask import SongScheduledTask
+from twitterpibot.schedule.SubscribedListsScheduledTask import SubscribedListsScheduledTask
+from twitterpibot.schedule.SunriseTimelapseScheduledTask import SunriseTimelapseScheduledTask
+from twitterpibot.schedule.SunsetTimelapseScheduledTask import SunsetTimelapseScheduledTask
+from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
+from twitterpibot.schedule.UserListsScheduledTask import UserListsScheduledTask
+from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
+from twitterpibot.schedule.WikipediaScheduledTask import WikipediaScheduledTask
+from twitterpibot.schedule.ZenOfPythonScheduledTask import ZenOfPythonScheduledTask
+from twitterpibot.tasks.FadeTask import FadeTask
+from twitterpibot.tasks.LightsTask import LightsTask
+from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
 from twitterpibot.twitter.TwitterHelper import TwitterHelper
 from twitterpibot.users.Lists import Lists
 from twitterpibot.users.Users import Users
 
-default_lists = [
-    "Reply Less",
-    "Arseholes",
-    "Dont Retweet",
-    "Retweet More",
-    "Awesome Bots",
-    "Friends",
-    "Blocked Users"
-]
-
-
-def get_bot_scheduled_jobs(identity, is_andrewtathampi=False, is_andrewtathampi2=False):
-    scheduledjobs = [
-        twitterpibot.schedule.MonitorScheduledTask.MonitorScheduledTask(identity),
-        twitterpibot.schedule.MidnightScheduledTask.MidnightScheduledTask(identity),
-        twitterpibot.schedule.WikipediaScheduledTask.WikipediaScheduledTask(identity),
-        twitterpibot.schedule.EdBallsDay.EdBallsDay(identity),
-        twitterpibot.schedule.TalkLikeAPirateDayScheduledTask.TalkLikeAPirateDayScheduledTask(identity),
-        twitterpibot.schedule.WeatherScheduledTask.WeatherScheduledTask(identity),
-        twitterpibot.schedule.JokesScheduledTask.JokesScheduledTask(identity),
-        twitterpibot.schedule.SongScheduledTask.SongScheduledTask(identity),
-        twitterpibot.schedule.ConversationScheduledTask.ConversationScheduledTask(identity),
-        twitterpibot.schedule.ZenOfPythonScheduledTask.ZenOfPythonScheduledTask(identity),
-        twitterpibot.schedule.BlankTweetScheduledTask.BlankTweetScheduledTask(identity),
-        twitterpibot.schedule.FollowScheduledTask.FollowScheduledTask(identity),
-        twitterpibot.schedule.HappyBirthdayScheduledTask.HappyBirthdayScheduledTask(identity)
-
-    ]
-
-    if twitterpibot.hardware.is_linux \
-            and (twitterpibot.hardware.is_webcam_attached or twitterpibot.hardware.is_picam_attached):
-        scheduledjobs.extend([
-            twitterpibot.schedule.PhotoScheduledTask.PhotoScheduledTask(identity),
-            twitterpibot.schedule.SunriseTimelapseScheduledTask.SunriseTimelapseScheduledTask(identity),
-            twitterpibot.schedule.SunsetTimelapseScheduledTask.SunsetTimelapseScheduledTask(identity),
-            twitterpibot.schedule.RegularTimelapseScheduledTask.RegularTimelapseScheduledTask(identity)
-        ])
-    if twitterpibot.hardware.is_piglow_attached \
-            or twitterpibot.hardware.is_unicornhat_attached \
-            or twitterpibot.hardware.is_blinksticknano_attached:
-        scheduledjobs.extend([
-            twitterpibot.schedule.LightsScheduledTask.LightsScheduledTask(identity)
-        ])
-    return scheduledjobs
-
-
-def get_bot_responses(identity, is_andrewtathampi=False, is_andrewtathampi2=False):
-    responses = [
-
-        twitterpibot.responses.SongResponse.SongResponse(identity),
-        twitterpibot.responses.TalkLikeAPirateDayResponse.TalkLikeAPirateDayResponse(identity),
-        twitterpibot.responses.ConversationResponse.ConversationResponse(identity),
-        twitterpibot.responses.EggPunResponse.EggPunResponse(identity),
-        twitterpibot.responses.ThanksResponse.ThanksResponse(identity),
-        twitterpibot.responses.HelloResponse.HelloResponse(identity),
-        twitterpibot.responses.Magic8BallResponse.Magic8BallResponse(identity)
-    ]
-    if twitterpibot.hardware.is_picam_attached or twitterpibot.hardware.is_webcam_attached:
-        responses.extend([
-            twitterpibot.responses.PhotoResponse.PhotoResponse(identity),
-            twitterpibot.responses.TimelapseResponse.TimelapseResponse(identity)
-        ])
-    responses.extend([
-        twitterpibot.responses.GifResponse.GifResponse(identity),
-        twitterpibot.responses.FatherTedResponse.FatherTedResponse(identity),
-        twitterpibot.responses.FavoriteResponse.FavoriteResponse(identity),
-        twitterpibot.responses.RetweetResponse.RetweetResponse(identity)
-    ])
-    return responses
-
-
-def get_bot_tasks(identity):
-    tasks = [
-        twitterpibot.tasks.StreamTweetsTask.StreamTweetsTask(identity)
-    ]
-    if twitterpibot.hardware.is_piglow_attached \
-            or twitterpibot.hardware.is_unicornhat_attached \
-            or twitterpibot.hardware.is_blinksticknano_attached:
-        tasks.extend([
-            twitterpibot.tasks.LightsTask.LightsTask(),
-            twitterpibot.tasks.FadeTask.FadeTask()
-        ])
-    return tasks
-
+all_identities = []
 
 
 class Identity(object):
     def __init__(self, screen_name):
         self.screen_name = screen_name
-        self.admin_screen_name = None
+        self.admin_screen_name = "andrewtatham"
         self.converse_with = None
         self.tokens = None
         self.streamer = None
         self.users = Users(self)
-        self.lists = Lists(self, list_names=[])
+        self.lists = Lists(self)
         self.twitter = TwitterHelper(self)
         self.following = set()
         self.colour = colorama.Fore.WHITE
@@ -124,37 +80,57 @@ class Identity(object):
         return []
 
 
+class BotIdentity(Identity):
+    def __init__(self, screen_name):
+        super(BotIdentity, self).__init__(screen_name)
+
+    def get_tasks(self):
+        return [
+            StreamTweetsTask(self)
+        ]
+
+    def get_scheduled_jobs(self):
+        return [
+            MonitorScheduledTask(self),
+            MidnightScheduledTask(self),
+            UserListsScheduledTask(self, andrewtatham),
+            SubscribedListsScheduledTask(self, andrewtatham),
+            FollowScheduledTask(self),
+
+        ]
+
+    def get_responses(self):
+        return [
+        ]
+
+
 class AndrewTathamIdentity(Identity):
     def __init__(self, slave_identities):
-        Identity.__init__(self, "andrewtatham")
+        super(AndrewTathamIdentity, self).__init__("andrewtatham")
         self.admin_screen_name = "andrewtatham"
-        self.lists = Lists(self, default_lists)
         self.slave_identities = slave_identities
         self.id_str = "19201332"
 
     def get_tasks(self):
         return [
-            twitterpibot.tasks.StreamTweetsTask.StreamTweetsTask(self)
+            StreamTweetsTask(self)
         ]
 
     def get_scheduled_jobs(self):
         return [
-            twitterpibot.schedule.UserListsScheduledTask.UserListsScheduledTask(self, default_lists),
-            twitterpibot.schedule.SubscribedListsScheduledTask.SubscribedListsScheduledTask(self)
         ]
 
     def get_responses(self):
         return [
-            twitterpibot.responses.HiveMindResponse.HiveMindResponse(self)
+            HiveMindResponse(self)
         ]
 
 
-class AndrewTathamPiIdentity(Identity):
+class AndrewTathamPiIdentity(BotIdentity):
     def __init__(self):
-        Identity.__init__(self, "andrewtathampi")
+        super(AndrewTathamPiIdentity, self).__init__("andrewtathampi")
         self.admin_screen_name = "andrewtatham"
         self.converse_with = "andrewtathampi2"
-        self.lists = Lists(self, default_lists)
         self.colour = colorama.Fore.MAGENTA
         self.id_str = "2935295111"
 
@@ -162,18 +138,19 @@ class AndrewTathamPiIdentity(Identity):
         return get_bot_tasks(self)
 
     def get_scheduled_jobs(self):
-        return get_bot_scheduled_jobs(self, is_andrewtathampi=True)
+        jobs = super(BotIdentity, self).get_scheduled_jobs()
+        jobs.extend(get_bot_scheduled_jobs(self))
+        return jobs
 
     def get_responses(self):
-        return get_bot_responses(self, is_andrewtathampi=True)
+        return get_bot_responses(self)
 
 
-class AndrewTathamPi2Identity(Identity):
+class AndrewTathamPi2Identity(BotIdentity):
     def __init__(self):
-        Identity.__init__(self, "andrewtathampi2")
+        super(AndrewTathamPi2Identity, self).__init__("andrewtathampi2")
         self.admin_screen_name = "andrewtatham"
         self.converse_with = "andrewtathampi"
-        self.lists = Lists(self, default_lists)
         self.colour = colorama.Fore.CYAN
         self.id_str = "3892161801"
 
@@ -181,25 +158,27 @@ class AndrewTathamPi2Identity(Identity):
         return get_bot_tasks(self)
 
     def get_scheduled_jobs(self):
-        return get_bot_scheduled_jobs(self, is_andrewtathampi2=True)
+        jobs = super(BotIdentity, self).get_scheduled_jobs()
+        jobs.extend(get_bot_scheduled_jobs(self))
+        return jobs
 
     def get_responses(self):
-        return get_bot_responses(self, is_andrewtathampi2=True)
+        return get_bot_responses(self)
 
 
 class NumberwangHostIdentity(Identity):
     def __init__(self):
-        Identity.__init__(self, "numberwang_host")
+        super(NumberwangHostIdentity, self).__init__("numberwang_host")
         self.admin_screen_name = "andrewtatham"
         self.id_str = "4904547543"
 
     def get_tasks(self):
         return [
-            twitterpibot.tasks.StreamTweetsTask.StreamTweetsTask(self)
+            # StreamTweetsTask(self)
         ]
 
     def get_scheduled_jobs(self):
-        return [twitterpibot.logic.numberwang.NumberwangHostScheduledTask(self)]
+        return [NumberwangHostScheduledTask(self)]
 
     def get_responses(self):
         return []
@@ -207,13 +186,13 @@ class NumberwangHostIdentity(Identity):
 
 class JulieNumberwangIdentity(Identity):
     def __init__(self):
-        Identity.__init__(self, "JulieNumberwang")
+        super(JulieNumberwangIdentity, self).__init__("JulieNumberwang")
         self.admin_screen_name = "andrewtatham"
         self.id_str = "4912246174"
 
     def get_tasks(self):
         return [
-            twitterpibot.tasks.StreamTweetsTask.StreamTweetsTask(self)
+            # StreamTweetsTask(self)
         ]
 
     def get_scheduled_jobs(self):
@@ -225,13 +204,13 @@ class JulieNumberwangIdentity(Identity):
 
 class SimonNumberwangIdentity(Identity):
     def __init__(self):
-        Identity.__init__(self, "SimonNumberwang")
+        super(SimonNumberwangIdentity, self).__init__("SimonNumberwang")
         self.admin_screen_name = "andrewtatham"
         self.id_str = "4912203173"
 
     def get_tasks(self):
         return [
-            twitterpibot.tasks.StreamTweetsTask.StreamTweetsTask(self)
+            # StreamTweetsTask(self)
         ]
 
     def get_scheduled_jobs(self):
@@ -241,34 +220,51 @@ class SimonNumberwangIdentity(Identity):
         return []
 
 
-all_identities = []
-if not all_identities:
-    andrewtathampi = AndrewTathamPiIdentity()
-    andrewtathampi2 = AndrewTathamPi2Identity()
-    slaves = [andrewtathampi, andrewtathampi2]
-    andrewtatham = AndrewTathamIdentity(slaves)
-    numberwang_host = NumberwangHostIdentity()
-    julienumberwang = JulieNumberwangIdentity()
-    simonnumberwang = SimonNumberwangIdentity()
+class EggPunBotIdentity(BotIdentity):
+    def __init__(self):
+        super(EggPunBotIdentity, self).__init__("eggpunbot")
+        self.id_str = "706393659244154880"
 
-    if twitterpibot.hardware.is_raspberry_pi_2:
-        all_identities = [
-            andrewtatham,
-            andrewtathampi,
-            andrewtathampi2,
-            numberwang_host,
-            julienumberwang,
-            simonnumberwang
+    def get_scheduled_jobs(self):
+        jobs = super(BotIdentity, self).get_scheduled_jobs()
+        jobs.append(EggPunScheduledTask(self))
+        return jobs
+
+    def get_responses(self):
+        return [
+            EggPunResponse(self)
         ]
-    else:
-        all_identities = [
-            andrewtatham,
-            andrewtathampi,
-            andrewtathampi2,
-            # numberwang_host,
-            # julienumberwang,
-            # simonnumberwang
-        ]
+
+
+andrewtathampi = AndrewTathamPi2Identity()
+andrewtathampi2 = AndrewTathamPi2Identity()
+slaves = [andrewtathampi, andrewtathampi2]
+andrewtatham = AndrewTathamIdentity(slaves)
+numberwang_host = NumberwangHostIdentity()
+julienumberwang = JulieNumberwangIdentity()
+simonnumberwang = SimonNumberwangIdentity()
+eggpunbot = EggPunBotIdentity()
+
+if hardware.is_raspberry_pi_2:
+    all_identities = [
+        andrewtatham,
+        andrewtathampi,
+        andrewtathampi2,
+        numberwang_host,
+        julienumberwang,
+        simonnumberwang,
+        eggpunbot
+    ]
+else:
+    all_identities = [
+        andrewtatham,
+        andrewtathampi,
+        andrewtathampi2,
+        numberwang_host,
+        julienumberwang,
+        simonnumberwang,
+        eggpunbot,
+    ]
 
 
 def get_all_tasks():
@@ -291,7 +287,77 @@ def get_numberwang_contestants():
         [julienumberwang, simonnumberwang],
         [julienumberwang, simonnumberwang],
         [julienumberwang, simonnumberwang],
-        [andrewtatham, twitterpibot.identities.julienumberwang],
-        [andrewtatham, twitterpibot.identities.simonnumberwang],
-        [andrewtathampi, twitterpibot.identities.andrewtathampi2]
+        [andrewtatham, julienumberwang],
+        [andrewtatham, simonnumberwang],
+        [andrewtathampi, andrewtathampi2]
     ])
+
+
+def get_bot_scheduled_jobs(identity):
+    scheduledjobs = [
+        WikipediaScheduledTask(identity),
+        EdBallsDay(identity),
+        TalkLikeAPirateDayScheduledTask(identity),
+        WeatherScheduledTask(identity),
+        JokesScheduledTask(identity),
+        SongScheduledTask(identity),
+        ConversationScheduledTask(identity),
+        ZenOfPythonScheduledTask(identity),
+        BlankTweetScheduledTask(identity),
+        HappyBirthdayScheduledTask(identity),
+        EggPunScheduledTask(identity),
+
+    ]
+
+    if hardware.is_linux and (hardware.is_webcam_attached or hardware.is_picam_attached):
+        scheduledjobs.extend([
+            PhotoScheduledTask(identity),
+            SunriseTimelapseScheduledTask(identity),
+            SunsetTimelapseScheduledTask(identity),
+            RegularTimelapseScheduledTask(identity)
+        ])
+    if hardware.is_piglow_attached \
+            or hardware.is_unicornhat_attached \
+            or hardware.is_blinksticknano_attached:
+        scheduledjobs.extend([
+            LightsScheduledTask(identity)
+        ])
+    return scheduledjobs
+
+
+def get_bot_responses(identity):
+    responses = [
+        SongResponse(identity),
+        TalkLikeAPirateDayResponse(identity),
+        ConversationResponse(identity),
+        EggPunResponse(identity),
+        ThanksResponse(identity),
+        HelloResponse(identity),
+        Magic8BallResponse(identity)
+    ]
+    if hardware.is_picam_attached or hardware.is_webcam_attached:
+        responses.extend([
+            PhotoResponse(identity),
+            TimelapseResponse(identity)
+        ])
+    responses.extend([
+        GifResponse(identity),
+        FatherTedResponse(identity),
+        FavoriteResponse(identity),
+        RetweetResponse(identity)
+    ])
+    return responses
+
+
+def get_bot_tasks(identity):
+    tasks = [
+        StreamTweetsTask(identity)
+    ]
+    if hardware.is_piglow_attached \
+            or hardware.is_unicornhat_attached \
+            or hardware.is_blinksticknano_attached:
+        tasks.extend([
+            LightsTask(),
+            FadeTask()
+        ])
+    return tasks

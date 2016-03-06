@@ -2,14 +2,13 @@ import os
 import random
 import itertools
 
-import twitterpibot
-import twitterpibot.logic.FileSystemHelper
-import twitterpibot.processing.christmas
+from twitterpibot.logic import FileSystemHelper
+from twitterpibot.processing import christmas
 
 
 class Songs(object):
     def __init__(self):
-        self.songsfolder = twitterpibot.logic.FileSystemHelper.get_root() + "twitterpibot" + os.sep + "songs" + os.sep
+        self.songsfolder = FileSystemHelper.get_root() + "twitterpibot" + os.sep + "songs" + os.sep
         self._songs = CaseInsensitiveDict(
             {
                 "500miles": {
@@ -369,7 +368,7 @@ class Songs(object):
         return self._songs.keys()
 
     def keys(self):
-        is_christmas = twitterpibot.processing.christmas.is_christmas()
+        is_christmas = christmas.is_christmas()
         keys = [k for k, v in self._songs.items() if "birthday" not in v and (is_christmas or "christmas" not in v)]
         return keys
 

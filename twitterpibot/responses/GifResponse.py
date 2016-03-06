@@ -11,7 +11,8 @@ class GifResponse(Response):
 
     def respond(self, inbox_item):
         response = random.choice(FatherTed.responses)
-        file_paths = [GiphyWrapper.get_random_gif(inbox_item.text_stripped)]
+        gif = GiphyWrapper.get_random_gif(screen_name=self.identity.screen_name, text=inbox_item.text_stripped)
+        file_paths = [gif]
         self.identity.twitter.reply_with(
             inbox_item=inbox_item,
             text=response,

@@ -1,6 +1,5 @@
 import random
-
-import twitterpibot.identities
+from twitterpibot import identities
 
 __author__ = 'andrewtatham'
 
@@ -54,11 +53,11 @@ def get_identity_dto(identity):
 
 
 def get_identities():
-    return [get_identities_dto(i) for i in twitterpibot.identities.all_identities]
+    return [get_identities_dto(i) for i in identities.all_identities]
 
 
 def get_identity(screen_name=None):
-    return [get_identity_dto(i) for i in twitterpibot.identities.all_identities
+    return [get_identity_dto(i) for i in identities.all_identities
             if screen_name == i.screen_name][0]
 
 
@@ -77,7 +76,7 @@ def get_actions():
 
 def get_following():
     dto = []
-    for identity in twitterpibot.identities.all_identities:
+    for identity in identities.all_identities:
         if identity.following:
             for following in identity.following:
                 dto.append((identity.id_str, following))
@@ -90,7 +89,7 @@ def get_following_graph():
     edges = {}
     identity_ids = set()
     # add identity nodes
-    for identity in twitterpibot.identities.all_identities:
+    for identity in identities.all_identities:
         identity_ids.add(identity.id_str)
         nodes[identity.id_str] = \
             {
@@ -110,7 +109,7 @@ def get_following_graph():
 
     # get a list of users to add
     users_list = []
-    for identity in twitterpibot.identities.all_identities:
+    for identity in identities.all_identities:
         identity_users_list = []
         for k, v in identity.users._users.items():
             identity_users_list.append(v)
@@ -127,7 +126,7 @@ def get_following_graph():
                 }
 
             # add following edges
-            for identity in twitterpibot.identities.all_identities:
+            for identity in identities.all_identities:
                 if user.id_str in identity.following:
                     edge_data = {"length": random.randint(20, 40)}
                     edges[identity.id_str][user.id_str] = edge_data

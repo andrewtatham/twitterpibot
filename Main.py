@@ -4,8 +4,12 @@ import logging
 
 import flask
 
+import colorama
+
 import twitterpibot
 
+if not twitterpibot.hardware.is_andrew_desktop:
+    colorama.init(autoreset=True)
 
 app = flask.Flask("twitterpibot")
 
@@ -78,11 +82,27 @@ def _shutdown_server():
 
 logger = logging.getLogger(__name__)
 
-twitterpibot.start()
-logger.info("Starting UI")
+logger.info("Setting tasks")
+t = twitterpibot.identities.get_all_tasks()
+twitterpibot.tasks.set_tasks(t)
+logger.info("Setting schedule")
+j = twitterpibot.identities.get_all_scheduled_jobs()
+twitterpibot.schedule.set_scheduled_jobs(j)
+logger.info("Starting tasks")
+twitterpibot.tasks.start()
+logger.info("Starting schedule")
+twitterpibot.schedule.start()
 
+logger.info("Starting UI")
 app.run(debug=twitterpibot.hardware.is_andrew_macbook, host='0.0.0.0')
 logger.info("Stopped UI")
-twitterpibot.stop()
+
+logger.info("Stopping schedule")
+twitterpibot.schedule.stop()
+logger.info("Stopping tasks")
+twitterpibot.tasks.stop()
+logger.info("Stopping hardware")
+twitterpibot.hardware.stop()
+logger.info("Stopped")
 
 sys.exit(0)

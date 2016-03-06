@@ -17,5 +17,7 @@ class MonitorScheduledTask(ScheduledTask):
 
     def on_run(self):
         text = datetime.datetime.now().strftime("%c")
-        text += os.linesep + 'cpu = ' + str(psutil.cpu_percent()) + ' memory = ' + str(psutil.virtual_memory().percent)
+        text += os.linesep + 'cpu = ' + str(psutil.cpu_percent()) \
+                + ' memory = ' + str(psutil.virtual_memory().percent)
+        text += os.linesep + self.identity.statistics.get_statistics()
         logger.info(Style.BRIGHT + Fore.BLUE + text)

@@ -1,9 +1,8 @@
 import datetime
-import twitterpibot
+from twitterpibot import schedule
 
 from twitterpibot.responses.Response import Response
 from twitterpibot.processing.Timelapse import Timelapse
-
 
 
 class TimelapseResponse(Response):
@@ -23,4 +22,4 @@ class TimelapseResponse(Response):
 
         tasks = timelapse.get_scheduled_tasks()
         for task in tasks:
-            twitterpibot.schedule.add(task)
+            schedule.add(task)

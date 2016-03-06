@@ -3,12 +3,20 @@ import time
 import logging
 
 logger = logging.getLogger(__name__)
-
+default_lists = [
+    "Reply Less",
+    "Arseholes",
+    "Dont Retweet",
+    "Retweet More",
+    "Awesome Bots",
+    "Friends",
+    "Blocked Users"
+]
 
 class Lists(object):
-    def __init__(self, identity, list_names):
+    def __init__(self, identity):
         self._identity = identity
-        self._list_names = list_names
+        self._list_names = default_lists
         self._sets = {}
         self._list_ids = {}
 
