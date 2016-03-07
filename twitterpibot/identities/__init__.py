@@ -258,11 +258,11 @@ if hardware.is_raspberry_pi_2:
 else:
     all_identities = [
         andrewtatham,
-        # andrewtathampi,
-        # andrewtathampi2,
-        # numberwang_host,
-        # julienumberwang,
-        # simonnumberwang,
+        andrewtathampi,
+        andrewtathampi2,
+        numberwang_host,
+        julienumberwang,
+        simonnumberwang,
         eggpunbot,
     ]
 
