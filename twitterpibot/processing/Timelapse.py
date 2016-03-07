@@ -7,7 +7,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 from apscheduler.triggers.date import DateTrigger
 import images2gif
 
-from twitterpibot.logic import FileSystemHelper
+from twitterpibot.logic import filesystemhelper
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 import twitterpibot.hardware
@@ -24,7 +24,7 @@ class Timelapse(object):
         self.identity = identity
         self.name = name
         self.imageExtension = 'jpg'
-        self.folderName = FileSystemHelper.root + "temp" + os.path.sep + 'timelapse' + os.path.sep + self.name
+        self.folderName = filesystemhelper.root + "temp" + os.path.sep + 'timelapse' + os.path.sep + self.name
         self.dirPath = os.path.abspath(self.folderName)
         self.startTime = start_time
         self.endTime = end_time
@@ -73,7 +73,7 @@ class TimelapsePhotoInitTask(ScheduledTask):
 
     def on_run(self):
         logger.info("[Timelapse] Init ")
-        FileSystemHelper.ensure_directory_exists_and_is_empty(self.timelapse.dirPath)
+        filesystemhelper.ensure_directory_exists_and_is_empty(self.timelapse.dirPath)
 
 
 class TimelapsePhotoScheduledTask(ScheduledTask):
@@ -180,4 +180,4 @@ class TimelapseUploadScheduledTask(ScheduledTask):
             text=self.timelapse.tweetText,
             file_paths=[filename]))
 
-        FileSystemHelper.remove_directory_and_contents(self.timelapse.dirPath)
+        filesystemhelper.remove_directory_and_contents(self.timelapse.dirPath)

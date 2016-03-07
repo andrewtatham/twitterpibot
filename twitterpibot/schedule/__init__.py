@@ -1,6 +1,6 @@
 import logging
 from apscheduler.schedulers.background import BackgroundScheduler
-from twitterpibot.ExceptionHandler import handle
+from twitterpibot.exceptionhandler import handle
 
 logger = logging.getLogger(__name__)
 

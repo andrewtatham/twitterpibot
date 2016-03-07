@@ -1,3 +1,3 @@
-import twitterpibot.users.User
-import twitterpibot.users.Users
-import twitterpibot.users.Lists
+import twitterpibot.users.user
+import twitterpibot.users.users
+import twitterpibot.users.lists

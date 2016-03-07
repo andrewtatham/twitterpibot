@@ -3,7 +3,7 @@ import datetime
 import logging
 
 from twitterpibot.twitter.topics import Topics
-from twitterpibot.twitter import TwitterHelper
+from twitterpibot.twitter import twitterhelper
 
 try:
     from functools import reduce
@@ -29,7 +29,7 @@ class TrendingTopic(object):
         #     logger.info('Determined topics for ' + self.text + ' to be ' + str(self.topics))
         # else:
         logger.info('Getting tweets for ' + self.text)
-        topic_tweets = TwitterHelper.search(topic_text)
+        topic_tweets = twitterhelper.search(topic_text)
         if topic_tweets:
             tweets_text = reduce(lambda t1, t2: t1 + os.linesep + t2, map(lambda t: t['text'], topic_tweets))
             tweets_text = ''.join([i if ord(i) < 128 else ' ' for i in tweets_text])
@@ -50,7 +50,7 @@ def _update():
     global _trending
     global _updated
 
-    topics_text = TwitterHelper.get_trending_topics_for([UK_WOEID, US_WOEID])
+    topics_text = twitterhelper.get_trending_topics_for([UK_WOEID, US_WOEID])
     _trending = list(map(lambda topic_text: TrendingTopic(topic_text), topics_text))
     _updated = datetime.datetime.now()
 

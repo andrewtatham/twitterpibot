@@ -1,11 +1,11 @@
 from unittest import TestCase
 
-from twitterpibot.logic import FileSystemHelper
+from twitterpibot.logic import filesystemhelper
 
 
-class TestFileSystemHelper(TestCase):
+class Testfilesystemhelper(TestCase):
     def test_get_url_extension(self):
-        self.assertEqual(".gif", FileSystemHelper.get_url_extension("http://blah.com/blah/blah.gif"))
+        self.assertEqual(".gif", filesystemhelper.get_url_extension("http://blah.com/blah/blah.gif"))
 
     def test_root(self):
-        self.assertEqual("../../", FileSystemHelper.root)
+        self.assertEqual("../../", filesystemhelper.root)

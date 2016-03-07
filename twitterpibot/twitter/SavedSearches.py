@@ -1,6 +1,6 @@
 import datetime
 
-from twitterpibot.twitter import TwitterHelper
+from twitterpibot.twitter import twitterhelper
 
 _saved_searches = []
 _updated = None
@@ -21,5 +21,5 @@ def get_saved_searches(identity):
 def _update(identity):
     global _saved_searches
     global _updated
-    _saved_searches = TwitterHelper.get_saved_searches(identity)
+    _saved_searches = twitterhelper.get_saved_searches(identity)
     _updated = datetime.datetime.now()

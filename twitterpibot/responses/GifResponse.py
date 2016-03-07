@@ -1,6 +1,6 @@
 import random
 
-from twitterpibot.logic import GiphyWrapper
+from twitterpibot.logic import giphyhelper
 from twitterpibot.processing import FatherTed
 from twitterpibot.responses.Response import Response
 
@@ -11,7 +11,7 @@ class GifResponse(Response):
 
     def respond(self, inbox_item):
         response = random.choice(FatherTed.responses)
-        gif = GiphyWrapper.get_random_gif(screen_name=self.identity.screen_name, text=inbox_item.text_stripped)
+        gif = giphyhelper.get_random_gif(screen_name=self.identity.screen_name, text=inbox_item.text_stripped)
         file_paths = [gif]
         self.identity.twitter.reply_with(
             inbox_item=inbox_item,

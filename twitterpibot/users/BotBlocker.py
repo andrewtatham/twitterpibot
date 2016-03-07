@@ -3,7 +3,7 @@ import logging
 import os
 
 import twitterpibot.outgoing.OutgoingDirectMessage
-import twitterpibot.twitter.TwitterHelper
+import twitterpibot.twitter.twitterhelper
 from twitterpibot.twitter.topics import Topics
 
 logger = logging.getLogger(__name__)

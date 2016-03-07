@@ -4,7 +4,7 @@ import random
 import colorama
 
 from twitterpibot import hardware
-from twitterpibot.Statistics import Statistics
+from twitterpibot.statistics import Statistics
 from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
 from twitterpibot.responses.ConversationResponse import ConversationResponse
 from twitterpibot.responses.EggPunResponse import EggPunResponse
@@ -44,9 +44,9 @@ from twitterpibot.schedule.ZenOfPythonScheduledTask import ZenOfPythonScheduledT
 from twitterpibot.tasks.FadeTask import FadeTask
 from twitterpibot.tasks.LightsTask import LightsTask
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
-from twitterpibot.twitter.TwitterHelper import TwitterHelper
-from twitterpibot.users.Lists import Lists
-from twitterpibot.users.Users import Users
+from twitterpibot.twitter.twitterhelper import TwitterHelper
+from twitterpibot.users.lists import Lists
+from twitterpibot.users.users import Users
 
 all_identities = []
 

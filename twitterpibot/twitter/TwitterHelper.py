@@ -5,12 +5,12 @@ import textwrap
 import time
 
 from twython import Twython
-from twitterpibot.logic import FileSystemHelper
+from twitterpibot.logic import filesystemhelper
 
-from twitterpibot.twitter import Authenticator
+from twitterpibot.twitter import authenticator
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
-from twitterpibot.twitter.MyStreamer import MyStreamer
+from twitterpibot.twitter.mystreamer import MyStreamer
 
 logger = logging.getLogger(__name__)
 try:
@@ -47,7 +47,7 @@ class TwitterHelper(object):
     def __init__(self, identity):
         self.identity = identity
         if not self.identity.tokens:
-            self.identity.tokens = Authenticator.get_tokens(identity.screen_name)
+            self.identity.tokens = authenticator.get_tokens(identity.screen_name)
         self.twitter = Twython(
             self.identity.tokens[0],
             self.identity.tokens[1],
@@ -164,7 +164,7 @@ class TwitterHelper(object):
 
         segment = 0
         chunk_size = 4 * 1024 * 1024
-        for chunk in FileSystemHelper.bytes_from_file(file_path, chunk_size):
+        for chunk in filesystemhelper.bytes_from_file(file_path, chunk_size):
             logger.info('[MyTwitter] Append ' + str(segment))
 
             append_params = {

@@ -1,7 +1,7 @@
 import threading
 import logging
 import time
-from twitterpibot.ExceptionHandler import handle
+from twitterpibot.exceptionhandler import handle
 
 logger = logging.getLogger(__name__)
 

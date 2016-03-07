@@ -3,7 +3,7 @@ import os
 
 import giphypop
 
-from twitterpibot.logic import FileSystemHelper
+from twitterpibot.logic import filesystemhelper
 
 logger = logging.getLogger(__name__)
 
@@ -15,8 +15,8 @@ def _init(screen_name):
     if not g:
         g = giphypop.Giphy()
 
-    folder = FileSystemHelper.root + "temp" + os.sep + "gif" + os.sep + screen_name + os.sep
-    FileSystemHelper.ensure_directory_exists(folder)
+    folder = filesystemhelper.root + "temp" + os.sep + "gif" + os.sep + screen_name + os.sep
+    filesystemhelper.ensure_directory_exists(folder)
     return folder
 
 
@@ -38,6 +38,6 @@ def get_gif(screen_name, text):
 
 def _download_gif(folder, gif):
     if gif:
-        return FileSystemHelper.download_file(folder=folder, url=gif.media_url)
+        return filesystemhelper.download_file(folder=folder, url=gif.media_url)
     else:
         return None

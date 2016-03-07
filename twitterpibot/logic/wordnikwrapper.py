@@ -1,22 +1,22 @@
 import logging
+import random
 
 # noinspection PyPackageRequirements
-import random
 from wordnik import swagger, WordApi, WordsApi, WordListApi, WordListsApi, AccountApi
 
-from twitterpibot.logic.FileSystemHelper import get_username, get_key, get_password
+import twitterpibot.logic.filesystemhelper as fsh
 
 logger = logging.getLogger(__name__)
 
 key_name = "wordnik"
 
 apiUrl = 'http://api.wordnik.com/v4'
-apiKey = get_key(key_name)
+apiKey = fsh.get_key(key_name)
 client = swagger.ApiClient(apiKey, apiUrl)
 
 account_api = AccountApi.AccountApi(client)
-username = get_username(key_name)
-password = get_password(key_name)
+username = fsh.get_username(key_name)
+password = fsh.get_password(key_name)
 auth_token = account_api.authenticate(username, password).token
 
 word_api = WordApi.WordApi(client)

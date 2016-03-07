@@ -1,5 +1,5 @@
 import random
-from twitterpibot.logic import GiphyWrapper
+from twitterpibot.logic import giphyhelper
 from twitterpibot.logic import eggpuns
 from twitterpibot.responses.Response import Response
 
@@ -13,8 +13,8 @@ class EggPunResponse(Response):
         response = eggpuns.make_egg_pun_phrase(inbox_item.text)
         file_paths = None
         if inbox_item.is_tweet:
-            gif_text = random.choice(["egg", "eggs"])
-            file_paths = [GiphyWrapper.get_gif(text=gif_text)]
+            gif_text = eggpuns.get_gif_search_text()
+            file_paths = [giphyhelper.get_gif(screen_name=self.identity.screen_name, text=gif_text)]
         self.identity.twitter.reply_with(
             inbox_item=inbox_item,
             text=response,

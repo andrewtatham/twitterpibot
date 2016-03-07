@@ -101,7 +101,7 @@ def get_following_graph():
         edges[identity.id_str] = {}
 
         # add edges between identities
-        for identity2 in twitterpibot.identities.all_identities:
+        for identity2 in identities.all_identities:
             if identity2.id_str in identity.following:
                 edge_data = {"length": random.randint(50, 70)}
                 edges[identity.id_str][identity2.id_str] = edge_data

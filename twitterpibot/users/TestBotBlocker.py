@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from twitterpibot.users import BotBlocker
 from twitterpibot.users.BotBlocker import _is_user_bot
-from twitterpibot.users.User import User
+from twitterpibot.users.user import User
 
 
 class TestBotBlocker(TestCase):

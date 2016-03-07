@@ -7,7 +7,7 @@ from twitterpibot.logic import wordnikwrapper
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-trigger_list = ["egg", "shell", "chicken", "hen", "omlette"]
+trigger_list = ["egg", "eggs," "egg shell", "chicken", "hen", "omlette", "yolk"]
 
 trigger_rx = re.compile("|".join(trigger_list), re.IGNORECASE)
 
@@ -84,3 +84,7 @@ if __name__ == "__main__":
 
     for i in range(3):
         print(make_egg_pun_phrase())
+
+
+def get_gif_search_text():
+    return random.choice(trigger_list)
