@@ -8,7 +8,7 @@ from twitterpibot import hardware
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingEvent import IncomingEvent
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
-from twitterpibot.twitter import authenticator
+from twitterpibot.twitter import authhelper
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ class MyStreamer(TwythonStreamer):
         self._identity = identity
         self.responses = self._identity.get_responses()
         if not self._identity.tokens:
-            self._identity.tokens = authenticator.get_tokens(identity.screen_name)
+            self._identity.tokens = authhelper.get_tokens(identity.screen_name)
         self._topic = topic
         if topic_name:
             self._topic_name = topic_name

@@ -2,7 +2,7 @@ import os
 import webbrowser
 import sys
 
-from twitterpibot.logic import filesystemhelper
+from twitterpibot.logic import fsh
 
 try:
     # noinspection PyUnresolvedReferences,PyShadowingBuiltins
@@ -18,9 +18,9 @@ logger = logging.getLogger(__name__)
 
 
 def get_tokens(screen_name):
-    tokens_dir = filesystemhelper.root + "temp" + os.sep + "tokens" + os.sep + str(sys.version_info[0]) + os.sep
+    tokens_dir = fsh.root + "temp" + os.sep + "tokens" + os.sep + str(sys.version_info[0]) + os.sep
 
-    filesystemhelper.ensure_directory_exists(tokens_dir)
+    fsh.ensure_directory_exists(tokens_dir)
 
     app_key_path = tokens_dir + "APP_KEY.pkl"
     app_secret_path = tokens_dir + "APP_SECRET.pkl"

@@ -1,11 +1,9 @@
 import abc
-import random
 
 import colorama
 
 from twitterpibot import hardware
-from twitterpibot.statistics import Statistics
-from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
+from twitterpibot.stats import Statistics
 from twitterpibot.responses.ConversationResponse import ConversationResponse
 from twitterpibot.responses.EggPunResponse import EggPunResponse
 from twitterpibot.responses.FatherTedResponse import FatherTedResponse
@@ -20,6 +18,7 @@ from twitterpibot.responses.SongResponse import SongResponse
 from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
 from twitterpibot.responses.ThanksResponse import ThanksResponse
 from twitterpibot.responses.TimelapseResponse import TimelapseResponse
+from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
 from twitterpibot.schedule.BlankTweetScheduledTask import BlankTweetScheduledTask
 from twitterpibot.schedule.ConversationScheduledTask import ConversationScheduledTask
 from twitterpibot.schedule.EdBallsDay import EdBallsDay
@@ -44,9 +43,9 @@ from twitterpibot.schedule.ZenOfPythonScheduledTask import ZenOfPythonScheduledT
 from twitterpibot.tasks.FadeTask import FadeTask
 from twitterpibot.tasks.LightsTask import LightsTask
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
-from twitterpibot.twitter.twitterhelper import TwitterHelper
-from twitterpibot.users.lists import Lists
-from twitterpibot.users.users import Users
+from twitterpibot.twitter.twithelp import TwitterHelper
+from twitterpibot.users.userlists import Lists
+from twitterpibot.users.userrepo import Users
 
 all_identities = []
 
@@ -178,7 +177,14 @@ class NumberwangHostIdentity(Identity):
         ]
 
     def get_scheduled_jobs(self):
-        return [NumberwangHostScheduledTask(self)]
+        return [NumberwangHostScheduledTask(self, [
+            [julienumberwang, simonnumberwang],
+            [julienumberwang, simonnumberwang],
+            [julienumberwang, simonnumberwang],
+            [andrewtatham, julienumberwang],
+            [andrewtatham, simonnumberwang],
+            [andrewtathampi, andrewtathampi2]
+        ])]
 
     def get_responses(self):
         return []
@@ -280,17 +286,6 @@ def get_all_scheduled_jobs():
     for i in all_identities:
         scheduled_jobs.extend(i.get_scheduled_jobs())
     return scheduled_jobs
-
-
-def get_numberwang_contestants():
-    return random.choice([
-        [julienumberwang, simonnumberwang],
-        [julienumberwang, simonnumberwang],
-        [julienumberwang, simonnumberwang],
-        [andrewtatham, julienumberwang],
-        [andrewtatham, simonnumberwang],
-        [andrewtathampi, andrewtathampi2]
-    ])
 
 
 def get_bot_scheduled_jobs(identity):

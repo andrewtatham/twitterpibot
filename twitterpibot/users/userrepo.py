@@ -1,6 +1,6 @@
 import logging
 
-from twitterpibot.users.user import User
+from twitterpibot.users.userobj import User
 
 logger = logging.getLogger(__name__)
 

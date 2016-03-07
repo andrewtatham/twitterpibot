@@ -4,7 +4,7 @@ import random
 # noinspection PyPackageRequirements
 from wordnik import swagger, WordApi, WordsApi, WordListApi, WordListsApi, AccountApi
 
-import twitterpibot.logic.filesystemhelper as fsh
+import twitterpibot.logic.fsh as fsh
 
 logger = logging.getLogger(__name__)
 

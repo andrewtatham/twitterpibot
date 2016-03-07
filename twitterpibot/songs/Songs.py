@@ -2,13 +2,13 @@ import os
 import random
 import itertools
 
-from twitterpibot.logic import filesystemhelper
+from twitterpibot.logic import fsh
 from twitterpibot.processing import christmas
 
 
 class Songs(object):
     def __init__(self):
-        self.songsfolder = filesystemhelper.get_root() + "twitterpibot" + os.sep + "songs" + os.sep
+        self.songsfolder = fsh.get_root() + "twitterpibot" + os.sep + "songs" + os.sep
         self._songs = CaseInsensitiveDict(
             {
                 "500miles": {

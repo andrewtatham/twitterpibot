@@ -2,14 +2,14 @@ import logging
 from logging import handlers
 import os
 
-from twitterpibot.logic import filesystemhelper
+from twitterpibot.logic import fsh
 
 root_logger = logging.getLogger("")
 root_logger.setLevel(logging.INFO)
 
-log_dir = filesystemhelper.root + "temp" + os.sep + "log" + os.sep
+log_dir = fsh.root + "temp" + os.sep + "log" + os.sep
 
-filesystemhelper.ensure_directory_exists(log_dir)
+fsh.ensure_directory_exists(log_dir)
 
 file_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
