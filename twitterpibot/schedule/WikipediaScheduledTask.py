@@ -1,8 +1,9 @@
 import logging
 import os
 import pprint
+import random
 
-from apscheduler.triggers.cron import CronTrigger
+from apscheduler.triggers.interval import IntervalTrigger
 
 import twitterpibot.identities
 from twitterpibot.logic import wikipediahelper, fsh
@@ -18,7 +19,7 @@ def _cap(s, l):
 
 class WikipediaScheduledTask(ScheduledTask):
     def get_trigger(self):
-        return CronTrigger(hour="*/3", minute="15,45")
+        return IntervalTrigger(hours=3, minutes=random.randint(0, 59))
 
     def on_run(self):
         folder = fsh.root + "temp" + os.sep + "wikipedia" + os.sep + self.identity.screen_name + os.sep

@@ -53,7 +53,7 @@ class NumberwangHostScheduledTask(ScheduledTask):
         self._contestant_pairs = contestant_pairs
 
     def get_trigger(self):
-        return IntervalTrigger(hours=13)
+        return IntervalTrigger(hours=13, minutes=random.randint(0, 59))
 
     def on_run(self):
         contestants = random.choice(self._contestant_pairs)

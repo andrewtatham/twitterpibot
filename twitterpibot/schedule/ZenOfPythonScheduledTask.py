@@ -1,4 +1,5 @@
 from itertools import cycle
+import random
 
 from apscheduler.triggers.interval import IntervalTrigger
 
@@ -12,7 +13,7 @@ mantra = cycle(zen_of_python)
 
 class ZenOfPythonScheduledTask(ScheduledTask):
     def get_trigger(self):
-        return IntervalTrigger(hours=2, minutes=1)
+        return IntervalTrigger(hours=2, minutes=random.randint(0, 59))
 
     def on_run(self):
         self.identity.twitter.send(OutgoingTweet(text=next(mantra) + " #ZenOfPython"))
