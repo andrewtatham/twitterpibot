@@ -236,7 +236,7 @@ class EggPunBotIdentity(BotIdentity):
         ]
 
 
-andrewtathampi = AndrewTathamPi2Identity()
+andrewtathampi = AndrewTathamPiIdentity()
 andrewtathampi2 = AndrewTathamPi2Identity()
 slaves = [andrewtathampi, andrewtathampi2]
 andrewtatham = AndrewTathamIdentity(slaves)
