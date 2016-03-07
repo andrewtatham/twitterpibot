@@ -25,7 +25,7 @@ def _cap(s, l):
 
 
 def _split_text(large_text):
-    lines = textwrap.wrap(large_text, 130)
+    lines = textwrap.wrap(large_text, 117)
     lines_count = len(lines)
     line_number = 0
     return_value = []

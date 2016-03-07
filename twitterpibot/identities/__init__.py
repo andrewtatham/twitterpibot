@@ -305,7 +305,7 @@ def get_bot_scheduled_jobs(identity):
         ZenOfPythonScheduledTask(identity),
         BlankTweetScheduledTask(identity),
         HappyBirthdayScheduledTask(identity),
-        EggPunScheduledTask(identity),
+        # EggPunScheduledTask(identity),
 
     ]
 
