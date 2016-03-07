@@ -138,7 +138,7 @@ class AndrewTathamPiIdentity(BotIdentity):
         return get_bot_tasks(self)
 
     def get_scheduled_jobs(self):
-        jobs = super(BotIdentity, self).get_scheduled_jobs()
+        jobs = super(AndrewTathamPiIdentity, self).get_scheduled_jobs()
         jobs.extend(get_bot_scheduled_jobs(self))
         return jobs
 
@@ -158,7 +158,7 @@ class AndrewTathamPi2Identity(BotIdentity):
         return get_bot_tasks(self)
 
     def get_scheduled_jobs(self):
-        jobs = super(BotIdentity, self).get_scheduled_jobs()
+        jobs = super(AndrewTathamPi2Identity, self).get_scheduled_jobs()
         jobs.extend(get_bot_scheduled_jobs(self))
         return jobs
 
@@ -226,7 +226,7 @@ class EggPunBotIdentity(BotIdentity):
         self.id_str = "706393659244154880"
 
     def get_scheduled_jobs(self):
-        jobs = super(BotIdentity, self).get_scheduled_jobs()
+        jobs = super(EggPunBotIdentity, self).get_scheduled_jobs()
         jobs.append(EggPunScheduledTask(self))
         return jobs
 
@@ -258,11 +258,11 @@ if hardware.is_raspberry_pi_2:
 else:
     all_identities = [
         andrewtatham,
-        andrewtathampi,
-        andrewtathampi2,
-        numberwang_host,
-        julienumberwang,
-        simonnumberwang,
+        # andrewtathampi,
+        # andrewtathampi2,
+        # numberwang_host,
+        # julienumberwang,
+        # simonnumberwang,
         eggpunbot,
     ]
 

@@ -5,9 +5,7 @@ import time
 
 from apscheduler.triggers.interval import IntervalTrigger
 import six
-
-
-import twitterpibot.identities
+from twitterpibot import identities
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
@@ -57,7 +55,7 @@ class NumberwangHostScheduledTask(ScheduledTask):
         return IntervalTrigger(hours=13)
 
     def on_run(self):
-        contestants = twitterpibot.identities.get_numberwang_contestants()
+        contestants = identities.get_numberwang_contestants()
 
         self.play_numberwang(contestants)
 

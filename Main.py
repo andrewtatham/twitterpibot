@@ -94,7 +94,7 @@ logger.info("Starting schedule")
 twitterpibot.schedule.start()
 
 logger.info("Starting UI")
-app.run(debug=twitterpibot.hardware.is_andrew_macbook, host='0.0.0.0')
+app.run(debug=False, host='0.0.0.0')
 logger.info("Stopped UI")
 
 logger.info("Stopping schedule")

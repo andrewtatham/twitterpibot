@@ -14,7 +14,7 @@ class UserListsScheduledTask(ScheduledTask):
         self._master_identity = master_identity
 
     def get_trigger(self):
-        return IntervalTrigger(hours=2)
+        return IntervalTrigger(minutes=55)
 
     def on_run(self):
         self.synchronize_lists()

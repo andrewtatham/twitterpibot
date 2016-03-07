@@ -15,7 +15,7 @@ class FollowScheduledTask(ScheduledTask):
         self.to_follow = []
 
     def get_trigger(self):
-        return IntervalTrigger(minutes=15)
+        return IntervalTrigger(minutes=16)
 
     def _get_unfollowed_list_members(self, list_names):
         to_follow = set()
@@ -40,7 +40,7 @@ class FollowScheduledTask(ScheduledTask):
 
         if not self.to_follow:
             to_follow = set()
-            to_follow.update(self._get_unfollowed_list_members(list_names=["Awesome Bots", "Retweet More"]))
+            to_follow.update(self._get_unfollowed_list_members(list_names=["Friends", "Awesome Bots", "Retweet More"]))
             to_follow.update(self._get_unfollowed_subscribed_list_members())
             self.to_follow = list(to_follow)
             logger.info("To follow %s users" % len(self.to_follow))

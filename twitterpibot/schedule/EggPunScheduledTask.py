@@ -7,7 +7,7 @@ from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
 class EggPunScheduledTask(ScheduledTask):
     def get_trigger(self):
-        return IntervalTrigger(minutes=2)
+        return IntervalTrigger(minutes=17)
 
     def on_run(self):
         pun = eggpuns.make_egg_pun_phrase()

@@ -15,7 +15,7 @@ class SubscribedListsScheduledTask(ScheduledTask):
         self._master_identity = master_identity
 
     def get_trigger(self):
-        return IntervalTrigger(hours=5)
+        return IntervalTrigger(minutes=57)
 
     def on_run(self):
         self.synchronize_subscriptions()
