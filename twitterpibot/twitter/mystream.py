@@ -3,8 +3,8 @@ import random
 import time
 
 from twython.streaming.api import TwythonStreamer
-from twitterpibot import hardware
 
+from twitterpibot import hardware
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingEvent import IncomingEvent
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
@@ -17,10 +17,14 @@ max_backoff = 600
 
 
 class MyStreamer(TwythonStreamer):
-    def __init__(self, identity, topic=None, topic_name=None):
+    def __init__(self, identity, topic=None, topic_name=None, responses=None):
         self.backoff = default_backoff
         self._identity = identity
-        self.responses = self._identity.get_responses()
+
+        if not responses:
+            self.responses = self._identity.get_responses()
+        else:
+            self.responses = responses
         if not self._identity.tokens:
             self._identity.tokens = authhelper.get_tokens(identity.screen_name)
         self._topic = topic

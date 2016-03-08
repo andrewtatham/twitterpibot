@@ -6,10 +6,13 @@ logger = logging.getLogger(__name__)
 
 
 class StreamTweetsTask(Task):
-    def __init__(self, identity):
-        Task.__init__(self, identity)
+    def __init__(self, identity, streamer=None, key=None):
+        Task.__init__(self, identity, key=key)
         self.core = True
-        self._streamer = identity.twitter.get_streamer()
+        if not streamer:
+            self._streamer = identity.twitter.get_streamer()
+        else:
+            self._streamer = streamer
 
     def on_run(self):
         logger.info("starting %s stream" % self.identity.screen_name)

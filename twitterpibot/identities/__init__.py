@@ -3,6 +3,8 @@ import abc
 import colorama
 
 from twitterpibot import hardware
+from twitterpibot.logic.internationalwomensday import InternationalWomensDayScheduledTask, \
+    InternationalWomensDayResponse
 from twitterpibot.stats import Statistics
 from twitterpibot.responses.ConversationResponse import ConversationResponse
 from twitterpibot.responses.EggPunResponse import EggPunResponse
@@ -267,6 +269,9 @@ def get_all_scheduled_jobs():
     return scheduled_jobs
 
 
+
+
+
 def get_bot_scheduled_jobs(identity):
     scheduledjobs = [
         WikipediaScheduledTask(identity),
@@ -280,6 +285,7 @@ def get_bot_scheduled_jobs(identity):
         BlankTweetScheduledTask(identity),
         HappyBirthdayScheduledTask(identity),
         # EggPunScheduledTask(identity),
+        InternationalWomensDayScheduledTask(identity),
 
     ]
 
@@ -307,6 +313,7 @@ def get_bot_responses(identity):
         EggPunResponse(identity),
         ThanksResponse(identity),
         HelloResponse(identity),
+        InternationalWomensDayResponse(identity),
         Magic8BallResponse(identity)
     ]
     if hardware.is_picam_attached or hardware.is_webcam_attached:

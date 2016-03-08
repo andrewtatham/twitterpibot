@@ -2,12 +2,15 @@ import abc
 
 
 class Task(object):
-    def __init__(self, identity):
+    def __init__(self, identity, key=None):
         self.identity = identity
         self.key = ""
-        if identity:
+        if identity:  # must be unique
             self.key += identity.screen_name + " "
-        self.key += str(type(self))  # must be unique
+        if key:
+            self.key += key
+        else:
+            self.key += str(type(self))
         self.core = False
 
     @abc.abstractmethod
