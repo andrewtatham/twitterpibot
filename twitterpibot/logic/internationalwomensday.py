@@ -24,7 +24,7 @@ class InternationalWomensDayScheduledTask(ScheduledTask):
         self._streaming = False
 
     def get_trigger(self):
-        return CronTrigger(month=3, day="7-9", minute="*")
+        return CronTrigger(month=3, day="7-9", minute="*/5")
 
     def on_run(self):
         task_key = "#InternationalWomensDay"
@@ -55,12 +55,6 @@ class InternationalWomensDayResponse(Response):
         self._answer_rx = re.compile("Nov.*19|19.*Nov", re.IGNORECASE)
 
     def condition(self, inbox_item):
-        # a = (inbox_item.is_tweet or inbox_item.is_direct_message)
-        # b = self._question_rx.match(inbox_item.text)
-        # c = self._answer_rx.match(inbox_item.text)
-        # d = a and b and not c
-        # logging.info("a=%s, b=%s, c=%s, d=%s", a, b, c, d)
-        # return d
         return (inbox_item.is_tweet or inbox_item.is_direct_message) \
                and self._question_rx.match(inbox_item.text) \
                and not self._answer_rx.match(inbox_item.text)
