@@ -21,7 +21,7 @@ class StreamTweetsTask(Task):
     def on_run(self):
         if self.topic:
             logger.info("starting %s %s topic stream", self.identity.screen_name, self.topic_name)
-            self._streamer.statuses.filter(track=self.topic)
+            self._streamer.statuses.filter(track=self.topic, filter_level="low", language="en")
         else:
             logger.info("starting %s user stream" % self.identity.screen_name)
             self._streamer.user()
