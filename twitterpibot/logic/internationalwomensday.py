@@ -34,8 +34,11 @@ class InternationalWomensDayScheduledTask(ScheduledTask):
         if start:
             logger.info("starting stream %s", task_key)
             responses = [InternationalWomensDayResponse(self.identity)]
+
             streamer = self.identity.twitter.get_streamer(
-                topic="international men day,#InternationalWomenDay,#InternationalWomensDay",
+                topic="international men day," +
+                      "#meninist,#InternationalMensDay," +
+                      "#InternationalWomenDay,#InternationalWomensDay",
                 topic_name="#InternationalWomensDay",
                 responses=responses)
             task = StreamTweetsTask(identity=self.identity, streamer=streamer, key=task_key)
@@ -51,13 +54,13 @@ class InternationalWomensDayScheduledTask(ScheduledTask):
 class InternationalWomensDayResponse(Response):
     def __init__(self, identity):
         super(InternationalWomensDayResponse, self).__init__(identity)
-        self._question_rx = re.compile("When.*international.*men'?s.*day\?", re.IGNORECASE)
-        self._answer_rx = re.compile("Nov.*19|19.*Nov", re.IGNORECASE)
+        self._question_rx = re.compile("international.*men'?s.*day\?", flags=re.IGNORECASE)
+        self._answer_rx = re.compile("(Nov.*19)|(19.*Nov)", flags=re.IGNORECASE)
 
     def condition(self, inbox_item):
         return (inbox_item.is_tweet or inbox_item.is_direct_message) \
-               and self._question_rx.match(inbox_item.text) \
-               and not self._answer_rx.match(inbox_item.text)
+               and bool(self._question_rx.findall(inbox_item.text)) \
+               and not bool(self._answer_rx.findall(inbox_item.text))
 
     def respond(self, inbox_item):
         self.identity.twitter.reply_with(
