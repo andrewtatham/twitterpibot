@@ -54,7 +54,7 @@ class InternationalWomensDayScheduledTask(ScheduledTask):
 class InternationalWomensDayResponse(Response):
     def __init__(self, identity):
         super(InternationalWomensDayResponse, self).__init__(identity)
-        self._question_rx = re.compile("international.*men'?s.*day\?", flags=re.IGNORECASE)
+        self._question_rx = re.compile("(When|is.*there).*international.*men'?s.*day\?", flags=re.IGNORECASE)
         self._answer_rx = re.compile("(Nov.*19)|(19.*Nov)", flags=re.IGNORECASE)
 
     def condition(self, inbox_item):
