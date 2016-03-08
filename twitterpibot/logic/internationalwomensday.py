@@ -54,13 +54,16 @@ class InternationalWomensDayScheduledTask(ScheduledTask):
 class InternationalWomensDayResponse(Response):
     def __init__(self, identity):
         super(InternationalWomensDayResponse, self).__init__(identity)
-        self._question_rx = re.compile("(When|is.*there).*international.*men'?s.*day\?", flags=re.IGNORECASE)
-        self._answer_rx = re.compile("(Nov.*19)|(19.*Nov)", flags=re.IGNORECASE)
+        self._question_rx = re.compile("(When|is.*there|(how|what).*about).*international.*men'?s.*day\?", flags=re.IGNORECASE)
+
+        self._answer_rx_1 = re.compile("19|nineteen", flags=re.IGNORECASE)
+        self._answer_rx_2 = re.compile("Nov", flags=re.IGNORECASE)
 
     def condition(self, inbox_item):
         return (inbox_item.is_tweet or inbox_item.is_direct_message) \
                and bool(self._question_rx.findall(inbox_item.text)) \
-               and not bool(self._answer_rx.findall(inbox_item.text))
+               and not (
+                bool(self._answer_rx_1.findall(inbox_item.text)) and bool(self._answer_rx_2.findall(inbox_item.text)))
 
     def respond(self, inbox_item):
         self.identity.twitter.reply_with(
