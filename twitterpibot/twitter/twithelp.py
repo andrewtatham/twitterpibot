@@ -89,7 +89,7 @@ class TwitterHelper(object):
                 response = self.twitter.update_status(
                     status=status,
                     in_reply_to_status_id=in_reply_to_status_id,
-                    media_ids=outbox_item.media_ids)
+                    media_ids=media_ids)
                 in_reply_to_status_id = response["id_str"]
                 self.identity.statistics.record_outgoing_tweet()
                 line_number += 1

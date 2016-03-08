@@ -7,26 +7,31 @@ from twitterpibot.logic import wordnikwrapper
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-trigger_list = ["egg", "eggs," "egg shell", "chicken", "hen", "omlette", "yolk"]
+trigger_list = ["egg", "eggs", "shell", "chicken", "hen", "omlette", "yolk", "albumen"]
 
 trigger_rx = re.compile("|".join(trigger_list), re.IGNORECASE)
 
-replacements = {
-    "eg": "egg",
-    "ex": "eggs",
+replacements = [
+    ("eg", "egg"),
+    ("ex", "eggs"),
 
-    "shel": "shell",
-    "sel": "shell",
-    "hell": "shell",
-    "shall": "shell",
+    ("sel", "shell"),
+    ("shel", "shell"),
+    ("hell", "shell"),
+    ("shall", "shell"),
+
+    ("of", "oeuf"),
+    ("ofs", "oeufs"),
+
+    ("album", "albumen"),
 
     # sketchy
-    "ag": "egg",
-    "ig": "egg",
-    "og": "egg",
-    "ug": "egg",
-
-}
+    ("ag", "egg"),
+    ("ig", "egg"),
+    ("og", "egg"),
+    ("ug", "egg"),
+    ("ek", "egg")
+]
 
 stem_rxs = {
     "eg": "eg[^g]",  # match eg but not egg
@@ -42,7 +47,7 @@ def get_stem_rx(k):
         return k
 
 
-stem_list = list(replacements)
+stem_list = list(map(lambda repl: repl[0], replacements))
 stem_rx = re.compile("|".join(map(lambda k: get_stem_rx(k), stem_list)), re.IGNORECASE)
 
 
@@ -51,11 +56,17 @@ def is_egg_pun_trigger(text):
     return bool(match)
 
 
+def get_gif_search_text():
+    return random.choice(trigger_list)
+
+
 def make_egg_pun(text):
+    logger.info(text)
     matches = stem_rx.findall(text)
     if matches:
-        for k, v in replacements.items():
-            text = re.sub(k, v.upper(), text)
+        for repl in replacements:
+            text = re.sub(pattern=repl[0], repl=repl[1].upper(), string=text, flags=re.IGNORECASE)
+            logger.debug(text)
         return text
     return None
 
@@ -74,17 +85,21 @@ def make_egg_pun_phrase(phrase=None):
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
+
     phrases = [
         "there was an explosion",
         "very selfish",
-        "what shall i "
+        "what shall i ",
+        "dalek",
+        "six of these",
+        "Egypt",
+        "aggregate",
+        "enough",
+        "ignite"
     ]
     for phrase in phrases:
         print(make_egg_pun_phrase(phrase))
 
-    for i in range(3):
+    for i in range(20):
         print(make_egg_pun_phrase())
-
-
-def get_gif_search_text():
-    return random.choice(trigger_list)
