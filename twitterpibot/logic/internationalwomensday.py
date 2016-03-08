@@ -27,7 +27,7 @@ class InternationalWomensDayScheduledTask(ScheduledTask):
         return CronTrigger(month=3, day="7-9", minute="*")
 
     def on_run(self):
-        task_key = "#InternationalWomenDay"
+        task_key = "#InternationalWomensDay"
         is_iwd = _is_iwd()
         start = is_iwd and not self._streaming
         stop = not is_iwd and self._streaming
@@ -36,7 +36,7 @@ class InternationalWomensDayScheduledTask(ScheduledTask):
             responses = [InternationalWomensDayResponse(self.identity)]
             streamer = self.identity.twitter.get_streamer(
                 topic="international men day,#InternationalWomenDay,#InternationalWomensDay",
-                topic_name="#InternationalWomenDay",
+                topic_name="#InternationalWomensDay",
                 responses=responses)
             task = StreamTweetsTask(identity=self.identity, streamer=streamer, key=task_key)
             tasks.add(task)
@@ -68,4 +68,4 @@ class InternationalWomensDayResponse(Response):
     def respond(self, inbox_item):
         self.identity.twitter.reply_with(
             inbox_item,
-            text="International Mens Day is on November 19th #InternationalWomenDay")
+            text="International Mens Day is on November 19th #InternationalWomensDay")
