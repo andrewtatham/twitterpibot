@@ -95,12 +95,10 @@ class BotIdentity(Identity):
             UserListsScheduledTask(self, andrewtatham),
             SubscribedListsScheduledTask(self, andrewtatham),
             FollowScheduledTask(self),
-
         ]
 
     def get_responses(self):
-        return [
-        ]
+        return []
 
 
 class AndrewTathamIdentity(Identity):
@@ -165,65 +163,48 @@ class AndrewTathamPi2Identity(BotIdentity):
         return get_bot_responses(self)
 
 
-class NumberwangHostIdentity(Identity):
+class NumberwangHostIdentity(BotIdentity):
     def __init__(self):
         super(NumberwangHostIdentity, self).__init__("numberwang_host")
         self.admin_screen_name = "andrewtatham"
         self.id_str = "4904547543"
 
     def get_tasks(self):
-        return [
-            # StreamTweetsTask(self)
-        ]
+        return []
 
     def get_scheduled_jobs(self):
-        return [NumberwangHostScheduledTask(self, [
+        contestants = [
             [julienumberwang, simonnumberwang],
             [julienumberwang, simonnumberwang],
             [julienumberwang, simonnumberwang],
             [andrewtatham, julienumberwang],
             [andrewtatham, simonnumberwang],
             [andrewtathampi, andrewtathampi2]
-        ])]
+        ]
+        jobs = super(NumberwangHostIdentity, self).get_scheduled_jobs()
+        jobs.append(NumberwangHostScheduledTask(self, contestants))
+        return jobs
 
-    def get_responses(self):
-        return []
 
-
-class JulieNumberwangIdentity(Identity):
+class JulieNumberwangIdentity(BotIdentity):
     def __init__(self):
         super(JulieNumberwangIdentity, self).__init__("JulieNumberwang")
         self.admin_screen_name = "andrewtatham"
         self.id_str = "4912246174"
 
     def get_tasks(self):
-        return [
-            # StreamTweetsTask(self)
-        ]
-
-    def get_scheduled_jobs(self):
-        return []
-
-    def get_responses(self):
         return []
 
 
-class SimonNumberwangIdentity(Identity):
+class SimonNumberwangIdentity(BotIdentity):
     def __init__(self):
         super(SimonNumberwangIdentity, self).__init__("SimonNumberwang")
         self.admin_screen_name = "andrewtatham"
         self.id_str = "4912203173"
 
     def get_tasks(self):
-        return [
-            # StreamTweetsTask(self)
-        ]
-
-    def get_scheduled_jobs(self):
         return []
 
-    def get_responses(self):
-        return []
 
 
 class EggPunBotIdentity(BotIdentity):
@@ -237,9 +218,7 @@ class EggPunBotIdentity(BotIdentity):
         return jobs
 
     def get_responses(self):
-        return [
-            EggPunResponse(self)
-        ]
+        return [EggPunResponse(self)]
 
 
 andrewtathampi = AndrewTathamPiIdentity()

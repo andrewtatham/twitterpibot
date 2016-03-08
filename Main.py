@@ -82,6 +82,9 @@ def _shutdown_server():
 
 logger = logging.getLogger(__name__)
 
+obviousness = "=" * 5
+logger.info(obviousness + " Starting " + obviousness)
+
 logger.info("Setting tasks")
 t = twitterpibot.identities.get_all_tasks()
 twitterpibot.tasks.set_tasks(t)
@@ -93,9 +96,9 @@ twitterpibot.tasks.start()
 logger.info("Starting schedule")
 twitterpibot.schedule.start()
 
-logger.info("Starting UI")
+logger.info(obviousness + " Starting UI " + obviousness)
 app.run(debug=False, host='0.0.0.0')
-logger.info("Stopped UI")
+logger.info(obviousness + " Stopped UI " + obviousness)
 
 logger.info("Stopping schedule")
 twitterpibot.schedule.stop()
@@ -103,6 +106,7 @@ logger.info("Stopping tasks")
 twitterpibot.tasks.stop()
 logger.info("Stopping hardware")
 twitterpibot.hardware.stop()
-logger.info("Stopped")
+
+logger.info(obviousness + " Stopped " + obviousness)
 
 sys.exit(0)
