@@ -141,8 +141,8 @@ class TwitterHelper(object):
             if file:
                 file.close()
 
-    def get_streamer(self, topic=None, topic_name=None, responses=None):
-        return MyStreamer(self.identity, topic, topic_name, responses)
+    def get_streamer(self, topic=None, topic_name=None, responses=None, filter_level=None):
+        return MyStreamer(self.identity, topic, topic_name, responses, filter_level)
 
     def _upload_video(self, file_path):
         logging.info('[MyTwitter] uploading ' + file_path)

@@ -3,7 +3,7 @@ import logging
 import re
 
 from apscheduler.triggers.cron import CronTrigger
-
+from twitterpibot import hardware
 from twitterpibot import tasks
 from twitterpibot.responses.Response import Response
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
@@ -24,7 +24,7 @@ class InternationalWomensDayScheduledTask(ScheduledTask):
         self._streaming = False
 
     def get_trigger(self):
-        return CronTrigger(month=3, day="7-9", minute="*/5")
+        return CronTrigger(month=3, day="7-9", minute="*/2")
 
     def on_run(self):
         task_key = "#InternationalWomensDay"
@@ -34,13 +34,18 @@ class InternationalWomensDayScheduledTask(ScheduledTask):
         if start:
             logger.info("starting stream %s", task_key)
             responses = [InternationalWomensDayResponse(self.identity)]
-
+            if hardware.is_raspberry_pi_2:
+                filter_level = "low"
+            else:
+                filter_level = "none"
             streamer = self.identity.twitter.get_streamer(
                 topic="international men day," +
                       "#meninist,#InternationalMensDay," +
                       "#InternationalWomenDay,#InternationalWomensDay",
                 topic_name="#InternationalWomensDay",
-                responses=responses)
+                responses=responses,
+                filter_level=filter_level
+            )
             task = StreamTweetsTask(identity=self.identity, streamer=streamer, key=task_key)
             tasks.add(task)
             self._streaming = True
@@ -57,7 +62,7 @@ class InternationalWomensDayResponse(Response):
         self._question_rx = re.compile("(When|is.*there|(how|what).*about).*international.*men'?s.*day\?", flags=re.IGNORECASE)
 
         self._answer_rx_1 = re.compile("19|nineteen", flags=re.IGNORECASE)
-        self._answer_rx_2 = re.compile("Nov", flags=re.IGNORECASE)
+        self._answer_rx_2 = re.compile("11|Nov", flags=re.IGNORECASE)
 
     def condition(self, inbox_item):
         return (inbox_item.is_tweet or inbox_item.is_direct_message) \
@@ -68,4 +73,4 @@ class InternationalWomensDayResponse(Response):
     def respond(self, inbox_item):
         self.identity.twitter.reply_with(
             inbox_item,
-            text="International Mens Day is on November 19th #InternationalWomensDay")
+            text="International Men's Day is on November 19th #InternationalWomensDay")

@@ -17,7 +17,7 @@ max_backoff = 600
 
 
 class MyStreamer(TwythonStreamer):
-    def __init__(self, identity, topic=None, topic_name=None, responses=None):
+    def __init__(self, identity, topic=None, topic_name=None, responses=None, filter_level=None):
         self.backoff = default_backoff
         self._identity = identity
 
@@ -32,6 +32,7 @@ class MyStreamer(TwythonStreamer):
             self._topic_name = topic_name
         else:
             self._topic_name = topic
+        self._filter_level = filter_level
         super(MyStreamer, self).__init__(
             self._identity.tokens[0],
             self._identity.tokens[1],
