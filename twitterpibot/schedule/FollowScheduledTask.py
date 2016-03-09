@@ -15,7 +15,7 @@ class FollowScheduledTask(ScheduledTask):
         self.to_follow = []
 
     def get_trigger(self):
-        return IntervalTrigger(minutes=16)
+        return IntervalTrigger(minutes=random.randint(37, 59))
 
     def _get_unfollowed_list_members(self, list_names):
         to_follow = set()

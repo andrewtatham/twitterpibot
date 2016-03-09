@@ -1,4 +1,5 @@
 import logging
+import random
 
 from apscheduler.triggers.interval import IntervalTrigger
 
@@ -14,7 +15,7 @@ class UserListsScheduledTask(ScheduledTask):
         self._master_identity = master_identity
 
     def get_trigger(self):
-        return IntervalTrigger(minutes=55)
+        return IntervalTrigger(minutes=random.randint(31, 59))
 
     def on_run(self):
         self.synchronize_lists()

@@ -5,7 +5,6 @@ from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 import twitterpibot.hardware
 
 
-
 class PhotoScheduledTask(ScheduledTask):
     def get_trigger(self):
         return CronTrigger(hour="8-22", minute="*/20")

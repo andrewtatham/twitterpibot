@@ -1,8 +1,6 @@
 import datetime
 
 
-
-
 def parse_int(param):
     if param:
         return int(param)

@@ -13,6 +13,7 @@ default_lists = [
     "Blocked Users"
 ]
 
+
 class Lists(object):
     def __init__(self, identity):
         self._identity = identity

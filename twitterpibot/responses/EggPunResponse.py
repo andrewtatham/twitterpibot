@@ -1,4 +1,3 @@
-import random
 from twitterpibot.logic import giphyhelper
 from twitterpibot.logic import eggpuns
 from twitterpibot.responses.Response import Response

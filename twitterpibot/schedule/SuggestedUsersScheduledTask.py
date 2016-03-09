@@ -1,5 +1,6 @@
 import logging
 from itertools import cycle
+import random
 
 from apscheduler.triggers.interval import IntervalTrigger
 from colorama import Fore
@@ -17,7 +18,7 @@ class SuggestedUsersScheduledTask(ScheduledTask):
         self._slugList = []
 
     def get_trigger(self):
-        return IntervalTrigger(minutes=17)
+        return IntervalTrigger(minutes=random.randint(31, 59))
 
     def on_run(self):
 

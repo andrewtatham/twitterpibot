@@ -26,7 +26,7 @@ class Response(object):
                and not inbox_item.from_me and not inbox_item.is_retweet_of_my_status \
                and inbox_item.to_me \
                and inbox_item.sender and (not inbox_item.sender.is_reply_less or one_in(4)) \
-                and inbox_item.sender.screen_name != "numberwang_host"
+               and inbox_item.sender.screen_name != "numberwang_host"
 
     def retweet_condition(self, inbox_item):
         return inbox_item.is_tweet \

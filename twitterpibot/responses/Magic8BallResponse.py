@@ -48,12 +48,6 @@ responses = ['Signs point to yes',
              'Forget about it']
 
 
-
-
-
-
-
-
 class Magic8BallResponse(Response):
     def __init__(self, identity):
         Response.__init__(self, identity)

@@ -208,7 +208,6 @@ class SimonNumberwangIdentity(BotIdentity):
         return []
 
 
-
 class EggPunBotIdentity(BotIdentity):
     def __init__(self):
         super(EggPunBotIdentity, self).__init__("eggpunbot")
@@ -267,9 +266,6 @@ def get_all_scheduled_jobs():
     for i in all_identities:
         scheduled_jobs.extend(i.get_scheduled_jobs())
     return scheduled_jobs
-
-
-
 
 
 def get_bot_scheduled_jobs(identity):

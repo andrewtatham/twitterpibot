@@ -1,4 +1,4 @@
-from twitterpibot.exceptionhandler import handle_silently
+from twitterpibot.exceptionmanager import handle_silently
 import time
 
 try:

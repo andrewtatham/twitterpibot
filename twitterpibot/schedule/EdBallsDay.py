@@ -5,7 +5,6 @@ from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 import datetime
 
 
-
 class EdBallsDay(ScheduledTask):
     def get_trigger(self):
         return CronTrigger(month=4, day=28, hour=16, minute=20)

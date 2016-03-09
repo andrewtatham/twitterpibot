@@ -2,11 +2,9 @@ import random
 
 from apscheduler.triggers.interval import IntervalTrigger
 
-
 from twitterpibot.processing.Conversational import prompts_list_cold
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
-
 
 
 class ConversationScheduledTask(ScheduledTask):

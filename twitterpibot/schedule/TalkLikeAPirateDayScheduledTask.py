@@ -5,7 +5,6 @@ from apscheduler.triggers.cron import CronTrigger
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 
-
 piracy = [
     "You can always trust the untrustworthy because you can always trust that they will be untrustworthy. Its the trustworthy you can't trust.",
     "If ye can't trust a pirate, ye damn well can't trust a merchant either!",
