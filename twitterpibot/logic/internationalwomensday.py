@@ -66,13 +66,16 @@ class InternationalWomensDayResponse(Response):
         self._answer_rx_2 = re.compile("11|Nov", flags=re.IGNORECASE)
 
     def condition(self, inbox_item):
-        # TODO when in quotes its rhetorical so ignore, also answers were sometimes images
+        # when in quotes its rhetorical so ignore, also answers were sometimes images
         return (inbox_item.is_tweet or inbox_item.is_direct_message) \
+               and not inbox_item.has_media \
+               and '"' not in inbox_item.text \
                and bool(self._question_rx.findall(inbox_item.text)) \
                and not (bool(self._answer_rx_1.findall(inbox_item.text))
                         and bool(self._answer_rx_2.findall(inbox_item.text)))
 
     def respond(self, inbox_item):
+        self.identity.statistics.increment("International womens/mens day tweets")
         self.identity.twitter.reply_with(
             inbox_item,
             text="International Men's Day is on November 19th #InternationalWomensDay")

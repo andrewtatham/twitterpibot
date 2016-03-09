@@ -74,6 +74,7 @@ class IncomingTweet(InboxItem):
                         # pprint.pprint(url)
                         self.text_stripped = self.text_stripped.replace(url["url"], "").strip()
                 if "media" in entities:
+                    self.has_media = True
                     for media in entities["media"]:
                         # pprint.pprint(media)
                         self.text_stripped = self.text_stripped.replace(media["url"], "").strip()
