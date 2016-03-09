@@ -4,7 +4,7 @@ import traceback
 from colorama import Fore, Style, Back
 from twython import TwythonError
 
-import twitterpibot.stats
+import twitterpibot.identities.statistics
 import twitterpibot.hardware
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 

@@ -5,7 +5,7 @@ import colorama
 from twitterpibot import hardware
 from twitterpibot.logic.internationalwomensday import InternationalWomensDayScheduledTask, \
     InternationalWomensDayResponse
-from twitterpibot.stats import Statistics
+from twitterpibot.identities.statistics import Statistics
 from twitterpibot.responses.ConversationResponse import ConversationResponse
 from twitterpibot.responses.EggPunResponse import EggPunResponse
 from twitterpibot.responses.FatherTedResponse import FatherTedResponse
@@ -45,9 +45,9 @@ from twitterpibot.schedule.ZenOfPythonScheduledTask import ZenOfPythonScheduledT
 from twitterpibot.tasks.FadeTask import FadeTask
 from twitterpibot.tasks.LightsTask import LightsTask
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
-from twitterpibot.twitter.twithelp import TwitterHelper
-from twitterpibot.users.userlists import Lists
-from twitterpibot.users.userrepo import Users
+from twitterpibot.twitter.twitterhelper import TwitterHelper
+from twitterpibot.users.lists import Lists
+from twitterpibot.users.users import Users
 
 all_identities = []
 
@@ -314,7 +314,7 @@ def get_bot_responses(identity):
         ThanksResponse(identity),
         HelloResponse(identity),
         InternationalWomensDayResponse(identity),
-        # Magic8BallResponse(identity)
+        Magic8BallResponse(identity),
     ]
     if hardware.is_picam_attached or hardware.is_webcam_attached:
         responses.extend([
@@ -322,10 +322,10 @@ def get_bot_responses(identity):
             TimelapseResponse(identity)
         ])
     responses.extend([
-        # GifResponse(identity),
-        # FatherTedResponse(identity),
+        GifResponse(identity),
+        FatherTedResponse(identity),
         FavoriteResponse(identity),
-        RetweetResponse(identity)
+        RetweetResponse(identity),
     ])
     return responses
 

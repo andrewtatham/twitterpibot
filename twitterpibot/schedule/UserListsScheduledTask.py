@@ -3,7 +3,7 @@ import logging
 from apscheduler.triggers.interval import IntervalTrigger
 
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
-from twitterpibot.users.userlists import default_lists
+from twitterpibot.users.lists import default_lists
 
 logger = logging.getLogger(__name__)
 

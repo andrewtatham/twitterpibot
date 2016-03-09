@@ -7,10 +7,10 @@ import time
 from twython import Twython
 
 from twitterpibot.logic import fsh
-from twitterpibot.twitter import authhelper
+from twitterpibot.twitter import authorisationhelper
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
-from twitterpibot.twitter.mystream import MyStreamer
+from twitterpibot.twitter.streamer import Streamer
 
 logger = logging.getLogger(__name__)
 try:
@@ -47,7 +47,7 @@ class TwitterHelper(object):
     def __init__(self, identity):
         self.identity = identity
         if not self.identity.tokens:
-            self.identity.tokens = authhelper.get_tokens(identity.screen_name)
+            self.identity.tokens = authorisationhelper.get_tokens(identity.screen_name)
         self.twitter = Twython(
             self.identity.tokens[0],
             self.identity.tokens[1],
@@ -76,10 +76,11 @@ class TwitterHelper(object):
 
             outbox_item.display()
 
-            statuses = _split_text(_cap(outbox_item.status, 140 * 100))
-            line_number = 0
             in_reply_to_status_id = outbox_item.in_reply_to_status_id
+
+            statuses = _split_text(_cap(outbox_item.status, 140 * 100))
             media_ids = outbox_item.media_ids
+            line_number = 0
             for status in statuses:
                 # only add media to first tweet
                 if media_ids and line_number != 0:
@@ -111,7 +112,6 @@ class TwitterHelper(object):
     def reply_with(self, inbox_item, text=None, as_tweet=False, as_direct_message=False, file_paths=None,
                    in_reply_to_status_id=None):
         reply_as_tweet = as_tweet or not as_direct_message and inbox_item.is_tweet
-
         reply_as_dm = as_direct_message or not as_tweet and inbox_item.is_direct_message
 
         if reply_as_tweet:
@@ -142,7 +142,7 @@ class TwitterHelper(object):
                 file.close()
 
     def get_streamer(self, topic=None, topic_name=None, responses=None, filter_level=None):
-        return MyStreamer(self.identity, topic, topic_name, responses, filter_level)
+        return Streamer(self.identity, topic, topic_name, responses, filter_level)
 
     def _upload_video(self, file_path):
         logging.info('[MyTwitter] uploading ' + file_path)

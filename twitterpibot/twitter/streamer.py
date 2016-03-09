@@ -8,7 +8,7 @@ from twitterpibot import hardware
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingEvent import IncomingEvent
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
-from twitterpibot.twitter import authhelper
+from twitterpibot.twitter import authorisationhelper
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ default_backoff = 30
 max_backoff = 600
 
 
-class MyStreamer(TwythonStreamer):
+class Streamer(TwythonStreamer):
     def __init__(self, identity, topic=None, topic_name=None, responses=None, filter_level=None):
         self.backoff = default_backoff
         self._identity = identity
@@ -26,14 +26,14 @@ class MyStreamer(TwythonStreamer):
         else:
             self.responses = responses
         if not self._identity.tokens:
-            self._identity.tokens = authhelper.get_tokens(identity.screen_name)
+            self._identity.tokens = authorisationhelper.get_tokens(identity.screen_name)
         self._topic = topic
         if topic_name:
             self._topic_name = topic_name
         else:
             self._topic_name = topic
         self._filter_level = filter_level
-        super(MyStreamer, self).__init__(
+        super(Streamer, self).__init__(
             self._identity.tokens[0],
             self._identity.tokens[1],
             self._identity.tokens[2],
