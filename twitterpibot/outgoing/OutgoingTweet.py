@@ -20,6 +20,7 @@ class OutgoingTweet(OutboxTextItem):
         self.status = ''
 
         if reply_to:
+            self.status += '.'
             if reply_to.sender.screen_name:
                 self.status += '@' + reply_to.sender.screen_name + ' '
             if reply_to.targets:
@@ -28,7 +29,7 @@ class OutgoingTweet(OutboxTextItem):
                         self.status += '@' + to_screen_name + ' '
 
         if text:
-            self.status = self.status + text
+            self.status += text
 
     def display(self):
         logger.info("-> Tweet: " + self.status)
