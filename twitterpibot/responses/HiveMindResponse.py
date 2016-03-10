@@ -5,8 +5,9 @@ from twitterpibot.responses.Response import Response
 
 
 class HiveMindResponse(Response):
-    def __init__(self, master_identity):
+    def __init__(self, master_identity, slave_identities):
         Response.__init__(self, master_identity)
+        self.slave_identities = slave_identities
 
     def condition(self, inbox_item):
         return inbox_item.is_event
@@ -17,10 +18,10 @@ class HiveMindResponse(Response):
         if inbox_item.from_me:
 
             if inbox_item.is_favorite:
-                for identity in self.identity.slave_identities:
+                for identity in self.slave_identities:
                     funcs.append(lambda i=identity: i.twitter.create_favorite(status_id=inbox_item.targetObjectID))
             elif inbox_item.is_retweet:
-                for identity in self.identity.slave_identities:
+                for identity in self.slave_identities:
                     funcs.append(lambda i=identity: i.twitter.retweet(status_id=inbox_item.targetObjectID))
         if funcs:
             for f in funcs:

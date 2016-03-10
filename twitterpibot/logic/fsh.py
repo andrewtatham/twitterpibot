@@ -1,3 +1,4 @@
+import csv
 import logging
 import shutil
 import os
@@ -115,3 +116,17 @@ def get_root():
 
 
 root = get_root()
+
+
+def exists(csv_path):
+    return bool(os.path.isfile(csv_path))
+
+
+def parse_csv(csv_path):
+    with open(csv_path, 'r') as csvfile:
+        data_csv = csv.reader(csvfile)
+        data_dict = {}
+        for row in data_csv:
+            logger.info(row)
+            data_dict[row[0]] = row
+        return data_dict
