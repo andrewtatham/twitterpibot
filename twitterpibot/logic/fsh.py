@@ -24,9 +24,13 @@ def ensure_directory_exists(folder):
         os.makedirs(folder)
 
 
-def download_file(folder, url):
+def download_file(folder, url, file_name=None):
     logger.info("Downloading " + url)
-    local_filename = folder + url.split('/')[-1]
+    ensure_directory_exists(folder)
+    if file_name:
+        local_filename = folder + file_name
+    else:
+        local_filename = folder + url.split('/')[-1]
     r = requests.get(url, stream=True)
     with open(local_filename, 'wb') as f:
         for chunk in r.iter_content(chunk_size=1024):
