@@ -283,7 +283,8 @@ if twitterpibot.hardware.is_raspberry_pi_2:
         numberwang_host,
         julienumberwang,
         simonnumberwang,
-        eggpunbot
+        eggpunbot,
+        whenmensday
     ]
 else:
     all_identities = [

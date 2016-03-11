@@ -1,10 +1,10 @@
 import datetime
 import logging
+import random
 import re
 
 from apscheduler.triggers.cron import CronTrigger
 
-from twitterpibot import hardware
 from twitterpibot import tasks
 from twitterpibot.responses.Response import Response
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
@@ -34,7 +34,7 @@ class WhenIsInternationalMensDayScheduledTask(ScheduledTask):
         stop = not is_iwd and self._streaming
         if start:
             logger.info("starting stream %s", task_key)
-            responses = [WhenIsInternationalMensDayScheduledTask(self.identity)]
+            responses = [WhenIsInternationalMensDayResponse(self.identity)]
             filter_level = "none"
             # if hardware.is_raspberry_pi_2:
             #     filter_level = "low"
@@ -52,6 +52,9 @@ class WhenIsInternationalMensDayScheduledTask(ScheduledTask):
             logger.info("stopping stream %s", task_key)
             tasks.remove(task_key)
             self._streaming = False
+
+
+responses = ["International Men's Day is on November 19th"]
 
 
 class WhenIsInternationalMensDayResponse(Response):
@@ -75,6 +78,7 @@ class WhenIsInternationalMensDayResponse(Response):
 
     def respond(self, inbox_item):
         self.identity.statistics.increment("International womens/mens day tweets")
+        response = random.choice(responses)
         self.identity.twitter.reply_with(
             inbox_item,
-            text="International Men's Day is on November 19th #InternationalWomensDay")
+            text=response)
