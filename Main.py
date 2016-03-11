@@ -240,7 +240,7 @@ class EggPunBotIdentity(BotIdentity):
 
 
 andrewtatham = AndrewTathamIdentity()
-# andrewtathampi = AndrewTathamPiIdentity(andrewtatham)
+andrewtathampi = AndrewTathamPiIdentity(andrewtatham)
 andrewtathampi2 = AndrewTathamPi2Identity(andrewtatham)
 numberwang_host = NumberwangHostIdentity(andrewtatham)
 julienumberwang = JulieNumberwangIdentity(andrewtatham)
@@ -250,7 +250,7 @@ eggpunbot = EggPunBotIdentity(andrewtatham)
 if twitterpibot.hardware.is_raspberry_pi_2:
     all_identities = [
         andrewtatham,
-        # andrewtathampi,
+        andrewtathampi,
         andrewtathampi2,
         numberwang_host,
         julienumberwang,
@@ -260,7 +260,7 @@ if twitterpibot.hardware.is_raspberry_pi_2:
 else:
     all_identities = [
         andrewtatham,
-        # andrewtathampi,
+        andrewtathampi,
         andrewtathampi2,
         numberwang_host,
         julienumberwang,

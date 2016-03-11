@@ -13,8 +13,6 @@ from twitterpibot.twitter.twitterhelper import TwitterHelper
 from twitterpibot.users.lists import Lists
 from twitterpibot.users.users import Users
 
-all_identities = []
-
 
 class Identity(object):
     def __init__(self, screen_name, id_str, ):
@@ -67,18 +65,3 @@ class BotIdentity(Identity):
 
     def get_responses(self):
         return []
-
-
-def get_all_tasks():
-    tasks = []
-    for i in all_identities:
-        t = i.get_tasks()
-        tasks.extend(t)
-    return tasks
-
-
-def get_all_scheduled_jobs():
-    scheduled_jobs = []
-    for i in all_identities:
-        scheduled_jobs.extend(i.get_scheduled_jobs())
-    return scheduled_jobs

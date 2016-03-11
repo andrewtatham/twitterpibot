@@ -74,10 +74,10 @@ def get_tokens(screen_name):
         twitter = Twython(app_key, app_secret, oauth_token, oauth_token_secret)
 
         final_step = twitter.get_authorized_tokens(oauth_verifier)
+        logging.info(final_step)
 
         final_oauth_token = final_step["oauth_token"]
         final_oauth_token_secret = final_step["oauth_token_secret"]
-
         pickle.dump(final_oauth_token, open(final_oauth_token_path, "wb"))
         pickle.dump(final_oauth_token_secret, open(final_oauth_token_secret_path, "wb"))
 
