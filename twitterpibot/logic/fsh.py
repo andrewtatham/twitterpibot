@@ -114,7 +114,7 @@ def _get(key_type, key_name):
 
 def get_root():
     path = ""
-    while not os.path.exists(path + "mainscript.py"):
+    while not os.path.exists(path + "main.py"):
         path += "../"
     return path
 
