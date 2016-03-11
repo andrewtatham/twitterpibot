@@ -131,6 +131,5 @@ def parse_csv(csv_path):
         data_csv = csv.reader(csvfile)
         data_dict = {}
         for row in data_csv:
-            logger.info(row)
             data_dict[row[0]] = row
         return data_dict

@@ -51,31 +51,21 @@ def get_tokens(screen_name):
     exists = os.path.isfile(final_oauth_token_path) and os.path.isfile(final_oauth_token_secret_path)
 
     if exists:
-
         final_oauth_token = pickle.load(open(final_oauth_token_path, "rb"))
         final_oauth_token_secret = pickle.load(open(final_oauth_token_secret_path, "rb"))
 
     else:
-
         twitter = Twython(app_key, app_secret)
-
         auth = twitter.get_authentication_tokens()
-
         oauth_token = auth["oauth_token"]
         oauth_token_secret = auth["oauth_token_secret"]
-
         input("Please ensure you are logged in as " + screen_name + " and press enter")
         url = auth["auth_url"]
         logger.info(url)
         webbrowser.open(url)
-
         oauth_verifier = input("Please enter your pin:")
-
         twitter = Twython(app_key, app_secret, oauth_token, oauth_token_secret)
-
         final_step = twitter.get_authorized_tokens(oauth_verifier)
-        logging.info(final_step)
-
         final_oauth_token = final_step["oauth_token"]
         final_oauth_token_secret = final_step["oauth_token_secret"]
         pickle.dump(final_oauth_token, open(final_oauth_token_path, "wb"))

@@ -1,6 +1,6 @@
 import colorama
-import twitterpibot
 
+import twitterpibot
 from twitterpibot import hardware
 from twitterpibot.identities import Identity, BotIdentity
 from twitterpibot.logic.whenisinternationalmensday import WhenIsInternationalMensDayScheduledTask, \
@@ -39,6 +39,75 @@ from twitterpibot.schedule.ZenOfPythonScheduledTask import ZenOfPythonScheduledT
 from twitterpibot.tasks.FadeTask import FadeTask
 from twitterpibot.tasks.LightsTask import LightsTask
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
+
+
+def get_pi_scheduled_jobs(identity):
+    scheduledjobs = [
+        WikipediaScheduledTask(identity),
+        EdBallsDay(identity),
+        TalkLikeAPirateDayScheduledTask(identity),
+        WeatherScheduledTask(identity),
+        JokesScheduledTask(identity),
+        SongScheduledTask(identity),
+        ConversationScheduledTask(identity),
+        ZenOfPythonScheduledTask(identity),
+        BlankTweetScheduledTask(identity),
+        HappyBirthdayScheduledTask(identity),
+
+    ]
+
+    if hardware.is_linux and (hardware.is_webcam_attached or hardware.is_picam_attached):
+        scheduledjobs.extend([
+            PhotoScheduledTask(identity),
+            SunriseTimelapseScheduledTask(identity),
+            SunsetTimelapseScheduledTask(identity),
+            RegularTimelapseScheduledTask(identity)
+        ])
+    if hardware.is_piglow_attached \
+            or hardware.is_unicornhat_attached \
+            or hardware.is_blinksticknano_attached:
+        scheduledjobs.extend([
+            LightsScheduledTask(identity)
+        ])
+    return scheduledjobs
+
+
+def get_pi_responses(identity):
+    responses = [
+        SongResponse(identity),
+        TalkLikeAPirateDayResponse(identity),
+        ConversationResponse(identity),
+        EggPunResponse(identity),
+        ThanksResponse(identity),
+        HelloResponse(identity),
+        Magic8BallResponse(identity),
+    ]
+    if hardware.is_picam_attached or hardware.is_webcam_attached:
+        responses.extend([
+            PhotoResponse(identity),
+            TimelapseResponse(identity)
+        ])
+    responses.extend([
+        GifResponse(identity),
+        FatherTedResponse(identity),
+        FavoriteResponse(identity),
+        RetweetResponse(identity),
+    ])
+    return responses
+
+
+def get_pi_tasks(identity):
+    tasks = [
+        StreamTweetsTask(identity)
+    ]
+    if hardware.is_piglow_attached \
+            or hardware.is_unicornhat_attached \
+            or hardware.is_blinksticknano_attached:
+        tasks.extend([
+            LightsTask(),
+            FadeTask()
+        ])
+    return tasks
 
 
 class AndrewTathamIdentity(Identity):
@@ -219,84 +288,13 @@ if twitterpibot.hardware.is_raspberry_pi_2:
 else:
     all_identities = [
         andrewtatham,
-        # andrewtathampi,
-        # andrewtathampi2,
-        # numberwang_host,
-        # julienumberwang,
-        # simonnumberwang,
-        # eggpunbot,
+        andrewtathampi,
+        andrewtathampi2,
+        numberwang_host,
+        julienumberwang,
+        simonnumberwang,
+        eggpunbot,
         whenmensday
     ]
 
-
 twitterpibot.run(all_identities)
-
-
-def get_pi_scheduled_jobs(identity):
-    scheduledjobs = [
-        WikipediaScheduledTask(identity),
-        EdBallsDay(identity),
-        TalkLikeAPirateDayScheduledTask(identity),
-        WeatherScheduledTask(identity),
-        JokesScheduledTask(identity),
-        SongScheduledTask(identity),
-        ConversationScheduledTask(identity),
-        ZenOfPythonScheduledTask(identity),
-        BlankTweetScheduledTask(identity),
-        HappyBirthdayScheduledTask(identity),
-
-
-    ]
-
-    if hardware.is_linux and (hardware.is_webcam_attached or hardware.is_picam_attached):
-        scheduledjobs.extend([
-            PhotoScheduledTask(identity),
-            SunriseTimelapseScheduledTask(identity),
-            SunsetTimelapseScheduledTask(identity),
-            RegularTimelapseScheduledTask(identity)
-        ])
-    if hardware.is_piglow_attached \
-            or hardware.is_unicornhat_attached \
-            or hardware.is_blinksticknano_attached:
-        scheduledjobs.extend([
-            LightsScheduledTask(identity)
-        ])
-    return scheduledjobs
-
-
-def get_pi_responses(identity):
-    responses = [
-        SongResponse(identity),
-        TalkLikeAPirateDayResponse(identity),
-        ConversationResponse(identity),
-        EggPunResponse(identity),
-        ThanksResponse(identity),
-        HelloResponse(identity),
-        Magic8BallResponse(identity),
-    ]
-    if hardware.is_picam_attached or hardware.is_webcam_attached:
-        responses.extend([
-            PhotoResponse(identity),
-            TimelapseResponse(identity)
-        ])
-    responses.extend([
-        GifResponse(identity),
-        FatherTedResponse(identity),
-        FavoriteResponse(identity),
-        RetweetResponse(identity),
-    ])
-    return responses
-
-
-def get_pi_tasks(identity):
-    tasks = [
-        StreamTweetsTask(identity)
-    ]
-    if hardware.is_piglow_attached \
-            or hardware.is_unicornhat_attached \
-            or hardware.is_blinksticknano_attached:
-        tasks.extend([
-            LightsTask(),
-            FadeTask()
-        ])
-    return tasks
