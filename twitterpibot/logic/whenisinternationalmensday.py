@@ -19,9 +19,9 @@ def _is_iwd(today=None):
     return today.month == 3 and today.day == 8
 
 
-class InternationalWomensDayScheduledTask(ScheduledTask):
+class WhenIsInternationalMensDayScheduledTask(ScheduledTask):
     def __init__(self, identity):
-        super(InternationalWomensDayScheduledTask, self).__init__(identity)
+        super(WhenIsInternationalMensDayScheduledTask, self).__init__(identity)
         self._streaming = False
 
     def get_trigger(self):
@@ -34,11 +34,10 @@ class InternationalWomensDayScheduledTask(ScheduledTask):
         stop = not is_iwd and self._streaming
         if start:
             logger.info("starting stream %s", task_key)
-            responses = [InternationalWomensDayResponse(self.identity)]
-            if hardware.is_raspberry_pi_2:
-                filter_level = "low"
-            else:
-                filter_level = "none"
+            responses = [WhenIsInternationalMensDayScheduledTask(self.identity)]
+            filter_level = "none"
+            # if hardware.is_raspberry_pi_2:
+            #     filter_level = "low"
             streamer = self.identity.twitter.get_streamer(
                 topic="international men day",
                 topic_name="#InternationalWomensDay",
@@ -55,9 +54,9 @@ class InternationalWomensDayScheduledTask(ScheduledTask):
             self._streaming = False
 
 
-class InternationalWomensDayResponse(Response):
+class WhenIsInternationalMensDayResponse(Response):
     def __init__(self, identity):
-        super(InternationalWomensDayResponse, self).__init__(identity)
+        super(WhenIsInternationalMensDayResponse, self).__init__(identity)
         self._question_rx = re.compile(
             pattern="(When|is.*there|(how|what).*about).*international.*men'?s.*day\?",
             flags=re.IGNORECASE)
