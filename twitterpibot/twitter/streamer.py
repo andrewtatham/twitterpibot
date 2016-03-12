@@ -44,12 +44,18 @@ class Streamer(TwythonStreamer):
         self.backoff = default_backoff
         if self._topic_name:
             data['tweet_source'] = "stream:" + self._topic_name
-        inbox_item = self.create_inbox_item(data)
+        inbox_item = self._create_inbox_item(data)
         if inbox_item:
             hardware.on_inbox_item_received(inbox_item)
-            responded = self.create_response(inbox_item)
-            if not responded and random.randint(0, 9) == 0:
+            response = self._determine_response(inbox_item)
+            if response:
                 inbox_item.display()
+            elif random.randint(0, 9) == 0:
+                inbox_item.display()
+            else:
+                inbox_item.display()
+            if response:
+                self._respond(inbox_item=inbox_item, response=response)
 
     def on_error(self, status_code, data):
         msg = "[%s] Error: %s %s" % (self._identity.screen_name, status_code, data)
@@ -62,7 +68,7 @@ class Streamer(TwythonStreamer):
             time.sleep(self.backoff)
             self.backoff = min(self.backoff * 2, max_backoff)
 
-    def create_inbox_item(self, data):
+    def _create_inbox_item(self, data):
 
         if "text" in data:
             tweet = IncomingTweet(data, self._identity)
@@ -84,12 +90,14 @@ class Streamer(TwythonStreamer):
         else:
             logger.debug(data)
 
-    def create_response(self, inbox_item):
+    def _determine_response(self, inbox_item):
         if inbox_item and self.responses:
             for response in self.responses:
                 if response.condition(inbox_item):
-                    self._identity.statistics.increment("Responses")
-                    inbox_item.display()
-                    response.respond(inbox_item)
-                    return True
-        return False
+                    return response
+        return None
+
+    def _respond(self, inbox_item, response):
+        self._identity.statistics.increment("Responses")
+        response.respond(inbox_item)
+        return True

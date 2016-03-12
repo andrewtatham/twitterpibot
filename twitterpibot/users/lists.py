@@ -40,12 +40,12 @@ class Lists(object):
         for twitter_list in twitter_lists:
             list_id = twitter_list["id_str"]
             list_name = twitter_list["name"]
-            logger.info("[%s] Getting list members: %s" % (self._identity.screen_name, list_name))
+            logger.debug("[%s] getting list members: %s" % (self._identity.screen_name, list_name))
             members = self._identity.twitter.get_list_members(list_id=list_id)
             self._list_ids[list_name] = list_id
             self._sets[list_name] = set(map(lambda member: member["id_str"], members["users"]))
-            logger.debug("[%s] %s members: %s" % (self._identity.screen_name, list_name, str(self._sets[list_name])))
-            time.sleep(1)
+            logger.info("[%s] %s members: %s" % (self._identity.screen_name, list_name, str(self._sets[list_name])))
+
 
     def add_user(self, list_name, user_id, screen_name):
         if not self._sets or not self._list_ids:

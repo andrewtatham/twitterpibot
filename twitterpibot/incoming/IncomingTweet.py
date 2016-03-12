@@ -26,6 +26,15 @@ searchcolours = cycle([Fore.CYAN, Fore.WHITE])
 streamcolours = cycle([Fore.YELLOW, Fore.WHITE])
 
 
+class Coordinates(object):
+    def __init__(self, data):
+        if data["type"] == "Point":
+            coordinates = data["coordinates"]
+            if coordinates:
+                self.lat = coordinates[0]
+                self.long = coordinates[1]
+
+
 class IncomingTweet(InboxItem):
     def __init__(self, data, identity):
         # https://dev.twitter.com/overview/api/tweets
@@ -85,6 +94,11 @@ class IncomingTweet(InboxItem):
             for word_interesting in self.words_interesting:
                 self.text_interesting += " " + word_interesting
 
+        self.coordinates = None
+        coords = data.get("coordinates")
+        if coords:
+            self.coordinates = Coordinates(coords)
+
         self.retweeted_status = None
         self.is_retweet_of_my_status = False
         if "retweeted_status" in data:
@@ -97,8 +111,12 @@ class IncomingTweet(InboxItem):
         colour = self.identity.colour
         text = "[" + self.identity_screen_name + "] "
 
-        text += self.sender.name + ' [@' + self.sender.screen_name + '] ' \
-                + self.text.replace('\n', ' ')
+        if self.coordinates:
+            logger.info(self.coordinates)
+            text += "[{},{}]".format(self.coordinates.lat, self.coordinates.long)
+
+        text += self.sender.name + ' [@' + self.sender.screen_name + '] '
+        text += self.text.replace('\n', ' ')
 
         if self.to_me:
             colour += Style.BRIGHT

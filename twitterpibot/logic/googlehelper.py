@@ -1,4 +1,5 @@
 import datetime
+import logging
 import os
 import pprint
 import hashlib
@@ -9,6 +10,8 @@ from urllib.parse import urlparse
 import googlemaps
 
 from twitterpibot.logic import fsh
+
+logger = logging.getLogger(__name__)
 
 key = fsh.get_key("google")
 secret = fsh._get("secret", "google")
@@ -107,14 +110,13 @@ def get_streetview_image():
         else:
             url += "&"
         url += key + "={" + key + "}"
-    print(url)
+
     url = url.format(**params)
-    print(url)
+
     signed = _sign_url(input_url=url, secret=secret)
-    print("Signed URL: " + signed)
+    logger.info("Signed URL: " + signed)
     folder = fsh.root + "temp" + os.sep + "images" + os.sep + "google" + os.sep
     file_path = fsh.download_file(folder=folder, url=url, file_name="streetview.jpg")
-    print(file_path)
     return file_path
 
 
