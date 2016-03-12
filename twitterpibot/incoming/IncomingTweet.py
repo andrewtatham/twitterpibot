@@ -112,8 +112,7 @@ class IncomingTweet(InboxItem):
         text = "[" + self.identity_screen_name + "] "
 
         if self.coordinates:
-            logger.info(self.coordinates)
-            text += "[{},{}]".format(self.coordinates.lat, self.coordinates.long)
+            text += "({},{}) ".format(self.coordinates.lat, self.coordinates.long)
 
         text += self.sender.name + ' [@' + self.sender.screen_name + '] '
         text += self.text.replace('\n', ' ')
