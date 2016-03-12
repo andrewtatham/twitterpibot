@@ -6,6 +6,7 @@ import logging
 
 # noinspection PyPackageRequirements
 from PIL import Image, ImageDraw
+from twitterpibot.logic import fsh
 
 from twitterpibot.responses.Response import Response
 
@@ -53,6 +54,7 @@ class Magic8BallResponse(Response):
         Response.__init__(self, identity)
         self.file_paths = self.build_images()
 
+
     def condition(self, inbox_item):
         stream = inbox_item.is_tweet and not inbox_item.from_me and not inbox_item.is_retweet_of_my_status \
                  and inbox_item.source and "#Magic8Ball" in inbox_item.source and random.randint(0, 3) == 0
@@ -73,11 +75,12 @@ class Magic8BallResponse(Response):
         self.identity.twitter.reply_with(inbox_item=inbox_item, text=text, file_paths=[file_path])
 
     def build_images(self):
-        images_dir = "twitterpibot" + os.sep + "images" + os.sep
-        template_path = images_dir + "magic8ball" + os.extsep + "png"
+        template_path = "twitterpibot" + os.sep + "images" + os.sep + "magic8ball" + os.extsep + "png"
         logger.debug(template_path)
         template = Image.open(template_path)
         f = {}
+        images_dir = "temp" + os.sep + "images" + os.sep + "magic8ball" + os.sep
+        fsh.ensure_directory_exists(images_dir)
         for r in responses:
             filename = images_dir + re.sub('[^\w]', '_', r).lower() + os.extsep + "png"
             if not os.path.isfile(filename):

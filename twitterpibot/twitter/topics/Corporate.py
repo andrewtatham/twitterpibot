@@ -15,8 +15,14 @@ class Starbucks(DontCareTopic):
             })
 
 
+class Nutribullet(DontCareTopic):
+    def __init__(self):
+        super(Nutribullet, self).__init__({"Nutribullet"})
+
+
 def get():
     return [
         Starbucks(),
-        DecsAndLondon()
+        DecsAndLondon(),
+        Nutribullet()
     ]
