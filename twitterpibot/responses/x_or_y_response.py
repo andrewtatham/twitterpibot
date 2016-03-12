@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 words = "rather|either|support|fight|win|lose"
 chrs = "\?|;|:|,"
 preposition = "(" + words + "|" + chrs + ")?"
-pattern = preposition + "(?P<x>[\w\s]+) (or|vs) (?P<y>[\w\s]+)"
+pattern = preposition + "(?P<x>[\w\s]+) (or|vs) (?P<y>[\w\s]+) ?\?"
 rx = re.compile(pattern, flags=re.IGNORECASE)
 logger.info(pattern)
 

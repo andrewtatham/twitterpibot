@@ -59,9 +59,9 @@ def _build_image(r):
     return filename
 
 
-template_path = "twitterpibot" + os.sep + "images" + os.sep + "magic8ball" + os.extsep + "png"
+template_path = fsh.root + "twitterpibot" + os.sep + "images" + os.sep + "magic8ball" + os.extsep + "png"
 template = Image.open(template_path)
-images_dir = "temp" + os.sep + "images" + os.sep + "magic8ball" + os.sep
+images_dir = fsh.root + "temp" + os.sep + "images" + os.sep + "magic8ball" + os.sep
 fsh.ensure_directory_exists(images_dir)
 file_paths = {}
 for r in responses:
