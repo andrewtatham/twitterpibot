@@ -97,6 +97,5 @@ class Streamer(TwythonStreamer):
 
     def _respond(self, inbox_item, response):
         self._identity.statistics.increment("Responses")
-        logger.info("[%s] responding with %s to %s" % (self._identity.screen_name, response, inbox_item.text))
         response.respond(inbox_item)
         return True
