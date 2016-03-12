@@ -4,7 +4,7 @@ from twitterpibot.responses.Response import Response
 
 class ConversationResponse(Response):
     def condition(self, inbox_item):
-        return super(ConversationResponse, self).reply_condition(inbox_item) \
+        return super(ConversationResponse, self).mentioned_reply_condition(inbox_item) \
                and inbox_item.text_stripped in Conversational.prompts_and_responses
 
     def respond(self, inbox_item):

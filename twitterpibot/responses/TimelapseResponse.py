@@ -7,7 +7,7 @@ from twitterpibot.processing.Timelapse import Timelapse
 
 class TimelapseResponse(Response):
     def condition(self, inbox_item):
-        return super(TimelapseResponse, self).reply_condition(inbox_item) \
+        return super(TimelapseResponse, self).mentioned_reply_condition(inbox_item) \
                and inbox_item.words and "timelapse" in inbox_item.words
 
     def respond(self, inbox_item):

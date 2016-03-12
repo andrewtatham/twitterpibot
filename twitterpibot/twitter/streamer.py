@@ -50,8 +50,6 @@ class Streamer(TwythonStreamer):
             response = self._determine_response(inbox_item)
             if response:
                 inbox_item.display()
-            elif random.randint(0, 9) == 0:
-                inbox_item.display()
             else:
                 inbox_item.display()
             if response:
@@ -99,5 +97,6 @@ class Streamer(TwythonStreamer):
 
     def _respond(self, inbox_item, response):
         self._identity.statistics.increment("Responses")
+        logger.info("[%s] responding with %s to %s" % (self._identity.screen_name, response, inbox_item.text))
         response.respond(inbox_item)
         return True

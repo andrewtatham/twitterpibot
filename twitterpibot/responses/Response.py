@@ -1,3 +1,4 @@
+import logging
 import random
 import abc
 
@@ -7,6 +8,8 @@ bot_rt_fav = 100
 trend_rt_fav = 100
 search_rt_fav = 100
 random_rt_fav = 500
+
+logger = logging.getLogger(__name__)
 
 
 def one_in(prob):
@@ -21,12 +24,24 @@ class Response(object):
     def condition(self, inbox_item):
         return False
 
-    def reply_condition(self, inbox_item):
-        return (inbox_item.is_direct_message or inbox_item.is_tweet) \
-               and not inbox_item.from_me and not inbox_item.is_retweet_of_my_status \
-               and inbox_item.to_me \
-               and inbox_item.sender and (not inbox_item.sender.is_reply_less or one_in(4)) \
-               and inbox_item.sender.screen_name != "numberwang_host"
+    def mentioned_reply_condition(self, inbox_item):
+        mentioned = (inbox_item.is_direct_message or inbox_item.is_tweet) \
+                    and not inbox_item.from_me and not inbox_item.is_retweet_of_my_status \
+                    and inbox_item.to_me \
+                    and inbox_item.sender \
+                    and (not inbox_item.sender.is_reply_less or one_in(4)) \
+                    and inbox_item.sender.screen_name != "numberwang_host"
+        logger.debug("%s mentioned: %s", self, mentioned)
+        return mentioned
+
+    def unmentioned_reply_condition(self, inbox_item):
+        unmentoned = inbox_item.is_tweet and not inbox_item.from_me and not inbox_item.is_retweet_of_my_status \
+                     and ((inbox_item.sender.is_bot and random.randint(0, 3) == 0)
+                          or (inbox_item.sender.is_friend and random.randint(0, 2) == 0)
+                          or (inbox_item.sender.is_retweet_more and random.randint(0, 9) == 0)
+                          or random.randint(0, 99) == 0)
+        logger.debug("%s unmentoned: %s", self, unmentoned)
+        return unmentoned
 
     def retweet_condition(self, inbox_item):
         return inbox_item.is_tweet \

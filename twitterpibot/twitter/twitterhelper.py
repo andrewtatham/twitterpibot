@@ -115,6 +115,7 @@ class TwitterHelper(object):
         reply_as_dm = as_direct_message or not as_tweet and inbox_item.is_direct_message
 
         if reply_as_tweet:
+            logger.info("replying to %s as tweet", inbox_item.text)
             tweet = OutgoingTweet(
                 reply_to=inbox_item,
                 text=text,
@@ -123,6 +124,7 @@ class TwitterHelper(object):
             return self.send(tweet)
 
         if reply_as_dm:
+            logger.info("replying to %s as DM", inbox_item.text)
             dm = OutgoingDirectMessage(
                 reply_to=inbox_item,
                 text=text)

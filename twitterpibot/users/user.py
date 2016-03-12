@@ -21,7 +21,7 @@ class User(object):
         if self.profile_banner_url:
             self.profile_banner_url += "/300x100"
 
-        self.isMe = bool(self.screen_name == my_screen_name)
+        self.is_me = bool(self.screen_name == my_screen_name)
 
         self.following = bool(data.get("following"))
         self.verified = bool(data.get("verified"))

@@ -24,8 +24,8 @@ class IncomingEvent(InboxItem):
         self.source = identity.users.get_user(user_data=data.get("source"))
         self.target = identity.users.get_user(user_data=data.get("target"))
 
-        self.from_me = self.source and self.source.isMe
-        self.to_me = self.target and self.target.isMe
+        self.from_me = self.source and self.source.is_me
+        self.to_me = self.target and self.target.is_me
 
         self.event = data.get("event")
         self.is_block = self.event and self.event == "block"

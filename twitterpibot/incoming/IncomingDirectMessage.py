@@ -17,8 +17,8 @@ class IncomingDirectMessage(InboxItem):
         if dm:
             self.sender = identity.users.get_user(user_data=dm.get("sender"))
             self.recipient = identity.users.get_user(user_data=dm["recipient"])
-            self.from_me = self.sender.isMe
-            self.to_me = self.recipient.isMe
+            self.from_me = self.sender.is_me
+            self.to_me = self.recipient.is_me
             self.targets = [self.sender.screen_name]
             self.text = dm.get("text")
             self.text_stripped = self.text
