@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 words = "rather|either|support|fight|win|lose"
 chrs = "\?|;|:|,"
-preposition = "(" + words + "|" + chrs + ")?"
+preposition = ".*(" + words + "|" + chrs + ")?"
 pattern = preposition + "(?P<x>[\w\s]+) (or|vs) (?P<y>[\w\s]+) ?\?"
 rx = re.compile(pattern, flags=re.IGNORECASE)
 logger.info(pattern)
@@ -47,7 +47,7 @@ class X_Or_Y_Response(Response):
     def condition(self, inbox_item):
         return (super(X_Or_Y_Response, self).mentioned_reply_condition(inbox_item)
                 or super(X_Or_Y_Response, self).unmentioned_reply_condition(inbox_item)) \
-               and bool(rx.findall(inbox_item.text_stripped))
+               and bool(_parse(inbox_item.text_stripped))
 
     def respond(self, inbox_item):
         pairs = _parse(inbox_item.text_stripped)

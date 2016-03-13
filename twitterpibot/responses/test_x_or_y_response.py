@@ -27,6 +27,12 @@ class TestX_Or_Y_Response(TestCase):
             "Cameron Diaz’s Shockingly Youthful Look On ‘Women’s Health’: Photoshop Or Plastic Surgery? http://bit.ly/1Umkj77",
             "Photoshop",
             "Plastic Surgery")
+        self._test(
+                "Would you rather rest a diaphragm or decontaminate a grade?",
+                "rest a diaphragm",
+                "decontaminate a grade")
+
+
 
         # x too long
         self._test(
