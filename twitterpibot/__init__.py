@@ -4,6 +4,10 @@ import pprint
 import colorama
 import flask
 
+import textblob.download_corpora
+
+textblob.download_corpora.download_lite()
+
 from twitterpibot import hardware, controller, tasks, schedule, loggingconfig
 
 if not hardware.is_andrew_desktop:

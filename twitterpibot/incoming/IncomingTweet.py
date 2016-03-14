@@ -1,3 +1,5 @@
+from textblob import TextBlob
+
 from twitterpibot.incoming.InboxItem import InboxItem
 from twitterpibot.logic import english
 from twitterpibot.twitter.topics import Topics
@@ -94,6 +96,8 @@ class IncomingTweet(InboxItem):
             for word_interesting in self.words_interesting:
                 self.text_interesting += " " + word_interesting
 
+            self.blob = TextBlob(self.text_stripped)
+
         self.coordinates = None
         coords = data.get("coordinates")
         if coords:
@@ -125,3 +129,9 @@ class IncomingTweet(InboxItem):
             colour += Style.DIM
 
         logger.info(colour + text)
+
+        logger.info("blob: %s", self.blob)
+        logger.info("tags: %s", self.blob.tags)
+        logger.info("noun_phrases: %s", self.blob.noun_phrases)
+        logger.info("sentiment.polarity: %s", self.blob.sentiment.polarity)
+        logger.info("sentiment.subjectivity: %s", self.blob.sentiment.subjectivity)
