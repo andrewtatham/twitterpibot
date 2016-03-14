@@ -24,23 +24,27 @@ def _cap(s, l):
     return s if len(s) <= l else s[0:l - 3] + '...'
 
 
-def _split_text(large_text):
-    lines = textwrap.wrap(large_text, 117)
-    lines_count = len(lines)
-    line_number = 0
-    return_value = []
-    for line in lines:
-        is_continuation = lines_count > 1 and line_number != 0
-        has_continuation = lines_count > 1 and line_number != lines_count - 1
-        text = ""
-        if is_continuation:
-            text += "..."
-        text += line
-        if has_continuation:
-            text += "..."
-        return_value.append(text)
-        line_number += 1
-    return return_value
+def _split_text(large_text, link_count=0, image_count=0):
+    if link_count == 0 and image_count == 0 and len(large_text) <= 140:
+        return [large_text]
+    else:
+
+        lines = textwrap.wrap(large_text, 117)
+        lines_count = len(lines)
+        line_number = 0
+        return_value = []
+        for line in lines:
+            is_continuation = lines_count > 1 and line_number != 0
+            has_continuation = lines_count > 1 and line_number != lines_count - 1
+            text = ""
+            if is_continuation:
+                text += "..."
+            text += line
+            if has_continuation:
+                text += "..."
+            return_value.append(text)
+            line_number += 1
+        return return_value
 
 
 class TwitterHelper(object):
