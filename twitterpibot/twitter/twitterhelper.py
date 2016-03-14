@@ -24,29 +24,6 @@ def _cap(s, l):
     return s if len(s) <= l else s[0:l - 3] + '...'
 
 
-def _split_text(large_text, link_count=0, image_count=0):
-    if link_count == 0 and image_count == 0 and len(large_text) <= 140:
-        return [large_text]
-    else:
-
-        lines = textwrap.wrap(large_text, 117)
-        lines_count = len(lines)
-        line_number = 0
-        return_value = []
-        for line in lines:
-            is_continuation = lines_count > 1 and line_number != 0
-            has_continuation = lines_count > 1 and line_number != lines_count - 1
-            text = ""
-            if is_continuation:
-                text += "..."
-            text += line
-            if has_continuation:
-                text += "..."
-            return_value.append(text)
-            line_number += 1
-        return return_value
-
-
 class TwitterHelper(object):
     def __init__(self, identity):
         self.identity = identity
@@ -61,11 +38,18 @@ class TwitterHelper(object):
         # self.identity.twid = self.twitter.lookup_user(screen_name=identity.screen_name)[0]["id_str"]
         self.mutation = [" ,", " .", " *", " `", " -", " _"]
 
+        self.twitter_configuration = self.twitter.get_twitter_configuration()
+        logger.info(self.twitter_configuration)
+
+        me = self.twitter.lookup_user(screen_name=self.identity.screen_name)[0]
+        logger.info(me)
+        self.identity.id_str = me["id_str"]
+        self.identity.profile_image_url = me["profile_image_url"]
+
     def send(self, outbox_item):
         if type(outbox_item) is OutgoingTweet:
-
+            media_ids = []
             if outbox_item.filePaths and any(outbox_item.filePaths):
-                media_ids = []
                 for filePath in outbox_item.filePaths:
                     ext = os.path.splitext(filePath)
                     if ext == "mp4":
@@ -77,12 +61,17 @@ class TwitterHelper(object):
 
                 if media_ids:
                     outbox_item.media_ids = media_ids
+            media_count = len(media_ids)
+
+            link_count = 0  # TODO Count links
 
             outbox_item.display()
 
             in_reply_to_status_id = outbox_item.in_reply_to_status_id
 
-            statuses = _split_text(_cap(outbox_item.status, 140 * 100))
+            statuses = self._split_text(
+                _cap(outbox_item.status, 140 * 100),
+                link_count=link_count, image_count=media_count)
             media_ids = outbox_item.media_ids
             line_number = 0
             for status in statuses:
@@ -135,6 +124,32 @@ class TwitterHelper(object):
             return self.send(dm)
 
         return None
+
+    def _split_text(self, large_text, link_count=0, image_count=0):
+
+        if link_count == 0 and image_count == 0 and len(large_text) <= 140:
+            return [large_text]
+        else:
+            wrap_at = 140
+            wrap_at -= image_count * self.twitter_configuration["characters_reserved_per_media"]
+            wrap_at -= link_count * self.twitter_configuration["short_url_length_https"]
+
+            lines = textwrap.wrap(large_text, 117)
+            lines_count = len(lines)
+            line_number = 0
+            return_value = []
+            for line in lines:
+                is_continuation = lines_count > 1 and line_number != 0
+                has_continuation = lines_count > 1 and line_number != lines_count - 1
+                text = ""
+                if is_continuation:
+                    text += "..."
+                text += line
+                if has_continuation:
+                    text += "..."
+                return_value.append(text)
+                line_number += 1
+            return return_value
 
     def _upload_media(self, file_path):
         file = None
