@@ -1,7 +1,7 @@
+import multiprocessing
 import os
-import threading
+# import threading
 import logging
-import time
 
 from twitterpibot.exceptionmanager import handle
 
@@ -22,7 +22,8 @@ def start():
 
 
 def add(task):
-    runthread = threading.Thread(target=_run_wrapper, args=[task], name=task.key)
+    # runthread = threading.Thread(target=_run_wrapper, args=[task], name=task.key)
+    runthread = multiprocessing.Process(target=_run_wrapper, args=[task], name=task.key)
     _task_dic[task.key] = (task, runthread)
     _task_running[task.key] = True
     logger.info("[Tasks] starting thread %s", task.key)
@@ -63,6 +64,7 @@ def remove(key):
         logger.info("[Tasks] stopping thread %s", key)
         _task_running[key] = False
         task.on_stop()
+        logger.info("[Tasks] waiting for thread %s", key)
         runthread.join()
         logger.info("[Tasks] stopped thread %s", key)
 
