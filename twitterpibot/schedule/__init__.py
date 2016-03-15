@@ -3,6 +3,7 @@ import logging
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from twitterpibot.exceptionmanager import handle
+from twitterpibot.schedule.MonitorScheduledTask import GlobalMonitorScheduledTask
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +41,6 @@ _scheduled_jobs = []
 
 def set_scheduled_jobs(identities):
     global _scheduled_jobs
-    _scheduled_jobs = []
+    _scheduled_jobs = [GlobalMonitorScheduledTask(None)]
     for identity in identities:
         _scheduled_jobs.extend(identity.get_scheduled_jobs())

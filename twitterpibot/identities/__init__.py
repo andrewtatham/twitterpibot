@@ -5,7 +5,7 @@ import colorama
 from twitterpibot.identities.statistics import Statistics
 from twitterpibot.schedule.FollowScheduledTask import FollowScheduledTask
 from twitterpibot.schedule.MidnightScheduledTask import MidnightScheduledTask
-from twitterpibot.schedule.MonitorScheduledTask import MonitorScheduledTask
+from twitterpibot.schedule.MonitorScheduledTask import IdentityMonitorScheduledTask
 from twitterpibot.schedule.SubscribedListsScheduledTask import SubscribedListsScheduledTask
 from twitterpibot.schedule.UserListsScheduledTask import UserListsScheduledTask
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
@@ -56,7 +56,7 @@ class BotIdentity(Identity):
 
     def get_scheduled_jobs(self):
         return [
-            MonitorScheduledTask(self),
+            IdentityMonitorScheduledTask(self),
             MidnightScheduledTask(self),
             UserListsScheduledTask(self, self.admin_identity),
             SubscribedListsScheduledTask(self, self.admin_identity),

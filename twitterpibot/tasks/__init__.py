@@ -1,6 +1,8 @@
+import os
 import threading
 import logging
 import time
+
 from twitterpibot.exceptionmanager import handle
 
 logger = logging.getLogger(__name__)
@@ -15,8 +17,8 @@ def start():
     global _global_running
     _global_running = True
     for task in _tasks:
-        time.sleep(1)
         add(task)
+    logger.info(status())
 
 
 def add(task):
@@ -45,6 +47,15 @@ def get():
     return [k for k, v in _task_dic.items() if not v[0].core and bool(_task_running[v[0].key])]
 
 
+def status():
+    text = "_global_running = %s" % _global_running
+    for key in _task_running:
+        text += os.linesep + "_task_running[%s] = %s" % (key, _task_running[key])
+    for key in _task_dic:
+        text += os.linesep + "_task_dic[%s] = %s" % (key, _task_dic[key])
+    return text
+
+
 def remove(key):
     task = _task_dic[key][0]
     runthread = _task_dic[key][1]
@@ -63,8 +74,10 @@ def stop():
     _global_running = False
 
     for task in _task_dic.keys():
+        logger.info(status())
         remove(task)
 
+    logger.info(status())
     logger.info("Stopped")
 
 
