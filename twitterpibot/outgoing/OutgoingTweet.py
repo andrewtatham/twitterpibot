@@ -6,7 +6,10 @@ logger = logging.getLogger(__name__)
 class OutgoingTweet(OutboxTextItem):
     # https://dev.twitter.com/rest/reference/post/statuses/update
 
-    def __init__(self, reply_to=None, text=None, in_reply_to_status_id=None, file_paths=None):
+    def __init__(self, reply_to=None, text=None,
+                 in_reply_to_status_id=None,
+                 file_paths=None,
+                 location=None):
 
         super(OutgoingTweet, self).__init__()
 
@@ -30,6 +33,8 @@ class OutgoingTweet(OutboxTextItem):
 
         if text:
             self.status += text
+        if location:
+            self.location = location
 
     def display(self):
         logger.info("-> Tweet: " + self.status)

@@ -50,8 +50,8 @@ class Streamer(TwythonStreamer):
             response = self._determine_response(inbox_item)
             if response:
                 inbox_item.display()
-            else:
-                inbox_item.display()
+            # else:
+            #     inbox_item.display()
             if response:
                 self._respond(inbox_item=inbox_item, response=response)
 

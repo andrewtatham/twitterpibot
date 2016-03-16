@@ -20,6 +20,7 @@ from twitterpibot.responses.SongResponse import SongResponse
 from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
 from twitterpibot.responses.ThanksResponse import ThanksResponse
 from twitterpibot.responses.TimelapseResponse import TimelapseResponse
+from twitterpibot.logic.location import LocationResponse, LocationScheduledTask
 from twitterpibot.responses.x_or_y_response import X_Or_Y_Response
 from twitterpibot.schedule.BlankTweetScheduledTask import BlankTweetScheduledTask
 from twitterpibot.schedule.ConversationScheduledTask import ConversationScheduledTask
@@ -54,6 +55,7 @@ def get_pi_scheduled_jobs(identity):
         ZenOfPythonScheduledTask(identity),
         BlankTweetScheduledTask(identity),
         HappyBirthdayScheduledTask(identity),
+        LocationScheduledTask(identity),
 
     ]
 
@@ -78,6 +80,7 @@ def get_pi_responses(identity):
         SongResponse(identity),
         TalkLikeAPirateDayResponse(identity),
         ConversationResponse(identity),
+        LocationResponse(identity),
         X_Or_Y_Response(identity),
         EggPunResponse(identity),
         ThanksResponse(identity),
@@ -130,7 +133,6 @@ class AndrewTathamIdentity(Identity):
             andrewtathampi2
         ]
         return [HiveMindResponse(self, followers)]
-
 
 
 andrewtatham = AndrewTathamIdentity()
@@ -291,14 +293,14 @@ if twitterpibot.hardware.is_raspberry_pi_2:
     ]
 else:
     all_identities = [
-        andrewtatham,
+        # andrewtatham,
         andrewtathampi,
         andrewtathampi2,
-        numberwang_host,
-        julienumberwang,
-        simonnumberwang,
-        eggpunbot,
-        whenmensday
+        # numberwang_host,
+        # julienumberwang,
+        # simonnumberwang,
+        # eggpunbot,
+        # whenmensday
     ]
 
 twitterpibot.run(all_identities)

@@ -76,3 +76,6 @@ class Response(object):
     @abc.abstractmethod
     def respond(self, inbox_item):
         return None
+
+    def testing_reply_condition(self, inbox_item):
+        return inbox_item.sender and inbox_item.sender.screen_name == "andrewtatham"

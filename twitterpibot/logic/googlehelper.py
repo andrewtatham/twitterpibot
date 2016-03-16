@@ -1,44 +1,34 @@
-import datetime
+import json
 import logging
 import os
-import pprint
 import hashlib
 import hmac
 import base64
+import pprint
+import random
 from urllib.parse import urlparse
 
-import googlemaps
+import requests
 
 from twitterpibot.logic import fsh
+from twitterpibot.logic import location
 
 logger = logging.getLogger(__name__)
 
 key = fsh.get_key("google")
-secret = fsh._get("secret", "google")
+secret = fsh._get("secret", "google").encode()
+custom_search_id = fsh.get_key("google custom search id")
+
+folder = fsh.root + "temp" + os.sep + "images" + os.sep + "google" + os.sep
 
 
-def _sign_url(input_url=None, secret=None):
-    """ Sign a request URL with a URL signing secret.
-
-        Usage:
-        from urlsigner import sign_url
-
-        signed_url = sign_url(input_url=my_url, secret=SECRET)
-
-        Args:
-        input_url - The URL to sign
-        secret    - Your URL signing secret
-
-        Returns:
-        The signed request URL
-    """
+def _sign_url(input_url=None):
     # https://developers.google.com/maps/documentation/streetview/get-api-key#dig-sig-key
 
     if not input_url or not secret:
         raise Exception("Both input_url and secret are required")
 
     input_url = input_url.encode()
-    secret = secret.encode()
 
     url = urlparse(input_url)
 
@@ -63,62 +53,132 @@ def _sign_url(input_url=None, secret=None):
     return encoded_signed_bytes.decode()
 
 
-def api():
-    gmaps = googlemaps.Client(key=key)
-
-    # Geocoding an address
-    geocode_result = gmaps.geocode('1600 Amphitheatre Parkway, Mountain View, CA')
-
-    pprint.pprint(geocode_result)
-
-    # Look up an address with reverse geocoding
-    reverse_geocode_result = gmaps.reverse_geocode((40.714224, -73.961452))
-
-    pprint.pprint(reverse_geocode_result)
-
-    # Request directions via public transit
-    now = datetime.datetime.now()
-    directions_result = gmaps.directions("Sydney Town Hall",
-                                         "Parramatta, NSW",
-                                         mode="transit",
-                                         departure_time=now)
-
-    pprint.pprint(directions_result)
-
-
-def get_streetview_image():
-    global key
-    # https://developers.google.com/maps/documentation/streetview/intro#url_parameters
-    params = {
-        "location": "41.403609,2.174448",
-        "fov": 90,  # min ? def 90 max 120
-        "heading": 360 - 30,  # 0-360
-        "pitch": 45  # down -90 def 0 up 90
-    }
-    if "size" not in params:
-        params["size"] = "640x640"
-        params["size"] = "640x480"
-        # params["size"] = "456x456"
-    if "key" not in params:
-        params["key"] = key
-    url = "https://maps.googleapis.com/maps/api/streetview"
+def _urlbuild(params, url, sign=True):
     first = True
-    for key in params:
+    for param in params:
         if first:
             url += "?"
             first = False
         else:
             url += "&"
-        url += key + "={" + key + "}"
+        url += param + "={" + param + "}"
+
+    # for param in params:
+    #     params[param] = quote_plus(str(params[param]).encode())
 
     url = url.format(**params)
+    if sign:
+        url = _sign_url(input_url=url)
+    logger.info("URL: " + url)
+    return url
 
-    signed = _sign_url(input_url=url, secret=secret)
-    logger.info("Signed URL: " + signed)
-    folder = fsh.root + "temp" + os.sep + "images" + os.sep + "google" + os.sep
-    file_path = fsh.download_file(folder=folder, url=url, file_name="streetview.jpg")
-    return file_path
+
+def _get_url(url):
+    response = requests.get(url)
+    response_json = response.content.decode()
+    response_dict = json.loads(response_json)
+    logger.info(pprint.pformat(response_dict))
+    return response_dict
+
+
+def get_streetview_image(location, heading, pitch=0, fov=90):
+    # https://developers.google.com/maps/documentation/streetview/intro#url_parameters
+    params = {
+        'location': location.get_latlng_string(),
+        'fov': fov,
+        'heading': heading,
+        'pitch': pitch,
+        "size": "640x480",
+        "key": key}
+
+    return _urlbuild(params, "https://maps.googleapis.com/maps/api/streetview")
+
+
+def get_map_image(location, zoom):
+    # https://developers.google.com/maps/documentation/static-maps/intro#URL_Parameters
+    params = {
+        "center": location.get_search_string(),
+        "zoom": zoom,
+        "maptype": "hybrid",
+        "size": "640x480",
+        "key": key}
+    return _urlbuild(params, "https://maps.googleapis.com/maps/api/staticmap")
+
+
+def get_search_images(location, number):
+    params = {
+        "q": location.get_address_string(),
+        "searchType": "image",
+        "num": number,
+        "cx": custom_search_id,
+        "key": key
+    }
+
+    url = _urlbuild(params, "https://www.googleapis.com/customsearch/v1")
+    response = _get_url(url)
+    urls = [item["link"] for item in response["items"]]
+    return urls
+
+
+def get_location_images(location, name):
+    urls = []
+    for zoom in range(5, 21, 5):
+        urls.append(get_map_image(location, zoom=zoom))
+
+    urls.extend(get_search_images(location, 4))
+
+    heading = random.randint(0, 360)
+    for bearing in range(0, 360, 120):
+        urls.append(get_streetview_image(
+            location,
+            heading=(heading + bearing) % 360,
+            fov=120))
+
+    i = 0
+    file_paths = []
+    for url in urls:
+        file_name = name + str(i) + ".jpg"
+        file_paths.append(fsh.download_file(folder=folder, url=url, file_name=file_name))
+        i += 1
+
+
+def geocode(location):
+    # https://developers.google.com/maps/documentation/geocoding/intro#geocoding
+    params = {
+        "address": location.get_address_string(),
+        "key": key}
+    url = _urlbuild(params, "https://maps.googleapis.com/maps/api/geocode/json", sign=False)
+    response_dict = _get_url(url)
+    if response_dict["status"] != "ZERO_RESULTS" and response_dict["results"]:
+        location.latitude = response_dict["results"][0]["geometry"]["location"]["lat"]
+        location.longitude = response_dict["results"][0]["geometry"]["location"]["lng"]
+        return location
+    else:
+        return None
+
+
+def reverse_geocode(location):
+    # https://developers.google.com/maps/documentation/geocoding/intro#ReverseGeocoding
+    params = {
+        "latlng": location.get_latlng_string(),
+        "key": key}
+    url = _urlbuild(params, "https://maps.googleapis.com/maps/api/geocode/json", sign=False)
+    response_dict = _get_url(url)
+    if response_dict["status"] != "ZERO_RESULTS" and response_dict["results"]:
+        location.full_name = response_dict["results"][0]["formatted_address"]
+        logger.info(location.full_name)
+        return location
+    else:
+        return None
 
 
 if __name__ == "__main__":
-    get_streetview_image()
+    # loc = location.Location(latitude=41.403609, longitude=2.174448)  # La Sagrada Familia
+    # loc = location.Location(latitude=40.714224, longitude=-73.961452)  # Grand St/Bedford Av, Brooklyn, NY 11211, USA
+    loc = location.get_random_location_by_latlng()
+    loc = reverse_geocode(loc)
+    get_location_images(loc, "reverse_geocode")
+
+    loc = location.get_random_location_by_name()
+    loc = geocode(loc)
+    get_location_images(loc, "geocode")

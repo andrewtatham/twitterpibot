@@ -1,7 +1,7 @@
 from textblob import TextBlob
 
 from twitterpibot.incoming.InboxItem import InboxItem
-from twitterpibot.logic import english
+from twitterpibot.logic import english, location
 from twitterpibot.twitter.topics import Topics
 
 try:
@@ -26,15 +26,6 @@ tweetcolours = cycle([Fore.GREEN, Fore.WHITE])
 trendcolours = cycle([Fore.MAGENTA, Fore.WHITE])
 searchcolours = cycle([Fore.CYAN, Fore.WHITE])
 streamcolours = cycle([Fore.YELLOW, Fore.WHITE])
-
-
-class Coordinates(object):
-    def __init__(self, data):
-        if data["type"] == "Point":
-            coordinates = data["coordinates"]
-            if coordinates:
-                self.lat = coordinates[0]
-                self.long = coordinates[1]
 
 
 class IncomingTweet(InboxItem):
@@ -98,10 +89,9 @@ class IncomingTweet(InboxItem):
 
             self.blob = TextBlob(self.text_stripped)
 
-        self.coordinates = None
-        coords = data.get("coordinates")
-        if coords:
-            self.coordinates = Coordinates(coords)
+        self.location = location.Location(
+            coordinates=data.get("coordinates"),
+            place=data.get("place"))
 
         self.retweeted_status = None
         self.is_retweet_of_my_status = False
@@ -115,8 +105,8 @@ class IncomingTweet(InboxItem):
         colour = self.identity.colour
         text = "[" + self.identity_screen_name + "] "
 
-        if self.coordinates:
-            text += "({},{}) ".format(self.coordinates.lat, self.coordinates.long)
+        if self.location:
+            text += " location = " + str(self.location)
 
         text += self.sender.name + ' [@' + self.sender.screen_name + '] '
         text += self.text.replace('\n', ' ')
@@ -129,9 +119,10 @@ class IncomingTweet(InboxItem):
             colour += Style.DIM
 
         logger.info(colour + text)
+        #
+        # logger.info("blob: %s", self.blob)
+        # logger.info("tags: %s", self.blob.tags)
+        # logger.info("noun_phrases: %s", self.blob.noun_phrases)
+        # logger.info("sentiment.polarity: %s", self.blob.sentiment.polarity)
+        # logger.info("sentiment.subjectivity: %s", self.blob.sentiment.subjectivity)
 
-        logger.info("blob: %s", self.blob)
-        logger.info("tags: %s", self.blob.tags)
-        logger.info("noun_phrases: %s", self.blob.noun_phrases)
-        logger.info("sentiment.polarity: %s", self.blob.sentiment.polarity)
-        logger.info("sentiment.subjectivity: %s", self.blob.sentiment.subjectivity)

@@ -69,6 +69,8 @@ class TwitterHelper(object):
 
             in_reply_to_status_id = outbox_item.in_reply_to_status_id
 
+            location = outbox_item.location
+
             statuses = self._split_text(
                 _cap(outbox_item.status, 140 * 100),
                 link_count=link_count, image_count=media_count)
@@ -83,7 +85,10 @@ class TwitterHelper(object):
                 response = self.twitter.update_status(
                     status=status,
                     in_reply_to_status_id=in_reply_to_status_id,
-                    media_ids=media_ids)
+                    media_ids=media_ids,
+                    lat=location.latitude,
+                    long=location.longitude,
+                    place_id=outbox_item.place_id)
                 in_reply_to_status_id = response["id_str"]
                 self.identity.statistics.record_outgoing_tweet()
                 line_number += 1
