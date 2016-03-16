@@ -132,6 +132,7 @@ class AndrewTathamIdentity(Identity):
         return [HiveMindResponse(self, followers)]
 
 
+
 andrewtatham = AndrewTathamIdentity()
 
 
@@ -290,14 +291,14 @@ if twitterpibot.hardware.is_raspberry_pi_2:
     ]
 else:
     all_identities = [
-        # andrewtatham,
+        andrewtatham,
         andrewtathampi,
         andrewtathampi2,
-        # numberwang_host,
-        # julienumberwang,
-        # simonnumberwang,
-        # eggpunbot,
-        # whenmensday
+        numberwang_host,
+        julienumberwang,
+        simonnumberwang,
+        eggpunbot,
+        whenmensday
     ]
 
 twitterpibot.run(all_identities)

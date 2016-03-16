@@ -1,7 +1,6 @@
-import multiprocessing
 import os
-# import threading
 import logging
+import threading
 
 from twitterpibot.exceptionmanager import handle
 
@@ -22,8 +21,8 @@ def start():
 
 
 def add(task):
-    # runthread = threading.Thread(target=_run_wrapper, args=[task], name=task.key)
-    runthread = multiprocessing.Process(target=_run_wrapper, args=[task], name=task.key)
+    runthread = threading.Thread(target=_run_wrapper, args=[task], name=task.key)
+    # runthread = multiprocessing.Process(target=_run_wrapper, args=[task], name=task.key)
     _task_dic[task.key] = (task, runthread)
     _task_running[task.key] = True
     logger.info("[Tasks] starting thread %s", task.key)
