@@ -6,7 +6,7 @@ import time
 
 from twython import Twython
 
-import main
+
 from twitterpibot.logic import fsh
 from twitterpibot.twitter import authorisationhelper
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
@@ -388,4 +388,5 @@ class TwitterHelper(object):
 
 
 if __name__ == "__main__":
+    import main
     twitter = TwitterHelper(main.AndrewTathamPiIdentity(main.AndrewTathamIdentity()))
