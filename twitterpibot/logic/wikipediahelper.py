@@ -78,7 +78,6 @@ def get_random_python_fact():
         python_facts = _parse_content_flat(wikipedia.page("Python (programming language)").content)
     return random.choice(python_facts)
 
-
 if __name__ == "__main__":
 
     logging.basicConfig(level=logging.INFO)

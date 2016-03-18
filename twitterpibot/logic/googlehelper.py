@@ -84,7 +84,7 @@ def _get_url(url):
 def get_streetview_image(location, heading, pitch=0, fov=90):
     # https://developers.google.com/maps/documentation/streetview/intro#url_parameters
     params = {
-        'location': location.get_latlng_string(),
+        'location': location.get_latlng_param(),
         'fov': fov,
         'heading': heading,
         'pitch': pitch,
@@ -97,7 +97,7 @@ def get_streetview_image(location, heading, pitch=0, fov=90):
 def get_map_image(location, zoom):
     # https://developers.google.com/maps/documentation/static-maps/intro#URL_Parameters
     params = {
-        "center": location.get_search_string(),
+        "center": location.get_address_param(),
         "zoom": zoom,
         "maptype": "hybrid",
         "size": "640x480",
@@ -107,7 +107,7 @@ def get_map_image(location, zoom):
 
 def get_search_images(location, number):
     params = {
-        "q": location.get_address_string(),
+        "q": location.get_address_param(),
         "searchType": "image",
         "num": number,
         "cx": custom_search_id,
@@ -122,13 +122,13 @@ def get_search_images(location, number):
 
 def get_location_images(location, name):
     urls = []
-    for zoom in range(5, 21, 5):
+    for zoom in [12]:
         urls.append(get_map_image(location, zoom=zoom))
 
-    urls.extend(get_search_images(location, 4))
+    urls.extend(get_search_images(location, 1))
 
     heading = random.randint(0, 360)
-    for bearing in range(0, 360, 120):
+    for bearing in [0]:
         urls.append(get_streetview_image(
             location,
             heading=(heading + bearing) % 360,
@@ -145,7 +145,7 @@ def get_location_images(location, name):
 def geocode(location):
     # https://developers.google.com/maps/documentation/geocoding/intro#geocoding
     params = {
-        "address": location.get_address_string(),
+        "address": location.get_address_param(),
         "key": key}
     url = _urlbuild(params, "https://maps.googleapis.com/maps/api/geocode/json", sign=False)
     response_dict = _get_url(url)
@@ -160,7 +160,7 @@ def geocode(location):
 def reverse_geocode(location):
     # https://developers.google.com/maps/documentation/geocoding/intro#ReverseGeocoding
     params = {
-        "latlng": location.get_latlng_string(),
+        "latlng": location.get_latlng_param(),
         "key": key}
     url = _urlbuild(params, "https://maps.googleapis.com/maps/api/geocode/json", sign=False)
     response_dict = _get_url(url)

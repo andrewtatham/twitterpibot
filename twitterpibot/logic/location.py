@@ -41,36 +41,51 @@ sightseeing = {
 
 
 class Location(object):
-    def __init__(self, place=None, coordinates=None,
-                 latitude=None, longitude=None):
+    def __init__(self,
+                 full_name=None,
+                 tweet_place=None,
+                 tweet_coordinates=None,
+                 latitude=None,
+                 longitude=None):
 
         self.full_name = None
-        if place:
-            self.full_name = place["full_name"]
+        self.place_id_twitter = None
+        if tweet_place:
+            self.full_name = tweet_place.get("full_name")
+            self.place_id_twitter = tweet_place.get("id")
+        elif full_name:
+            self.full_name = full_name
 
         self.longitude = None
         self.latitude = None
-        if coordinates:
-            self.longitude = coordinates(0)
-            self.latitude = coordinates(1)
+        if tweet_coordinates:
+            self.longitude = tweet_coordinates["coordinates"][0]
+            self.latitude = tweet_coordinates["coordinates"][1]
         elif longitude and latitude:
             self.longitude = longitude
             self.latitude = latitude
 
     def __str__(self):
-        return "{full_name} ({longitude},{latitude})".format(**self.__dict__)
+        text = ""
+        if self.full_name:
+            text += self.full_name
+        if self.latitude and self.longitude:
+            text += " ({},{})".format(self.latitude, self.longitude)
+        if self.place_id_twitter:
+            text += " " + self.place_id_twitter
+        return text
 
-    def get_search_string(self):
+    def get_search_param(self):
         if self.longitude and self.latitude:
-            return self.get_latlng_string()
+            return self.get_latlng_param()
         elif self.full_name:
             return quote_plus(self.full_name)
 
-    def get_address_string(self):
+    def get_address_param(self):
         if self.full_name:
             return quote_plus(self.full_name)
 
-    def get_latlng_string(self):
+    def get_latlng_param(self):
         if self.longitude and self.latitude:
             return "{latitude},{longitude}".format(**self.__dict__)
 
@@ -78,11 +93,11 @@ class Location(object):
         if self.full_name:
             return self.full_name
         elif self.longitude and self.latitude:
-            return self.get_latlng_string()
+            return self.get_latlng_param()
 
 
 def get_random_location_by_name():
-    return Location(place={
+    return Location(tweet_place={
         'full_name': random.choice(sightseeing)
     })
 
@@ -98,9 +113,9 @@ class LocationScheduledTask(ScheduledTask):
 
     def on_run(self):
         location = get_random_location_by_name()
+        location = self.identity.twitter.geocode(location)
         location = googlehelper.geocode(location)
         file_paths = googlehelper.get_location_images(location, "location")
-
         text = ".@" + self.identity.converse_with + " " + random.choice(HelloWords) + \
                " I'm at " + location.get_display_name()
         self.identity.twitter.send(OutgoingTweet(text=text, location=location, file_paths=file_paths))
@@ -116,6 +131,7 @@ class LocationResponse(Response):
 
     def respond(self, inbox_item):
         if inbox_item.location:
+            text = random.choice(HelloWords) + " I see you're at " + inbox_item.location.full_name
+            inbox_item.location = googlehelper.geocode(inbox_item.location)
             file_paths = googlehelper.get_location_images(inbox_item.location, inbox_item.status_id)
-            text = random.choice(HelloWords)
             self.identity.twitter.reply_with(inbox_item, text=text, file_paths=file_paths)

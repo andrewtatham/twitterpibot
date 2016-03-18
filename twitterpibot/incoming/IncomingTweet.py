@@ -88,10 +88,13 @@ class IncomingTweet(InboxItem):
                 self.text_interesting += " " + word_interesting
 
             self.blob = TextBlob(self.text_stripped)
-
-        self.location = location.Location(
-            coordinates=data.get("coordinates"),
-            place=data.get("place"))
+        self.location = None
+        place = data.get("place")
+        coordinates = data.get("coordinates")
+        if place or coordinates:
+            self.location = location.Location(
+                tweet_coordinates=coordinates,
+                tweet_place=place)
 
         self.retweeted_status = None
         self.is_retweet_of_my_status = False

@@ -1,8 +1,11 @@
+import abc
+import datetime
+import os
+
 import colorama
 
 import twitterpibot
 from twitterpibot import hardware
-from twitterpibot.identities import Identity, BotIdentity
 from twitterpibot.logic.whenisinternationalmensday import WhenIsInternationalMensDayScheduledTask, \
     WhenIsInternationalMensDayResponse
 from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
@@ -40,7 +43,119 @@ from twitterpibot.schedule.WikipediaScheduledTask import WikipediaScheduledTask
 from twitterpibot.schedule.ZenOfPythonScheduledTask import ZenOfPythonScheduledTask
 from twitterpibot.tasks.FadeTask import FadeTask
 from twitterpibot.tasks.LightsTask import LightsTask
+from twitterpibot.schedule.FollowScheduledTask import FollowScheduledTask
+from twitterpibot.schedule.MidnightScheduledTask import MidnightScheduledTask
+from twitterpibot.schedule.MonitorScheduledTask import IdentityMonitorScheduledTask
+from twitterpibot.schedule.SubscribedListsScheduledTask import SubscribedListsScheduledTask
+from twitterpibot.schedule.UserListsScheduledTask import UserListsScheduledTask
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
+from twitterpibot.twitter import twitterhelper
+from twitterpibot.users import lists, users
+
+
+
+class Statistics(object):
+    def __init__(self):
+        self._stats = {}
+
+    def reset(self):
+        self._stats = {}
+
+    def increment(self, key):
+        if key not in self._stats:
+            self._stats[key] = 0
+        self._stats[key] += 1
+
+    def get_statistics(self):
+        text = "Stats at " + datetime.datetime.now().strftime("%x %X") + os.linesep
+        for key, val in self._stats.items():
+            text += str(val) + " " + key + os.linesep
+        return text
+
+    def record_incoming_tweet(self, tweet):
+        self.increment("Incoming Tweets")
+
+    def record_incoming_direct_message(self, dm):
+        self.increment("Incoming Direct Messages")
+
+    def record_incoming_event(self, event):
+        self.increment("Incoming Event")
+
+    def record_connection(self):
+        self.increment("Connnections")
+
+    def record_outgoing_tweet(self):
+        self.increment("Outgoing Tweets")
+
+    def record_outgoing_direct_message(self):
+        self.increment("Outgoing Direct Messages")
+
+    def record_outgoing_song_lyric(self):
+        self.increment("Outgoing Song Lyrics")
+
+    def record_warning(self):
+        self.increment("Warnings")
+
+    def record_error(self):
+        self.increment("Errors")
+
+    def record_retweet(self):
+        self.increment("Retweets")
+
+    def record_favourite(self):
+        self.increment("Favourites")
+
+class Identity(object):
+    def __init__(self, screen_name, id_str, ):
+        self.screen_name = screen_name
+        self.id_str = id_str
+        self.admin_screen_name = "andrewtatham"
+        self.converse_with = None
+        self.tokens = None
+        self.streamer = None
+        self.users = users.Users(self)
+        self.lists = lists.Lists(self)
+        self.twitter = twitterhelper.TwitterHelper(self)
+        self.following = set()
+        self.colour = colorama.Fore.WHITE
+        self.id_str = None
+        self.profile_image_url = None  # todo init
+        self.statistics = Statistics()
+
+    @abc.abstractmethod
+    def get_tasks(self):
+        return []
+
+    @abc.abstractmethod
+    def get_scheduled_jobs(self):
+        return []
+
+    @abc.abstractmethod
+    def get_responses(self):
+        return []
+
+
+class BotIdentity(Identity):
+    def __init__(self, screen_name, id_str, admin_identity):
+        super(BotIdentity, self).__init__(screen_name, id_str)
+        self.admin_identity = admin_identity
+
+    def get_tasks(self):
+        return [
+            StreamTweetsTask(self)
+        ]
+
+    def get_scheduled_jobs(self):
+        return [
+            IdentityMonitorScheduledTask(self),
+            MidnightScheduledTask(self),
+            UserListsScheduledTask(self, self.admin_identity),
+            SubscribedListsScheduledTask(self, self.admin_identity),
+            FollowScheduledTask(self),
+        ]
+
+    def get_responses(self):
+        return []
 
 
 def get_pi_scheduled_jobs(identity):
@@ -135,9 +250,6 @@ class AndrewTathamIdentity(Identity):
         return [HiveMindResponse(self, followers)]
 
 
-andrewtatham = AndrewTathamIdentity()
-
-
 class AndrewTathamPiIdentity(BotIdentity):
     def __init__(self, admin_identity):
         super(AndrewTathamPiIdentity, self).__init__(
@@ -159,9 +271,6 @@ class AndrewTathamPiIdentity(BotIdentity):
         return get_pi_responses(self)
 
 
-andrewtathampi = AndrewTathamPiIdentity(andrewtatham)
-
-
 class AndrewTathamPi2Identity(BotIdentity):
     def __init__(self, admin_identity):
         super(AndrewTathamPi2Identity, self).__init__(
@@ -181,9 +290,6 @@ class AndrewTathamPi2Identity(BotIdentity):
 
     def get_responses(self):
         return get_pi_responses(self)
-
-
-andrewtathampi2 = AndrewTathamPi2Identity(andrewtatham)
 
 
 class NumberwangHostIdentity(BotIdentity):
@@ -212,9 +318,6 @@ class NumberwangHostIdentity(BotIdentity):
         return jobs
 
 
-numberwang_host = NumberwangHostIdentity(andrewtatham)
-
-
 class JulieNumberwangIdentity(BotIdentity):
     def __init__(self, admin_identity):
         super(JulieNumberwangIdentity, self).__init__(
@@ -226,9 +329,6 @@ class JulieNumberwangIdentity(BotIdentity):
         return []
 
 
-julienumberwang = JulieNumberwangIdentity(andrewtatham)
-
-
 class SimonNumberwangIdentity(BotIdentity):
     def __init__(self, admin_identity):
         super(SimonNumberwangIdentity, self).__init__(
@@ -238,9 +338,6 @@ class SimonNumberwangIdentity(BotIdentity):
 
     def get_tasks(self):
         return []
-
-
-simonnumberwang = SimonNumberwangIdentity(andrewtatham)
 
 
 class EggPunBotIdentity(BotIdentity):
@@ -259,9 +356,6 @@ class EggPunBotIdentity(BotIdentity):
         return [EggPunResponse(self)]
 
 
-eggpunbot = EggPunBotIdentity(andrewtatham)
-
-
 class WhenIsInternationalMensDayBotIdentity(BotIdentity):
     def __init__(self, admin_identity):
         super(WhenIsInternationalMensDayBotIdentity, self).__init__(
@@ -278,29 +372,38 @@ class WhenIsInternationalMensDayBotIdentity(BotIdentity):
         return [WhenIsInternationalMensDayResponse(self)]
 
 
-whenmensday = WhenIsInternationalMensDayBotIdentity(andrewtatham)
+if __name__ == "__main__":
 
-if twitterpibot.hardware.is_raspberry_pi_2:
-    all_identities = [
-        andrewtatham,
-        andrewtathampi,
-        andrewtathampi2,
-        numberwang_host,
-        julienumberwang,
-        simonnumberwang,
-        eggpunbot,
-        whenmensday
-    ]
-else:
-    all_identities = [
-        # andrewtatham,
-        andrewtathampi,
-        andrewtathampi2,
-        # numberwang_host,
-        # julienumberwang,
-        # simonnumberwang,
-        # eggpunbot,
-        # whenmensday
-    ]
+    andrewtatham = AndrewTathamIdentity()
+    andrewtathampi = AndrewTathamPiIdentity(andrewtatham)
+    andrewtathampi2 = AndrewTathamPi2Identity(andrewtatham)
+    numberwang_host = NumberwangHostIdentity(andrewtatham)
+    julienumberwang = JulieNumberwangIdentity(andrewtatham)
+    simonnumberwang = SimonNumberwangIdentity(andrewtatham)
+    eggpunbot = EggPunBotIdentity(andrewtatham)
+    whenmensday = WhenIsInternationalMensDayBotIdentity(andrewtatham)
 
-twitterpibot.run(all_identities)
+    if twitterpibot.hardware.is_raspberry_pi_2:
+        all_identities = [
+            andrewtatham,
+            andrewtathampi,
+            andrewtathampi2,
+            numberwang_host,
+            julienumberwang,
+            simonnumberwang,
+            eggpunbot,
+            whenmensday
+        ]
+    else:
+        all_identities = [
+            # andrewtatham,
+            andrewtathampi,
+            andrewtathampi2,
+            # numberwang_host,
+            # julienumberwang,
+            # simonnumberwang,
+            # eggpunbot,
+            # whenmensday
+        ]
+
+    twitterpibot.run(all_identities)

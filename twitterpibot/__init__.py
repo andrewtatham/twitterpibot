@@ -5,6 +5,7 @@ import colorama
 import flask
 
 
+
 # import textblob.download_corpora
 
 from twitterpibot import hardware, controller, tasks, schedule, loggingconfig
@@ -84,9 +85,12 @@ def _shutdown_server():
 
 
 logger = logging.getLogger(__name__)
+all_identities = []
 
 
-def run(all_identities):
+def run(identities):
+    global all_identities
+    all_identities = identities
     obviousness = "=" * 5
     logger.info(obviousness + " Starting " + obviousness)
 

@@ -13,7 +13,7 @@ chrs = "\?|;|:|,"
 preposition = ".*(" + words + "|" + chrs + ")?"
 pattern = preposition + "(?P<x>[\w\s]+) (or|vs) (?P<y>[\w\s]+) ?\?"
 rx = re.compile(pattern, flags=re.IGNORECASE)
-logger.info(pattern)
+logger.debug(pattern)
 
 
 def _parse(text):

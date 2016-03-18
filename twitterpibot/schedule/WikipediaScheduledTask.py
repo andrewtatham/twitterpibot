@@ -5,7 +5,7 @@ import random
 
 from apscheduler.triggers.interval import IntervalTrigger
 
-import twitterpibot.identities
+
 from twitterpibot.logic import wikipediahelper, fsh
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
@@ -42,8 +42,9 @@ class WikipediaScheduledTask(ScheduledTask):
 
 
 if __name__ == "__main__":
+    import main
     logging.basicConfig(level=logging.INFO)
 
-    task = WikipediaScheduledTask(twitterpibot.identities.andrewtathampi)
+    task = WikipediaScheduledTask(main.AndrewTathamPiIdentity(main.AndrewTathamIdentity()))
     for i in range(1):
         task.on_run()

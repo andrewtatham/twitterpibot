@@ -6,6 +6,7 @@ import time
 
 from twython import Twython
 
+import main
 from twitterpibot.logic import fsh
 from twitterpibot.twitter import authorisationhelper
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
@@ -61,7 +62,10 @@ class TwitterHelper(object):
 
                 if media_ids:
                     outbox_item.media_ids = media_ids
-            media_count = len(media_ids)
+
+            media_count = 0
+            if outbox_item.media_ids:
+                media_count = len(outbox_item.media_ids)
 
             link_count = 0  # TODO Count links
 
@@ -69,26 +73,28 @@ class TwitterHelper(object):
 
             in_reply_to_status_id = outbox_item.in_reply_to_status_id
 
-            location = outbox_item.location
-
             statuses = self._split_text(
                 _cap(outbox_item.status, 140 * 100),
                 link_count=link_count, image_count=media_count)
-            media_ids = outbox_item.media_ids
+
             line_number = 0
             for status in statuses:
-                # only add media to first tweet
-                if media_ids and line_number != 0:
-                    media_ids = None
 
                 logger.info("status %s: %s chars: %s", line_number, len(status), status)
-                response = self.twitter.update_status(
-                    status=status,
-                    in_reply_to_status_id=in_reply_to_status_id,
-                    media_ids=media_ids,
-                    lat=location.latitude,
-                    long=location.longitude,
-                    place_id=outbox_item.place_id)
+
+                tweet_params = {
+                    "status": status,
+                    "in_reply_to_status_id": in_reply_to_status_id,
+                }
+
+                if line_number == 0 and outbox_item.media_ids:
+                    tweet_params["media_ids"] = outbox_item.media_ids
+                if outbox_item.location:
+                    tweet_params["lat"] = outbox_item.location.latitude,
+                    tweet_params["long"] = outbox_item.location.longitude,
+                    tweet_params["place_id"] = outbox_item.location.place_id_twitter
+
+                response = self.twitter.update_status(**tweet_params)
                 in_reply_to_status_id = response["id_str"]
                 self.identity.statistics.record_outgoing_tweet()
                 line_number += 1
@@ -341,3 +347,45 @@ class TwitterHelper(object):
 
     def subscribe_to_list(self, list_id):
         return self.twitter.subscribe_to_list(list_id=list_id)
+
+    def geocode(self, location):
+        result = self.twitter.search_geo(
+            query=location.full_name,
+
+            max_results=5,
+            lat=location.latitude,
+            long=location.longitude)
+        logger.info(result)
+        if result["result"]["places"]:
+            # for place in result["result"]["places"]:
+            #     logger.info(place["full_name"])
+
+            place = result["result"]["places"][0]
+            location.place_id_twitter = place["id"]
+
+            return location
+        else:
+            return None
+
+    def reverse_geocode(self, location):
+
+        result = self.twitter.reverse_geocode(
+
+            max_results=5,
+            lat=location.latitude,
+            long=location.longitude)
+        logger.info(result)
+        if result["result"]["places"]:
+            # for place in result["result"]["places"]:
+            #     logger.info(place["full_name"])
+
+            place = result["result"]["places"][0]
+            location.place_id_twitter = place["id"]
+
+            return location
+        else:
+            return None
+
+
+if __name__ == "__main__":
+    twitter = TwitterHelper(main.AndrewTathamPiIdentity(main.AndrewTathamIdentity()))
