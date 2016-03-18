@@ -11,7 +11,7 @@ from urllib.parse import urlparse
 import requests
 
 from twitterpibot.logic import fsh
-from twitterpibot.logic import location
+
 
 logger = logging.getLogger(__name__)
 
@@ -173,6 +173,7 @@ def reverse_geocode(location):
 
 
 if __name__ == "__main__":
+    from twitterpibot.logic import location
     # loc = location.Location(latitude=41.403609, longitude=2.174448)  # La Sagrada Familia
     # loc = location.Location(latitude=40.714224, longitude=-73.961452)  # Grand St/Bedford Av, Brooklyn, NY 11211, USA
     loc = location.get_random_location_by_latlng()
