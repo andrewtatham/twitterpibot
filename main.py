@@ -23,7 +23,7 @@ from twitterpibot.responses.SongResponse import SongResponse
 from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
 from twitterpibot.responses.ThanksResponse import ThanksResponse
 from twitterpibot.responses.TimelapseResponse import TimelapseResponse
-from twitterpibot.logic.location import LocationResponse, LocationScheduledTask
+# from twitterpibot.logic.location import LocationResponse, LocationScheduledTask
 from twitterpibot.responses.x_or_y_response import X_Or_Y_Response
 from twitterpibot.schedule.BlankTweetScheduledTask import BlankTweetScheduledTask
 from twitterpibot.schedule.ConversationScheduledTask import ConversationScheduledTask
@@ -170,7 +170,7 @@ def get_pi_scheduled_jobs(identity):
         ZenOfPythonScheduledTask(identity),
         BlankTweetScheduledTask(identity),
         HappyBirthdayScheduledTask(identity),
-        LocationScheduledTask(identity),
+        # LocationScheduledTask(identity),
 
     ]
 
@@ -195,7 +195,7 @@ def get_pi_responses(identity):
         SongResponse(identity),
         TalkLikeAPirateDayResponse(identity),
         ConversationResponse(identity),
-        LocationResponse(identity),
+        # LocationResponse(identity),
         X_Or_Y_Response(identity),
         EggPunResponse(identity),
         ThanksResponse(identity),

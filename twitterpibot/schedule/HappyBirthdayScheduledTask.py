@@ -3,13 +3,13 @@ import random
 from apscheduler.triggers.cron import CronTrigger
 
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
-import twitterpibot.processing.Birthdays as Birthdays
+from twitterpibot.processing import Birthdays
 from twitterpibot.songs.Songs import Songs
 
 
 class HappyBirthdayScheduledTask(ScheduledTask):
     def get_trigger(self):
-        return CronTrigger(hour="8-20/2")
+        return CronTrigger(hour="8-20/2", minute=random.randint(0, 59))
 
     def on_run(self):
         songs = Songs()
