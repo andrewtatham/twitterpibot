@@ -3,29 +3,35 @@ import random
 import re
 
 from twitterpibot.logic import magic8ball
-
 from twitterpibot.responses.Response import Response
 
 logger = logging.getLogger(__name__)
 
-words = "rather|either|support|fight|win|lose"
-chrs = "\?|;|:|,"
-preposition = ".*(" + words + "|" + chrs + ")?"
-pattern = preposition + "(?P<x>[\w\s]+) (or|vs) (?P<y>[\w\s]+) ?\?"
+words = "rather"
+chrs = "\?|;|:|,|\."
+preposition = "(?P<pre>.*(" + words + "|" + chrs + "))? ?"
+post = " ?(?P<post>("+chrs+").*)"
+pattern = preposition + "(?P<x>[#\w\s]+) (or|vs) (?P<y>[#\w\s]+)" + post
 rx = re.compile(pattern, flags=re.IGNORECASE)
 logger.debug(pattern)
 
 
 def _parse(text):
-    pairs = []
+    result = []
     matches = rx.finditer(text)
     for match in matches:
         logger.info(match)
         x = match.group("x").strip()
         y = match.group("y").strip()
+        pre = match.group("pre")
+        post = match.group("post")
+        if pre:
+            pre=pre.strip()
+        if post:
+            post=post.strip()
         if _validate(x, y):
-            pairs.append((x, y))
-    return pairs
+            result.append({"pre": pre, "x": x, "y": y, "post": post})
+    return result
 
 
 def _validate(x, y):
@@ -33,14 +39,24 @@ def _validate(x, y):
     logger.info("Y = %s", y)
     lenx = len(x)
     leny = len(y)
-    if lenx > 0 and leny > 0:
+    logger.info("lenx = %s", lenx)
+    logger.info("leny = %s", leny)
+
+    if lenx > 3 and leny > 3:
         ratio = lenx / leny
         logger.info("ratio = %s", ratio)
-        if lenx > 3 and leny > 3 and 1 / 7 < ratio < 7:
-            logger.info("valid")
+        if (1 / 7) < ratio < 7:
+            logger.info("valid >3")
             return True
-    logger.info("invalid")
-    return False
+        else:
+            logger.info("invalid >3")
+            return False
+    elif lenx > 0 and leny > 0:
+        logger.info("valid >1")
+        return True
+    else:
+        logger.info("invalid <1")
+        return False
 
 
 class X_Or_Y_Response(Response):
@@ -53,8 +69,8 @@ class X_Or_Y_Response(Response):
         pairs = _parse(inbox_item.text_stripped)
         if pairs:
             for pair in pairs:
-                x = pair[0]
-                y = pair[1]
+                x = pair["x"]
+                y = pair["y"]
                 # biased to Y as last is usually the comedy answer
                 if random.randint(0, 2) == 0:
                     response = x
