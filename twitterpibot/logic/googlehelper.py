@@ -6,11 +6,11 @@ import hmac
 import base64
 import pprint
 import random
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote_plus
 
 import requests
 
-from twitterpibot.logic import fsh
+from twitterpibot.logic import fsh,urlhelper
 
 
 logger = logging.getLogger(__name__)
@@ -54,19 +54,7 @@ def _sign_url(input_url=None):
 
 
 def _urlbuild(params, url, sign=True):
-    first = True
-    for param in params:
-        if first:
-            url += "?"
-            first = False
-        else:
-            url += "&"
-        url += param + "={" + param + "}"
-
-    # for param in params:
-    #     params[param] = quote_plus(str(params[param]).encode())
-
-    url = url.format(**params)
+    url = urlhelper.url_paramaters(params, url)
     if sign:
         url = _sign_url(input_url=url)
     logger.info("URL: " + url)
@@ -105,9 +93,9 @@ def get_map_image(location, zoom):
     return _urlbuild(params, "https://maps.googleapis.com/maps/api/staticmap")
 
 
-def get_search_images(location, number):
+def get_search_images(text, number):
     params = {
-        "q": location.get_address_param(),
+        "q": quote_plus(text),
         "searchType": "image",
         "num": number,
         "cx": custom_search_id,
@@ -125,7 +113,7 @@ def get_location_images(location, name):
     for zoom in [12]:
         urls.append(get_map_image(location, zoom=zoom))
 
-    urls.extend(get_search_images(location, 1))
+    urls.extend(get_search_images(location.get_address_param(), 1))
 
     heading = random.randint(0, 360)
     for bearing in [0]:
@@ -176,9 +164,9 @@ if __name__ == "__main__":
     from twitterpibot.logic import location
     # loc = location.Location(latitude=41.403609, longitude=2.174448)  # La Sagrada Familia
     # loc = location.Location(latitude=40.714224, longitude=-73.961452)  # Grand St/Bedford Av, Brooklyn, NY 11211, USA
-    loc = location.get_random_location_by_latlng()
-    loc = reverse_geocode(loc)
-    get_location_images(loc, "reverse_geocode")
+    # loc = location.get_random_location_by_latlng()
+    # loc = reverse_geocode(loc)
+    # get_location_images(loc, "reverse_geocode")
 
     loc = location.get_random_location_by_name()
     loc = geocode(loc)
