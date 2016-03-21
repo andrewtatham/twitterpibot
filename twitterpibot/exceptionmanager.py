@@ -7,6 +7,7 @@ from twython import TwythonError
 import twitterpibot.hardware
 from twitterpibot.logic import textonanimage, imagemanager
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
+from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 
 logger = logging.getLogger(__name__)
 
@@ -61,10 +62,13 @@ topics = [
 
 def _try_send_exception(identity, exception):
     try:
+        # if identity and twitterpibot.hardware.is_mac_osx:
         if identity and twitterpibot.hardware.is_linux:
             image = imagemanager.get_image(topics=topics)
             path = textonanimage.put_text_on_an_image(image, exception=exception)
-            identity.twitter.send_to(text=str(exception), target=identity.admin_screen_name, file_paths=[path])
+            identity.twitter.send(OutgoingTweet(
+                text="@" + identity.admin_screen_name + " " + str(exception),
+                file_paths=[path]))
             # identity.twitter.send(OutgoingDirectMessage(text=traceback.format_exc()))
     except Exception as e:
         logger.exception(e)

@@ -23,7 +23,6 @@ from twitterpibot.responses.SongResponse import SongResponse
 from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
 from twitterpibot.responses.ThanksResponse import ThanksResponse
 from twitterpibot.responses.TimelapseResponse import TimelapseResponse
-# from twitterpibot.logic.location import LocationResponse, LocationScheduledTask
 from twitterpibot.responses.x_or_y_response import X_Or_Y_Response
 from twitterpibot.schedule.BlankTweetScheduledTask import BlankTweetScheduledTask
 from twitterpibot.schedule.ConversationScheduledTask import ConversationScheduledTask
@@ -51,7 +50,6 @@ from twitterpibot.schedule.UserListsScheduledTask import UserListsScheduledTask
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
 from twitterpibot.twitter import twitterhelper
 from twitterpibot.users import lists, users
-
 
 
 class Statistics(object):
@@ -104,6 +102,7 @@ class Statistics(object):
 
     def record_favourite(self):
         self.increment("Favourites")
+
 
 class Identity(object):
     def __init__(self, screen_name, id_str, ):
@@ -171,6 +170,7 @@ def get_pi_scheduled_jobs(identity):
         BlankTweetScheduledTask(identity),
         HappyBirthdayScheduledTask(identity),
         # LocationScheduledTask(identity),
+        # RaiseExceptionScheduledTask(identity),
 
     ]
 
