@@ -4,8 +4,8 @@ import traceback
 from colorama import Fore, Style, Back
 from twython import TwythonError
 
-
 import twitterpibot.hardware
+from twitterpibot.logic import textonanimage, imagemanager
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 
 logger = logging.getLogger(__name__)
@@ -41,12 +41,41 @@ def _record_error(identity, exception):
     logger.exception(exception)
     if identity:
         identity.statistics.record_error()
-        _try_send_exception(identity)
+        _try_send_exception(identity, exception)
 
 
-def _try_send_exception(identity):
+topics = [
+    "sunset",
+    "beach",
+    "forest",
+    "desert",
+    "jungle",
+    "kitten",
+    "kittens",
+    "puppy",
+    "puppies",
+    "goat",
+    "goats"
+]
+
+
+def _try_send_exception(identity, exception):
     try:
         if identity and twitterpibot.hardware.is_linux:
-            identity.twitter.send(OutgoingDirectMessage(text=traceback.format_exc()))
+            image = imagemanager.get_image(topics=topics)
+            path = textonanimage.put_text_on_an_image(image, exception=exception)
+            identity.twitter.send_to(text=str(exception), target=identity.admin_screen_name, file_paths=[path])
+            # identity.twitter.send(OutgoingDirectMessage(text=traceback.format_exc()))
     except Exception as e:
         logger.exception(e)
+
+
+def _foo(levels, level):
+    if level <= levels:
+        _foo(levels, level + 1)
+    else:
+        raise Exception("bar")
+
+
+def raise_test_exception(levels):
+    _foo(levels, 0)

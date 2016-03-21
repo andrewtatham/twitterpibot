@@ -36,7 +36,10 @@ def download_file(folder, url, file_name=None):
         for chunk in r.iter_content(chunk_size=1024):
             if chunk:
                 f.write(chunk)
-    logger.info("saved " + local_filename)
+    if exists(local_filename):
+        logger.info("saved " + local_filename)
+    else:
+        raise Exception("download failed? file does not exist " + local_filename)
     return local_filename
 
 

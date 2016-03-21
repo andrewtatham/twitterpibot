@@ -298,7 +298,7 @@ class TwitterHelper(object):
 
         in_reply_to_status_id = self._send_to(
             inbox_item=inbox_item,
-            lyric=text,
+            text=text,
             target=target,
             in_reply_to_status_id=None)
         time.sleep(5)
@@ -322,11 +322,11 @@ class TwitterHelper(object):
                     in_reply_to_status_id)
                 time.sleep(5)
 
-    def _send_to(self, inbox_item, lyric, target, in_reply_to_status_id):
+    def _send_to(self, inbox_item, text, target, in_reply_to_status_id):
         if inbox_item:
             return self.reply_with(
                 inbox_item=inbox_item,
-                text=lyric,
+                text=text,
                 in_reply_to_status_id=in_reply_to_status_id)
         else:
             text = ""
@@ -336,7 +336,7 @@ class TwitterHelper(object):
                     text = ".@" + target
                 elif isinstance(target, User.User):
                     text = ".@" + target.screen_name
-            text += " " + lyric
+            text += " " + text
             tweet = OutgoingTweet(
                 text=text,
                 in_reply_to_status_id=in_reply_to_status_id)
