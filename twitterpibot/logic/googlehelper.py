@@ -10,14 +10,14 @@ from urllib.parse import urlparse, quote_plus
 
 import requests
 
-from twitterpibot.logic import fsh,urlhelper
-
+from twitterpibot import dal
+from twitterpibot.logic import fsh, urlhelper
 
 logger = logging.getLogger(__name__)
 
-key = fsh.get_key("google")
-secret = fsh._get("secret", "google").encode()
-custom_search_id = fsh.get_key("google custom search id")
+key = dal.get_token("google api")
+secret = dal.get_token("google secret").encode()
+custom_search_id = dal.get_token("google cse")
 
 folder = fsh.root + "temp" + os.sep + "images" + os.sep + "google" + os.sep
 

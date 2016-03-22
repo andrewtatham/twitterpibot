@@ -374,6 +374,8 @@ class WhenIsInternationalMensDayBotIdentity(BotIdentity):
 
 if __name__ == "__main__":
 
+    twitterpibot.dal.import_tokens()
+
     andrewtatham = AndrewTathamIdentity()
     andrewtathampi = AndrewTathamPiIdentity(andrewtatham)
     andrewtathampi2 = AndrewTathamPi2Identity(andrewtatham)

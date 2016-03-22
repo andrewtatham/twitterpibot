@@ -4,17 +4,16 @@ import pprint
 import colorama
 import flask
 
-
-
-# import textblob.download_corpora
-
+from twitterpibot import dal
 from twitterpibot import hardware, controller, tasks, schedule, loggingconfig
 
 if not hardware.is_andrew_desktop:
     colorama.init(autoreset=True)
 
+# import textblob.download_corpora
 #
 # textblob.download_corpora.download_lite()
+
 app = flask.Flask("twitterpibot")
 
 
@@ -93,8 +92,6 @@ def run(identities):
     all_identities = identities
     obviousness = "=" * 5
     logger.info(obviousness + " Starting " + obviousness)
-
-
 
     logger.info("Setting tasks")
     tasks.set_tasks(all_identities)
