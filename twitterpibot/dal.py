@@ -1,4 +1,5 @@
 import os
+import time
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -53,7 +54,7 @@ def set_token(key, value):
     session.commit()
 
 
-def import_tokens():
+def migrate_tokens():
     set_token("wordnik api", fsh.get_key("wordnik"))
     set_token("wordnik username", fsh.get_username("wordnik"))
     set_token("wordnik password", fsh.get_password("wordnik"))
@@ -76,11 +77,29 @@ def import_tokens():
         set_token("twitter final key " + screen_name, fsh._get("token", screen_name + "_FINAL_OAUTH_TOKEN"))
         set_token("twitter final secret " + screen_name, fsh._get("token", screen_name + "_FINAL_OAUTH_TOKEN_SECRET"))
 
+
+def display_tokens():
     session = _create_session()
     tokens = session.query(Token).all()
     for token in tokens:
         print("{key}: {value}".format(**token.__dict__))
 
 
+def import_tokens(file_name):
+    csv = fsh.parse_csv(file_name)
+    for row in csv:
+        set_token(row[0], row[1])
+
+
+def export_tokens(file_name):
+    session = _create_session()
+    tokens = session.query(Token).all()
+    csv = [(t.key, t.value) for t in tokens]
+    fsh.write_csv(file_name, csv)
+
+
 if __name__ == "__main__":
-    pass
+    export_tokens("tokens.csv")
+    time.sleep(1)
+    import_tokens("tokens.csv")
+    display_tokens()

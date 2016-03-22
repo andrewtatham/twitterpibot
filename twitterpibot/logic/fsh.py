@@ -131,8 +131,11 @@ def exists(csv_path):
 
 def parse_csv(csv_path):
     with open(csv_path, 'r') as csvfile:
-        data_csv = csv.reader(csvfile)
-        data_dict = {}
-        for row in data_csv:
-            data_dict[row[0]] = row
-        return data_dict
+        data = csv.reader(csvfile)
+        return list(data)
+
+
+def write_csv(file_name, data):
+    with  open(file_name, 'w') as csvfile:
+        data_csv = csv.writer(csvfile)
+        data_csv.writerows(data)

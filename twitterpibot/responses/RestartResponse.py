@@ -1,4 +1,4 @@
-from twitterpibot import shutdown
+from twitterpibot.main import shutdown
 
 from twitterpibot.responses.Response import Response
 

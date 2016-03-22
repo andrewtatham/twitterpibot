@@ -1,3 +1,10 @@
+from twitterpibot import dal
+
+dal.display_tokens()
+dal.import_tokens("tokens.csv")
+dal.export_tokens("tokens.csv")
+dal.display_tokens()
+
 import abc
 import datetime
 import os
@@ -373,8 +380,7 @@ class WhenIsInternationalMensDayBotIdentity(BotIdentity):
 
 
 if __name__ == "__main__":
-
-    twitterpibot.dal.import_tokens()
+    import twitterpibot.main
 
     andrewtatham = AndrewTathamIdentity()
     andrewtathampi = AndrewTathamPiIdentity(andrewtatham)
@@ -408,4 +414,4 @@ if __name__ == "__main__":
             # whenmensday
         ]
 
-    twitterpibot.run(all_identities)
+    twitterpibot.main.run(all_identities)
