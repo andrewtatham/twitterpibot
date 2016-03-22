@@ -94,6 +94,8 @@ def run(identities):
     obviousness = "=" * 5
     logger.info(obviousness + " Starting " + obviousness)
 
+
+
     logger.info("Setting tasks")
     tasks.set_tasks(all_identities)
     logger.info("Setting schedule")

@@ -1,6 +1,7 @@
 import os
 import webbrowser
 import sys
+from twitterpibot import dal
 
 from twitterpibot.logic import fsh
 
@@ -18,6 +19,10 @@ logger = logging.getLogger(__name__)
 
 
 def get_tokens(screen_name):
+
+    session = dal.create_session()
+    session
+    session.close()
 
     tokens_dir = fsh.root + "temp" + os.sep + "tokens" + os.sep + str(sys.version_info[0]) + os.sep
     fsh.ensure_directory_exists(tokens_dir)

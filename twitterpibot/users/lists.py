@@ -34,7 +34,7 @@ class Lists(object):
                 any_new_lists_created = True
 
         if any_new_lists_created:
-            logger.info("[%s] Getting lists" % self._identity.screen_name)
+            logger.debug("[%s] Getting lists" % self._identity.screen_name)
             twitter_lists = self._identity.twitter.show_owned_lists()
 
         for twitter_list in twitter_lists:
@@ -44,7 +44,7 @@ class Lists(object):
             members = self._identity.twitter.get_list_members(list_id=list_id)
             self._list_ids[list_name] = list_id
             self._sets[list_name] = set(map(lambda member: member["id_str"], members["users"]))
-            logger.info("[%s] %s members: %s" % (self._identity.screen_name, list_name, str(self._sets[list_name])))
+            logger.debug("[%s] %s members: %s" % (self._identity.screen_name, list_name, str(self._sets[list_name])))
 
 
     def add_user(self, list_name, user_id, screen_name):
