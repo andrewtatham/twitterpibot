@@ -1,10 +1,3 @@
-from twitterpibot import dal
-
-dal.display_tokens()
-dal.import_tokens("tokens.csv")
-dal.export_tokens("tokens.csv")
-dal.display_tokens()
-
 import abc
 import datetime
 import os
@@ -404,14 +397,14 @@ if __name__ == "__main__":
         ]
     else:
         all_identities = [
-            # andrewtatham,
+            andrewtatham,
             andrewtathampi,
             andrewtathampi2,
-            # numberwang_host,
-            # julienumberwang,
-            # simonnumberwang,
-            # eggpunbot,
-            # whenmensday
+            numberwang_host,
+            julienumberwang,
+            simonnumberwang,
+            eggpunbot,
+            whenmensday
         ]
 
     twitterpibot.main.run(all_identities)

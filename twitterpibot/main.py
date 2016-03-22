@@ -1,3 +1,4 @@
+from twitterpibot import loggingconfig
 import logging
 import pprint
 
