@@ -373,7 +373,7 @@ class WhenIsInternationalMensDayBotIdentity(BotIdentity):
 
 
 if __name__ == "__main__":
-    import twitterpibot.main
+    import twitterpibot.bootstrap
 
     andrewtatham = AndrewTathamIdentity()
     andrewtathampi = AndrewTathamPiIdentity(andrewtatham)
@@ -407,4 +407,4 @@ if __name__ == "__main__":
             whenmensday
         ]
 
-    twitterpibot.main.run(all_identities)
+    twitterpibot.bootstrap.run(all_identities)

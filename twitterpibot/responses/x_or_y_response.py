@@ -7,10 +7,12 @@ from twitterpibot.responses.Response import Response
 
 logger = logging.getLogger(__name__)
 
-words = "rather"
-chrs = "\?|;|:|,|\."
-preposition = "(?P<pre>.*(" + words + "|" + chrs + "))? ?"
-post = " ?(?P<post>("+chrs+").*)"
+preposition = "(?P<pre>.*(" + \
+              "rather" + \
+              "|" + \
+              "\?|;|:|,|\." \
+              + "))? ?"
+post = " ?(?P<post>(" + "\?" + ").*)"
 pattern = preposition + "(?P<x>[#\w\s]+) (or|vs) (?P<y>[#\w\s]+)" + post
 rx = re.compile(pattern, flags=re.IGNORECASE)
 logger.debug(pattern)
@@ -26,9 +28,9 @@ def _parse(text):
         pre = match.group("pre")
         post = match.group("post")
         if pre:
-            pre=pre.strip()
+            pre = pre.strip()
         if post:
-            post=post.strip()
+            post = post.strip()
         if _validate(x, y):
             result.append({"pre": pre, "x": x, "y": y, "post": post})
     return result
