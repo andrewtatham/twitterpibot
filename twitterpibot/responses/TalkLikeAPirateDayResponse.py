@@ -1,7 +1,7 @@
 import random
 import datetime
 
-from twitterpibot.responses.Response import Response
+from twitterpibot.responses.Response import Response, mentioned_reply_condition
 from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import piracy
 
 

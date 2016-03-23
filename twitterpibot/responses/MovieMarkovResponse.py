@@ -1,5 +1,6 @@
 from twitterpibot.movies import moviehelper
 from twitterpibot.responses.MarkovResponse import MarkovResponse
+from twitterpibot.responses.Response import mentioned_reply_condition
 
 
 class MovieMarkovResponse(MarkovResponse):

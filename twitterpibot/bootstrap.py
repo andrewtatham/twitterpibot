@@ -13,7 +13,7 @@ if not hardware.is_andrew_desktop:
 # import textblob.download_corpora
 #
 # textblob.download_corpora.download_lite()
-
+loggingconfig.init()
 
 __author__ = 'andrewtatham'
 app = flask.Flask("twitterpibot")

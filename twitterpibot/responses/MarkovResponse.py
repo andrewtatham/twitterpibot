@@ -1,7 +1,7 @@
 import logging
 
 from twitterpibot.logic import markovhelper
-from twitterpibot.responses.Response import Response
+from twitterpibot.responses.Response import Response, mentioned_reply_condition
 
 logger = logging.getLogger(__name__)
 

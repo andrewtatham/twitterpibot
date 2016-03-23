@@ -1,6 +1,6 @@
 import logging
 
-from twitterpibot.responses.Response import Response
+from twitterpibot.responses.Response import Response, retweet_condition
 
 logger = logging.getLogger(__name__)
 

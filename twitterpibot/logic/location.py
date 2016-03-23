@@ -5,7 +5,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 
 from twitterpibot.logic import googlehelper
 from twitterpibot.processing.Conversational import HelloWords
-from twitterpibot.responses.Response import Response
+from twitterpibot.responses.Response import Response, mentioned_reply_condition, testing_reply_condition
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 
@@ -125,7 +125,7 @@ class LocationResponse(Response):
     def condition(self, inbox_item):
         return (
                    mentioned_reply_condition(inbox_item)
-                   # or super(LocationResponse, self).unmentioned_reply_condition(inbox_item)
+                   # or unmentioned_reply_condition(inbox_item)
                    or testing_reply_condition(inbox_item)
                ) and inbox_item.is_tweet and inbox_item.location
 

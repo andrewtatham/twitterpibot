@@ -1,4 +1,5 @@
 from twitterpibot.responses.MarkovResponse import MarkovResponse
+from twitterpibot.responses.Response import mentioned_reply_condition
 from twitterpibot.text import textfilehelper
 
 

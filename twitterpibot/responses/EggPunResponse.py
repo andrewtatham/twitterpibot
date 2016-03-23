@@ -1,6 +1,6 @@
 from twitterpibot.logic import giphyhelper
 from twitterpibot.logic import eggpuns
-from twitterpibot.responses.Response import Response
+from twitterpibot.responses.Response import Response, mentioned_reply_condition
 
 
 class EggPunResponse(Response):

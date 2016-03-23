@@ -1,5 +1,5 @@
 from twitterpibot.processing import Conversational
-from twitterpibot.responses.Response import Response
+from twitterpibot.responses.Response import Response, mentioned_reply_condition
 
 
 class ConversationResponse(Response):

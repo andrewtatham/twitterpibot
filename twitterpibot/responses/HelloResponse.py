@@ -2,7 +2,7 @@ import re
 import random
 
 from twitterpibot.processing.Conversational import HelloWords
-from twitterpibot.responses.Response import Response
+from twitterpibot.responses.Response import Response, mentioned_reply_condition
 
 
 class HelloResponse(Response):

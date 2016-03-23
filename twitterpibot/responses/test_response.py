@@ -25,7 +25,7 @@ class TestResponse(TestCase):
 
 
 def _get_test_data(to_me=False):
-    for i in range(12000):
+    for i in range(10000):
         inbox_item = MockInboxItem()
         inbox_item.is_direct_message = one_in(1000)
         inbox_item.is_tweet = not inbox_item.is_direct_message

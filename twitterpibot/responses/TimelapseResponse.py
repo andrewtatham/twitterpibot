@@ -1,7 +1,7 @@
 import datetime
 from twitterpibot import schedule
 
-from twitterpibot.responses.Response import Response
+from twitterpibot.responses.Response import Response, mentioned_reply_condition
 from twitterpibot.processing.Timelapse import Timelapse
 
 

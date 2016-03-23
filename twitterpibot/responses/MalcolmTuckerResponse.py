@@ -1,7 +1,7 @@
 import random
 
 from twitterpibot.logic import webscraper
-from twitterpibot.responses.Response import Response
+from twitterpibot.responses.Response import Response, mentioned_reply_condition
 
 quotes = webscraper.get_malcolm_tucker_quotes()
 

@@ -3,7 +3,7 @@ import logging
 # noinspection PyPackageRequirements
 from twitterpibot.logic import magic8ball
 
-from twitterpibot.responses.Response import Response
+from twitterpibot.responses.Response import Response, unmentioned_reply_condition, mentioned_reply_condition
 
 logger = logging.getLogger(__name__)
 
