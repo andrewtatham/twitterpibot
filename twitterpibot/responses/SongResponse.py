@@ -9,7 +9,7 @@ class SongResponse(Response):
         self.songnames = self.songs.all_keys()
 
     def condition(self, inbox_item):
-        return super(SongResponse, self).mentioned_reply_condition(inbox_item) \
+        return mentioned_reply_condition(inbox_item) \
                and self.contains(inbox_item.words, self.songnames)
 
     def contains(self, list_a, list_b):

@@ -6,7 +6,7 @@ import twitterpibot.hardware
 
 class PhotoResponse(Response):
     def condition(self, inbox_item):
-        return super(PhotoResponse, self).mentioned_reply_condition(inbox_item) \
+        return mentioned_reply_condition(inbox_item) \
                and "photo" in inbox_item.words
 
     def respond(self, inbox_item):

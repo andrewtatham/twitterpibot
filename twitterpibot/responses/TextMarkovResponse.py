@@ -7,7 +7,7 @@ class TextMarkovResponse(MarkovResponse):
         super(TextMarkovResponse, self).__init__(identity, textfilehelper.get_text(text_name))
 
     def condition(self, inbox_item):
-        return super(TextMarkovResponse, self).mentioned_reply_condition(inbox_item=inbox_item)
+        return mentioned_reply_condition(inbox_item=inbox_item)
 
     def respond(self, inbox_item):
         super(TextMarkovResponse, self).respond(inbox_item=inbox_item)

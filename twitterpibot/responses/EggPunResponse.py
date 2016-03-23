@@ -5,7 +5,7 @@ from twitterpibot.responses.Response import Response
 
 class EggPunResponse(Response):
     def condition(self, inbox_item):
-        return super(EggPunResponse, self).mentioned_reply_condition(inbox_item) \
+        return mentioned_reply_condition(inbox_item) \
                and eggpuns.is_egg_pun_trigger(inbox_item.text)
 
     def respond(self, inbox_item):

@@ -124,9 +124,9 @@ class LocationScheduledTask(ScheduledTask):
 class LocationResponse(Response):
     def condition(self, inbox_item):
         return (
-                   super(LocationResponse, self).mentioned_reply_condition(inbox_item)
+                   mentioned_reply_condition(inbox_item)
                    # or super(LocationResponse, self).unmentioned_reply_condition(inbox_item)
-                   or super(LocationResponse, self).testing_reply_condition(inbox_item)
+                   or testing_reply_condition(inbox_item)
                ) and inbox_item.is_tweet and inbox_item.location
 
     def respond(self, inbox_item):

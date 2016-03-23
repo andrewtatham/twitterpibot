@@ -14,7 +14,7 @@ class MarkovResponse(Response):
             logger.info(self.markov.speak())
 
     def condition(self, inbox_item):
-        return super(MarkovResponse, self).mentioned_reply_condition(inbox_item)
+        return mentioned_reply_condition(inbox_item)
 
     def respond(self, inbox_item):
         self.identity.twitter.reply_with(inbox_item=inbox_item, text=self.markov.speak())
