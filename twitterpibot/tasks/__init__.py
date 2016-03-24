@@ -51,8 +51,6 @@ def status():
     text = "_global_running = %s" % _global_running
     for key in _task_running:
         text += os.linesep + "_task_running[%s] = %s" % (key, _task_running[key])
-    for key in _task_dic:
-        text += os.linesep + "_task_dic[%s] = %s" % (key, _task_dic[key])
     return text
 
 

@@ -10,7 +10,7 @@ class Task(object):
         if key:
             self.key += key
         else:
-            self.key += str(type(self))
+            self.key += self.__class__.__name__
         self.core = False
 
     @abc.abstractmethod

@@ -1,11 +1,12 @@
-from twitterpibot.schedule.ScheduledTask import ScheduledTask
+import datetime
 from apscheduler.triggers.cron import CronTrigger
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
-import datetime
+__author__ = 'andrewtatham'
 
 
-class EdBallsDay(ScheduledTask):
+class EdBallsDayScheduledTask(ScheduledTask):
     def get_trigger(self):
         return CronTrigger(month=4, day=28, hour=16, minute=20)
 

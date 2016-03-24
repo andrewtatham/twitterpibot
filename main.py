@@ -26,7 +26,7 @@ from twitterpibot.responses.TimelapseResponse import TimelapseResponse
 from twitterpibot.responses.x_or_y_response import X_Or_Y_Response
 from twitterpibot.schedule.BlankTweetScheduledTask import BlankTweetScheduledTask
 from twitterpibot.schedule.ConversationScheduledTask import ConversationScheduledTask
-from twitterpibot.schedule.EdBallsDay import EdBallsDay
+from twitterpibot.logic.ed_balls_day import EdBallsDayScheduledTask
 from twitterpibot.schedule.EggPunScheduledTask import EggPunScheduledTask
 from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
 from twitterpibot.schedule.JokesScheduledTask import JokesScheduledTask
@@ -160,7 +160,7 @@ class BotIdentity(Identity):
 def get_pi_scheduled_jobs(identity):
     scheduledjobs = [
         WikipediaScheduledTask(identity),
-        EdBallsDay(identity),
+        EdBallsDayScheduledTask(identity),
         TalkLikeAPirateDayScheduledTask(identity),
         WeatherScheduledTask(identity),
         JokesScheduledTask(identity),
