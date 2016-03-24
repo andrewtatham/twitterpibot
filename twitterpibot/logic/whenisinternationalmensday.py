@@ -1,57 +1,32 @@
-import datetime
 import logging
 import random
 import re
 
 from apscheduler.triggers.cron import CronTrigger
 
-from twitterpibot import tasks
 from twitterpibot.responses.Response import Response
-from twitterpibot.schedule.ScheduledTask import ScheduledTask
-from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
+from twitterpibot.schedule.StreamTopicScheduledTask import StreamingTopicScheduledTask
 
 logger = logging.getLogger(__name__)
 
 
-def _is_iwd(today=None):
-    if not today:
-        today = datetime.date.today()
-    return today.month == 3 and today.day == 8
-
-
-class WhenIsInternationalMensDayScheduledTask(ScheduledTask):
+class WhenIsIMDScheduledTask(StreamingTopicScheduledTask):
     def __init__(self, identity):
-        super(WhenIsInternationalMensDayScheduledTask, self).__init__(identity)
-        self._streaming = False
+        super(WhenIsIMDScheduledTask, self).__init__(identity, task_key="#InternationalWomensDay")
 
     def get_trigger(self):
-        return CronTrigger(month=3, day="7-9", minute="*/2")
+        return CronTrigger(month=3, day="7-9", minute="*/5")
 
-    def on_run(self):
-        task_key = "#InternationalWomensDay"
-        is_iwd = _is_iwd()
-        start = is_iwd and not self._streaming
-        stop = not is_iwd and self._streaming
-        if start:
-            logger.info("starting stream %s", task_key)
-            responses = [WhenIsInternationalMensDayResponse(self.identity)]
-            filter_level = "none"
-            # if hardware.is_raspberry_pi_2:
-            #     filter_level = "low"
-            streamer = self.identity.twitter.get_streamer(
-                topic="international men day",
-                topic_name="#InternationalWomensDay",
-                responses=responses,
-                filter_level=filter_level
-            )
-            task = StreamTweetsTask(identity=self.identity, streamer=streamer, key=task_key)
-            tasks.add(task)
-            self._streaming = True
+    def _should_stream(self, today):
+        return today.month == 3 and today.day == 8
 
-        if stop:
-            logger.info("stopping stream %s", task_key)
-            tasks.remove(task_key)
-            self._streaming = False
+    def _get_topic_streamer(self):
+        return self.identity.twitter.get_streamer(
+            topic="international men day",
+            topic_name=self._task_key,
+            responses=[WhenIsInternationalMensDayResponse(self.identity)],
+            filter_level="none"
+        )
 
 
 responses = ["International Men's Day is on November 19th"]

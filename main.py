@@ -6,7 +6,7 @@ import colorama
 
 import twitterpibot
 from twitterpibot import hardware
-from twitterpibot.logic.whenisinternationalmensday import WhenIsInternationalMensDayScheduledTask, \
+from twitterpibot.logic.whenisinternationalmensday import WhenIsIMDScheduledTask, \
     WhenIsInternationalMensDayResponse
 from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
 from twitterpibot.responses.ConversationResponse import ConversationResponse
@@ -26,7 +26,7 @@ from twitterpibot.responses.TimelapseResponse import TimelapseResponse
 from twitterpibot.responses.x_or_y_response import X_Or_Y_Response
 from twitterpibot.schedule.BlankTweetScheduledTask import BlankTweetScheduledTask
 from twitterpibot.schedule.ConversationScheduledTask import ConversationScheduledTask
-from twitterpibot.logic.ed_balls_day import EdBallsDayScheduledTask
+from twitterpibot.logic.ed_balls_day import TweetEdBallsDayScheduledTask, StreamEdBallsDayScheduledTask
 from twitterpibot.schedule.EggPunScheduledTask import EggPunScheduledTask
 from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
 from twitterpibot.schedule.JokesScheduledTask import JokesScheduledTask
@@ -127,7 +127,9 @@ class Identity(object):
 
     @abc.abstractmethod
     def get_scheduled_jobs(self):
-        return []
+        return [
+            TweetEdBallsDayScheduledTask(self),
+        ]
 
     @abc.abstractmethod
     def get_responses(self):
@@ -145,13 +147,16 @@ class BotIdentity(Identity):
         ]
 
     def get_scheduled_jobs(self):
-        return [
+        jobs = super(BotIdentity, self).get_scheduled_jobs()
+        jobs.extend([
             IdentityMonitorScheduledTask(self),
             MidnightScheduledTask(self),
             UserListsScheduledTask(self, self.admin_identity),
             SubscribedListsScheduledTask(self, self.admin_identity),
             FollowScheduledTask(self),
-        ]
+
+        ])
+        return jobs
 
     def get_responses(self):
         return []
@@ -160,7 +165,6 @@ class BotIdentity(Identity):
 def get_pi_scheduled_jobs(identity):
     scheduledjobs = [
         WikipediaScheduledTask(identity),
-        EdBallsDayScheduledTask(identity),
         TalkLikeAPirateDayScheduledTask(identity),
         WeatherScheduledTask(identity),
         JokesScheduledTask(identity),
@@ -171,6 +175,7 @@ def get_pi_scheduled_jobs(identity):
         HappyBirthdayScheduledTask(identity),
         # LocationScheduledTask(identity),
         # RaiseExceptionScheduledTask(identity),
+        StreamEdBallsDayScheduledTask(identity, )
 
     ]
 
@@ -240,7 +245,8 @@ class AndrewTathamIdentity(Identity):
         return [StreamTweetsTask(self)]
 
     def get_scheduled_jobs(self):
-        return []
+        jobs = super(AndrewTathamIdentity, self).get_scheduled_jobs()
+        return jobs
 
     def get_responses(self):
         followers = [
@@ -365,7 +371,7 @@ class WhenIsInternationalMensDayBotIdentity(BotIdentity):
 
     def get_scheduled_jobs(self):
         jobs = super(WhenIsInternationalMensDayBotIdentity, self).get_scheduled_jobs()
-        jobs.append(WhenIsInternationalMensDayScheduledTask(self))
+        jobs.append(WhenIsIMDScheduledTask(self))
         return jobs
 
     def get_responses(self):
