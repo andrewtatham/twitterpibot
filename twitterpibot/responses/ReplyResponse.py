@@ -10,7 +10,7 @@ class ReplyResponse(Response):
         response = replies.get_reply()
         file_paths = None
         if inbox_item.is_tweet:
-            image = imagemanager.get_reply_image(screen_name=self.identity.screen_name, text=inbox_item.text_stripped)
+            image = imagemanager.get_reply_image(screen_name=self.identity.screen_name, text=response)
             if image:
                 file_paths = [image]
         self.identity.twitter.reply_with(
