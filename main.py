@@ -161,16 +161,13 @@ class BotIdentity(Identity):
 
 
 def get_pi_scheduled_jobs(identity, converse_with_identity):
-
-
-
     scheduledjobs = [
         WikipediaScheduledTask(identity),
         TalkLikeAPirateDayScheduledTask(identity),
         WeatherScheduledTask(identity),
         JokesScheduledTask(identity),
         SongScheduledTask(identity),
-        ConversationScheduledTask(identity,converse_with_identity),
+        ConversationScheduledTask(identity, converse_with_identity),
         ZenOfPythonScheduledTask(identity),
         BlankTweetScheduledTask(identity),
         HappyBirthdayScheduledTask(identity),
@@ -317,7 +314,7 @@ class NumberwangHostIdentity(BotIdentity):
             [andrewtathampi, andrewtathampi2]
         ]
         jobs = super(NumberwangHostIdentity, self).get_scheduled_jobs()
-        jobs.append(NumberwangHostScheduledTask(self, contestants))
+        jobs.extend([NumberwangHostScheduledTask(self, contestants)])
         return jobs
 
 
@@ -352,7 +349,7 @@ class EggPunBotIdentity(BotIdentity):
 
     def get_scheduled_jobs(self):
         jobs = super(EggPunBotIdentity, self).get_scheduled_jobs()
-        jobs.append(EggPunScheduledTask(self))
+        jobs.extend([EggPunScheduledTask(self)])
         return jobs
 
     def get_responses(self):
@@ -368,7 +365,7 @@ class WhenIsInternationalMensDayBotIdentity(BotIdentity):
 
     def get_scheduled_jobs(self):
         jobs = super(WhenIsInternationalMensDayBotIdentity, self).get_scheduled_jobs()
-        jobs.append(WhenIsIMDScheduledTask(self))
+        jobs.extend([WhenIsIMDScheduledTask(self)])
         return jobs
 
     def get_responses(self):

@@ -29,7 +29,7 @@ flickr_sunrise_sunset = "https://api.flickr.com/services/feeds/photos_public.gne
 
 def get_flickr(**kwargs):
     url = "https://api.flickr.com/services/feeds/photos_public.gne"
-    url = urlhelper.url_paramaters(kwargs, url)
+    url = urlhelper.parameterise(kwargs, url)
     feed = feedparser.parse(url)
     for entry in feed["entries"]:
         image = {

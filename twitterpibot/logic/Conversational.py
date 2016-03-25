@@ -258,11 +258,14 @@ def get_prompt(level):
 
 
 def get_response(level, prompt):
-    if level in levels and prompt in levels[level]:
-        responses = levels[level][prompt]
-        return random.choice(responses)
+    if level in levels:
+        if prompt in levels[level]:
+            responses = levels[level][prompt]
+            return random.choice(responses)
+        else:
+            return get_prompt(level)
     else:
-        return get_prompt()
+        return get_prompt(0)
 
 
 class ConversationScheduledTask(ScheduledTask):

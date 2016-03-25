@@ -1,5 +1,6 @@
 import random
 import re
+from twitterpibot.logic import jokes
 
 _responses = [
 
@@ -159,6 +160,8 @@ def _recurse(text, response):
 
 
 def get_reply():
+    if random.randint(0, 9) == 0:
+        return jokes.get_joke()
     return _recurse(text="", response=_responses)
 
 
