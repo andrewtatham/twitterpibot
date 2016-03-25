@@ -1,7 +1,7 @@
 import re
 import random
 
-from twitterpibot.logic.Conversational import HelloWords
+from twitterpibot.logic.conversational import HelloWords
 from twitterpibot.responses.Response import Response, mentioned_reply_condition
 
 

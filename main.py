@@ -6,10 +6,10 @@ import colorama
 
 import twitterpibot
 from twitterpibot import hardware
+from twitterpibot.logic.conversational import ConversationScheduledTask
 from twitterpibot.logic.whenisinternationalmensday import WhenIsIMDScheduledTask, \
     WhenIsInternationalMensDayResponse
 from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
-from twitterpibot.responses.ConversationResponse import ConversationResponse
 from twitterpibot.responses.EggPunResponse import EggPunResponse
 from twitterpibot.responses.FavoriteResponse import FavoriteResponse
 from twitterpibot.responses.ReplyResponse import ReplyResponse
@@ -24,7 +24,6 @@ from twitterpibot.responses.ThanksResponse import ThanksResponse
 from twitterpibot.responses.TimelapseResponse import TimelapseResponse
 from twitterpibot.responses.x_or_y_response import X_Or_Y_Response
 from twitterpibot.schedule.BlankTweetScheduledTask import BlankTweetScheduledTask
-from twitterpibot.schedule.ConversationScheduledTask import ConversationScheduledTask
 from twitterpibot.logic.ed_balls_day import TweetEdBallsDayScheduledTask, StreamEdBallsDayScheduledTask
 from twitterpibot.schedule.EggPunScheduledTask import EggPunScheduledTask
 from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
@@ -161,14 +160,17 @@ class BotIdentity(Identity):
         return []
 
 
-def get_pi_scheduled_jobs(identity):
+def get_pi_scheduled_jobs(identity, converse_with_identity):
+
+
+
     scheduledjobs = [
         WikipediaScheduledTask(identity),
         TalkLikeAPirateDayScheduledTask(identity),
         WeatherScheduledTask(identity),
         JokesScheduledTask(identity),
         SongScheduledTask(identity),
-        ConversationScheduledTask(identity),
+        ConversationScheduledTask(identity,converse_with_identity),
         ZenOfPythonScheduledTask(identity),
         BlankTweetScheduledTask(identity),
         HappyBirthdayScheduledTask(identity),
@@ -198,7 +200,6 @@ def get_pi_responses(identity):
     responses = [
         SongResponse(identity),
         TalkLikeAPirateDayResponse(identity),
-        ConversationResponse(identity),
         # LocationResponse(identity),
         X_Or_Y_Response(identity),
         EggPunResponse(identity),
@@ -260,7 +261,6 @@ class AndrewTathamPiIdentity(BotIdentity):
             screen_name="andrewtathampi",
             id_str="2935295111",
             admin_identity=admin_identity)
-        self.converse_with = "andrewtathampi2"
         self.colour = colorama.Fore.MAGENTA
 
     def get_tasks(self):
@@ -268,7 +268,7 @@ class AndrewTathamPiIdentity(BotIdentity):
 
     def get_scheduled_jobs(self):
         jobs = super(AndrewTathamPiIdentity, self).get_scheduled_jobs()
-        jobs.extend(get_pi_scheduled_jobs(self))
+        jobs.extend(get_pi_scheduled_jobs(self, andrewtathampi2))
         return jobs
 
     def get_responses(self):
@@ -281,7 +281,6 @@ class AndrewTathamPi2Identity(BotIdentity):
             screen_name="andrewtathampi2",
             id_str="3892161801",
             admin_identity=admin_identity)
-        self.converse_with = "andrewtathampi"
         self.colour = colorama.Fore.CYAN
 
     def get_tasks(self):
@@ -289,7 +288,7 @@ class AndrewTathamPi2Identity(BotIdentity):
 
     def get_scheduled_jobs(self):
         jobs = super(AndrewTathamPi2Identity, self).get_scheduled_jobs()
-        jobs.extend(get_pi_scheduled_jobs(self))
+        jobs.extend(get_pi_scheduled_jobs(self, andrewtathampi))
         return jobs
 
     def get_responses(self):

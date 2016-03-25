@@ -1,4 +1,10 @@
 import random
+import time
+
+from apscheduler.triggers.interval import IntervalTrigger
+
+from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
 how_are_you_responses = [
 
@@ -246,22 +252,49 @@ levels = {
 
 }
 
-prompts = {}
-prompts.update(levels[0])
-prompts.update(levels[1])
 
-prompts_list = [str(key) for key in prompts.keys()]
-prompts_list_cold = [str(key) for key in levels[0].keys()]
-prompts_list_warm = [str(key) for key in levels[1].keys()]
-
-prompts_and_responses = set()
-prompts_and_responses.update(prompts.keys())
-for responses in prompts.values():
-    prompts_and_responses.update(responses)
+def get_prompt(level):
+    return random.choice(levels[level])
 
 
-def response(text_stripped):
-    if text_stripped in prompts:
-        return random.choice(prompts[text_stripped])
+def get_response(level, prompt):
+    if level in levels and prompt in levels[level]:
+        responses = levels[level][prompt]
+        return random.choice(responses)
     else:
-        return random.choice(prompts_list_warm)
+        return get_prompt()
+
+
+class ConversationScheduledTask(ScheduledTask):
+    def __init__(self, identity, converse_with_identity):
+        super(ConversationScheduledTask, self).__init__(identity)
+        self._converse_with = converse_with_identity
+
+    def get_trigger(self):
+        return IntervalTrigger(hours=random.randint(13, 25), minutes=random.randint(0, 59))
+
+    def on_run(self):
+        reply_to_id = None
+        for level in range(0, 1):
+            prompt = get_prompt(level)
+            reply_to_id = self.identity.twitter.send(
+                OutgoingTweet(text=".@" + self._converse_with.screen_name + " " + prompt,
+                              in_reply_to_status_id=reply_to_id))
+            time.sleep(5)
+
+            response = get_response(level, prompt)
+            reply_to_id = self._converse_with.twitter.send(
+                OutgoingTweet(text=".@" + self.identity.screen_name + " " + response,
+                              in_reply_to_status_id=reply_to_id))
+            time.sleep(5)
+
+
+if __name__ == "__main__":
+    import main
+
+    admin = None
+    one = main.AndrewTathamPiIdentity(admin)
+    two = main.AndrewTathamPi2Identity(admin)
+
+    task = ConversationScheduledTask(one, two)
+    task.on_run()
