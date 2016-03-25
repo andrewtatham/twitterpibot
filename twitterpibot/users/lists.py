@@ -1,5 +1,4 @@
 import datetime
-import time
 import logging
 
 logger = logging.getLogger(__name__)
@@ -45,7 +44,6 @@ class Lists(object):
             self._list_ids[list_name] = list_id
             self._sets[list_name] = set(map(lambda member: member["id_str"], members["users"]))
             logger.debug("[%s] %s members: %s" % (self._identity.screen_name, list_name, str(self._sets[list_name])))
-
 
     def add_user(self, list_name, user_id, screen_name):
         if not self._sets or not self._list_ids:

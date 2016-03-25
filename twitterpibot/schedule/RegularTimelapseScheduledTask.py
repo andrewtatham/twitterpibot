@@ -1,11 +1,11 @@
 import random
 
 from apscheduler.triggers.cron import CronTrigger
-from twitterpibot import schedule
 
-from twitterpibot.processing import MyAstral
+from twitterpibot import schedule
+from twitterpibot.logic import MyAstral
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
-from twitterpibot.processing.Timelapse import Timelapse
+from twitterpibot.logic.Timelapse import Timelapse
 
 messages = [
     "Worst timelapse ever",

@@ -2,8 +2,8 @@ from apscheduler.triggers.cron import CronTrigger
 
 from twitterpibot import schedule
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
-import twitterpibot.processing.MyAstral as MyAstral
-from twitterpibot.processing.Timelapse import Timelapse
+import twitterpibot.logic.MyAstral as MyAstral
+from twitterpibot.logic.Timelapse import Timelapse
 
 
 class NightTimelapseScheduledTask(ScheduledTask):

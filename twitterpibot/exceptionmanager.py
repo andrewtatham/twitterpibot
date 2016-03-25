@@ -1,12 +1,10 @@
 import logging
-import traceback
 
 from colorama import Fore, Style, Back
 from twython import TwythonError
 
 import twitterpibot.hardware
 from twitterpibot.logic import textonanimage, imagemanager
-from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 
 logger = logging.getLogger(__name__)

@@ -3,7 +3,7 @@ import random
 from apscheduler.triggers.cron import CronTrigger
 
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
-from twitterpibot.processing import Birthdays
+from twitterpibot.logic import Birthdays
 from twitterpibot.songs.Songs import Songs
 
 

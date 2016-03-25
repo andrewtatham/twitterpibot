@@ -1,7 +1,6 @@
 import random
 
-from twitterpibot.logic import giphyhelper
-from twitterpibot.processing import FatherTed
+from twitterpibot.logic import giphyhelper, FatherTed
 from twitterpibot.responses.Response import Response, mentioned_reply_condition
 
 

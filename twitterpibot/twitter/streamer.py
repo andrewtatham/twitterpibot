@@ -1,5 +1,4 @@
 import logging
-import random
 import time
 
 from twython.streaming.api import TwythonStreamer

@@ -15,7 +15,7 @@ _birthdays = {
 }
 
 
-def get_birthday_users(today = None):
+def get_birthday_users(today=None):
     if not today:
         today = datetime.date.today().strftime("%d/%m")
     if today in _birthdays:

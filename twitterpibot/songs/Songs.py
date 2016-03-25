@@ -2,8 +2,7 @@ import os
 import random
 import itertools
 
-from twitterpibot.logic import fsh
-from twitterpibot.processing import christmas
+from twitterpibot.logic import fsh, christmas
 
 
 class Songs(object):

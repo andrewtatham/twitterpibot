@@ -1,8 +1,8 @@
 import datetime
-from twitterpibot import schedule
 
+from twitterpibot import schedule
 from twitterpibot.responses.Response import Response, mentioned_reply_condition
-from twitterpibot.processing.Timelapse import Timelapse
+from twitterpibot.logic.Timelapse import Timelapse
 
 
 class TimelapseResponse(Response):

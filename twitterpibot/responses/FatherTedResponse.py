@@ -1,6 +1,6 @@
 import random
 
-from twitterpibot.processing import FatherTed
+from twitterpibot.logic import FatherTed
 from twitterpibot.responses.Response import Response, mentioned_reply_condition
 
 

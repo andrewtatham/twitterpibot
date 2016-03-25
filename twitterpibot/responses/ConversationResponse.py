@@ -1,4 +1,4 @@
-from twitterpibot.processing import Conversational
+from twitterpibot.logic import Conversational
 from twitterpibot.responses.Response import Response, mentioned_reply_condition
 
 
