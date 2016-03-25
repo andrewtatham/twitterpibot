@@ -11,9 +11,8 @@ from twitterpibot.logic.whenisinternationalmensday import WhenIsIMDScheduledTask
 from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
 from twitterpibot.responses.ConversationResponse import ConversationResponse
 from twitterpibot.responses.EggPunResponse import EggPunResponse
-from twitterpibot.responses.FatherTedResponse import FatherTedResponse
 from twitterpibot.responses.FavoriteResponse import FavoriteResponse
-from twitterpibot.responses.GifResponse import GifResponse
+from twitterpibot.responses.ReplyResponse import ReplyResponse
 from twitterpibot.responses.HelloResponse import HelloResponse
 from twitterpibot.responses.HiveMindResponse import HiveMindResponse
 from twitterpibot.responses.Magic8BallResponse import Magic8BallResponse
@@ -213,8 +212,7 @@ def get_pi_responses(identity):
             TimelapseResponse(identity)
         ])
     responses.extend([
-        GifResponse(identity),
-        FatherTedResponse(identity),
+        ReplyResponse(identity),
         FavoriteResponse(identity),
         RetweetResponse(identity),
     ])
