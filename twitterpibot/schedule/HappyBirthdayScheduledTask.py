@@ -3,7 +3,7 @@ import random
 from apscheduler.triggers.cron import CronTrigger
 
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
-from twitterpibot.logic import Birthdays
+from twitterpibot.logic import birthday
 from twitterpibot.songs.Songs import Songs
 
 
@@ -13,7 +13,7 @@ class HappyBirthdayScheduledTask(ScheduledTask):
 
     def on_run(self):
         songs = Songs()
-        birthday_users = Birthdays.get_birthday_users()
+        birthday_users = birthday.get_birthday_users()
         if birthday_users:
             for birthday_user in birthday_users:
                 birthday_song_key = random.choice(songs.birthday_song_keys())

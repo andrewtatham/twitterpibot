@@ -4,7 +4,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 
 from twitterpibot import schedule
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
-from twitterpibot.logic.Timelapse import Timelapse
+from twitterpibot.logic.timelapses import Timelapse
 
 
 class TimelapseScheduledTask(ScheduledTask):

@@ -6,8 +6,8 @@ import colorama
 
 import twitterpibot
 from twitterpibot import hardware
-from twitterpibot.logic.conversational import ConversationScheduledTask
-from twitterpibot.logic.whenisinternationalmensday import WhenIsIMDScheduledTask, \
+from twitterpibot.logic.conversation import ConversationScheduledTask
+from twitterpibot.logic.gender import WhenIsIMDScheduledTask, \
     WhenIsInternationalMensDayResponse
 from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
 from twitterpibot.responses.EggPunResponse import EggPunResponse

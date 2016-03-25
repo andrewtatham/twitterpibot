@@ -2,7 +2,7 @@ import os
 import random
 import itertools
 
-from twitterpibot.logic import fsh, christmas
+from twitterpibot.logic import fsh, xmas
 
 
 class Songs(object):
@@ -367,7 +367,7 @@ class Songs(object):
         return self._songs.keys()
 
     def keys(self):
-        is_christmas = christmas.is_christmas()
+        is_christmas = xmas.is_christmas()
         keys = [k for k, v in self._songs.items() if "birthday" not in v and (is_christmas or "christmas" not in v)]
         return keys
 

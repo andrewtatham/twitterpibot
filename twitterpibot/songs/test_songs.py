@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 import twitterpibot.songs.Songs as Songs
-from twitterpibot.logic.christmas import is_christmas
+from twitterpibot.logic.xmas import is_christmas
 
 
 class TestSongs(TestCase):

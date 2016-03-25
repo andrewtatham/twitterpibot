@@ -3,9 +3,9 @@ import random
 from apscheduler.triggers.cron import CronTrigger
 
 from twitterpibot import schedule
-from twitterpibot.logic import MyAstral
+from twitterpibot.logic import astronomy
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
-from twitterpibot.logic.Timelapse import Timelapse
+from twitterpibot.logic.timelapses import Timelapse
 
 messages = [
     "Worst timelapse ever",
@@ -23,7 +23,7 @@ class RegularTimelapseScheduledTask(ScheduledTask):
     def on_run(self):
         n = 20
 
-        sun = MyAstral.get_today_times()
+        sun = astronomy.get_today_times()
 
         dawn = sun['dawn']
         dusk = sun['dusk']
