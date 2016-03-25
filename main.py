@@ -6,6 +6,7 @@ import colorama
 
 import twitterpibot
 from twitterpibot import hardware
+from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask
 from twitterpibot.logic.conversation import ConversationScheduledTask
 from twitterpibot.logic.gender import WhenIsIMDScheduledTask, \
     WhenIsInternationalMensDayResponse
@@ -173,7 +174,8 @@ def get_pi_scheduled_jobs(identity, converse_with_identity):
         HappyBirthdayScheduledTask(identity),
         # LocationScheduledTask(identity),
         # RaiseExceptionScheduledTask(identity),
-        StreamEdBallsDayScheduledTask(identity, )
+        StreamEdBallsDayScheduledTask(identity),
+        AprilFoolsDayScheduledTask(identity),
 
     ]
 
