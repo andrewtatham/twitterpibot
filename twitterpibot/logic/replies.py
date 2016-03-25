@@ -1,5 +1,6 @@
 import random
 import re
+
 from twitterpibot.logic import jokes
 
 _responses = [
@@ -64,7 +65,7 @@ _responses = [
     # Robot Noises
     "BEEP BOOP",
     "accessing",
-    "biddy-biddy-biddy"
+    "biddy-biddy-biddy",
 
     # father ted
     "that would be an ecumenical matter",
@@ -160,9 +161,14 @@ def _recurse(text, response):
 
 
 def get_reply():
+    joke = None
     if random.randint(0, 9) == 0:
-        return jokes.get_joke()
-    return _recurse(text="", response=_responses)
+        joke = jokes.get_joke()
+
+    if joke:
+        return joke
+    else:
+        return _recurse(text="", response=_responses).strip()
 
 
 if __name__ == "__main__":
