@@ -25,7 +25,10 @@ class BadThings(NewsTopic):
                 "(child|sex) abuse",
                 "rap(e|ed|ist|ing)'",
                 "RIP",
-                "drone strike"
+                "drone strike",
+                "hitler",
+                "holocaust",
+                "nazi",
 
             ], [
                 "fire",
