@@ -7,6 +7,7 @@ import colorama
 import twitterpibot
 from twitterpibot import hardware
 from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask
+from twitterpibot.logic.botgle import BotgleResponse
 from twitterpibot.logic.conversation import ConversationScheduledTask
 from twitterpibot.logic.gender import WhenIsIMDScheduledTask, \
     WhenIsInternationalMensDayResponse
@@ -196,7 +197,9 @@ def get_pi_scheduled_jobs(identity, converse_with_identity):
 
 
 def get_pi_responses(identity):
-    responses = [
+    responses = []
+
+    responses.extend([
         SongResponse(identity),
         TalkLikeAPirateDayResponse(identity),
         # LocationResponse(identity),
@@ -205,7 +208,7 @@ def get_pi_responses(identity):
         ThanksResponse(identity),
         HelloResponse(identity),
         Magic8BallResponse(identity),
-    ]
+    ])
     if hardware.is_picam_attached or hardware.is_webcam_attached:
         responses.extend([
             PhotoResponse(identity),
@@ -291,7 +294,11 @@ class AndrewTathamPi2Identity(BotIdentity):
         return jobs
 
     def get_responses(self):
-        return get_pi_responses(self)
+        responses = []
+        responses.extend([BotgleResponse(self)])
+        responses.extend(get_pi_responses(self))
+        responses.extend(super(AndrewTathamPi2Identity, self).get_responses())
+        return responses
 
 
 class NumberwangHostIdentity(BotIdentity):
