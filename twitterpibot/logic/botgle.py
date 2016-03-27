@@ -155,18 +155,17 @@ class Tiles(object):
 
 
 def parse_board(tweet_text):
-    tweet_text = tweet_text.split(":")[1]
-    matches = rx.findall(tweet_text)
+    if ":" in tweet_text:
+        tweet_text = tweet_text.split(":")[1]
+        matches = rx.findall(tweet_text)
+        if matches and len(matches) >= n * n:
+            board = [[None for _ in range(n)] for _ in range(n)]
+            for i in range(n * n):
+                board[i // n][i % n] = "".join([chr(ord(c) - 65248) for c in matches[i]]).upper()
+            logger.info(board)
+            return board
 
-    if matches and len(matches) >= n * n:
-
-        board = [[None for _ in range(n)] for _ in range(n)]
-        for i in range(n * n):
-            board[i // n][i % n] = "".join([chr(ord(c) - 65248) for c in matches[i]]).upper()
-        logger.info(board)
-        return board
-    else:
-        return None
+    return None
 
 
 def solve_board(board):
@@ -210,16 +209,27 @@ class BotgleResponse(Response):
 
     def respond(self, inbox_item):
         board = parse_board(inbox_item.text)
+
+        # GAME OVER! SCORES:
+        # Next game in 6 hours!
+        # Warning! Just 3 minutes left
+        # The timer is started! 8 minutes to play!
+
+
         if "GAME OVER" in inbox_item.text:
             self._game.game_over()
         elif board:
             solutions = self._game.board_recieved(board)
             if solutions:
                 logger.info("%s words found..." % len(solutions))
-                logger.info(solutions)
+
+                words = list(solutions)
+                words.sort(key=len)
+                words = words[-12:]
+                words.reverse()
 
                 text = "@andrewtatham "
-                text += " ".join(solutions)
+                text += ("%s words found " % len(solutions))
+                text += " ".join(words)
 
                 self.identity.twitter.send(OutgoingDirectMessage.OutgoingDirectMessage(text=text))
-
