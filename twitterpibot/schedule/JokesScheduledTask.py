@@ -13,4 +13,5 @@ class JokesScheduledTask(ScheduledTask):
 
     def on_run(self):
         text = jokes.get_joke()
-        self.identity.twitter.send(OutgoingTweet(text=text))
+        if text:
+            self.identity.twitter.send(OutgoingTweet(text=text))

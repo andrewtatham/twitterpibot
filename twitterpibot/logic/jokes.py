@@ -18,7 +18,9 @@ if __name__ == '__main__':
 
 
 def get_joke():
+    joke = None
     if random.randint(0, 1) == 0:
-        return pyjokes.get_joke()
-    else:
-        _get_chuck_norris_joke()
+        joke = _get_chuck_norris_joke()
+    if not joke:
+        joke = pyjokes.get_joke()
+    return joke
