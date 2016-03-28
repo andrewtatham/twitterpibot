@@ -1,7 +1,8 @@
 import pprint
 from unittest import TestCase
 
-from twitterpibot.logic.botgle import parse_board, solve_board
+from twitterpibot.logic.botgle import solve_board
+from twitterpibot.logic.botgle_solver import parse_board, solve_board
 
 __author__ = 'andrewtatham'
 
