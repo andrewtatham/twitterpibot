@@ -68,20 +68,19 @@ class Test_Solve_Board(TestCase):
                 ['T', 'E', 'H', 'I'],
                 ['F', 'O', 'A', 'R'],
                 ['R', 'R', 'A', 'N']
-            ]
-            )
+            ])
         ]
         for testcase in testcases:
             with self.subTest(testcase=testcase):
                 self._solve(testcase)
 
     def _solve(self, testcase):
-        actual = solve_board(testcase["board"])
-        self.assertTrue(actual)
-        print("%s words found..." % len(actual))
-        # pprint.pprint(actual)
+        solutions = solve_board(testcase["board"])
+        pprint.pprint(solutions)
+        self.assertTrue(solutions)
 
-        words = list(actual)
+        words = list(solutions)
+        print("%s words found..." % len(words))
         words.sort(key = len)
         words = words[-12:]
         words.reverse()
@@ -91,8 +90,8 @@ class Test_Solve_Board(TestCase):
         if "expected_words" in testcase:
             for expected_word in testcase["expected_words"]:
                 with self.subTest(expected_word=expected_word):
-                    self.assertIn(expected_word, actual)
+                    self.assertIn(expected_word, solutions)
         if "unexpected_words" in testcase:
             for unexpected_word in testcase["unexpected_words"]:
                 with self.subTest(unexpected_word=unexpected_word):
-                    self.assertNotIn(unexpected_word, actual)
+                    self.assertNotIn(unexpected_word, solutions)

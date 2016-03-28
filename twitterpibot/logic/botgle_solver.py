@@ -1,9 +1,10 @@
 import copy
 import re
-from twitterpibot.logic import dictionary
-from twitterpibot.logic.botgle import logger
+import logging
 
-__author__ = 'andrewtatham'
+from twitterpibot.logic import dictionary
+
+logger = logging.getLogger(__name__)
 n = 4
 rx = re.compile("[\w]+")
 
@@ -16,19 +17,22 @@ class Tile(object):
         self.adjacent_tiles = {}
 
     def __repr__(self):
-        text = "{letters} ({row},{col}) adj:".format(**self.__dict__)
-        for letter, tiles in self.adjacent_tiles.items():
-            for tile in tiles:
-                text += " {letters} ({row},{col}) ".format(**tile.__dict__)
+        text = '("{letters}",{row},{col})'.format(**self.__dict__)
+        if logger.isEnabledFor(logging.DEBUG):
+            text += " adj:"
+            for letter, tiles in self.adjacent_tiles.items():
+                for tile in tiles:
+                    text += " {letters} ({row},{col}) ".format(**tile.__dict__)
         return text
 
 
 class State(object):
     def __init__(self, word):
         self.word = word
-        self.tiles = parse_tiles(word)
+        self.tiles = self._parse_tiles(word)
         self.current_tile = None
         self.visited = [[False for _ in range(n)] for _ in range(n)]
+        self.path = []
 
     def found(self):
         return not any(self.tiles)
@@ -48,28 +52,29 @@ class State(object):
 
     def mark_visited(self, tile):
         self.visited[tile.row][tile.col] = True
+        self.path.append(tile)
 
-
-def parse_tiles(word):
-    tile_letters = []
-    letters = list(word)
-    letters.reverse()
-    while letters:
-        letter = letters.pop()
-        if letter == "Q":
-            next_letter = letters.pop()
-            if next_letter == "U":
-                # a Q followed by a U
-                letter += next_letter
-                tile_letters.append(letter)
+    @staticmethod
+    def _parse_tiles(word):
+        tile_letters = []
+        letters = list(word)
+        letters.reverse()
+        while letters:
+            letter = letters.pop()
+            if letter == "Q":
+                next_letter = letters.pop()
+                if next_letter == "U":
+                    # a Q followed by a U
+                    letter += next_letter
+                    tile_letters.append(letter)
+                else:
+                    # a Q not followed by a U
+                    tile_letters.append(letter)
+                    tile_letters.append(next_letter)
             else:
-                # a Q not followed by a U
                 tile_letters.append(letter)
-                tile_letters.append(next_letter)
-        else:
-            tile_letters.append(letter)
-    tile_letters.reverse()
-    return tile_letters
+        tile_letters.reverse()
+        return tile_letters
 
 
 class Tiles(object):
@@ -123,7 +128,7 @@ class Tiles(object):
 
         if state.found():
             logger.info("Found word {}".format(state.word))
-            return True
+            return state.path
 
         tile_letter = state.get_next_tile_letters()
 
@@ -147,7 +152,8 @@ class Tiles(object):
             state_copy.current_tile = next_tile
             state_copy.mark_visited(state_copy.current_tile)
             if self.can_find(state=state_copy):
-                return True
+                state.path = state_copy.path
+                return state.path
         return False
 
 
@@ -168,10 +174,11 @@ def parse_board(tweet_text):
 def solve_board(board):
     candidates = get_candidates(board)
     tiles = Tiles(board)
-    solutions = set()
+    solutions = {}
     for candidate in candidates:
-        if tiles.can_find(candidate):
-            solutions.add(candidate)
+        path = tiles.can_find(candidate)
+        if path:
+            solutions[candidate] = path
     return solutions
 
 

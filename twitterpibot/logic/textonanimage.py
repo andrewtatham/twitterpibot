@@ -2,17 +2,14 @@ import os
 import traceback
 
 from PIL import Image, ImageDraw, ImageFont
-from twitterpibot import hardware
 
+from twitterpibot import hardware
 from twitterpibot.logic import fsh
+from twitterpibot.logic.image_helper import rectangle
 
 folder = fsh.root + "temp" + os.sep + "images" + os.sep + "text_on_an_image" + os.sep
 
 positions = ["top-left", "top-right", "centre", "bottom-left", "bottom-right"]
-
-
-def _get_rect(origin, size):
-    return origin + tuple(map(sum, zip(origin, size)))
 
 
 def put_text_on_an_image(image_path, exception=None, bold_text=None, text=None, text_position="centre"):
@@ -52,7 +49,7 @@ def put_text_on_an_image(image_path, exception=None, bold_text=None, text=None, 
         bold_text = bold_text.strip()
         bold_text_bg_size = d.textsize(bold_text, lrg_fnt)
         bold_text_bg_origin = (edge, edge)
-        bold_text_bg_rect = _get_rect(bold_text_bg_origin, bold_text_bg_size)
+        bold_text_bg_rect = rectangle(bold_text_bg_origin, bold_text_bg_size)
         bold_text_bg_fill = (0, 0, 0, 128)
         d.rectangle(bold_text_bg_rect, bold_text_bg_fill)
         d.text(bold_text_bg_origin, bold_text, font=lrg_fnt, fill=(255, 255, 255, 196))
@@ -73,7 +70,7 @@ def put_text_on_an_image(image_path, exception=None, bold_text=None, text=None, 
             text_bg_origin = (edge, y - edge - text_bg_size[1])
         if text_position == "bottom-right":
             text_bg_origin = (x - edge - text_bg_size[0], y - edge - text_bg_size[1])
-        text_bg_rect = _get_rect(text_bg_origin, text_bg_size)
+        text_bg_rect = rectangle(text_bg_origin, text_bg_size)
         text_bg_fill = (0, 0, 0, 128)
         d.rectangle(text_bg_rect, text_bg_fill)
         d.text(text_bg_origin, text, font=fnt, fill=(255, 255, 255, 196))
