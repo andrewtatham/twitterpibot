@@ -258,12 +258,8 @@ class TwitterHelper(object):
     def block_user(self, user_id, user_screen_name):
         self.twitter.create_block(user_id=user_id, screen_name=user_screen_name)
 
-    def get_user_timeline(self, user):
-        return self.twitter.get_user_timeline(
-            user_id=user.id,
-            screen_name=user.screen_name,
-            trim_user=True,
-            count=20)
+    def get_user_timeline(self, **kwargs):
+        return self.twitter.get_user_timeline(**kwargs)
 
     def unblock_user(self, user):
         self.twitter.destroy_block(user_id=user.id, screen_name=user.screen_name)

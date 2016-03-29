@@ -22,3 +22,13 @@ def hsv_to_rgb(h, s, v):
     g = limit(0, int(g), 255)
     b = limit(0, int(b), 255)
     return r, g, b
+
+
+if __name__ == '__main__':
+    print(rgb_to_hsv(255, 0, 0))
+    print(rgb_to_hsv(0, 255, 0))
+    print(rgb_to_hsv(0, 0, 255))
+
+
+def h_delta(h, delta):
+    return (h + delta) % 1.0

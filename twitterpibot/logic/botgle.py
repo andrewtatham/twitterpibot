@@ -1,7 +1,9 @@
 import logging
+import pprint
 import random
-from twitterpibot.logic import botgle_artist
+from twitterpibot.incoming.IncomingTweet import IncomingTweet
 
+from twitterpibot.logic import botgle_artist
 from twitterpibot.logic.botgle_solver import parse_board, solve_board
 from twitterpibot.outgoing import OutgoingDirectMessage
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
@@ -22,13 +24,13 @@ class BotgleGame(object):
             return self.solution
 
     def game_over(self):
-
-        image = botgle_artist.make(self.board, self.solution)
-        self.board = None
-        self.solution = None
-        return image
-
-
+        if self.board and self.solution:
+            image = botgle_artist.make(self.board, self.solution)
+            self.board = None
+            self.solution = None
+            return image
+        else:
+            return None
 
 
 class BotgleResponse(Response):
@@ -47,7 +49,7 @@ class BotgleResponse(Response):
         # Warning! Just 3 minutes left
         # The timer is started! 8 minutes to play!
 
-        descriptions=[
+        descriptions = [
             "I call it: %s",
             "piece titled: %s",
             "title: %s",
@@ -74,4 +76,23 @@ class BotgleResponse(Response):
                 text += ("%s words found " % len(solutions))
                 text += " ".join(words)
 
-                self.identity.twitter.send(OutgoingDirectMessage.OutgoingDirectMessage(text=text))
+                self.identity.twitter.send(
+                    OutgoingDirectMessage.OutgoingDirectMessage(text=text, screen_name="andrewtatham"))
+
+
+if __name__ == '__main__':
+    import main
+    logging.basicConfig()
+
+    identity = main.AndrewTathamPiIdentity(None)
+    timeline = identity.twitter.get_user_timeline(screen_name="botgle", exclude_replies=True, count=200)
+    tweets = list(map(lambda data: IncomingTweet(data, identity), timeline))
+    tweets.reverse()
+    response = BotgleResponse(identity)
+    for tweet in tweets:
+        print(tweet.text)
+
+        if response.condition(tweet):
+            response.respond(tweet)
+
+
