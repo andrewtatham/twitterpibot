@@ -160,8 +160,8 @@ def get_exceptions():
 
 
 def _get_exception_summary(exceptions_list):
-    exceptions_list.sort(key=lambda ex: ex.log_type)
     retval = []
+    exceptions_list.sort(key=lambda ex: ex.message)
     for message, group in groupby(exceptions_list, lambda ex: ex.message):
         retval.append(dict(message=message, count=len(list(group))))
     retval.sort(key=lambda msg: msg["count"])
