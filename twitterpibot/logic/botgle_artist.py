@@ -1,9 +1,10 @@
+import os
 import random
 
 from PIL import Image, ImageDraw, ImageFont
 
 from twitterpibot import hardware
-from twitterpibot.logic import image_helper
+from twitterpibot.logic import image_helper, fsh
 from twitterpibot.logic.image_helper import hsv_to_rgb
 
 __author__ = 'andrewtatham'
@@ -19,7 +20,10 @@ else:
     fnt = ImageFont.truetype('Arial.ttf', 10)
 
 
-def make(board, solution):
+def make(board, solution, screen_name):
+    folder = fsh.root + "temp" + os.sep + "botgle" + os.sep + screen_name + os.sep
+    fsh.ensure_directory_exists(folder)
+
     retval = {}
     image_length = 230
     image_width = image_length
@@ -67,7 +71,8 @@ def make(board, solution):
     if board:
         board_image = Image.new('RGBA', image_size, (r, g, b, 0))
         board_draw = ImageDraw.Draw(board_image)
-        option = random.randint(0, 1)
+        tile_fill_option = random.randint(0, 1)
+        tile_shape_option = random.randint(0, 1)
         for row in range(n):
             for col in range(n):
                 tile_origin = tile_origins[row][col]
@@ -77,17 +82,21 @@ def make(board, solution):
                 letter_origin = (tile_origin[0] + tile_size[0] / 2 - letter_size[0] / 2 + tile_padding / 4,
                                  tile_origin[1] + tile_size[1] / 2 - letter_size[1] / 2 + tile_padding / 4)
 
-                if option == 0:
-                    # board_draw.rectangle(tile_rect, outline=bg_colour,fill=bg_colour)
-                    board_draw.ellipse(tile_rect, outline=bg_colour, fill=bg_colour)
+                if tile_fill_option == 0:
+                    if tile_shape_option == 0:
+                        board_draw.rectangle(tile_rect, outline=bg_colour,fill=bg_colour)
+                    else:
+                        board_draw.ellipse(tile_rect, outline=bg_colour, fill=bg_colour)
                     board_draw.text(letter_origin, letter, font=lrg_fnt, fill=bg_dark_colour)
                 else:
-                    # board_draw.rectangle(tile_rect, outline=bg_colour)
-                    board_draw.ellipse(tile_rect, outline=bg_colour)
-
+                    if tile_shape_option == 0:
+                        board_draw.rectangle(tile_rect, outline=bg_colour)
+                    else:
+                        board_draw.ellipse(tile_rect, outline=bg_colour)
                     board_draw.text(letter_origin, letter, font=lrg_fnt, fill=bg_colour)
 
     solution_image = None
+    found_words = None
     if solution:
         solution_image = Image.new('RGBA', image_size, (r, g, b, 0))
         solution_draw = ImageDraw.Draw(solution_image)
@@ -101,8 +110,6 @@ def make(board, solution):
         n = random.randint(1, 4)
         found_words = found_words[-n:]
         found_words.reverse()
-
-        retval["name"] = " ".join(found_words)
 
         h_delta = h_range / len(found_words)
 
@@ -147,9 +154,16 @@ def make(board, solution):
         out = Image.alpha_composite(out, board_image)
     if solution_image:
         out = Image.alpha_composite(out, solution_image)
-    out.show()
-    out.save("botgle.png", "png")
-    retval["file_path"] = "botgle.png"
+
+    if hardware.is_mac_osx:
+        out.show()
+    if found_words:
+        path = folder + "_".join(found_words) + ".png"
+    else:
+        path = folder + "botgle.png"
+    out.save(path, "png")
+    retval["name"] = " ".join(found_words)
+    retval["file_path"] = path
     return retval
 
 
@@ -335,6 +349,6 @@ if __name__ == '__main__':
         'YEO': [("Y", 0, 0), ("E", 1, 1), ("O", 2, 1)],
         'YET': [("Y", 0, 0), ("E", 1, 1), ("T", 1, 0)]}
 
-    image = make(board, solution)
+    image = make(board, solution, "screen_name")
     print(image["name"])
     print(image["file_path"])

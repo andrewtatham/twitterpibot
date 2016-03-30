@@ -40,10 +40,10 @@ class TwitterHelper(object):
         self.mutation = [" ,", " .", " *", " `", " -", " _"]
 
         self.twitter_configuration = self.twitter.get_twitter_configuration()
-        logger.info(self.twitter_configuration)
+        logger.debug(self.twitter_configuration)
 
         me = self.twitter.lookup_user(screen_name=self.identity.screen_name)[0]
-        logger.info(me)
+        logger.debug(me)
         self.identity.id_str = me["id_str"]
         self.identity.profile_image_url = me["profile_image_url"]
 

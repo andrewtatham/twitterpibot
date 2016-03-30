@@ -32,6 +32,7 @@ def handle(identity, exception):
 
 def _record_warning(identity, exception):
     logger.warning(Style.DIM + Fore.BLACK + Back.YELLOW + str(exception))
+    logger.exception(Style.RESET_ALL)
     dal.warning(identity, exception)
     if identity:
         identity.statistics.record_warning()
@@ -39,6 +40,7 @@ def _record_warning(identity, exception):
 
 def _record_error(identity, exception):
     logger.exception(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
+    logger.exception(Style.RESET_ALL)
     dal.exception(identity, exception)
     if identity:
         identity.statistics.record_error()

@@ -283,7 +283,11 @@ class AndrewTathamPiIdentity(BotIdentity):
         return jobs
 
     def get_responses(self):
-        return get_pi_responses(self)
+        responses = []
+        responses.extend([BotgleResponse(self)])
+        responses.extend(get_pi_responses(self))
+        responses.extend(super(AndrewTathamPiIdentity, self).get_responses())
+        return responses
 
 
 class AndrewTathamPi2Identity(BotIdentity):
@@ -304,7 +308,7 @@ class AndrewTathamPi2Identity(BotIdentity):
 
     def get_responses(self):
         responses = []
-        responses.extend([BotgleResponse(self)])
+        # responses.extend([BotgleResponse(self)])
         responses.extend(get_pi_responses(self))
         responses.extend(super(AndrewTathamPi2Identity, self).get_responses())
         return responses

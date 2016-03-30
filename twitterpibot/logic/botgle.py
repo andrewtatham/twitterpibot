@@ -13,9 +13,10 @@ logger = logging.getLogger(__name__)
 
 
 class BotgleGame(object):
-    def __init__(self):
+    def __init__(self, identity):
         self.board = None
         self.solution = None
+        self.identity = identity
 
     def board_recieved(self, board):
         if not self.board or self.board != board:
@@ -25,7 +26,7 @@ class BotgleGame(object):
 
     def game_over(self):
         if self.board and self.solution:
-            image = botgle_artist.make(self.board, self.solution)
+            image = botgle_artist.make(self.board, self.solution, self.identity.screen_name)
             self.board = None
             self.solution = None
             return image
@@ -36,7 +37,7 @@ class BotgleGame(object):
 class BotgleResponse(Response):
     def __init__(self, identity):
         super(BotgleResponse, self).__init__(identity)
-        self._game = BotgleGame()
+        self._game = BotgleGame(identity)
 
     def condition(self, inbox_item):
         return inbox_item.is_tweet and inbox_item.sender.screen_name == "Botgle"
