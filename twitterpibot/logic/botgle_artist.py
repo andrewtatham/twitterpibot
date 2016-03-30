@@ -1,5 +1,6 @@
 import os
 import random
+from enum import Enum
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -18,6 +19,25 @@ elif hardware.is_mac_osx:
 else:
     lrg_fnt = ImageFont.truetype('Arial.ttf', 36)
     fnt = ImageFont.truetype('Arial.ttf', 10)
+
+
+class BoardOptions(Enum):
+    Blank = 0
+    Letters = 1
+    Tiles = 2
+    TilesLetters = 3
+
+
+class TileOptions(Enum):
+    SquareFill = 0
+    CircleFill = 1
+    SquareOutline = 2
+    CircleOutline = 3
+
+
+class PathOptions(Enum):
+    TubeMap = 0
+    # Sketchy = 1
 
 
 def make(board, solution, screen_name):
@@ -69,31 +89,37 @@ def make(board, solution, screen_name):
 
     board_image = None
     if board:
-        board_image = Image.new('RGBA', image_size, (r, g, b, 0))
-        board_draw = ImageDraw.Draw(board_image)
-        tile_fill_option = random.randint(0, 1)
-        tile_shape_option = random.randint(0, 1)
-        for row in range(n):
-            for col in range(n):
-                tile_origin = tile_origins[row][col]
-                tile_rect = image_helper.rectangle(tile_origin, tile_size)
-                letter = board[row][col]
-                letter_size = board_draw.textsize(letter, lrg_fnt)
-                letter_origin = (tile_origin[0] + tile_size[0] / 2 - letter_size[0] / 2 + tile_padding / 4,
-                                 tile_origin[1] + tile_size[1] / 2 - letter_size[1] / 2 + tile_padding / 4)
+        board_option = random.choice(BoardOptions)
+        tile_option = random.choice(TileOptions)
 
-                if tile_fill_option == 0:
-                    if tile_shape_option == 0:
-                        board_draw.rectangle(tile_rect, outline=bg_colour,fill=bg_colour)
-                    else:
-                        board_draw.ellipse(tile_rect, outline=bg_colour, fill=bg_colour)
-                    board_draw.text(letter_origin, letter, font=lrg_fnt, fill=bg_dark_colour)
-                else:
-                    if tile_shape_option == 0:
-                        board_draw.rectangle(tile_rect, outline=bg_colour)
-                    else:
-                        board_draw.ellipse(tile_rect, outline=bg_colour)
-                    board_draw.text(letter_origin, letter, font=lrg_fnt, fill=bg_colour)
+        if board_option != BoardOptions.Blank:
+
+            board_image = Image.new('RGBA', image_size, (r, g, b, 0))
+            board_draw = ImageDraw.Draw(board_image)
+
+            for row in range(n):
+                for col in range(n):
+                    tile_origin = tile_origins[row][col]
+                    tile_rect = image_helper.rectangle(tile_origin, tile_size)
+                    letter = board[row][col]
+                    letter_size = board_draw.textsize(letter, lrg_fnt)
+                    letter_origin = (tile_origin[0] + tile_size[0] / 2 - letter_size[0] / 2 + tile_padding / 4,
+                                     tile_origin[1] + tile_size[1] / 2 - letter_size[1] / 2 + tile_padding / 4)
+
+                    if board_option in [BoardOptions.Tiles, BoardOptions.TilesLetters]:
+                        if tile_option == TileOptions.SquareFill:
+                            board_draw.rectangle(tile_rect, outline=bg_colour, fill=bg_colour)
+                        elif tile_option == TileOptions.CircleFill:
+                            board_draw.ellipse(tile_rect, outline=bg_colour, fill=bg_colour)
+                        elif tile_option == TileOptions.SquareOutline:
+                            board_draw.rectangle(tile_rect, outline=bg_colour)
+                        elif tile_option == TileOptions.CircleOutline:
+                            board_draw.ellipse(tile_rect, outline=bg_colour)
+                    if board_option in [BoardOptions.Letters, BoardOptions.TilesLetters]:
+                        if tile_option in [TileOptions.SquareFill, TileOptions.CircleFill]:
+                            board_draw.text(letter_origin, letter, font=lrg_fnt, fill=bg_dark_colour)
+                        elif tile_option in [TileOptions.SquareOutline, TileOptions.CircleOutline]:
+                            board_draw.text(letter_origin, letter, font=lrg_fnt, fill=bg_colour)
 
     solution_image = None
     found_words = None
@@ -111,9 +137,10 @@ def make(board, solution, screen_name):
         found_words = found_words[-n:]
         found_words.reverse()
 
-        h_delta = h_range / len(found_words)
+        path_option = random.choice(PathOptions)
 
-        offset = -len(found_words)
+        h_delta = h_range / len(found_words)
+        tube_map_offset = -len(found_words)
         for found_word in found_words:
             h = image_helper.h_delta(h, h_delta)
             path = solution[found_word]
@@ -128,12 +155,13 @@ def make(board, solution, screen_name):
                     row = tile.row
                     col = tile.col
                 tile_centre = tile_centres[row][col]
-
-                point = (tile_centre[0] + offset,
-                         tile_centre[1] + offset)
-                # wobble = 3
-                # point = (tile_centre[0] + random.randint(-wobble, wobble),
-                #          tile_centre[1] + random.randint(-wobble, wobble))
+                if path_option == PathOptions.TubeMap:
+                    point = (tile_centre[0] + tube_map_offset,
+                             tile_centre[1] + tube_map_offset)
+                # elif path_option == PathOptions.Sketchy:
+                #     wobble = 3
+                #     point = (tile_centre[0] + random.randint(-wobble, wobble),
+                #              tile_centre[1] + random.randint(-wobble, wobble))
                 if prev_point:
                     # len(word) - 2,
                     solution_draw.line((prev_point, point),
@@ -147,7 +175,7 @@ def make(board, solution, screen_name):
                     solution_draw.ellipse(rect, fill=path_colour)
                 prev_point = point
 
-            offset += 2
+            tube_map_offset += 2
 
     out = image
     if board_image:
