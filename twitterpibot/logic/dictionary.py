@@ -1,11 +1,15 @@
-import pprint
+import os
+
+from twitterpibot.logic import fsh
 
 __author__ = 'andrewtatham'
+
+botgle_dictionary_path = fsh.root + os.sep + "twitterpibot" + os.sep + "text" + os.sep + "boggle_advanced.txt"
 
 
 def get_botgle_candidates(letters):
     letters = set(letters)
-    with open("words.txt") as file:
+    with open(botgle_dictionary_path) as file:
         words = file.readlines()
     words = list(map(lambda word: word.upper().strip(), words))
     words = list(filter(lambda word: len(word) >= 3, words))

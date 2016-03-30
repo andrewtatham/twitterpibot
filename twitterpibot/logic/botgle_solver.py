@@ -157,16 +157,37 @@ class Tiles(object):
         return False
 
 
+intros = [
+    "THE BOARD:",
+    "Boggle Summons You:",
+    "TIME FOR BOGGLE:",
+    "The mist clears. Time for Boggle:",
+    "You see a Boggle board in the distance:",
+    "You awaken from a dream of eldritch horrors to find a game before you:",
+    "The only thing blocking you from total victory is this Boggle board:",
+    "B-O-G-G-L-E",
+    "Above you a skywriter dances the path of a Boggle board",
+    "Your dreams are haunted by visions of Boggle",
+    "I love you. Let's play:",
+    "Would you like to play a game of Boggle?",
+    "I hear you like to play Boggle",
+
+    "The timer is started! 8 minutes to play!",
+    "Warning! Just 3 minutes left",
+]
+
+
 def parse_board(tweet_text):
-    if ":" in tweet_text:
-        tweet_text = tweet_text.split(":")[1]
-        matches = rx.findall(tweet_text)
-        if matches and len(matches) >= n * n:
-            board = [[None for _ in range(n)] for _ in range(n)]
-            for i in range(n * n):
-                board[i // n][i % n] = "".join([chr(ord(c) - 65248) for c in matches[i]]).upper()
-            logger.info(board)
-            return board
+    for intro in intros:
+        if intro in tweet_text:
+            tweet_text = tweet_text.replace(intro, "")
+            matches = rx.findall(tweet_text)
+            if matches and len(matches) >= n * n:
+                board = [[None for _ in range(n)] for _ in range(n)]
+                for i in range(n * n):
+                    board[i // n][i % n] = "".join([chr(ord(c) - 65248) for c in matches[i]]).upper()
+                logger.info(board)
+                return board
 
     return None
 
