@@ -3,7 +3,7 @@ import os
 import random
 import traceback
 
-from uptime import uptime, boottime
+# import uptime
 
 from sqlalchemy.orm import sessionmaker
 
@@ -130,8 +130,8 @@ def _exception(identity, ex, log_type):
 
     row = ExceptionRow()
     row.now = datetime.datetime.now()
-    row.uptime = uptime()
-    row.boottime = boottime()
+    row.uptime = None  # uptime.uptime()
+    row.boottime = None  # uptime.boottime()
     row.log_type = log_type
     if identity:
         row.screen_name = identity.screen_name
