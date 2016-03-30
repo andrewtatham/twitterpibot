@@ -1,6 +1,7 @@
 import os
 import random
 from enum import Enum
+import textwrap
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -35,14 +36,30 @@ class TileOptions(Enum):
     CircleOutline = 3
 
 
+class TextOptions(Enum):
+    NoText = 0
+    Text = 1
+
+
 class PathOptions(Enum):
     TubeMap = 0
     # Sketchy = 1
 
 
+class PathLabelOptions(Enum):
+    NoLabel = 0
+    TopLeft = 1
+
+
 def make(board, solution, screen_name):
     folder = fsh.root + "temp" + os.sep + "botgle" + os.sep + screen_name + os.sep
     fsh.ensure_directory_exists(folder)
+
+    board_option = random.choice(BoardOptions)
+    tile_option = random.choice(TileOptions)
+    text_option = random.choice(TextOptions)
+    path_option = random.choice(PathOptions)
+    path_label_option = random.choice(PathLabelOptions)
 
     retval = {}
     image_length = 230
@@ -89,8 +106,6 @@ def make(board, solution, screen_name):
 
     board_image = None
     if board:
-        board_option = random.choice(BoardOptions)
-        tile_option = random.choice(TileOptions)
 
         if board_option != BoardOptions.Blank:
 
@@ -127,25 +142,35 @@ def make(board, solution, screen_name):
         solution_image = Image.new('RGBA', image_size, (r, g, b, 0))
         solution_draw = ImageDraw.Draw(solution_image)
 
-        # text = " ".join(solution)
-        # text = textwrap.fill(text, 30)
-        # solution_draw.text((0, 0), text, font=fnt, fill=bg_light_colour)
-
         found_words = list(solution)
         found_words.sort(key=len)
         n = random.randint(1, 4)
         found_words = found_words[-n:]
         found_words.reverse()
 
-        path_option = random.choice(PathOptions)
+        if text_option == TextOptions.Text:
+            text = " ".join(solution)
+            text = textwrap.fill(text, 40)
+            text_origin = (0, 0)
+            if tile_option in [TileOptions.SquareFill, TileOptions.CircleFill]:
+                solution_draw.text(text_origin, text, font=fnt, fill=bg_dark_colour)
+            elif tile_option in [TileOptions.SquareOutline, TileOptions.CircleOutline]:
+                solution_draw.text(text_origin, text, font=fnt, fill=bg_colour)
 
         h_delta = h_range / len(found_words)
-        tube_map_offset = -len(found_words)
+        tube_map_offset = -len(found_words)/2
+        label_origin = (0, 0)
         for found_word in found_words:
             h = image_helper.h_delta(h, h_delta)
-            path = solution[found_word]
             r, g, b = hsv_to_rgb(h, s, v)
             path_colour = (r, g, b, a)
+            if path_label_option == PathLabelOptions.TopLeft:
+                word_size = solution_draw.textsize(found_word, fnt)
+                solution_draw.text(label_origin, found_word, font=fnt, fill=path_colour)
+                label_origin = (label_origin[0] + word_size[0], label_origin[1])
+
+            path = solution[found_word]
+
             prev_point = None
             for tile in path:
                 if isinstance(tile, tuple):
@@ -175,7 +200,7 @@ def make(board, solution, screen_name):
                     solution_draw.ellipse(rect, fill=path_colour)
                 prev_point = point
 
-            tube_map_offset += 2
+            tube_map_offset += 1
 
     out = image
     if board_image:
