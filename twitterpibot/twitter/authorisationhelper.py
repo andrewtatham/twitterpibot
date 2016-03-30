@@ -1,6 +1,6 @@
 import webbrowser
 
-from twitterpibot import dal
+from twitterpibot.data_access import dal
 
 try:
     # noinspection PyUnresolvedReferences,PyShadowingBuiltins

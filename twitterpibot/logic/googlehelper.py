@@ -3,7 +3,7 @@ import os
 import random
 from urllib.parse import quote_plus
 
-from twitterpibot import dal
+from twitterpibot.data_access import dal
 from twitterpibot.logic import fsh
 from twitterpibot.logic import urlhelper
 

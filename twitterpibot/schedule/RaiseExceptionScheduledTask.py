@@ -11,4 +11,4 @@ class RaiseExceptionScheduledTask(ScheduledTask):
         return IntervalTrigger(minutes=1)
 
     def on_run(self):
-        exceptionmanager.raise_test_exception(random.randint(2, 12))
+        exceptionmanager.raise_test_exception()

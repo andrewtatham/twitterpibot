@@ -1,7 +1,9 @@
+from itertools import groupby
 import random
 
 import twitterpibot
 import twitterpibot.bootstrap
+from twitterpibot.data_access import dal
 
 __author__ = 'andrewtatham'
 
@@ -72,6 +74,8 @@ def get_actions():
         ("identities", "/identities"),
         ("following", "/following"),
         ("followinggraph", "/followinggraph"),
+        ("exceptions", "/exceptions"),
+        ("exceptionsummary", "/exceptionsummary"),
         ("shutdown", "/shutdown")
     ]]
 
@@ -138,3 +142,42 @@ def get_following_graph():
         "edges": edges
     }
     return dto
+
+
+def get_exception_dto(exception):
+    return {
+        "now": exception.now,
+        "uptime": exception.uptime,
+        "boottime": exception.boottime,
+        "screen_name": exception.screen_name,
+        "message": exception.message,
+        "stack_trace": exception.stack_trace,
+    }
+
+
+def get_exceptions():
+    return list(map(get_exception_dto, dal.get_exceptions()))
+
+
+def _get_exception_summary(exceptions_list):
+    exceptions_list.sort(key=lambda ex: ex.log_type)
+    retval = []
+    for message, group in groupby(exceptions_list, lambda ex: ex.message):
+        retval.append(dict(message=message, count=len(list(group))))
+    retval.sort(key=lambda msg: msg["count"])
+    retval.reverse()
+    return retval
+
+
+def get_exception_summary():
+    retval = {}
+    exceptions_list = dal.get_exceptions()
+    exceptions_list.sort(key=lambda ex: ex.log_type)
+    for log_type, group in groupby(exceptions_list, lambda ex: ex.log_type):
+        retval[log_type] = _get_exception_summary(list(group))
+    return retval
+
+
+if __name__ == '__main__':
+    print(get_exceptions())
+    print(get_exception_summary())

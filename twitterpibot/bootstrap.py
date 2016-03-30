@@ -1,10 +1,9 @@
-from twitterpibot import loggingconfig
 import logging
-import pprint
 
 import flask
 import colorama
 
+from twitterpibot import loggingconfig
 from twitterpibot import hardware, controller, tasks, schedule
 
 if not hardware.is_andrew_desktop:
@@ -35,7 +34,7 @@ def init():
         "actions": controller.get_actions(),
         "identities": controller.get_identities()
     }
-    logger.debug(pprint.pformat(retval))
+    logger.debug(retval)
     return flask.jsonify(retval)
 
 
@@ -44,31 +43,49 @@ def actions():
     retval = {
         "actions": controller.get_actions(),
     }
-    logger.debug(pprint.pformat(retval))
+    logger.debug(retval)
     return flask.jsonify(retval)
 
 
 @app.route('/identities')
 def identities():
     retval = {"identities": controller.get_identities()}
+    logger.debug(retval)
     return flask.jsonify(retval)
 
 
 @app.route('/identity/<screen_name>')
 def identity(screen_name):
     retval = {"identity": controller.get_identity(screen_name)}
+    logger.debug(retval)
     return flask.jsonify(retval)
 
 
 @app.route('/following')
 def following():
     retval = {"following": controller.get_following()}
+    logger.debug(retval)
     return flask.jsonify(retval)
 
 
 @app.route('/followinggraph')
 def following_graph():
     retval = {"followinggraph": controller.get_following_graph()}
+    logger.debug(retval)
+    return flask.jsonify(retval)
+
+
+@app.route('/exceptions')
+def exceptions():
+    retval = {"exceptions": controller.get_exceptions()}
+    logger.debug(retval)
+    return flask.jsonify(retval)
+
+
+@app.route('/exceptionsummary')
+def exceptionsummarys():
+    retval = {"exceptionsummary": controller.get_exception_summary()}
+    logger.debug(retval)
     return flask.jsonify(retval)
 
 

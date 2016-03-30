@@ -1,12 +1,16 @@
+import datetime
 import os
-import time
+import random
+import traceback
 
-from sqlalchemy import create_engine
+from uptime import uptime, boottime
+
 from sqlalchemy.orm import sessionmaker
 
+from twitterpibot.data_access.model import ExceptionRow
+from twitterpibot.data_access.tokens import Token
 from twitterpibot.logic import fsh
-
-from twitterpibot.model import Base, Token
+from twitterpibot.data_access import model, tokens
 
 try:
     # noinspection PyUnresolvedReferences,PyShadowingBuiltins
@@ -16,19 +20,34 @@ except NameError:
 
 folder = fsh.root + "temp" + os.sep + "db" + os.sep
 fsh.ensure_directory_exists(folder)
-_engine = create_engine("sqlite:///" + folder + "twitterpibot.db")
-Base.metadata.bind = _engine
-Base.metadata.create_all(_engine)
+
+_engine = model.create_engine("sqlite:///" + folder + "twitterpibot.db")
+model.ModelBase.metadata.bind = _engine
+model.ModelBase.metadata.create_all(_engine)
+
+_tokens_engine = tokens.create_engine("sqlite:///" + folder + "tokens.db")
+tokens.TokenBase.metadata.bind = _tokens_engine
+tokens.TokenBase.metadata.create_all(_tokens_engine)
 
 
-def _create_session():
-    DBSession = sessionmaker(bind=_engine)
-    session = DBSession()
+def _create_tokens_session():
+    dbsession = sessionmaker(bind=_tokens_engine)
+    session = dbsession()
     return session
 
 
+def _create_session():
+    dbsession = sessionmaker(bind=_engine)
+    session = dbsession()
+    return session
+
+
+def tokens_file_path():
+    return None
+
+
 def get_token(key, ask=True):
-    session = _create_session()
+    session = _create_tokens_session()
     token = session.query(Token).filter(Token.key == key).first()
 
     if token:
@@ -44,7 +63,7 @@ def get_token(key, ask=True):
 
 
 def set_token(key, value):
-    session = _create_session()
+    session = _create_tokens_session()
     token = session.query(Token).filter(Token.key == key).first()
     if not token:
         token = Token(key, value)
@@ -79,10 +98,10 @@ def migrate_tokens():
 
 
 def display_tokens():
-    session = _create_session()
-    tokens = session.query(Token).all()
-    for token in tokens:
-        print("{key}: {value}".format(**token.__dict__))
+    session = _create_tokens_session()
+    ts = session.query(Token).all()
+    for t in ts:
+        print("{key}: {value}".format(**t.__dict__))
 
 
 def import_tokens(file_name):
@@ -92,14 +111,51 @@ def import_tokens(file_name):
 
 
 def export_tokens(file_name):
-    session = _create_session()
-    tokens = session.query(Token).all()
-    csv = [(t.key, t.value) for t in tokens]
+    session = _create_tokens_session()
+    ts = session.query(Token).all()
+    csv = [(t.key, t.value) for t in ts]
     fsh.write_csv(file_name, csv)
 
 
+def warning(identity, ex):
+    _exception(identity, ex, "Warning")
+
+
+def exception(identity, ex):
+    _exception(identity, ex, "Exception")
+
+
+def _exception(identity, ex, log_type):
+    session = _create_session()
+
+    row = ExceptionRow()
+    row.now = datetime.datetime.now()
+    row.uptime = uptime()
+    row.boottime = boottime()
+    row.log_type = log_type
+    if identity:
+        row.screen_name = identity.screen_name
+
+    row.message = str(ex)
+    row.stack_trace = traceback.format_exc()
+
+    session.add(row)
+    session.commit()
+
+
+def get_exceptions():
+    session = _create_session()
+    exs = session.query(ExceptionRow).all()
+    return exs
+
+
 if __name__ == "__main__":
-    export_tokens("tokens.csv")
-    time.sleep(1)
-    import_tokens("tokens.csv")
-    display_tokens()
+    from twitterpibot import exceptionmanager
+
+    try:
+        exceptionmanager.raise_test_exception()
+    except Exception as ex:
+        if random.randint(0, 1) == 0:
+            warning(None, ex)
+        else:
+            exception(None, ex)

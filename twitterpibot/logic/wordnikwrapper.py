@@ -3,7 +3,7 @@ import random
 
 # noinspection PyPackageRequirements
 from wordnik import swagger, WordApi, WordsApi, WordListApi, WordListsApi, AccountApi
-from twitterpibot import dal
+from twitterpibot.data_access import dal
 
 logger = logging.getLogger(__name__)
 

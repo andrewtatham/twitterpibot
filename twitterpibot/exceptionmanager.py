@@ -1,8 +1,10 @@
 import logging
+import random
 
 from colorama import Fore, Style, Back
 from twython import TwythonError
 
+from twitterpibot.data_access import dal
 import twitterpibot.hardware
 from twitterpibot.logic import textonanimage, imagemanager
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
@@ -29,15 +31,15 @@ def handle(identity, exception):
 
 
 def _record_warning(identity, exception):
-    print(Style.DIM + Fore.BLACK + Back.YELLOW + str(exception))
-    logger.warn(exception)
+    logger.warning(Style.DIM + Fore.BLACK + Back.YELLOW + str(exception))
+    dal.warning(identity, exception)
     if identity:
         identity.statistics.record_warning()
 
 
 def _record_error(identity, exception):
-    print(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
-    logger.exception(exception)
+    logger.exception(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
+    dal.exception(identity, exception)
     if identity:
         identity.statistics.record_error()
         _try_send_exception(identity, exception)
@@ -79,5 +81,7 @@ def _foo(levels, level):
         raise Exception("bar")
 
 
-def raise_test_exception(levels):
+def raise_test_exception(levels=None):
+    if not levels:
+        levels = random.randint(2, 12)
     _foo(levels, 0)
