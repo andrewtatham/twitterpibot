@@ -12,14 +12,14 @@ from twitterpibot.logic.image_helper import hsv_to_rgb
 __author__ = 'andrewtatham'
 
 if hardware.is_raspberry_pi_2:
-    lrg_fnt = ImageFont.truetype('FreeSans.ttf', 36)
-    fnt = ImageFont.truetype('FreeSans.ttf', 10)
+    lrg_fnt = ImageFont.truetype('FreeSans.ttf', 72)
+    fnt = ImageFont.truetype('FreeSans.ttf', 24)
 elif hardware.is_mac_osx:
-    lrg_fnt = ImageFont.truetype('Arial.ttf', 36)
-    fnt = ImageFont.truetype('Arial.ttf', 10)
+    lrg_fnt = ImageFont.truetype('Arial.ttf', 72)
+    fnt = ImageFont.truetype('Arial.ttf', 24)
 else:
     lrg_fnt = ImageFont.truetype('Arial.ttf', 36)
-    fnt = ImageFont.truetype('Arial.ttf', 10)
+    fnt = ImageFont.truetype('Arial.ttf', 24)
 
 
 class BoardOptions(Enum):
@@ -62,11 +62,11 @@ def make(board, solution, screen_name):
     path_label_option = random.choice(PathLabelOptions)
 
     retval = {}
-    image_length = 228
+    image_length = 450
     image_width = image_length
     image_height = image_length
     image_size = (image_width, image_height)
-    margin = 2
+    margin = 4
 
     n = 4
 
@@ -74,14 +74,14 @@ def make(board, solution, screen_name):
     s = 1.0
     v = 255
 
-    h_range = random.uniform(0.2, 0.8)
+    h_range = random.uniform(0.3, 0.8)
 
     a = 255
 
-    r, g, b = hsv_to_rgb(h, s, v / random.randint(2, 4))
+    r, g, b = hsv_to_rgb(h, s, v / random.randint(2, 3))
     bg_colour = (r, g, b, a)
 
-    r, g, b = hsv_to_rgb(h, s, v / random.randint(3, 5))
+    r, g, b = hsv_to_rgb(h, s, v / random.randint(3, 4))
     bg_dark_colour = (r, g, b, a)
 
     image = Image.new('RGBA', image_size, bg_dark_colour)
@@ -115,9 +115,9 @@ def make(board, solution, screen_name):
 
             for row in range(n):
                 for col in range(n):
-                    tile_origin = tile_origins[row][col]
+                    tile_origin = tile_origins[col][row]
                     tile_rect = image_helper.rectangle(tile_origin, tile_size)
-                    letter = board[row][col]
+                    letter = board[col][row]
                     letter_size = board_draw.textsize(letter, lrg_fnt)
                     letter_origin = (tile_origin[0] + tile_size[0] / 2 - letter_size[0] / 2 + tile_padding / 4,
                                      tile_origin[1] + tile_size[1] / 2 - letter_size[1] / 2 + tile_padding / 4)
@@ -149,7 +149,7 @@ def make(board, solution, screen_name):
         found_words = found_words[-n:]
         found_words.reverse()
 
-        if text_option == TextOptions.Text:
+        if text_option == TextOptions.Text and len(solution) >= 200:
             text = " ".join(solution)
             text = textwrap.fill(text, 40)
             text_origin = (0, 0)
@@ -191,17 +191,17 @@ def make(board, solution, screen_name):
                 if prev_point:
                     # len(word) - 2,
                     solution_draw.line((prev_point, point),
-                                       width=1,
+                                       width=5,
                                        fill=path_colour)
                 else:
-                    point_size = (1, 1)
+                    point_size = (7, 7)
                     rect = (
                         (point[0] - point_size[0], point[1] - point_size[1]),
                         (point[0] + point_size[0], point[1] + point_size[1]))
                     solution_draw.ellipse(rect, fill=path_colour)
                 prev_point = point
 
-            tube_map_offset += 1
+            tube_map_offset += 10
 
     out = image
     if board_image:

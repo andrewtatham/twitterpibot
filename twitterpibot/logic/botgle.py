@@ -31,12 +31,15 @@ class BotgleGame(object):
                 # start new solver
                 self.solution = None
                 self.board_in_progress = board
+
                 self.solution = botgle_solver.solve_board(self.board_in_progress)
+
                 if self.solution:
                     retval["solutions"] = self.solution
             if self.board_in_progress and self.board_in_progress == board:
                 # solution in progress
-                retval["text"] = "[painting noises]"
+                # retval["text"] = "[painting noises]"
+                pass
 
         elif "GAME OVER" in inbox_item.text:
             if self.board_in_progress and self.solution:
@@ -138,5 +141,9 @@ if __name__ == '__main__':
         testcases.append(tweet.text)
 
         if response.condition(tweet):
-            response.respond(tweet)
-            # pprint.pprint(testcases)
+            try:
+                response.respond(tweet)
+            except Exception as ex:
+                logger.exception(ex)
+
+    # pprint.pprint(testcases)
