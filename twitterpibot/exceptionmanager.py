@@ -21,27 +21,27 @@ def handle_silently(exception):
     _record_warning(None, exception)
 
 
-def handle(identity, exception):
+def handle(identity, exception, label=None):
     if type(exception) is UnicodeEncodeError:
-        _record_warning(identity, exception)
+        _record_warning(identity, exception, label)
     elif type(exception) is TwythonError:
-        _record_warning(identity, exception)
+        _record_warning(identity, exception, label)
     else:
-        _record_error(identity, exception)
+        _record_error(identity, exception, label)
 
 
 def _record_warning(identity, exception):
     logger.warning(Style.DIM + Fore.BLACK + Back.YELLOW + str(exception))
     logger.exception(Style.RESET_ALL)
-    dal.warning(identity, exception)
+    dal.warning(identity, exception, label)
     if identity:
         identity.statistics.record_warning()
 
 
-def _record_error(identity, exception):
+def _record_error(identity, exception, label):
     logger.exception(Style.BRIGHT + Fore.WHITE + Back.RED + str(exception))
     logger.exception(Style.RESET_ALL)
-    dal.exception(identity, exception)
+    dal.exception(identity, exception, label)
     if identity:
         identity.statistics.record_error()
         _try_send_exception(identity, exception)

@@ -12,7 +12,7 @@ def _run_wrapper(task):
     try:
         task.on_run()
     except Exception as e:
-        handle(task.identity, e)
+        handle(task.identity, e, label=str(task))
 
 
 def start():

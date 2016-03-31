@@ -9,11 +9,12 @@ from twitterpibot import hardware
 if __name__ == '__main__':
     from twitterpibot.logic import fsh
     from twitterpibot.data_access import dal
-    # if hardware.is_raspberry_pi_2:
-    #     fsh.delete_files([
-    #         fsh.root + "temp/db/tokens.db",
-    #         fsh.root + "temp/db/twitterpibot.db"
-    #     ])
+
+    if hardware.is_raspberry_pi_2:
+        fsh.delete_files([
+            # fsh.root + "temp/db/tokens.db",
+            fsh.root + "temp/db/twitterpibot.db"
+        ])
     dal.import_tokens(fsh.root + "tokens.csv")
 
 from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask

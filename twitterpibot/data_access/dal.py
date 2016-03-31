@@ -119,15 +119,15 @@ def export_tokens(file_name):
     fsh.write_csv(file_name, csv)
 
 
-def warning(identity, ex):
-    _exception(identity, ex, "Warning")
+def warning(identity, ex, label):
+    _exception(identity, ex, "Warning", label)
 
 
-def exception(identity, ex):
-    _exception(identity, ex, "Exception")
+def exception(identity, ex, label):
+    _exception(identity, ex, "Exception", label)
 
 
-def _exception(identity, ex, log_type):
+def _exception(identity, ex, log_type, label):
     session = _create_session()
 
     row = ExceptionRow()
@@ -135,6 +135,7 @@ def _exception(identity, ex, log_type):
     row.uptime = None  # uptime.uptime()
     row.boottime = None  # uptime.boottime()
     row.log_type = log_type
+    row.label = label
     if identity:
         row.screen_name = identity.screen_name
 

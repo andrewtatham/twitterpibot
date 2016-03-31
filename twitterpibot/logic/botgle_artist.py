@@ -189,7 +189,7 @@ def make(board, solution, screen_name):
                 #     point = (tile_centre[0] + random.randint(-wobble, wobble),
                 #              tile_centre[1] + random.randint(-wobble, wobble))
                 if prev_point:
-                    # len(word) - 2,
+
                     solution_draw.line((prev_point, point),
                                        width=5,
                                        fill=path_colour)

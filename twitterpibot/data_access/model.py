@@ -28,5 +28,6 @@ class ExceptionRow(ModelBase):
     boottime = Column(DateTime())
     log_type = Column(String(50))
     screen_name = Column(String(50))
+    label = Column(String(50))
     message = Column(String(100))
     stack_trace = Column(String(250))
