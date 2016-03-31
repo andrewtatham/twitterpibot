@@ -62,7 +62,7 @@ def make(board, solution, screen_name):
     path_label_option = random.choice(PathLabelOptions)
 
     retval = {}
-    image_length = 230
+    image_length = 228
     image_width = image_length
     image_height = image_length
     image_size = (image_width, image_height)
@@ -78,9 +78,10 @@ def make(board, solution, screen_name):
 
     a = 255
 
-    r, g, b = hsv_to_rgb(h, s, v / 3)
+    r, g, b = hsv_to_rgb(h, s, v / random.randint(2, 4))
     bg_colour = (r, g, b, a)
-    r, g, b = hsv_to_rgb(h, s, v / 4)
+
+    r, g, b = hsv_to_rgb(h, s, v / random.randint(3, 5))
     bg_dark_colour = (r, g, b, a)
 
     image = Image.new('RGBA', image_size, bg_dark_colour)
@@ -158,7 +159,7 @@ def make(board, solution, screen_name):
                 solution_draw.text(text_origin, text, font=fnt, fill=bg_colour)
 
         h_delta = h_range / len(found_words)
-        tube_map_offset = -len(found_words)/2
+        tube_map_offset = -len(found_words) / 2
         label_origin = (0, 0)
         for found_word in found_words:
             h = image_helper.h_delta(h, h_delta)
