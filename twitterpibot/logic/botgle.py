@@ -1,12 +1,10 @@
 import logging
-import pprint
 import random
-from twitterpibot.incoming.IncomingTweet import IncomingTweet
 
+from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.logic import botgle_artist
 from twitterpibot.logic.botgle_solver import parse_board, solve_board
 from twitterpibot.outgoing import OutgoingDirectMessage
-from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.responses.Response import Response
 
 logger = logging.getLogger(__name__)
@@ -58,10 +56,13 @@ class BotgleResponse(Response):
         if "GAME OVER" in inbox_item.text:
             image = self._game.game_over()
             if image:
-                text = ".@Botgle "
+                text = ""
                 text += random.choice(descriptions) % image["name"]
                 file_paths = [image["file_path"]]
-                self.identity.twitter.send(OutgoingTweet(text=text, file_paths=file_paths))
+                self.identity.twitter.reply_with(inbox_item=inbox_item, text=text, file_paths=file_paths)
+
+                if random.randint(0, 9):
+                    self.identity.twitter.update_profile_image(file_path=image["file_path"])
 
         elif board:
             solutions = self._game.board_recieved(board)
@@ -70,7 +71,7 @@ class BotgleResponse(Response):
 
                 words = list(solutions)
                 words.sort(key=len)
-                words = words[-12:]
+                words = words[-10:]
                 words.reverse()
 
                 text = ""
@@ -83,6 +84,7 @@ class BotgleResponse(Response):
 
 if __name__ == '__main__':
     import main
+
     logging.basicConfig(level=logging.DEBUG)
 
     identity = main.BotgleArtistIdentity(None)
@@ -95,5 +97,3 @@ if __name__ == '__main__':
 
         if response.condition(tweet):
             response.respond(tweet)
-
-

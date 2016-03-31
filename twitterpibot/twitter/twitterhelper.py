@@ -6,7 +6,6 @@ import time
 
 from twython import Twython
 
-
 from twitterpibot.logic import fsh
 from twitterpibot.twitter import authorisationhelper
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
@@ -382,7 +381,14 @@ class TwitterHelper(object):
         else:
             return None
 
+    def update_profile_image(self, file_path):
+        if file_path:
+            logger.info("updating profile image " % file_path)
+            with open(file_path, 'rb') as file:
+                self.twitter.update_profile_image(image=file)
+
 
 if __name__ == "__main__":
     import main
+
     twitter = TwitterHelper(main.AndrewTathamPiIdentity(main.AndrewTathamIdentity()))
