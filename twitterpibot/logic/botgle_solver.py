@@ -130,7 +130,7 @@ class Tiles(object):
             state = State(word)
 
         if state.found():
-            logger.info("Found word {}".format(state.word))
+            logger.debug("Found word {}".format(state.word))
             return state.path
 
         tile_letter = state.get_next_tile_letters()

@@ -383,7 +383,7 @@ class TwitterHelper(object):
 
     def update_profile_image(self, file_path):
         if file_path:
-            logger.info("updating profile image " % file_path)
+            logger.info("updating profile image %s" % file_path)
             with open(file_path, 'rb') as file:
                 self.twitter.update_profile_image(image=file)
 
