@@ -107,7 +107,9 @@ def display_tokens():
 def import_tokens(file_name):
     csv = fsh.parse_csv(file_name)
     for row in csv:
-        set_token(row[0], row[1])
+        if row:
+            print(row)
+            set_token(row[0], row[1])
 
 
 def export_tokens(file_name):

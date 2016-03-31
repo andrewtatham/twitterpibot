@@ -139,3 +139,9 @@ def write_csv(file_name, data):
     with  open(file_name, 'w') as csvfile:
         data_csv = csv.writer(csvfile)
         data_csv.writerows(data)
+
+
+def readlines(path):
+    with open(path) as file:
+        lines = file.readlines()
+    return lines

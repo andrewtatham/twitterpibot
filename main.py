@@ -6,14 +6,15 @@ import colorama
 
 from twitterpibot import hardware
 
-# from twitterpibot.logic import fsh
-# from twitterpibot.data_access import dal
-# if hardware.is_raspberry_pi_2:
-#     fsh.delete_files([
-#         fsh.root + "temp/db/tokens.db",
-#         fsh.root + "temp/db/twitterpibot.db"
-#     ])
-#     dal.import_tokens("tokens.csv")
+if __name__ == '__main__':
+    from twitterpibot.logic import fsh
+    from twitterpibot.data_access import dal
+    # if hardware.is_raspberry_pi_2:
+    #     fsh.delete_files([
+    #         fsh.root + "temp/db/tokens.db",
+    #         fsh.root + "temp/db/twitterpibot.db"
+    #     ])
+    dal.import_tokens(fsh.root + "tokens.csv")
 
 from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask
 from twitterpibot.logic.botgle import BotgleResponse
@@ -284,7 +285,7 @@ class AndrewTathamPiIdentity(BotIdentity):
 
     def get_responses(self):
         responses = []
-        responses.extend([BotgleResponse(self)])
+        # responses.extend([BotgleResponse(self)])
         responses.extend(get_pi_responses(self))
         responses.extend(super(AndrewTathamPiIdentity, self).get_responses())
         return responses
@@ -394,6 +395,22 @@ class WhenIsInternationalMensDayBotIdentity(BotIdentity):
         return [WhenIsInternationalMensDayResponse(self)]
 
 
+class BotgleArtistIdentity(BotIdentity):
+    def __init__(self, admin_identity):
+        super(BotgleArtistIdentity, self).__init__(
+            screen_name="BotgleArtist",
+            id_str="715477182106079232",
+            admin_identity=admin_identity)
+
+    def get_scheduled_jobs(self):
+        jobs = super(BotgleArtistIdentity, self).get_scheduled_jobs()
+        # jobs.extend([xxx(self)])
+        return jobs
+
+    def get_responses(self):
+        return [BotgleResponse(self)]
+
+
 if __name__ == "__main__":
     import twitterpibot.bootstrap
 
@@ -405,6 +422,7 @@ if __name__ == "__main__":
     simonnumberwang = SimonNumberwangIdentity(andrewtatham)
     eggpunbot = EggPunBotIdentity(andrewtatham)
     whenmensday = WhenIsInternationalMensDayBotIdentity(andrewtatham)
+    botgleartist = BotgleArtistIdentity(andrewtatham)
 
     if twitterpibot.hardware.is_raspberry_pi_2:
         all_identities = [
@@ -415,7 +433,8 @@ if __name__ == "__main__":
             julienumberwang,
             simonnumberwang,
             eggpunbot,
-            whenmensday
+            whenmensday,
+            botgleartist
         ]
     else:
         all_identities = [
@@ -426,7 +445,8 @@ if __name__ == "__main__":
             julienumberwang,
             simonnumberwang,
             eggpunbot,
-            whenmensday
+            whenmensday,
+            botgleartist
         ]
 
     twitterpibot.bootstrap.run(all_identities)

@@ -51,14 +51,14 @@ class BotgleResponse(Response):
         # The timer is started! 8 minutes to play!
 
         descriptions = [
-            "I call it: %s",
+            "this piece is titled: %s",
             "piece titled: %s",
             "title: %s",
         ]
         if "GAME OVER" in inbox_item.text:
             image = self._game.game_over()
             if image:
-                text = "@andrewtatham "
+                text = ".@Botgle "
                 text += random.choice(descriptions) % image["name"]
                 file_paths = [image["file_path"]]
                 self.identity.twitter.send(OutgoingTweet(text=text, file_paths=file_paths))
@@ -73,7 +73,7 @@ class BotgleResponse(Response):
                 words = words[-12:]
                 words.reverse()
 
-                text = "@andrewtatham "
+                text = ""
                 text += ("%s words found " % len(solutions))
                 text += " ".join(words)
 
@@ -83,9 +83,9 @@ class BotgleResponse(Response):
 
 if __name__ == '__main__':
     import main
-    logging.basicConfig()
+    logging.basicConfig(level=logging.DEBUG)
 
-    identity = main.AndrewTathamPiIdentity(None)
+    identity = main.BotgleArtistIdentity(None)
     timeline = identity.twitter.get_user_timeline(screen_name="botgle", exclude_replies=True, count=200)
     tweets = list(map(lambda data: IncomingTweet(data, identity), timeline))
     tweets.reverse()

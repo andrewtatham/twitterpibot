@@ -3,19 +3,19 @@ import os
 from twitterpibot.logic import fsh
 
 __author__ = 'andrewtatham'
-
-botgle_dictionary_path = fsh.root + os.sep + "twitterpibot" + os.sep + "text" + os.sep + "boggle_advanced.txt"
+# /Users/andrewtatham/twitterpibot/twitterpibot/text/boggle_advanced.txt
+botgle_dictionary_path = fsh.root + "twitterpibot" + os.sep + "text" + os.sep + "boggle_advanced" + os.extsep + "txt"
+words = fsh.readlines(botgle_dictionary_path)
+words = list(map(lambda word: word.upper().strip(), words))
+boggle_words = list(filter(lambda word: len(word) >= 3, words))
+boggle_sets = list(map(lambda word: (word, set(word)), words))
 
 
 def get_botgle_candidates(letters):
     letters = set(letters)
-    with open(botgle_dictionary_path) as file:
-        words = file.readlines()
-    words = list(map(lambda word: word.upper().strip(), words))
-    words = list(filter(lambda word: len(word) >= 3, words))
-    words = list(filter(lambda word: set(word) < letters, words))
+    words = list(map(lambda tuple: tuple[0], filter(lambda tuple: tuple[1].issubset(letters), boggle_sets)))
     return words
 
 
 if __name__ == '__main__':
-    get_botgle_candidates("CAT")
+    print(get_botgle_candidates("BANANA"))

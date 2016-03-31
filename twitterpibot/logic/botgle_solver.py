@@ -56,12 +56,14 @@ class State(object):
 
     @staticmethod
     def _parse_tiles(word):
+        logging.debug("parsing: %s", word )
         tile_letters = []
         letters = list(word)
         letters.reverse()
         while letters:
             letter = letters.pop()
-            if letter == "Q":
+            if letter == "Q" and letters:
+
                 next_letter = letters.pop()
                 if next_letter == "U":
                     # a Q followed by a U
@@ -74,6 +76,7 @@ class State(object):
             else:
                 tile_letters.append(letter)
         tile_letters.reverse()
+        logging.debug("tiles: %s", tile_letters)
         return tile_letters
 
 
@@ -134,26 +137,29 @@ class Tiles(object):
 
         logger.debug("Looking for tile {}".format(tile_letter))
 
+        next_tiles = None
         if state.current_tile:
-
             if tile_letter in state.current_tile.adjacent_tiles:
-
                 next_tiles = list(filter(lambda tile: not state.is_visited(tile),
                                          state.current_tile.adjacent_tiles[tile_letter]))
             else:
                 logger.debug("Could not find adjacent tile {}".format(tile_letter))
                 return False
         else:
-            next_tiles = self._tiles_by_letter[tile_letter]
+            if tile_letter in self._tiles_by_letter:
+                next_tiles = self._tiles_by_letter[tile_letter]
+            else:
+                logger.debug("Could not find tile {}".format(tile_letter))
 
-        for next_tile in next_tiles:
-            logger.debug("Found tile {}".format(next_tile))
-            state_copy = copy.deepcopy(state)
-            state_copy.current_tile = next_tile
-            state_copy.mark_visited(state_copy.current_tile)
-            if self.can_find(state=state_copy):
-                state.path = state_copy.path
-                return state.path
+        if next_tiles:
+            for next_tile in next_tiles:
+                logger.debug("Found tile {}".format(next_tile))
+                state_copy = copy.deepcopy(state)
+                state_copy.current_tile = next_tile
+                state_copy.mark_visited(state_copy.current_tile)
+                if self.can_find(state=state_copy):
+                    state.path = state_copy.path
+                    return state.path
         return False
 
 
