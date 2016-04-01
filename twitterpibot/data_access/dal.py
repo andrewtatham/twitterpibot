@@ -21,14 +21,15 @@ except NameError:
 folder = fsh.root + "temp" + os.sep + "db" + os.sep
 fsh.ensure_directory_exists(folder)
 
-_engine = model.create_engine("sqlite:///" + folder + "twitterpibot.db", echo=True)
 _tokens_engine = tokens.create_engine("sqlite:///" + folder + "tokens.db", echo=True)
+_engine = model.create_engine("sqlite:///" + folder + "twitterpibot.db", echo=True)
 
-model.ModelBase.metadata.bind = _engine
 tokens.TokenBase.metadata.bind = _tokens_engine
+model.ModelBase.metadata.bind = _engine
 
-model.ModelBase.metadata.create_all(_engine)
 tokens.TokenBase.metadata.create_all(_tokens_engine)
+model.ModelBase.metadata.drop_all(_engine)
+model.ModelBase.metadata.create_all(_engine)
 
 token_session_maker = scoped_session(sessionmaker(bind=_tokens_engine))
 dbsession = scoped_session(sessionmaker(bind=_engine))
