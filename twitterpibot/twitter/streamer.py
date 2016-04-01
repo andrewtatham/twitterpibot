@@ -36,7 +36,10 @@ class Streamer(TwythonStreamer):
             self._identity.tokens[0],
             self._identity.tokens[1],
             self._identity.tokens[2],
-            self._identity.tokens[3]
+            self._identity.tokens[3],
+            timeout=300,
+            retry_count=2,
+            retry_in=10
         )
 
     def on_success(self, data):

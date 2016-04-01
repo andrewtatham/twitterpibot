@@ -4,7 +4,7 @@ import random
 import textwrap
 import time
 
-from twython import Twython
+from twython import Twython, TwythonError
 
 from twitterpibot.logic import fsh
 from twitterpibot.twitter import authorisationhelper
@@ -52,10 +52,24 @@ class TwitterHelper(object):
             if outbox_item.filePaths and any(outbox_item.filePaths):
                 for filePath in outbox_item.filePaths:
                     ext = os.path.splitext(filePath)
+
                     if ext == "mp4":
+
                         media_id = self._upload_video(filePath)
                     else:
-                        media_id = self._upload_media(filePath)
+                        retry = 3
+                        for i in range(retry):
+                            try:
+                                media_id = self._upload_media(filePath)
+                                break
+                            except TwythonError as ex:
+                                if i < retry - 1 and "timed out" in str(ex):
+                                    logger.warning(str(ex))
+                                    time.sleep(5)
+                                    logger.info("retrying " + str(i))
+                                else:
+                                    raise
+
                     if media_id:
                         media_ids.append(media_id)
 
@@ -92,8 +106,19 @@ class TwitterHelper(object):
                     tweet_params["lat"] = outbox_item.location.latitude,
                     tweet_params["long"] = outbox_item.location.longitude,
                     tweet_params["place_id"] = outbox_item.location.place_id_twitter
+                retry = 3
+                for i in range(retry):
+                    try:
+                        response = self.twitter.update_status(**tweet_params)
+                        break
+                    except TwythonError as ex:
+                        if i < retry - 1 and "timed out" in str(ex):
+                            logger.warning(str(ex))
+                            time.sleep(5)
+                            logger.info("retrying " + str(i))
+                        else:
+                            raise
 
-                response = self.twitter.update_status(**tweet_params)
                 in_reply_to_status_id = response["id_str"]
                 self.identity.statistics.record_outgoing_tweet()
                 line_number += 1
@@ -244,12 +269,34 @@ class TwitterHelper(object):
         return self.twitter.search(q=query, result_type=result_type)["statuses"]
 
     def create_favorite(self, status_id):
-        self.twitter.create_favorite(id=status_id)
-        self.identity.statistics.record_favourite()
+        retry = 3
+        for i in range(retry):
+            try:
+                self.twitter.create_favorite(id=status_id)
+                self.identity.statistics.record_favourite()
+                break
+            except TwythonError as ex:
+                if i < retry - 1 and "timed out" in str(ex):
+                    logger.warning(str(ex))
+                    time.sleep(5)
+                    logger.info("retrying " + str(i))
+                else:
+                    raise
 
     def retweet(self, status_id):
-        self.twitter.retweet(id=status_id)
-        self.identity.statistics.record_retweet()
+        retry = 3
+        for i in range(retry):
+            try:
+                self.twitter.retweet(id=status_id)
+                self.identity.statistics.record_retweet()
+                break
+            except TwythonError as ex:
+                if i < retry - 1 and "timed out" in str(ex):
+                    logger.warning(str(ex))
+                    time.sleep(5)
+                    logger.info("retrying " + str(i))
+                else:
+                    raise
 
     def add_user_to_list(self, list_id, user_id, screen_name):
         self.twitter.create_list_members(list_id=list_id, user_id=user_id, screen_name=screen_name)
