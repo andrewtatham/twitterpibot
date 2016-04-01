@@ -17,8 +17,8 @@ logger = logging.getLogger(__name__)
 # TwythonError: ('Connection aborted.', error(110, 'Connection timed out'))
 
 
-def handle_silently(exception):
-    _record_warning(None, exception)
+def handle_silently(exception, label=None):
+    _record_warning(None, exception, label)
 
 
 def handle(identity, exception, label=None):
@@ -30,7 +30,7 @@ def handle(identity, exception, label=None):
         _record_error(identity, exception, label)
 
 
-def _record_warning(identity, exception):
+def _record_warning(identity, exception, label):
     logger.warning(Style.DIM + Fore.BLACK + Back.YELLOW + str(exception))
     logger.exception(Style.RESET_ALL)
     dal.warning(identity, exception, label)

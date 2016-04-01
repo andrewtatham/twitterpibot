@@ -27,6 +27,7 @@ _tokens_engine = tokens.create_engine("sqlite:///" + folder + "tokens.db")
 model.ModelBase.metadata.bind = _engine
 tokens.TokenBase.metadata.bind = _tokens_engine
 
+
 model.ModelBase.metadata.create_all(_engine)
 tokens.TokenBase.metadata.create_all(_tokens_engine)
 

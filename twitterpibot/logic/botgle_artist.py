@@ -27,6 +27,7 @@ class BoardOptions(Enum):
     Letters = 1
     Tiles = 2
     TilesLetters = 3
+    all = [Blank, Letters, Tiles, TilesLetters]
 
 
 class TileOptions(Enum):
@@ -34,32 +35,36 @@ class TileOptions(Enum):
     CircleFill = 1
     SquareOutline = 2
     CircleOutline = 3
+    all = [SquareFill, CircleFill, SquareOutline, CircleOutline]
 
 
 class TextOptions(Enum):
     NoText = 0
     Text = 1
+    all = [NoText, Text]
 
 
 class PathOptions(Enum):
     TubeMap = 0
     # Sketchy = 1
+    all = [TubeMap]
 
 
 class PathLabelOptions(Enum):
     NoLabel = 0
     TopLeft = 1
+    all = [NoLabel, TopLeft]
 
 
 def make(board, solution, screen_name):
     folder = fsh.root + "temp" + os.sep + "botgle" + os.sep + screen_name + os.sep
     fsh.ensure_directory_exists(folder)
 
-    board_option = random.choice(BoardOptions)
-    tile_option = random.choice(TileOptions)
-    text_option = random.choice(TextOptions)
-    path_option = random.choice(PathOptions)
-    path_label_option = random.choice(PathLabelOptions)
+    board_option = random.choice(list(BoardOptions))
+    tile_option = random.choice(list(TileOptions))
+    text_option = random.choice(list(TextOptions))
+    path_option = random.choice(list(PathOptions))
+    path_label_option = random.choice(list(PathLabelOptions))
 
     retval = {}
     image_length = 450
@@ -117,7 +122,7 @@ def make(board, solution, screen_name):
                 for col in range(n):
                     tile_origin = tile_origins[col][row]
                     tile_rect = image_helper.rectangle(tile_origin, tile_size)
-                    letter = board[col][row]
+                    letter = board[row][col]
                     letter_size = board_draw.textsize(letter, lrg_fnt)
                     letter_origin = (tile_origin[0] + tile_size[0] / 2 - letter_size[0] / 2 + tile_padding / 4,
                                      tile_origin[1] + tile_size[1] / 2 - letter_size[1] / 2 + tile_padding / 4)
@@ -180,7 +185,7 @@ def make(board, solution, screen_name):
                 else:
                     row = tile.row
                     col = tile.col
-                tile_centre = tile_centres[row][col]
+                tile_centre = tile_centres[col][row]
                 if path_option == PathOptions.TubeMap:
                     point = (tile_centre[0] + tube_map_offset,
                              tile_centre[1] + tube_map_offset)

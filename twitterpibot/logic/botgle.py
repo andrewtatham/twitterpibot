@@ -26,43 +26,65 @@ class BotgleGame(object):
         retval = {}
         board = botgle_solver.parse_board(inbox_item.text)
         if board:
-            retval["board"] = board
-            if not self.board_in_progress or self.board_in_progress != board:
-                # start new solver
-                self.solution = None
-                self.board_in_progress = board
-
-                self.solution = botgle_solver.solve_board(self.board_in_progress)
-
-                if self.solution:
-                    retval["solutions"] = self.solution
-            if self.board_in_progress and self.board_in_progress == board:
-                # solution in progress
-                # retval["text"] = "[painting noises]"
-                pass
-
-        elif "GAME OVER" in inbox_item.text:
-            if self.board_in_progress and self.solution:
-                image = botgle_artist.make(self.board_in_progress, self.solution, self.identity.screen_name)
-                retval["image"] = image
-            self.board_in_progress = None
-            self.solution = None
-        elif "Boggle in 10 minutes" in inbox_item.text:
-            retval["text"] = random.choice([
-                "[mixes paint]",
-                "[fetches easel]",
-                "[gets canvas]",
-                "[prepares canvas]",
-            ])
-        elif "Next game in 6 hours" in inbox_item.text:
-            retval["text"] = random.choice([
-                "[buys paint]",
-                "[buys canvas]",
-                "[buys brushes]",
-                "[cleans brushes]",
-                "[sleeps]"
-            ])
+            self._on_board(board, retval)
+        elif self._is_game_over(inbox_item):
+            self._on_game_over(retval)
+        elif self._is_next_game_in_x_minutes(inbox_item):
+            self._on_next_game_in_x_minutes(retval)
+        elif self._is_next_game_in_x_hours(inbox_item):
+            self._on_next_game_in_x_hours(retval)
         return retval
+
+    def _on_board(self, board, retval):
+        retval["board"] = board
+        if not self.board_in_progress or self.board_in_progress != board:
+            # start new solver
+            self.solution = None
+            self.board_in_progress = board
+
+            self.solution = botgle_solver.solve_board(self.board_in_progress)
+
+            if self.solution:
+                retval["solutions"] = self.solution
+        if self.board_in_progress and self.board_in_progress == board:
+            # solution in progress
+            # retval["text"] = "[painting noises]"
+            pass
+
+    def _on_game_over(self, retval):
+        if self.board_in_progress and self.solution:
+            image = botgle_artist.make(self.board_in_progress, self.solution, self.identity.screen_name)
+            retval["image"] = image
+        self.board_in_progress = None
+        self.solution = None
+
+    def _on_next_game_in_x_hours(self, retval):
+        retval["text"] = random.choice([
+            "[buys paint]",
+            "[buys canvas]",
+            "[buys brushes]",
+            "[cleans brushes]",
+            "[sleeps]"
+        ])
+
+    def _on_next_game_in_x_minutes(self, retval):
+        retval["text"] = random.choice([
+            "[mixes paint]",
+            "[fetches easel]",
+            "[gets canvas]",
+            "[prepares canvas]",
+        ])
+
+    def _is_game_over(self, inbox_item):
+        return "GAME OVER" in inbox_item.text
+
+    def _is_next_game_in_x_minutes(self, inbox_item):
+        return "Boggle in 10 minutes" in inbox_item.text
+
+    def _is_next_game_in_x_hours(self, inbox_item):
+        # todo regex
+        return "Next game in" in inbox_item.text \
+               and "hours" in inbox_item.text
 
 
 class BotgleResponse(Response):
@@ -130,10 +152,10 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
 
     identity = main.BotgleArtistIdentity(None)
-    timeline = identity.twitter.get_user_timeline(screen_name="botgle", exclude_replies=True, count=200)
+    timeline = identity.twitter.get_user_timeline(screen_name="botgle", exclude_replies=True, count=20)
     tweets = list(map(lambda data: IncomingTweet(data, identity), timeline))
     tweets.reverse()
-    response = BotgleResponse(identity, armed=False)
+    response = BotgleResponse(identity, armed=True)
     testcases = []
 
     for tweet in tweets:
@@ -146,4 +168,4 @@ if __name__ == '__main__':
             except Exception as ex:
                 logger.exception(ex)
 
-    # pprint.pprint(testcases)
+                # pprint.pprint(testcases)

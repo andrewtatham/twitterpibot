@@ -35,7 +35,7 @@ def _run_wrapper(task):
             task.on_run()
         except Exception as e:
             logger.warn("[Tasks] exception in thread %s", task.key)
-            handle(task.identity, e)
+            handle(task.identity, e, label=task.key)
     logger.info("[Tasks] exiting thread %s", task.key)
 
 
