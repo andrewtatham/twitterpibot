@@ -34,7 +34,7 @@ from twitterpibot.responses.RetweetResponse import RetweetResponse
 from twitterpibot.responses.SongResponse import SongResponse
 from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
 from twitterpibot.responses.ThanksResponse import ThanksResponse
-from twitterpibot.responses.TimelapseResponse import TimelapseResponse
+# from twitterpibot.responses.TimelapseResponse import TimelapseResponse
 from twitterpibot.responses.x_or_y_response import X_Or_Y_Response
 from twitterpibot.schedule.BlankTweetScheduledTask import BlankTweetScheduledTask
 from twitterpibot.logic.ed_balls_day import TweetEdBallsDayScheduledTask, StreamEdBallsDayScheduledTask
@@ -43,10 +43,12 @@ from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdaySchedu
 from twitterpibot.schedule.JokesScheduledTask import JokesScheduledTask
 from twitterpibot.schedule.LightsScheduledTask import LightsScheduledTask
 from twitterpibot.schedule.PhotoScheduledTask import PhotoScheduledTask
-from twitterpibot.schedule.RegularTimelapseScheduledTask import RegularTimelapseScheduledTask
 from twitterpibot.schedule.SongScheduledTask import SongScheduledTask
-from twitterpibot.schedule.SunriseTimelapseScheduledTask import SunriseTimelapseScheduledTask
-from twitterpibot.schedule.SunsetTimelapseScheduledTask import SunsetTimelapseScheduledTask
+
+# from twitterpibot.schedule.RegularTimelapseScheduledTask import RegularTimelapseScheduledTask
+# from twitterpibot.schedule.SunriseTimelapseScheduledTask import SunriseTimelapseScheduledTask
+# from twitterpibot.schedule.SunsetTimelapseScheduledTask import SunsetTimelapseScheduledTask
+
 from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
 from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
 from twitterpibot.schedule.WikipediaScheduledTask import WikipediaScheduledTask
@@ -194,9 +196,9 @@ def get_pi_scheduled_jobs(identity, converse_with_identity):
     if hardware.is_linux and (hardware.is_webcam_attached or hardware.is_picam_attached):
         scheduledjobs.extend([
             PhotoScheduledTask(identity),
-            SunriseTimelapseScheduledTask(identity),
-            SunsetTimelapseScheduledTask(identity),
-            RegularTimelapseScheduledTask(identity)
+            # SunriseTimelapseScheduledTask(identity),
+            # SunsetTimelapseScheduledTask(identity),
+            # RegularTimelapseScheduledTask(identity)
         ])
     if hardware.is_piglow_attached \
             or hardware.is_unicornhat_attached \
@@ -223,7 +225,7 @@ def get_pi_responses(identity):
     if hardware.is_picam_attached or hardware.is_webcam_attached:
         responses.extend([
             PhotoResponse(identity),
-            TimelapseResponse(identity)
+            # TimelapseResponse(identity)
         ])
     responses.extend([
         ReplyResponse(identity),

@@ -4,13 +4,13 @@ import random
 import traceback
 
 # import uptime
+from twitterpibot.data_access import model, tokens
 
 from sqlalchemy.orm import sessionmaker
 
 from twitterpibot.data_access.model import ExceptionRow
 from twitterpibot.data_access.tokens import Token
 from twitterpibot.logic import fsh
-from twitterpibot.data_access import model, tokens
 
 try:
     # noinspection PyUnresolvedReferences,PyShadowingBuiltins
@@ -22,11 +22,12 @@ folder = fsh.root + "temp" + os.sep + "db" + os.sep
 fsh.ensure_directory_exists(folder)
 
 _engine = model.create_engine("sqlite:///" + folder + "twitterpibot.db")
-model.ModelBase.metadata.bind = _engine
-model.ModelBase.metadata.create_all(_engine)
-
 _tokens_engine = tokens.create_engine("sqlite:///" + folder + "tokens.db")
+
+model.ModelBase.metadata.bind = _engine
 tokens.TokenBase.metadata.bind = _tokens_engine
+
+model.ModelBase.metadata.create_all(_engine)
 tokens.TokenBase.metadata.create_all(_tokens_engine)
 
 
@@ -159,6 +160,6 @@ if __name__ == "__main__":
         exceptionmanager.raise_test_exception()
     except Exception as ex:
         if random.randint(0, 1) == 0:
-            warning(None, ex)
+            warning(None, ex, str(exceptionmanager.raise_test_exception))
         else:
-            exception(None, ex)
+            exception(None, ex, str(exceptionmanager.raise_test_exception))
