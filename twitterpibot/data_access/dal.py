@@ -6,7 +6,7 @@ import traceback
 # import uptime
 from twitterpibot.data_access import model, tokens
 
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 from twitterpibot.data_access.model import ExceptionRow
 from twitterpibot.data_access.tokens import Token
@@ -21,25 +21,25 @@ except NameError:
 folder = fsh.root + "temp" + os.sep + "db" + os.sep
 fsh.ensure_directory_exists(folder)
 
-_engine = model.create_engine("sqlite:///" + folder + "twitterpibot.db")
-_tokens_engine = tokens.create_engine("sqlite:///" + folder + "tokens.db")
+_engine = model.create_engine("sqlite:///" + folder + "twitterpibot.db", echo=True)
+_tokens_engine = tokens.create_engine("sqlite:///" + folder + "tokens.db", echo=True)
 
 model.ModelBase.metadata.bind = _engine
 tokens.TokenBase.metadata.bind = _tokens_engine
 
-
 model.ModelBase.metadata.create_all(_engine)
 tokens.TokenBase.metadata.create_all(_tokens_engine)
 
+token_session_maker = scoped_session(sessionmaker(bind=_tokens_engine))
+dbsession = scoped_session(sessionmaker(bind=_engine))
+
 
 def _create_tokens_session():
-    dbsession = sessionmaker(bind=_tokens_engine)
-    session = dbsession()
+    session = token_session_maker()
     return session
 
 
 def _create_session():
-    dbsession = sessionmaker(bind=_engine)
     session = dbsession()
     return session
 

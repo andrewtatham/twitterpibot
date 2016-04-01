@@ -27,7 +27,6 @@ class BoardOptions(Enum):
     Letters = 1
     Tiles = 2
     TilesLetters = 3
-    all = [Blank, Letters, Tiles, TilesLetters]
 
 
 class TileOptions(Enum):
@@ -35,25 +34,21 @@ class TileOptions(Enum):
     CircleFill = 1
     SquareOutline = 2
     CircleOutline = 3
-    all = [SquareFill, CircleFill, SquareOutline, CircleOutline]
 
 
 class TextOptions(Enum):
     NoText = 0
     Text = 1
-    all = [NoText, Text]
 
 
 class PathOptions(Enum):
     TubeMap = 0
     # Sketchy = 1
-    all = [TubeMap]
 
 
 class PathLabelOptions(Enum):
     NoLabel = 0
     TopLeft = 1
-    all = [NoLabel, TopLeft]
 
 
 def make(board, solution, screen_name):

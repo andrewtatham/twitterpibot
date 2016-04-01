@@ -2,6 +2,7 @@ import logging
 import random
 
 from colorama import Fore, Style, Back
+
 from twython import TwythonError
 
 from twitterpibot.data_access import dal
@@ -87,3 +88,14 @@ def raise_test_exception(levels=None):
     if not levels:
         levels = random.randint(2, 12)
     _foo(levels, 0)
+
+
+def test_exception_handling():
+    try:
+        raise_test_exception()
+    except Exception as ex:
+        handle(None, ex, label="test_exception_handling")
+
+
+if __name__ == '__main__':
+    test_exception_handling()
