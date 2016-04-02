@@ -1,4 +1,5 @@
 from itertools import groupby
+from operator import itemgetter, attrgetter
 import random
 
 import twitterpibot
@@ -150,6 +151,7 @@ def get_exception_dto(exception):
         "uptime": exception.uptime,
         "boottime": exception.boottime,
         "screen_name": exception.screen_name,
+        "label": exception.label,
         "message": exception.message,
         "stack_trace": exception.stack_trace,
     }
@@ -161,9 +163,13 @@ def get_exceptions():
 
 def _get_exception_summary(exceptions_list):
     retval = []
-    exceptions_list.sort(key=lambda ex: ex.message)
-    for message, group in groupby(exceptions_list, lambda ex: ex.message):
-        retval.append(dict(message=message, count=len(list(group))))
+    grouper = attrgetter("screen_name", "label", "message")
+    exceptions_list.sort(key=grouper)
+    for key, group in groupby(exceptions_list, grouper):
+        item = dict(zip(["screen_name", "label", "message"], key))
+        item['count'] = len(list(group))
+        retval.append(item)
+    print(retval)
     retval.sort(key=lambda msg: msg["count"])
     retval.reverse()
     return retval

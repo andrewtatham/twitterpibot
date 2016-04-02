@@ -4,6 +4,7 @@ import random
 import traceback
 
 # import uptime
+from twitterpibot import hardware
 from twitterpibot.data_access import model, tokens
 
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -21,14 +22,15 @@ except NameError:
 folder = fsh.root + "temp" + os.sep + "db" + os.sep
 fsh.ensure_directory_exists(folder)
 
-_tokens_engine = tokens.create_engine("sqlite:///" + folder + "tokens.db", echo=True)
-_engine = model.create_engine("sqlite:///" + folder + "twitterpibot.db", echo=True)
+_tokens_engine = tokens.create_engine("sqlite:///" + folder + "tokens.db", echo=False)
+_engine = model.create_engine("sqlite:///" + folder + "twitterpibot.db", echo=False)
 
 tokens.TokenBase.metadata.bind = _tokens_engine
 model.ModelBase.metadata.bind = _engine
 
 tokens.TokenBase.metadata.create_all(_tokens_engine)
-model.ModelBase.metadata.drop_all(_engine)
+if hardware.is_raspberry_pi_2 and False:
+    model.ModelBase.metadata.drop_all(_engine)
 model.ModelBase.metadata.create_all(_engine)
 
 token_session_maker = scoped_session(sessionmaker(bind=_tokens_engine))
@@ -157,11 +159,11 @@ def get_exceptions():
 
 if __name__ == "__main__":
     from twitterpibot import exceptionmanager
-
-    try:
-        exceptionmanager.raise_test_exception()
-    except Exception as ex:
-        if random.randint(0, 1) == 0:
-            warning(None, ex, str(exceptionmanager.raise_test_exception))
-        else:
-            exception(None, ex, str(exceptionmanager.raise_test_exception))
+    for i in range(20):
+        try:
+            exceptionmanager.raise_test_exception()
+        except Exception as ex:
+            if random.randint(0, 1) == 0:
+                warning(None, ex, str(exceptionmanager.raise_test_exception))
+            else:
+                exception(None, ex, str(exceptionmanager.raise_test_exception))
