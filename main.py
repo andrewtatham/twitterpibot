@@ -7,15 +7,15 @@ import colorama
 from twitterpibot import hardware
 
 # if __name__ == '__main__':
-    # from twitterpibot.logic import fsh
-    # from twitterpibot.data_access import dal
-    #
-    # if hardware.is_raspberry_pi_2:
-    #     fsh.delete_files([
-    #         # fsh.root + "temp/db/tokens.db",
-    #         fsh.root + "temp/db/twitterpibot.db"
-    #     ])
-    # dal.import_tokens(fsh.root + "tokens.csv")
+# from twitterpibot.logic import fsh
+# from twitterpibot.data_access import dal
+#
+# if hardware.is_raspberry_pi_2:
+#     fsh.delete_files([
+#         # fsh.root + "temp/db/tokens.db",
+#         fsh.root + "temp/db/twitterpibot.db"
+#     ])
+# dal.import_tokens(fsh.root + "tokens.csv")
 
 from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask
 from twitterpibot.logic.botgle import BotgleResponse
@@ -131,7 +131,7 @@ class Identity(object):
         self.following = set()
         self.colour = colorama.Fore.WHITE
         self.id_str = None
-        self.profile_image_url = None  # todo init
+        self.profile_image_url = None
         self.statistics = Statistics()
 
     @abc.abstractmethod
@@ -162,8 +162,8 @@ class BotIdentity(Identity):
     def get_scheduled_jobs(self):
         jobs = super(BotIdentity, self).get_scheduled_jobs()
         jobs.extend([
-            IdentityMonitorScheduledTask(self),
-            MidnightScheduledTask(self),
+            # IdentityMonitorScheduledTask(self),
+            # MidnightScheduledTask(self),
             UserListsScheduledTask(self, self.admin_identity),
             SubscribedListsScheduledTask(self, self.admin_identity),
             FollowScheduledTask(self),

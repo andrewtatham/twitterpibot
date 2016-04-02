@@ -47,7 +47,7 @@ class FollowScheduledTask(ScheduledTask):
             random.shuffle(self.to_follow)
 
         if self.to_follow:
-            for i in range(random.randint(5, 10)):
+            for i in range(random.randint(1, 10)):
                 if self.to_follow:
                     self._follow(self.to_follow.pop())
 
