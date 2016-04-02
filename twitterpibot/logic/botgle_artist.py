@@ -1,3 +1,4 @@
+from itertools import groupby
 import os
 import random
 from enum import Enum
@@ -49,6 +50,10 @@ class PathOptions(Enum):
 class PathLabelOptions(Enum):
     NoLabel = 0
     TopLeft = 1
+    TopRight = 2
+    BottomLeft = 3
+    BottomRight = 4
+    PathStart = 5
 
 
 def make(board, solution, screen_name):
@@ -62,11 +67,11 @@ def make(board, solution, screen_name):
     path_label_option = random.choice(list(PathLabelOptions))
 
     retval = {}
-    image_length = 450
+    image_length = 500
     image_width = image_length
     image_height = image_length
     image_size = (image_width, image_height)
-    margin = 4
+    margin = 13
 
     n = 4
 
@@ -76,13 +81,15 @@ def make(board, solution, screen_name):
 
     h_range = random.uniform(0.3, 0.8)
 
-    a = 255
+    a = 196
 
     r, g, b = hsv_to_rgb(h, s, v / random.randint(2, 3))
     bg_colour = (r, g, b, a)
 
     r, g, b = hsv_to_rgb(h, s, v / random.randint(3, 4))
     bg_dark_colour = (r, g, b, a)
+
+    line_width = 3
 
     image = Image.new('RGBA', image_size, bg_dark_colour)
     draw = ImageDraw.Draw(image)
@@ -145,9 +152,19 @@ def make(board, solution, screen_name):
 
         found_words = list(solution)
         found_words.sort(key=len)
-        n = random.randint(1, 4)
-        found_words = found_words[-n:]
-        found_words.reverse()
+        found_words_grouped = {}
+        for length, words in groupby(found_words, lambda word: len(word)):
+            found_words_grouped[length] = list(words)
+
+        max_length = max(found_words_grouped)
+        # max_length = random.choice(found_words_grouped)
+        # max_length = min(found_words_grouped)
+
+        found_words = list(found_words_grouped[max_length])
+
+        # n = random.randint(1, 4)
+        # found_words = found_words[-n:]
+        # found_words.reverse()
 
         if text_option == TextOptions.Text and len(solution) >= 200:
             text = " ".join(solution)
@@ -160,15 +177,37 @@ def make(board, solution, screen_name):
 
         h_delta = h_range / len(found_words)
         tube_map_offset = -len(found_words) / 2
-        label_origin = (0, 0)
+
+        label_origin = None
+        if path_label_option == PathLabelOptions.TopLeft:
+            label_origin = (0, 0)
+        elif path_label_option == PathLabelOptions.BottomLeft:
+            label_origin = (0, image_height)
+        elif path_label_option == PathLabelOptions.TopRight:
+            label_origin = (image_width, 0)
+        elif path_label_option == PathLabelOptions.BottomRight:
+            label_origin = (image_width, image_height)
+
         for found_word in found_words:
             h = image_helper.h_delta(h, h_delta)
             r, g, b = hsv_to_rgb(h, s, v)
             path_colour = (r, g, b, a)
+
+            word_size = solution_draw.textsize(found_word, fnt)
+
             if path_label_option == PathLabelOptions.TopLeft:
-                word_size = solution_draw.textsize(found_word, fnt)
                 solution_draw.text(label_origin, found_word, font=fnt, fill=path_colour)
-                label_origin = (label_origin[0] + word_size[0], label_origin[1])
+                label_origin = (label_origin[0], label_origin[1] + word_size[1])
+            elif path_label_option == PathLabelOptions.BottomLeft:
+                label_origin = (label_origin[0], label_origin[1] - word_size[1])
+                solution_draw.text(label_origin, found_word, font=fnt, fill=path_colour)
+            elif path_label_option == PathLabelOptions.TopRight:
+                label_origin = (image_width - word_size[0], label_origin[1])
+                solution_draw.text(label_origin, found_word, font=fnt, fill=path_colour)
+                label_origin = (label_origin[0], label_origin[1] + word_size[1])
+            elif path_label_option == PathLabelOptions.BottomRight:
+                label_origin = (image_width - word_size[0], label_origin[1] - word_size[1])
+                solution_draw.text(label_origin, found_word, font=fnt, fill=path_colour)
 
             path = solution[found_word]
 
@@ -189,19 +228,31 @@ def make(board, solution, screen_name):
                 #     point = (tile_centre[0] + random.randint(-wobble, wobble),
                 #              tile_centre[1] + random.randint(-wobble, wobble))
                 if prev_point:
-
                     solution_draw.line((prev_point, point),
-                                       width=5,
+                                       width=line_width,
                                        fill=path_colour)
                 else:
-                    point_size = (7, 7)
+                    point_size = (line_width + 1, line_width + 1)
                     rect = (
                         (point[0] - point_size[0], point[1] - point_size[1]),
                         (point[0] + point_size[0], point[1] + point_size[1]))
                     solution_draw.ellipse(rect, fill=path_colour)
+                    if path_label_option == PathLabelOptions.PathStart:
+                        label_origin = []
+                        if col <= n / 2 - 1:
+                            label_origin[0] = point[0]
+                        else:
+                            label_origin[0] = point[0] - word_size[0]
+                        if row <= n / 2 - 1:
+                            label_origin[1] = point[1]
+                        else:
+                            label_origin[1] = point[1] - word_size[1]
+
+                        solution_draw.text(label_origin, found_word, font=fnt, fill=path_colour)
+
                 prev_point = point
 
-            tube_map_offset += 10
+            tube_map_offset += line_width
 
     out = image
     if board_image:
