@@ -1,5 +1,6 @@
 import logging
 import random
+import traceback
 
 from colorama import Fore, Style, Back
 
@@ -8,6 +9,7 @@ from twython import TwythonError
 from twitterpibot.data_access import dal
 import twitterpibot.hardware
 from twitterpibot.logic import textonanimage, imagemanager
+from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 
 logger = logging.getLogger(__name__)
@@ -45,7 +47,7 @@ def _record_error(identity, exception, label):
     dal.exception(identity, exception, label)
     if identity:
         identity.statistics.record_error()
-        _try_send_exception(identity, exception)
+        # _try_send_exception(identity, exception)
 
 
 topics = [
@@ -67,12 +69,13 @@ def _try_send_exception(identity, exception):
     try:
         # if identity and twitterpibot.hardware.is_mac_osx:
         if identity and twitterpibot.hardware.is_linux:
-            image = imagemanager.get_image(topics=topics)
-            path = textonanimage.put_text_on_an_image(image, exception=exception)
-            identity.twitter.send(OutgoingTweet(
-                text="@" + identity.admin_screen_name + " " + str(exception),
-                file_paths=[path]))
-            # identity.twitter.send(OutgoingDirectMessage(text=traceback.format_exc()))
+            # image = imagemanager.get_image(topics=topics)
+            # path = textonanimage.put_text_on_an_image(image, exception=exception)
+            # identity.twitter.send(OutgoingTweet(
+            #     text="@" + identity.admin_screen_name + " " + str(exception),
+            #     file_paths=[path]))
+
+            identity.twitter.send(OutgoingDirectMessage(text=traceback.format_exc()))
     except Exception as e:
         logger.exception(e)
 
