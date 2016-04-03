@@ -5,17 +5,14 @@ import os
 import colorama
 
 from twitterpibot import hardware
+from twitterpibot.logic.admin_commands import RestartResponse, ImportTokensResponse, DropCreateTablesResponse, \
+    ExportTokensResponse
 
-# if __name__ == '__main__':
-# from twitterpibot.logic import fsh
-# from twitterpibot.data_access import dal
-#
-# if hardware.is_raspberry_pi_2:
-#     fsh.delete_files([
-#         # fsh.root + "temp/db/tokens.db",
-#         fsh.root + "temp/db/twitterpibot.db"
-#     ])
-# dal.import_tokens(fsh.root + "tokens.csv")
+if __name__ == '__main__':
+    from twitterpibot.logic import fsh
+    from twitterpibot.data_access import dal
+
+    dal.export_tokens(fsh.root + "tokens.csv")
 
 from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask
 from twitterpibot.logic.botgle import BotgleResponse
@@ -56,8 +53,6 @@ from twitterpibot.schedule.ZenOfPythonScheduledTask import ZenOfPythonScheduledT
 from twitterpibot.tasks.FadeTask import FadeTask
 from twitterpibot.tasks.LightsTask import LightsTask
 from twitterpibot.schedule.FollowScheduledTask import FollowScheduledTask
-from twitterpibot.schedule.MidnightScheduledTask import MidnightScheduledTask
-from twitterpibot.schedule.MonitorScheduledTask import IdentityMonitorScheduledTask
 from twitterpibot.schedule.SubscribedListsScheduledTask import SubscribedListsScheduledTask
 from twitterpibot.schedule.UserListsScheduledTask import UserListsScheduledTask
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
@@ -213,11 +208,15 @@ def get_pi_responses(identity):
     responses = []
 
     responses.extend([
+        RestartResponse(identity),
+        ImportTokensResponse(identity),
+        ExportTokensResponse(identity),
+        DropCreateTablesResponse(identity),
+
         SongResponse(identity),
         TalkLikeAPirateDayResponse(identity),
         # LocationResponse(identity),
         X_Or_Y_Response(identity),
-        EggPunResponse(identity),
         ThanksResponse(identity),
         HelloResponse(identity),
         Magic8BallResponse(identity),
@@ -288,7 +287,6 @@ class AndrewTathamPiIdentity(BotIdentity):
 
     def get_responses(self):
         responses = []
-        # responses.extend([BotgleResponse(self)])
         responses.extend(get_pi_responses(self))
         responses.extend(super(AndrewTathamPiIdentity, self).get_responses())
         return responses
@@ -312,7 +310,6 @@ class AndrewTathamPi2Identity(BotIdentity):
 
     def get_responses(self):
         responses = []
-        # responses.extend([BotgleResponse(self)])
         responses.extend(get_pi_responses(self))
         responses.extend(super(AndrewTathamPi2Identity, self).get_responses())
         return responses
