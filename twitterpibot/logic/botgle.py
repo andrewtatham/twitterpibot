@@ -64,7 +64,8 @@ class BotgleGame(object):
             "[buys canvas]",
             "[buys brushes]",
             "[cleans brushes]",
-            "[sleeps]"
+            "[sleeps]",
+            "[contemplates]"
         ])
 
     def _on_next_game_in_x_minutes(self, retval):
@@ -79,7 +80,7 @@ class BotgleGame(object):
         return "GAME OVER" in inbox_item.text
 
     def _is_next_game_in_x_minutes(self, inbox_item):
-        return "Boggle in 10 minutes" in inbox_item.text
+        return "Boggle in" in inbox_item.text and "minutes" in inbox_item.text
 
     def _is_next_game_in_x_hours(self, inbox_item):
         # todo regex
@@ -107,7 +108,9 @@ class BotgleResponse(Response):
                     text += random.choice(descriptions) % image["name"]
                     file_paths = [image["file_path"]]
                     if self._armed:
-                        self.identity.twitter.send(OutgoingTweet(text=text, file_paths=file_paths))
+                        text = ".@Botgle " + text
+                        self.identity.twitter.send(OutgoingTweet(text=text, file_paths=file_paths,
+                                                                 in_reply_to_status_id=inbox_item.id_str))
                     else:
                         logger.info("tweets " + text + " " + str(file_paths))
                     if random.randint(0, 9) == 0:
