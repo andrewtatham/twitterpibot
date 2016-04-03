@@ -11,32 +11,36 @@ trigger_list = ["egg", "eggs", "shell", "chicken", "hen", "omlette", "yolk", "al
 
 trigger_rx = re.compile("|".join(trigger_list), re.IGNORECASE)
 
-replacements = [
-    ("eg", "egg"),
-    ("ex", "eggs"),
+replacements = {
+    "eg": "egg",
+    "ex": "eggs",
 
-    ("sel", "shell"),
-    ("shel", "shell"),
-    ("hell", "shell"),
-    ("shall", "shell"),
+    "sel": "shell",
+    "shel": "shell",
+    "hell": "shell",
+    "shall": "shell",
 
-    ("of", "oeuf"),
-    ("ofs", "oeufs"),
+    "of": "oeuf",
+    "ofs": "oeufs",
 
-    ("album", "albumen"),
+    "album": "albumen",
+
+    "folk": "yolk",
+    "joke": "yolk",
+    "jok": "yolk",
 
     # sketchy
-    ("ag", "egg"),
-    ("ig", "egg"),
-    ("og", "egg"),
-    ("ug", "egg"),
-    ("ek", "egg")
-]
+    "ag": "egg",
+    "ig": "egg",
+    "og": "egg",
+    "ug": "egg",
+    "ek": "egg"
+}
 
 stem_rxs = {
-    "eg": "eg[^g]",  # match eg but not egg
-    "shel": "shel[^l]",  # match shelf but not shell
-    "hell": "[^s]hell",  # match hello but not shell
+    # "eg": "eg[^g]",  # match eg but not egg
+    # "shel": "shel[^l]",  # match shelf but not shell
+    # "hell": "[^s]hell",  # match hello but not shell
 }
 
 
@@ -47,7 +51,7 @@ def get_stem_rx(k):
         return k
 
 
-stem_list = list(map(lambda repl: repl[0], replacements))
+stem_list = list(map(lambda key: key, replacements))
 stem_rx = re.compile("|".join(map(lambda k: get_stem_rx(k), stem_list)), re.IGNORECASE)
 
 
@@ -64,9 +68,13 @@ def make_egg_pun(text):
     logger.info(text)
     matches = stem_rx.findall(text)
     if matches:
-        for repl in replacements:
-            text = re.sub(pattern=repl[0], repl=repl[1].upper(), string=text, flags=re.IGNORECASE)
-            logger.debug(text)
+        logger.debug("matches: {}".format(matches))
+        unique_matches = set(matches)
+        for match in unique_matches:
+            key = match.lower()
+            logger.debug("replacing {} with {}".format(match, replacements[key].upper()))
+            text = re.sub(pattern=match, repl=replacements[key].upper(), string=text, flags=re.IGNORECASE)
+            logger.debug("text: {}".format(text))
         return text
     return None
 
@@ -75,7 +83,7 @@ def make_egg_pun_phrase(phrase=None):
     if not phrase:
         stem = random.choice(stem_list)
         logger.debug("stem: %s" % stem)
-        word = wordnikwrapper.get_word_matching(stem, stem_rx)
+        word = wordnikwrapper.get_word_matching(stem, None)  # stem_rx)
         logger.debug("word: %s" % word)
         phrase = wordnikwrapper.get_example(word)
     logger.debug("phrase: %s" % phrase)
@@ -85,21 +93,29 @@ def make_egg_pun_phrase(phrase=None):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
-
+    logging.basicConfig(level=logging.INFO)
+    logger.info(stem_rx)
+    logger.info(replacements)
     phrases = [
         "there was an explosion",
         "very selfish",
-        "what shall i ",
+        "hello what shall i ",
         "dalek",
         "six of these",
         "Egypt",
         "aggregate",
         "enough",
-        "ignite"
+        "ignite",
+        "it was a funny joke",
+        "they were joking around",
+        "listening to folk music",
+        "self-aware",
+        "eggregious",
+
     ]
+
     for phrase in phrases:
-        print(make_egg_pun_phrase(phrase))
+        logger.info("%s -> %s" % (phrase, make_egg_pun_phrase(phrase)))
 
     for i in range(20):
-        print(make_egg_pun_phrase())
+        logger.info(make_egg_pun_phrase())

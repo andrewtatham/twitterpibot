@@ -101,7 +101,7 @@ def get_word_matching(stem, rx):
     word = None
     skip = 0
     limit = 1000
-    while not word or not rx.match(word):
+    while not word or (rx and not rx.match(word)):
         if not words:
             search = words_api.searchWords("*%s*" % stem, skip=skip, limit=limit)
             words = list(map(lambda w: w.word, search.searchResults))
