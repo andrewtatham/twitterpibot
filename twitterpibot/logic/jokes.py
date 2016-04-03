@@ -1,3 +1,4 @@
+import html
 import random
 
 from pyjokes import pyjokes
@@ -10,7 +11,7 @@ __author__ = 'andrewtatham'
 def _get_chuck_norris_joke():
     response = urlhelper.get_response("http://api.icndb.com/jokes/random")
     if response["type"] == "success":
-        return response["value"]["joke"]
+        return html.unescape(response["value"]["joke"])
 
 
 if __name__ == '__main__':
