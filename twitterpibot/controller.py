@@ -164,23 +164,24 @@ def get_exceptions():
 def _get_exception_summary(exceptions_list):
     retval = []
     grouper = attrgetter("screen_name", "label", "message")
-    exceptions_list.sort(key=grouper)
-    for key, group in groupby(exceptions_list, grouper):
-        item = dict(zip(["screen_name", "label", "message"], key))
-        item['count'] = len(list(group))
-        retval.append(item)
-    print(retval)
-    retval.sort(key=lambda msg: msg["count"])
-    retval.reverse()
+    if exceptions_list:
+        exceptions_list.sort(key=grouper)
+        for key, group in groupby(exceptions_list, grouper):
+            item = dict(zip(["screen_name", "label", "message"], key))
+            item['count'] = len(list(group))
+            retval.append(item)
+        retval.sort(key=lambda msg: msg["count"])
+        retval.reverse()
     return retval
 
 
 def get_exception_summary():
     retval = {}
     exceptions_list = dal.get_exceptions()
-    exceptions_list.sort(key=lambda ex: ex.log_type)
-    for log_type, group in groupby(exceptions_list, lambda ex: ex.log_type):
-        retval[log_type] = _get_exception_summary(list(group))
+    if exceptions_list:
+        exceptions_list.sort(key=lambda ex: ex.log_type)
+        for log_type, group in groupby(exceptions_list, lambda ex: ex.log_type):
+            retval[log_type] = _get_exception_summary(list(group))
     return retval
 
 
