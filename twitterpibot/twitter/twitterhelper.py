@@ -82,7 +82,7 @@ class TwitterHelper(object):
             if outbox_item.media_ids:
                 media_count = len(outbox_item.media_ids)
 
-            link_count = urlhelper.count_urls(outbox_item.text)
+            link_count = urlhelper.count_urls(outbox_item.status)
 
             outbox_item.display()
 
