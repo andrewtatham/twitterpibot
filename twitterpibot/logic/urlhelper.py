@@ -4,6 +4,7 @@ import hmac
 import json
 import logging
 import pprint
+import re
 from urllib.parse import urlparse
 
 import requests
@@ -72,3 +73,22 @@ def get_response(url):
     response_dict = json.loads(response_json)
     logger.info(pprint.pformat(response_dict))
     return response_dict
+
+
+url_rx = re.compile("(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})", re.IGNORECASE)
+
+
+def extract_urls(text):
+    urls = []
+    matches = url_rx.findall(text)
+    urls.extend(matches)
+    return urls
+
+
+def count_urls(text):
+    return len(extract_urls(text))
+
+
+if __name__ == '__main__':
+    text = "@blah RT Blah http://link1.com/abc.html, http://link2.co.uk/abc?xyz=%20"
+    pprint.pprint(extract_urls(text))

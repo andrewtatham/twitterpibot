@@ -8,7 +8,7 @@ from twython import Twython
 
 from retrying import retry
 
-from twitterpibot.logic import fsh
+from twitterpibot.logic import fsh, urlhelper
 from twitterpibot.twitter import authorisationhelper
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
@@ -82,7 +82,7 @@ class TwitterHelper(object):
             if outbox_item.media_ids:
                 media_count = len(outbox_item.media_ids)
 
-            link_count = 0  # TODO Count links
+            link_count = urlhelper.count_urls(outbox_item.text)
 
             outbox_item.display()
 
