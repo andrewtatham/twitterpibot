@@ -126,6 +126,11 @@ hello_words = [
     "'sup"
 ]
 
+thanks_and_bye = [
+    "K THX BYE!",
+    "Thankyou. Come again.",
+]
+
 weather_responses = [
     "Red sky at night, shepherd's delight. Red sky in the morning, shepherd's warning",
     "When the wind is out of the East, tis never good for man nor beast",

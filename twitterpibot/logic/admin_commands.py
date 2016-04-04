@@ -1,6 +1,8 @@
+import random
+
 from twitterpibot.bootstrap import shutdown
 from twitterpibot.data_access import dal
-
+from twitterpibot.logic.conversation import hello_words, thanks_and_bye
 from twitterpibot.responses.Response import Response
 
 
@@ -10,6 +12,7 @@ class RestartResponse(Response):
                and "restart" in inbox_item.text
 
     def respond(self, inbox_item):
+        self.identity.twitter.reply_with(inbox_item, text=random.choice(hello_words) + " restarting...")
         shutdown()
 
 
@@ -19,7 +22,9 @@ class ImportTokensResponse(Response):
                and "import tokens" in inbox_item.text
 
     def respond(self, inbox_item):
+        self.identity.twitter.reply_with(inbox_item, text=random.choice(hello_words) + " importing...")
         dal.import_tokens("tokens.csv")
+        self.identity.twitter.reply_with(inbox_item, text="...importing done. " + random.choice(thanks_and_bye))
 
 
 class ExportTokensResponse(Response):
@@ -28,7 +33,9 @@ class ExportTokensResponse(Response):
                and "export tokens" in inbox_item.text
 
     def respond(self, inbox_item):
+        self.identity.twitter.reply_with(inbox_item, text=random.choice(hello_words) + " exporting...")
         dal.export_tokens("tokens.csv")
+        self.identity.twitter.reply_with(inbox_item, text="...exporting done. " + random.choice(thanks_and_bye))
 
 
 class DropCreateTablesResponse(Response):
@@ -37,4 +44,10 @@ class DropCreateTablesResponse(Response):
                and "drop create" in inbox_item.text
 
     def respond(self, inbox_item):
+        self.identity.twitter.reply_with(
+            inbox_item,
+            text=random.choice(hello_words) + " dropping & creating...")
         dal.drop_create_tables()
+        self.identity.twitter.reply_with(
+            inbox_item,
+            text="...dropping & creating done. " + random.choice(thanks_and_bye))
