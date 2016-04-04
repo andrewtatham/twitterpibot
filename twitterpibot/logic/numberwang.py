@@ -101,11 +101,11 @@ class NumberwangHostScheduledTask(ScheduledTask):
             reply_to_id = self.identity.twitter.send(OutgoingTweet(text=q))
             time.sleep(5)
             reply_to_id = contestant.twitter.send(OutgoingTweet(
-                text=".@numberwang_host " + next(replies), in_reply_to_status_id=reply_to_id))
+                text=".@numberwang_host " + next(replies), in_reply_to_id_str=reply_to_id))
             time.sleep(5)
             self.identity.twitter.send(OutgoingTweet(
                 text=".@" + contestant.screen_name + " " + random.choice(host_replies),
-                in_reply_to_status_id=reply_to_id))
+                in_reply_to_id_str=reply_to_id))
             time.sleep(5)
 
         for r in range(random.randint(2, 5)):
@@ -144,19 +144,19 @@ class NumberwangHostScheduledTask(ScheduledTask):
             answers.append(answer)
             reply_to_id = contestant.twitter.send(OutgoingTweet(
                 text=".@numberwang_host @" + other_contestant.screen_name + " " + str(answer),
-                in_reply_to_status_id=reply_to_id))
+                in_reply_to_id_str=reply_to_id))
             time.sleep(5)
 
             if random.randint(0, 49) == 0:
                 bonus = "[KLAXON] " + contestants_mention + " Thats the " + round_type + " bonus. " + \
                         "Triple " + round_type + " to @" + contestant.screen_name + "!"
-                reply_to_id = self.identity.twitter.send(OutgoingTweet(text=bonus, in_reply_to_status_id=reply_to_id))
+                reply_to_id = self.identity.twitter.send(OutgoingTweet(text=bonus, in_reply_to_id_str=reply_to_id))
                 time.sleep(5)
                 break
             other_contestant = contestant
             contestant = next(c)
         thats_numberwang = "." + contestants_mention + "That's " + round_type + "!" * random.randint(1, 15)
-        self.identity.twitter.send(OutgoingTweet(text=thats_numberwang, in_reply_to_status_id=reply_to_id))
+        self.identity.twitter.send(OutgoingTweet(text=thats_numberwang, in_reply_to_id_str=reply_to_id))
         time.sleep(5)
         if round_type == "Numberwang":
             for c in contestants:

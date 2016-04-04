@@ -10,5 +10,5 @@ class RetweetResponse(Response):
         return retweet_condition(inbox_item)
 
     def respond(self, inbox_item):
-        logger.info("retweeting status id %s", inbox_item.status_id)
-        self.identity.twitter.retweet(inbox_item.status_id)
+        logger.info("retweeting status id %s", inbox_item.id_str)
+        self.identity.twitter.retweet(inbox_item.id_str)

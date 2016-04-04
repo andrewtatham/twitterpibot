@@ -9,7 +9,7 @@ class OutgoingTweet(OutboxTextItem):
     # https://dev.twitter.com/rest/reference/post/statuses/update
 
     def __init__(self, reply_to=None, text=None,
-                 in_reply_to_status_id=None,
+                 in_reply_to_id_str=None,
                  file_paths=None,
                  location=None):
 
@@ -19,14 +19,14 @@ class OutgoingTweet(OutboxTextItem):
         self.location = location
 
         self.status = ''
-        self._determine_reply(in_reply_to_status_id, reply_to)
+        self._determine_reply(in_reply_to_id_str, reply_to)
         self.status += text
 
-    def _determine_reply(self, in_reply_to_status_id, reply_to):
-        if in_reply_to_status_id:
-            self.in_reply_to_status_id = in_reply_to_status_id
-        elif reply_to and reply_to.is_tweet and reply_to.status_id:
-            self.in_reply_to_status_id = reply_to.status_id
+    def _determine_reply(self, in_reply_to_id_str, reply_to):
+        if in_reply_to_id_str:
+            self.in_reply_to_id_str = in_reply_to_id_str
+        elif reply_to and reply_to.is_tweet and reply_to.id_str:
+            self.in_reply_to_id_str = reply_to.id_str
         if reply_to:
             self.status += '.'
             if reply_to.sender.screen_name:

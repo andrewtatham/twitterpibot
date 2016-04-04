@@ -133,5 +133,5 @@ class LocationResponse(Response):
         if inbox_item.location:
             text = random.choice(hello_words) + " I see you're at " + inbox_item.location.full_name
             inbox_item.location = googlehelper.geocode(inbox_item.location)
-            file_paths = googlehelper.get_location_images(inbox_item.location, inbox_item.status_id)
+            file_paths = googlehelper.get_location_images(inbox_item.location, inbox_item.id_str)
             self.identity.twitter.reply_with(inbox_item, text=text, file_paths=file_paths)

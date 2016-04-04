@@ -153,7 +153,7 @@ class BotgleResponse(Response):
         if self._armed:
             text = ".@Botgle " + text
             self.identity.twitter.send(OutgoingTweet(text=text, file_paths=file_paths,
-                                                     in_reply_to_status_id=inbox_item.status_id))
+                                                     in_reply_to_id_str=inbox_item.id_str))
         else:
             logger.info("tweets " + text + " " + str(file_paths))
 

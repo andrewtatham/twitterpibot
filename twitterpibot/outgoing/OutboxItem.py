@@ -7,7 +7,7 @@ class OutboxItem(object):
         self.status = None
         self.targets = None
         self.media_ids = None
-        self.in_reply_to_status_id = None
+        self.in_reply_to_id_str = None
 
         # DM
         self.user_id = None

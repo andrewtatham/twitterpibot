@@ -284,13 +284,13 @@ class ConversationScheduledTask(ScheduledTask):
             prompt = get_prompt(level)
             reply_to_id = self.identity.twitter.send(
                 OutgoingTweet(text=".@" + self._converse_with.screen_name + " " + prompt,
-                              in_reply_to_status_id=reply_to_id))
+                              in_reply_to_id_str=reply_to_id))
             time.sleep(5)
 
             response = get_response(level, prompt)
             reply_to_id = self._converse_with.twitter.send(
                 OutgoingTweet(text=".@" + self.identity.screen_name + " " + response,
-                              in_reply_to_status_id=reply_to_id))
+                              in_reply_to_id_str=reply_to_id))
             time.sleep(5)
 
 

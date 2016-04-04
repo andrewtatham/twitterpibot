@@ -35,12 +35,12 @@ class IncomingTweet(InboxItem):
         super(IncomingTweet, self).__init__(data, identity)
         self.identity_screen_name = identity.screen_name
         self.is_tweet = True
-        self.status_id = data.get("id_str")
+        self.id_str = data.get("id_str")
         self.sender = identity.users.get_user(user_data=data.get("user"))
         self.from_me = self.sender and self.sender.is_me
         self.favorited = bool(data.get("favorited"))
         self.retweeted = bool(data.get("retweeted"))
-        self.in_reply_to_status_id_str = data.get("in_reply_to_status_id_str")
+        self.in_reply_to_id_str = data.get("in_reply_to_status_id_str")
 
         self.source = data.get('tweet_source')
         self.sourceIsTrend = self.source and 'trend' in self.source

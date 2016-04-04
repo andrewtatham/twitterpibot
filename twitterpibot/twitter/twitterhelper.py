@@ -86,7 +86,7 @@ class TwitterHelper(object):
 
             outbox_item.display()
 
-            in_reply_to_status_id = outbox_item.in_reply_to_status_id
+            in_reply_to_id_str = outbox_item.in_reply_to_id_str
 
             statuses = self._split_text(
                 _cap(outbox_item.status, 140 * 100),
@@ -99,7 +99,7 @@ class TwitterHelper(object):
 
                 tweet_params = {
                     "status": status,
-                    "in_reply_to_status_id": in_reply_to_status_id,
+                    "in_reply_to_id_str": in_reply_to_id_str,
                 }
 
                 if line_number == 0 and outbox_item.media_ids:
@@ -110,11 +110,11 @@ class TwitterHelper(object):
                     tweet_params["place_id"] = outbox_item.location.place_id_twitter
 
                 response = self.twitter.update_status(**tweet_params)
-                in_reply_to_status_id = response["id_str"]
+                in_reply_to_id_str = response["id_str"]
                 self.identity.statistics.record_outgoing_tweet()
                 line_number += 1
 
-            return in_reply_to_status_id
+            return in_reply_to_id_str
 
         if type(outbox_item) is OutgoingDirectMessage:
             if not outbox_item.screen_name and not outbox_item.user_id:
@@ -129,7 +129,7 @@ class TwitterHelper(object):
         return None
 
     def reply_with(self, inbox_item, text=None, as_tweet=False, as_direct_message=False, file_paths=None,
-                   in_reply_to_status_id=None):
+                   in_reply_to_id_str=None):
         reply_as_tweet = as_tweet or not as_direct_message and inbox_item.is_tweet
         reply_as_dm = as_direct_message or not as_tweet and inbox_item.is_direct_message
 
@@ -139,7 +139,7 @@ class TwitterHelper(object):
                 reply_to=inbox_item,
                 text=text,
                 file_paths=file_paths,
-                in_reply_to_status_id=in_reply_to_status_id)
+                in_reply_to_id_str=in_reply_to_id_str)
             return self.send(tweet)
 
         if reply_as_dm:
@@ -260,13 +260,13 @@ class TwitterHelper(object):
         return self.twitter.search(q=query, result_type=result_type)["statuses"]
 
     @retry(**retry_args)
-    def create_favorite(self, status_id):
-        self.twitter.create_favorite(id=status_id)
+    def create_favorite(self, id_str):
+        self.twitter.create_favorite(id=id_str)
         self.identity.statistics.record_favourite()
 
     @retry(**retry_args)
-    def retweet(self, status_id):
-        self.twitter.retweet(id=status_id)
+    def retweet(self, id_str):
+        self.twitter.retweet(id=id_str)
         self.identity.statistics.record_retweet()
 
     @retry(**retry_args)
@@ -318,11 +318,11 @@ class TwitterHelper(object):
         if hashtag:
             text += ' ' + hashtag
 
-        in_reply_to_status_id = self._send_to(
+        in_reply_to_id_str = self._send_to(
             inbox_item=inbox_item,
             text=text,
             target=target,
-            in_reply_to_status_id=None)
+            in_reply_to_id_str=None)
         time.sleep(5)
 
         lastlyrics = set([])
@@ -337,19 +337,19 @@ class TwitterHelper(object):
                     lyric += random.choice(self.mutation)
                 lastlyrics.add(lyric)
                 self.identity.statistics.record_outgoing_song_lyric()
-                in_reply_to_status_id = self._send_to(
+                in_reply_to_id_str = self._send_to(
                     inbox_item,
                     lyric,
                     target,
-                    in_reply_to_status_id)
+                    in_reply_to_id_str)
                 time.sleep(5)
 
-    def _send_to(self, inbox_item, text, target, in_reply_to_status_id):
+    def _send_to(self, inbox_item, text, target, in_reply_to_id_str):
         if inbox_item:
             return self.reply_with(
                 inbox_item=inbox_item,
                 text=text,
-                in_reply_to_status_id=in_reply_to_status_id)
+                in_reply_to_id_str=in_reply_to_id_str)
         else:
             text = ""
             if target:
@@ -361,7 +361,7 @@ class TwitterHelper(object):
             text += " " + text
             tweet = OutgoingTweet(
                 text=text,
-                in_reply_to_status_id=in_reply_to_status_id)
+                in_reply_to_id_str=in_reply_to_id_str)
             return self.send(tweet)
 
     @retry(**retry_args)
