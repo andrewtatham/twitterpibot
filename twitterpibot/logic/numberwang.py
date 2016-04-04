@@ -60,12 +60,16 @@ class NumberwangHostScheduledTask(ScheduledTask):
         self.play_numberwang(contestants)
 
     def play_numberwang(self, contestants):
-        intro = [
-            # "Now you can play the maths quiz that simply everyone is talking about!",
-            # "Hello! Welcome to the maths quiz that's simply everyone.",
-            "Hello! Welcome to Numberwang. Today is a very exciting edition, because its our "
-            + str(random.randint(9000, 9999)) + "th programme."]
-        self.identity.twitter.send(OutgoingTweet(text=random.choice(intro)))
+        number = str(random.randint(9000, 9999))
+        last_digit = number[-1:]
+        ordinals = {"1": "st", "2": "nd", "3": "rd"}
+        if last_digit in ordinals:
+            number += ordinals[last_digit]
+        else:
+            number += "th"
+        intro = "Hello! Welcome to Numberwang. Today is a very exciting edition, because its our " \
+                + number + " programme."
+        self.identity.twitter.send(OutgoingTweet(text=intro))
         time.sleep(5)
         location = random.choice(contestant_locations)
         if isinstance(location, six.string_types):
