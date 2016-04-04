@@ -4,6 +4,7 @@ import random
 
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.logic import botgle_solver, botgle_artist
+from twitterpibot.logic.conversation import hello_words
 from twitterpibot.outgoing import OutgoingDirectMessage
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.responses.Response import Response
@@ -13,6 +14,10 @@ descriptions = [
     "this piece is titled: %s",
     "piece titled: %s",
     "title: %s",
+]
+frame_request = [
+    "please can you put this in a frame for me?",
+    "do your thang",
 ]
 
 
@@ -104,49 +109,72 @@ class BotgleResponse(Response):
             if "image" in response:
                 image = response["image"]
                 if image and "name" in image and "file_path" in image:
-                    text = ""
-                    text += random.choice(descriptions) % image["name"]
-                    file_paths = [image["file_path"]]
-                    if self._armed:
-                        text = ".@Botgle " + text
-                        self.identity.twitter.send(OutgoingTweet(text=text, file_paths=file_paths,
-                                                                 in_reply_to_status_id=inbox_item.status_id))
-                    else:
-                        logger.info("tweets " + text + " " + str(file_paths))
+                    self._reply_with_image(image, inbox_item)
                     if random.randint(0, 9) == 0:
-                        file_path = image["file_path"]
-                        if self._armed:
-                            self.identity.twitter.update_profile_image(file_path=file_path)
-                        else:
-                            logger.info("updates profile image " + file_path)
+                        self._update_profile_picture(image)
+                    if random.randint(0, 9) == 0:
+                        self._get_image_framed(image)
             elif "solutions" in response:
                 if "text" in response:
                     text = response["text"]
-                    if self._armed:
-                        self.identity.twitter.send(OutgoingTweet(text=text))
-                    else:
-                        logger.info(text)
+                    self._tweet(text)
                 solutions = response["solutions"]
                 if solutions:
-                    words = list(solutions)
-                    words.sort(key=len)
-                    words = words[-10:]
-                    words.reverse()
-                    text = ""
-                    text += ("%s words found " % len(solutions))
-                    text += " ".join(words)
-                    if self._armed:
-                        self.identity.twitter.send(
-                            OutgoingDirectMessage.OutgoingDirectMessage(text=text, screen_name="andrewtatham"))
-                    else:
-                        logger.info(text)
+                    self._solution_found(solutions)
 
             elif "text" in response:
                 text = response["text"]
-                if self._armed:
-                    self.identity.twitter.send(OutgoingTweet(text=text))
-                else:
-                    logger.info(text)
+                self._tweet(text)
+
+    def _tweet(self, text):
+        if self._armed:
+            self.identity.twitter.send(OutgoingTweet(text=text))
+        else:
+            logger.info(text)
+
+    def _solution_found(self, solutions):
+        words = list(solutions)
+        words.sort(key=len)
+        words = words[-10:]
+        words.reverse()
+        text = ""
+        text += ("%s words found " % len(solutions))
+        text += " ".join(words)
+        if self._armed:
+            self.identity.twitter.send(
+                OutgoingDirectMessage.OutgoingDirectMessage(text=text, screen_name="andrewtatham"))
+        else:
+            logger.info(text)
+
+    def _reply_with_image(self, image, inbox_item):
+        text = ""
+        text += random.choice(descriptions) % image["name"]
+        file_paths = [image["file_path"]]
+        if self._armed:
+            text = ".@Botgle " + text
+            self.identity.twitter.send(OutgoingTweet(text=text, file_paths=file_paths,
+                                                     in_reply_to_status_id=inbox_item.status_id))
+        else:
+            logger.info("tweets " + text + " " + str(file_paths))
+
+    def _update_profile_picture(self, image):
+
+        file_path = image["file_path"]
+        if self._armed:
+            self.identity.twitter.update_profile_image(file_path=file_path)
+        else:
+            logger.info("updates profile image " + file_path)
+
+    def _get_image_framed(self, image):
+        text = random.choice(hello_words)
+        text += " @ShouldFrameIt "
+        text += random.choice(frame_request)
+        file_paths = [image["file_path"]]
+        if self._armed:
+            text = " " + text
+            self.identity.twitter.send(OutgoingTweet(text=text, file_paths=file_paths))
+        else:
+            logger.info("tweets " + text + " " + str(file_paths))
 
 
 if __name__ == '__main__':

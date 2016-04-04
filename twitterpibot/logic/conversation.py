@@ -113,7 +113,7 @@ how_are_you_responses = [
     "I'm giving her all she's got, Captain!"
 ]
 
-HelloWords = [
+hello_words = [
     "Hi",
     "Hiya",
     "Hey",
@@ -121,7 +121,9 @@ HelloWords = [
     "Howdy",
     "Yo",
     "Bonjour",
-    "G'day"
+    "G'day",
+    "OH HAI",
+    "'sup"
 ]
 
 weather_responses = [

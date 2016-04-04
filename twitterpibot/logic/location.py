@@ -4,7 +4,7 @@ from urllib.parse import quote_plus
 from apscheduler.triggers.interval import IntervalTrigger
 
 from twitterpibot.logic import googlehelper
-from twitterpibot.logic.conversation import HelloWords
+from twitterpibot.logic.conversation import hello_words
 from twitterpibot.responses.Response import Response, mentioned_reply_condition, testing_reply_condition
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
@@ -116,7 +116,7 @@ class LocationScheduledTask(ScheduledTask):
         location = self.identity.twitter.geocode(location)
         location = googlehelper.geocode(location)
         file_paths = googlehelper.get_location_images(location, "location")
-        text = ".@" + self.identity.converse_with + " " + random.choice(HelloWords) + \
+        text = ".@" + self.identity.converse_with + " " + random.choice(hello_words) + \
                " I'm at " + location.get_display_name()
         self.identity.twitter.send(OutgoingTweet(text=text, location=location, file_paths=file_paths))
 
@@ -131,7 +131,7 @@ class LocationResponse(Response):
 
     def respond(self, inbox_item):
         if inbox_item.location:
-            text = random.choice(HelloWords) + " I see you're at " + inbox_item.location.full_name
+            text = random.choice(hello_words) + " I see you're at " + inbox_item.location.full_name
             inbox_item.location = googlehelper.geocode(inbox_item.location)
             file_paths = googlehelper.get_location_images(inbox_item.location, inbox_item.status_id)
             self.identity.twitter.reply_with(inbox_item, text=text, file_paths=file_paths)

@@ -105,7 +105,7 @@ class AprilFoolsDayScheduledTask(ScheduledTask):
         self.identity.twitter.send(OutgoingTweet(text=text))
 
     def get_shopping_list(self):
-        text = random.choice(conversation.HelloWords)
+        text = random.choice(conversation.hello_words)
         text += " @andrewtatham sent me to buy "
         text += self._item()
         text += " and "
