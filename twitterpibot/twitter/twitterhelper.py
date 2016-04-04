@@ -4,7 +4,7 @@ import random
 import textwrap
 import time
 
-from twython import Twython
+from twython import Twython, TwythonError
 
 from retrying import retry
 
@@ -94,7 +94,6 @@ class TwitterHelper(object):
 
             line_number = 0
             for status in statuses:
-
                 logger.info("status %s: %s chars: %s", line_number, len(status), status)
 
                 tweet_params = {
@@ -138,7 +137,7 @@ class TwitterHelper(object):
                 quote=inbox_item,
                 text=text,
                 file_paths=file_paths,
-                )
+            )
             return self.send(tweet)
 
         if reply_as_dm:
@@ -283,13 +282,25 @@ class TwitterHelper(object):
 
     @retry(**retry_args)
     def create_favorite(self, id_str):
-        self.twitter.create_favorite(id=id_str)
-        self.identity.statistics.record_favourite()
+        try:
+            self.twitter.create_favorite(id=id_str)
+            self.identity.statistics.record_favourite()
+        except TwythonError as ex:
+            if "You have already favourited this tweet" in str(ex):
+                logger.warning(ex)
+            else:
+                raise
 
     @retry(**retry_args)
     def retweet(self, id_str):
-        self.twitter.retweet(id=id_str)
-        self.identity.statistics.record_retweet()
+        try:
+            self.twitter.retweet(id=id_str)
+            self.identity.statistics.record_retweet()
+        except TwythonError as ex:
+            if "You have already retweeted this tweet" in str(ex):
+                logger.warning(ex)
+            else:
+                raise
 
     @retry(**retry_args)
     def add_user_to_list(self, list_id, user_id, screen_name):
