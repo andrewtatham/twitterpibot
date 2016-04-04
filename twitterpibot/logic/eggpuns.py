@@ -7,9 +7,6 @@ from twitterpibot.logic import wordnikwrapper
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-
-
-
 replacements = {
     "eg": "egg",
     "ex": "eggs",
@@ -27,6 +24,9 @@ replacements = {
     "folk": "yolk",
     "joke": "yolk",
     "jok": "yolk",
+
+    "i'm a lit": "omlette",
+    "i'm lit": "omlette",
 
     # sketchy
     "ag": "egg",
@@ -97,25 +97,28 @@ if __name__ == "__main__":
     logger.info(stem_rx)
     logger.info(replacements)
     phrases = [
-        "there was an explosion",
-        "very selfish",
-        "hello what shall i ",
-        "dalek",
-        "six of these",
-        "Egypt",
-        "aggregate",
-        "enough",
-        "ignite",
-        "it was a funny joke",
-        "they were joking around",
-        "listening to folk music",
-        "self-aware",
-        "eggregious",
+        # "there was an explosion",
+        # "very selfish",
+        # "hello what shall i ",
+        # "dalek",
+        # "six of these",
+        # "Egypt",
+        # "aggregate",
+        # "enough",
+        # "ignite",
+        # "it was a funny joke",
+        # "they were joking around",
+        # "listening to folk music",
+        # "self-aware",
+        # "eggregious",
+        "I'm a little teapot",
+        "I'm literally",
+        "I'm a literary"
 
     ]
 
     for phrase in phrases:
         logger.info("%s -> %s" % (phrase, make_egg_pun_phrase(phrase)))
 
-    for i in range(20):
-        logger.info(make_egg_pun_phrase())
+    # for i in range(20):
+    #     logger.info(make_egg_pun_phrase())

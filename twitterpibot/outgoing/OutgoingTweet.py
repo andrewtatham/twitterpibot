@@ -11,7 +11,8 @@ class OutgoingTweet(OutboxTextItem):
     def __init__(self, reply_to=None, text=None,
                  in_reply_to_id_str=None,
                  file_paths=None,
-                 location=None):
+                 location=None,
+                 quote=None):
 
         super(OutgoingTweet, self).__init__()
 
@@ -21,6 +22,7 @@ class OutgoingTweet(OutboxTextItem):
         self.status = ''
         self._determine_reply(in_reply_to_id_str, reply_to)
         self.status += text
+        self._determine_quote(quote)
 
     def _determine_reply(self, in_reply_to_id_str, reply_to):
         if in_reply_to_id_str:
@@ -42,4 +44,9 @@ class OutgoingTweet(OutboxTextItem):
             logger.info("-> Location: " + self.location.get_display_name())
         if self.filePaths:
             logger.info("-> filePaths: " + str(self.filePaths))
+
+    def _determine_quote(self, quote):
+        if quote:
+            url = " https://twitter.com/{}/status/{}".format(quote.sender.screen_name, quote.id_str)
+            self.status += " " + url
 

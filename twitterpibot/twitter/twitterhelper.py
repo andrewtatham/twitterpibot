@@ -128,6 +128,28 @@ class TwitterHelper(object):
             self.identity.statistics.record_outgoing_direct_message()
         return None
 
+    def quote_tweet(self, inbox_item, text=None, file_paths=None):
+        reply_as_quote_tweet = inbox_item.is_tweet
+        reply_as_dm = inbox_item.is_direct_message
+
+        if reply_as_quote_tweet:
+            logger.info("quoting to %s as quote tweet", inbox_item.text)
+            tweet = OutgoingTweet(
+                quote=inbox_item,
+                text=text,
+                file_paths=file_paths,
+                )
+            return self.send(tweet)
+
+        if reply_as_dm:
+            logger.info("replying to %s as DM", inbox_item.text)
+            dm = OutgoingDirectMessage(
+                reply_to=inbox_item,
+                text=text)
+            return self.send(dm)
+
+        return None
+
     def reply_with(self, inbox_item, text=None, as_tweet=False, as_direct_message=False, file_paths=None,
                    in_reply_to_id_str=None):
         reply_as_tweet = as_tweet or not as_direct_message and inbox_item.is_tweet
