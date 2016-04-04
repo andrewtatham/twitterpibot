@@ -75,18 +75,23 @@ def get_response(url):
     return response_dict
 
 
-url_rx = re.compile("(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})", re.IGNORECASE)
+url_rx = re.compile("(https?://(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})", re.IGNORECASE)
 
 
 def extract_urls(text):
     urls = []
-    matches = url_rx.findall(text)
-    urls.extend(matches)
+    if text:
+        matches = url_rx.findall(text)
+        if matches:
+            urls.extend(matches)
     return urls
 
 
 def count_urls(text):
-    return len(extract_urls(text))
+    if text:
+        return len(extract_urls(text))
+    else:
+        return 0
 
 
 if __name__ == '__main__':

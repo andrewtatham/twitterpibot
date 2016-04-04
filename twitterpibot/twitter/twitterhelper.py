@@ -181,8 +181,8 @@ class TwitterHelper(object):
             wrap_at = 140
             wrap_at -= image_count * self.twitter_configuration["characters_reserved_per_media"]
             wrap_at -= link_count * self.twitter_configuration["short_url_length_https"]
-
-            lines = textwrap.wrap(large_text, 117)
+            logger.info("wrap at %s" % wrap_at)
+            lines = textwrap.wrap(large_text, wrap_at)
             lines_count = len(lines)
             line_number = 0
             return_value = []

@@ -15,3 +15,11 @@ class JokesScheduledTask(ScheduledTask):
         text = jokes.get_joke()
         if text:
             self.identity.twitter.send(OutgoingTweet(text=text))
+
+
+if __name__ == '__main__':
+    import main
+
+    identity = main.AndrewTathamPiIdentity(None)
+    task = JokesScheduledTask(identity)
+    task.on_run()

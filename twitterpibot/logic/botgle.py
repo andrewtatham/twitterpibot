@@ -183,10 +183,10 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
 
     identity = main.BotgleArtistIdentity(None)
-    timeline = identity.twitter.get_user_timeline(screen_name="botgle", exclude_replies=True, count=200)
+    timeline = identity.twitter.get_user_timeline(screen_name="botgle", exclude_replies=True, count=50)
     tweets = list(map(lambda data: IncomingTweet(data, identity), timeline))
     tweets.reverse()
-    response = BotgleResponse(identity, armed=False)
+    response = BotgleResponse(identity, armed=True)
     testcases = []
 
     for tweet in tweets:

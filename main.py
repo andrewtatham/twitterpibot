@@ -370,6 +370,8 @@ class EggPunBotIdentity(BotIdentity):
             id_str="706393659244154880",
             admin_identity=admin_identity)
 
+        self.colour = colorama.Fore.YELLOW
+
     def get_scheduled_jobs(self):
         jobs = super(EggPunBotIdentity, self).get_scheduled_jobs()
         jobs.extend([EggPunScheduledTask(self)])
@@ -401,6 +403,7 @@ class BotgleArtistIdentity(BotIdentity):
             screen_name="BotgleArtist",
             id_str="715477182106079232",
             admin_identity=admin_identity)
+        self.colour = colorama.Fore.GREEN
 
     def get_scheduled_jobs(self):
         jobs = super(BotgleArtistIdentity, self).get_scheduled_jobs()
