@@ -151,7 +151,7 @@ class BotgleResponse(Response):
         text += random.choice(descriptions) % image["name"]
         file_paths = [image["file_path"]]
         if self._armed:
-            text = "@Botgle " + text
+            text = ".@Botgle " + text
             self.identity.twitter.send(OutgoingTweet(text=text, file_paths=file_paths,
                                                      in_reply_to_id_str=inbox_item.id_str))
         else:
