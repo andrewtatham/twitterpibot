@@ -17,7 +17,7 @@ class Starbucks(DontCareTopic):
 
 class Nutribullet(DontCareTopic):
     def __init__(self):
-        super(Nutribullet, self).__init__({"Nutribullet"})
+        super(Nutribullet, self).__init__({"NutriBullet(UK)?"})
 
 
 class Deliveroo(DontCareTopic):
@@ -25,10 +25,16 @@ class Deliveroo(DontCareTopic):
         super(Deliveroo, self).__init__({"Deliveroo"})
 
 
+class OtherCorporate(DontCareTopic):
+    def __init__(self):
+        super(OtherCorporate, self).__init__({"RoundTeam"})
+
+
 def get():
     return [
         Starbucks(),
         DecsAndLondon(),
         Nutribullet(),
-        Deliveroo()
+        Deliveroo(),
+        OtherCorporate()
     ]
