@@ -238,17 +238,12 @@ def make(board, solution, screen_name):
                         (point[0] + point_size[0], point[1] + point_size[1]))
                     solution_draw.ellipse(rect, fill=path_colour)
                     if path_label_option == PathLabelOptions.PathStart:
-                        label_origin = []
-                        if col <= n / 2 - 1:
-                            label_origin[0] = point[0]
-                        else:
+                        label_origin = list(point)
+                        if col > n / 2 - 1:
                             label_origin[0] = point[0] - word_size[0]
-                        if row <= n / 2 - 1:
-                            label_origin[1] = point[1]
-                        else:
+                        if row > n / 2 - 1:
                             label_origin[1] = point[1] - word_size[1]
-
-                        solution_draw.text(label_origin, found_word, font=fnt, fill=path_colour)
+                        solution_draw.text(tuple(label_origin), found_word, font=fnt, fill=path_colour)
 
                 prev_point = point
 

@@ -186,7 +186,7 @@ if __name__ == '__main__':
     timeline = identity.twitter.get_user_timeline(screen_name="botgle", exclude_replies=True, count=50)
     tweets = list(map(lambda data: IncomingTweet(data, identity), timeline))
     tweets.reverse()
-    response = BotgleResponse(identity, armed=True)
+    response = BotgleResponse(identity, armed=False)
     testcases = []
 
     for tweet in tweets:
