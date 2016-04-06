@@ -98,7 +98,7 @@ class TwitterHelper(object):
 
                 tweet_params = {
                     "status": status,
-                    "in_reply_to_id_str": in_reply_to_id_str,
+                    "in_reply_to_status_id": in_reply_to_id_str,
                 }
 
                 if line_number == 0 and outbox_item.media_ids:
