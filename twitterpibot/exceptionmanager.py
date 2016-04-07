@@ -1,33 +1,33 @@
+from http.client import IncompleteRead
 import logging
 import random
 import traceback
 
 from colorama import Fore, Style, Back
+from requests.exceptions import ChunkedEncodingError
 
 from twython import TwythonError
 
 from twitterpibot.data_access import dal
 import twitterpibot.hardware
-from twitterpibot.logic import textonanimage, imagemanager
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
-from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 
 logger = logging.getLogger(__name__)
-
-
-# twython.exceptions.TwythonRateLimitError: Twitter API returned a 429 (Too Many Requests), Rate limit exceeded
-# TwythonError: HTTPSConnectionPool(host='http://api.twitter.com ', port=443): Read timed out. (read timeout=None)
-# TwythonError: ('Connection aborted.', error(110, 'Connection timed out'))
 
 
 def handle_silently(exception, label=None):
     _record_warning(None, exception, label)
 
 
+def is_timeout(exception):
+    """Return True if we should retry"""
+    return "timed out" in str(exception) \
+           or "Connection broken: IncompleteRead" in str(exception)
+
+
 def handle(identity, exception, label=None):
-    if type(exception) is UnicodeEncodeError:
-        _record_warning(identity, exception, label)
-    elif type(exception) is TwythonError:
+    if type(exception) is UnicodeEncodeError or type(exception) is TwythonError \
+            or type(exception) is IncompleteRead or type(exception) is ChunkedEncodingError:
         _record_warning(identity, exception, label)
     else:
         _record_error(identity, exception, label)

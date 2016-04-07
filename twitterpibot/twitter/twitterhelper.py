@@ -7,6 +7,7 @@ import time
 from twython import Twython, TwythonError
 
 from retrying import retry
+from twitterpibot.exceptionmanager import is_timeout
 
 from twitterpibot.logic import fsh, urlhelper
 from twitterpibot.twitter import authorisationhelper
@@ -24,11 +25,6 @@ except ImportError:
 
 def _cap(s, l):
     return s if len(s) <= l else s[0:l - 3] + '...'
-
-
-def is_timeout(exception):
-    """Return True if we should retry"""
-    return "timed out" in str(exception)
 
 
 retry_args = dict(
