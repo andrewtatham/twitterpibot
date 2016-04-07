@@ -42,7 +42,6 @@ app.controller( 'MainCtrl', function($scope, $http) {
     $scope.getFollowingGraph = function(){
       $http.get('followinggraph').then(function(response) {
         g = response.data.followinggraph;
-        console.log(g);
         $scope.followinggraph = g;
         sys.graft(g);
       });

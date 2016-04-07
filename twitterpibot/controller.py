@@ -1,5 +1,5 @@
 from itertools import groupby
-from operator import itemgetter, attrgetter
+from operator import attrgetter
 import random
 
 import twitterpibot
@@ -163,28 +163,66 @@ def get_exceptions():
 
 def _get_exception_summary(exceptions_list):
     retval = []
-    grouper = attrgetter("screen_name", "label", "message")
-    if exceptions_list:
-        exceptions_list.sort(key=grouper)
-        for key, group in groupby(exceptions_list, grouper):
-            item = dict(zip(["screen_name", "label", "message"], key))
-            item['count'] = len(list(group))
-            retval.append(item)
-        retval.sort(key=lambda msg: msg["count"])
-        retval.reverse()
+    # grouper = attrgetter("screen_name", "label", "message")
+    # if exceptions_list:
+    #     exceptions_list.sort(key=grouper)
+    #     for key, group in groupby(exceptions_list, grouper):
+    #         item = dict(zip(["screen_name", "label", "message"], key))
+    #         item['count'] = len(list(group))
+    #         retval.append(item)
+    #     retval.sort(key=lambda msg: msg["count"])
+    #     retval.reverse()
     return retval
+
+
+def ex_type_grouper(ex):
+    return ex.log_type
+
+
+date_grouper = attrgetter("now.year", "now.month", "now.day")
+hour_grouper = attrgetter("now.year", "now.month", "now.day", "now.hour")
+day_header = ["year", "month", "day"]
+hour_header = list(day_header)
+hour_header.append("hour")
 
 
 def get_exception_summary():
     retval = {}
     exceptions_list = dal.get_exceptions()
     if exceptions_list:
-        exceptions_list.sort(key=lambda ex: ex.log_type)
-        for log_type, group in groupby(exceptions_list, lambda ex: ex.log_type):
+        exceptions_list.sort(key=ex_type_grouper)
+        for log_type, group in groupby(exceptions_list, ex_type_grouper):
             retval[log_type] = _get_exception_summary(list(group))
     return retval
 
 
+def get_exceptions_chart_data():
+    retval = []
+    header = list(hour_header)
+    header.extend(["exceptions", "warnings"])
+    retval.append(header)
+    exceptions_list = dal.get_exceptions()
+    if exceptions_list:
+
+        exceptions_list.sort(key=hour_grouper)
+        for date_key, date_group in groupby(exceptions_list, hour_grouper):
+            print(date_key)
+            row = list(date_key)
+
+            date_group_list = list(date_group)
+            date_group_list.sort(key=ex_type_grouper)
+            d = {
+                "Warning": 0,
+                "Excepton": 0
+            }
+            for type_key, type_group in groupby(date_group_list, ex_type_grouper):
+                print(type_key)
+                d[type_key] = len(list(type_group))
+            row.append(d["Excepton"])
+            row.append(d["Warning"])
+            retval.append(tuple(row))
+    return retval
+
+
 if __name__ == '__main__':
-    print(get_exceptions())
-    print(get_exception_summary())
+    print(get_exceptions_chart_data())

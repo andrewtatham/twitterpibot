@@ -1,6 +1,6 @@
 import random
 
-from twitterpibot.bootstrap import shutdown
+from twitterpibot.webserver import shutdown
 from twitterpibot.data_access import dal
 from twitterpibot.logic.conversation import hello_words, thanks_and_bye
 from twitterpibot.responses.Response import Response
