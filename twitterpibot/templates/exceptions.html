@@ -4,37 +4,26 @@
 
     <thead>
     <!--<tr>-->
-        <!--<th>[[exceptiontype]]</th>-->
+    <!--<th>[[exceptiontype]]</th>-->
     <!--</tr>-->
     <tr>
-        <th>Screen Name</th>
+        <!--<th>Screen Name</th>-->
         <th>Label</th>
         <th>Message</th>
         <th>Count</th>
     </tr>
     </thead>
-    <tr ng-repeat="exception in exceptiontype">
-        <td>[[exception.screen_name]]</td>
+    <tbody ng-repeat="exception in exceptiontype">
+    <tr>
+        <!--<td>[[exception.screen_name]]</td>-->
         <td>[[exception.label]]</td>
         <td>[[exception.message]]</td>
         <td>[[exception.count]]</td>
     </tr>
-</table>
-
-<h2>Exceptions</h2>
-<table>
-    <thead>
     <tr>
-        <th>Screen Name</th>
-        <th>Label</th>
-        <th>Message</th>
-        <th>Stack Trace</th>
+        <td colspan="3">
+            <pre>[[exception.stack_trace]]</pre>
+        </td>
     </tr>
-    </thead>
-    <tr ng-repeat="exception in exceptions">
-        <td>[[exception.screen_name]]</td>
-        <td>[[exception.label]]</td>
-        <td>[[exception.message]]</td>
-        <td>[[exception.stack_trace]]</td>
-    </tr>
+    </tbody>
 </table>

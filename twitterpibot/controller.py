@@ -163,15 +163,15 @@ def get_exceptions():
 
 def _get_exception_summary(exceptions_list):
     retval = []
-    # grouper = attrgetter("screen_name", "label", "message")
-    # if exceptions_list:
-    #     exceptions_list.sort(key=grouper)
-    #     for key, group in groupby(exceptions_list, grouper):
-    #         item = dict(zip(["screen_name", "label", "message"], key))
-    #         item['count'] = len(list(group))
-    #         retval.append(item)
-    #     retval.sort(key=lambda msg: msg["count"])
-    #     retval.reverse()
+    grouper = attrgetter( "label", "message", "stack_trace")
+    if exceptions_list:
+        exceptions_list.sort(key=grouper)
+        for key, group in groupby(exceptions_list, grouper):
+            item = dict(zip(["label", "message", "stack_trace"], key))
+            item['count'] = len(list(group))
+            retval.append(item)
+        retval.sort(key=lambda msg: msg["count"])
+        retval.reverse()
     return retval
 
 
