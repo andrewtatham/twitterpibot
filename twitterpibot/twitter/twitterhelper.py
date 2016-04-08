@@ -103,7 +103,7 @@ class TwitterHelper(object):
                     tweet_params["lat"] = outbox_item.location.latitude,
                     tweet_params["long"] = outbox_item.location.longitude,
                     tweet_params["place_id"] = outbox_item.location.place_id_twitter
-
+                logging.info(tweet_params)
                 response = self.twitter.update_status(**tweet_params)
                 in_reply_to_id_str = response["id_str"]
                 self.identity.statistics.record_outgoing_tweet()

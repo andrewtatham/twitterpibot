@@ -49,7 +49,7 @@ from twitterpibot.schedule.SongScheduledTask import SongScheduledTask
 from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
 from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
 from twitterpibot.schedule.WikipediaScheduledTask import WikipediaScheduledTask
-from twitterpibot.schedule.ZenOfPythonScheduledTask import ZenOfPythonScheduledTask
+# from twitterpibot.schedule.ZenOfPythonScheduledTask import ZenOfPythonScheduledTask
 from twitterpibot.tasks.FadeTask import FadeTask
 from twitterpibot.tasks.LightsTask import LightsTask
 from twitterpibot.schedule.FollowScheduledTask import FollowScheduledTask
@@ -178,8 +178,8 @@ def get_pi_scheduled_jobs(identity, converse_with_identity):
         JokesScheduledTask(identity),
         SongScheduledTask(identity),
         ConversationScheduledTask(identity, converse_with_identity),
-        ZenOfPythonScheduledTask(identity),
-        BlankTweetScheduledTask(identity),
+        # ZenOfPythonScheduledTask(identity),
+        # BlankTweetScheduledTask(identity),
         HappyBirthdayScheduledTask(identity),
         # LocationScheduledTask(identity),
         # RaiseExceptionScheduledTask(identity),
