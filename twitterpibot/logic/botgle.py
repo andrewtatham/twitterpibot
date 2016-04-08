@@ -64,22 +64,24 @@ class BotgleGame(object):
         self.solution = None
 
     def _on_next_game_in_x_hours(self, retval):
-        retval["text"] = random.choice([
-            "[buys paint]",
-            "[buys canvas]",
-            "[buys brushes]",
-            "[cleans brushes]",
-            "[sleeps]",
-            "[contemplates]"
-        ])
+        # retval["text"] = random.choice([
+        #     "[buys paint]",
+        #     "[buys canvas]",
+        #     "[buys brushes]",
+        #     "[cleans brushes]",
+        #     "[sleeps]",
+        #     "[contemplates]"
+        # ])
+        pass
 
     def _on_next_game_in_x_minutes(self, retval):
-        retval["text"] = random.choice([
-            "[mixes paint]",
-            "[fetches easel]",
-            "[gets canvas]",
-            "[prepares canvas]",
-        ])
+        # retval["text"] = random.choice([
+        #     "[mixes paint]",
+        #     "[fetches easel]",
+        #     "[gets canvas]",
+        #     "[prepares canvas]",
+        # ])
+        pass
 
     def _is_game_over(self, inbox_item):
         return "GAME OVER" in inbox_item.text
