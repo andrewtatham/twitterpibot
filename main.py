@@ -5,7 +5,7 @@ import os
 import colorama
 
 from twitterpibot import hardware
-from twitterpibot.logic.admin_commands import RestartResponse, ImportTokensResponse, DropCreateTablesResponse, \
+from twitterpibot.logic.admin_commands import ImportTokensResponse, DropCreateTablesResponse, \
     ExportTokensResponse
 
 if __name__ == '__main__':
@@ -208,7 +208,7 @@ def get_pi_responses(identity):
     responses = []
 
     responses.extend([
-        RestartResponse(identity),
+        # RestartResponse(identity),
         ImportTokensResponse(identity),
         ExportTokensResponse(identity),
         DropCreateTablesResponse(identity),

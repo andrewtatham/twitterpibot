@@ -1,5 +1,3 @@
-import random
-
 from apscheduler.triggers.interval import IntervalTrigger
 
 from twitterpibot import exceptionmanager
