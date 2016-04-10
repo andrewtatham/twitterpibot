@@ -20,6 +20,7 @@ class BadThings(NewsTopic):
                 "crash",
                 "isil",
                 "isis",
+                "jihad(ist)?s?"
                 "knife(d)?",
                 "arson",
                 "(child|sex) abuse",
@@ -29,12 +30,20 @@ class BadThings(NewsTopic):
                 "hitler",
                 "holocaust",
                 "nazi",
+                "injure(s|ed|ies)",
+                "miscarriage",
+                "trafficking",
+                "abortion"
 
             ], [
                 "fire",
-                "dead",
-                "suspect(ed)",
-                "abuse"
+                "dea(d|th)",
+                "suspect(s|ed)?",
+                "abuse",
+                "Adolf",
+                "arrest",
+                "attack",
+                "violen(t|ce)"
             ]
         )
 
@@ -44,7 +53,9 @@ class CivilRights(NewsTopic):
         super(CivilRights, self).__init__(
             [
                 "BlackLivesMatter",
-                "LGBT?"
+                "LGBT?",
+                "(gay|Black) people",
+                "homophobi(a|c)"
 
             ])
 
@@ -101,4 +112,5 @@ def get():
         ExtremeWeather(),
         Geology(),
         CivilRights()
+
     ]

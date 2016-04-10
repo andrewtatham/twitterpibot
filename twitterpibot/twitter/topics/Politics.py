@@ -25,7 +25,7 @@ class PoliticsUK(NewsTopic):
             "Westminster",
             "parliament",
             "Downing S(ree)?t"
-        ], ["politic", "PM"])
+        ], ["politic", "PM", "Ministers", "tax"])
 
 
 class PoliticsUS(NewsTopic):
@@ -46,6 +46,7 @@ class PoliticsUS(NewsTopic):
             "Republican",
             "GOP",
             "Tea Party",
+            "Kerry",
 
             "Senate",
             "House of Representatives"

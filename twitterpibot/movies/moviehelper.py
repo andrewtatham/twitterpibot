@@ -1,7 +1,8 @@
 import os
 import re
+from twitterpibot.logic import fsh
 
-folder = "twitterpibot" + os.sep + "movies" + os.sep
+folder = fsh.root + "twitterpibot" + os.sep + "movies" + os.sep
 
 x = [
     "[\d]+",
@@ -44,7 +45,7 @@ def _clean_stage1(lines):
     temp = ""
     for line in lines:
         # print(line)
-        line_encoded = line.decode("utf-8").replace("\r\n", "")
+        line_encoded = line.replace("\r\n", "")
         if line_encoded:
 
             if rx.match(line_encoded):
@@ -61,7 +62,7 @@ def _clean_stage1(lines):
 
 
 def _parse_subtitles_file(file_path):
-    file = open(folder + file_path, mode='rb')
+    file = open(folder + file_path, mode='r')
     lines = file.readlines()
     file.close()
     lines_cleaned = _clean(lines)

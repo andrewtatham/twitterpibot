@@ -448,6 +448,9 @@ class TwitterHelper(object):
             with open(file_path, 'rb') as file:
                 self.twitter.update_profile_image(image=file)
 
+    @retry(**retry_args)
+    def get_list_statuses(self, **kwargs):
+        return self.twitter.get_list_statuses(**kwargs)
 
 if __name__ == "__main__":
     import main

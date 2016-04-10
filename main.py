@@ -113,21 +113,20 @@ class Statistics(object):
 
 
 class Identity(object):
-    def __init__(self, screen_name, id_str, ):
+    def __init__(self, screen_name, id_str ):
         self.screen_name = screen_name
         self.id_str = id_str
         self.admin_screen_name = "andrewtatham"
-        self.converse_with = None
         self.tokens = None
         self.streamer = None
-        self.users = users.Users(self)
-        self.lists = lists.Lists(self)
         self.twitter = twitterhelper.TwitterHelper(self)
+        self.converse_with = None
+        self.users = users.Users(self)
         self.following = set()
         self.colour = colorama.Fore.WHITE
-        self.id_str = None
         self.profile_image_url = None
         self.statistics = Statistics()
+        self.lists = lists.Lists(self)
 
     @abc.abstractmethod
     def get_tasks(self):

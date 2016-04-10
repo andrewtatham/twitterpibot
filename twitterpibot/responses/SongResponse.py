@@ -1,12 +1,12 @@
 from twitterpibot.responses.Response import Response, mentioned_reply_condition
-import twitterpibot.songs.Songs
+from twitterpibot.songs import songhelper
 
 
 class SongResponse(Response):
     def __init__(self, identity):
         Response.__init__(self, identity)
-        self.songs = twitterpibot.songs.Songs.Songs()
-        self.songnames = self.songs.all_keys()
+
+        self.songnames = songhelper.all_keys()
 
     def condition(self, inbox_item):
         return mentioned_reply_condition(inbox_item) \
@@ -24,5 +24,5 @@ class SongResponse(Response):
             for songname in self.songnames:
                 if word.lower() == songname.lower():
                     song_key = songname
-                    song = self.songs.get_song(song_key)
+                    song = songhelper.get_song(song_key)
                     self.identity.twitter.sing_song(song=song, inbox_item=inbox_item)

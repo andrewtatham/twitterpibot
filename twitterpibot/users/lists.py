@@ -20,6 +20,8 @@ class Lists(object):
         self._sets = {}
         self._list_ids = {}
 
+        self.update_lists()
+
     def update_lists(self):
 
         logger.info("[%s] Getting lists" % self._identity.screen_name)

@@ -76,6 +76,11 @@ class FormulaOne(NewsTopic):
         super(FormulaOne, self).__init__({"F1", "Formula One"})
 
 
+class Boxing(DontCareTopic):
+    def __init__(self):
+        super(Boxing, self).__init__({"IBF", "(heavy)weight"})
+
+
 def get():
     return [
 
@@ -85,5 +90,6 @@ def get():
         Golf(),
         Tennis(),
         FormulaOne(),
+        Boxing(),
         SportOther()
     ]

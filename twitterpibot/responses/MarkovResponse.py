@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 class MarkovResponse(Response):
     def __init__(self, identity, text):
         Response.__init__(self, identity)
-        self.markov = markovhelper.train(" ".join(text))
+        self.markov = markovhelper.get(" ".join(text))
         for i in range(5):
             logger.info(self.markov.speak())
 

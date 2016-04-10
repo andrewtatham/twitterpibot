@@ -39,7 +39,7 @@ class Git(GoodTopic):
 class Apple(NewsTopic):
     def __init__(self):
         super(Apple, self).__init__(
-            ["Apple", "Mac(intosh|book)", "i(P(a|o)d|phone|tunes|watch)"]
+            ["Apple", "Mac(intosh|book)", "i(P(a|o)d|phone|tunes|watch)(e?s)?"]
         )
 
 
@@ -66,6 +66,14 @@ class Linux(NewsTopic):
         )
 
 
+class Bots(NewsTopic):
+    def __init__(self):
+        super(Bots, self).__init__(
+            ["bots?", "robots?", "botsummit"]
+
+        )
+
+
 def get():
     return [
         RaspberryPi(),
@@ -75,5 +83,6 @@ def get():
         Apple(),
         Microsoft(),
         Google(),
-        Linux()
+        Linux(),
+        Bots()
     ]
