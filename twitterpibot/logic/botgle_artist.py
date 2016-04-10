@@ -13,8 +13,8 @@ from twitterpibot.logic.image_helper import hsv_to_rgb
 __author__ = 'andrewtatham'
 
 if hardware.is_raspberry_pi_2:
-    lrg_fnt = ImageFont.truetype('FreeSans.ttf', 72)
-    fnt = ImageFont.truetype('FreeSans.ttf', 24)
+    lrg_fnt = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeSans.ttf', 72)
+    fnt = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeSans.ttf', 24)
 elif hardware.is_mac_osx:
     lrg_fnt = ImageFont.truetype('Arial.ttf', 72)
     fnt = ImageFont.truetype('Arial.ttf', 24)
