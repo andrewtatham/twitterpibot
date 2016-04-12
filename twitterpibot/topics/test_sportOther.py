@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from twitterpibot.twitter.topics.Sport import SportOther
+from twitterpibot.topics.Sport import SportOther
 
 __author__ = 'Andrew'
 

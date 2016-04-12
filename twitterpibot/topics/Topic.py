@@ -126,7 +126,7 @@ class GoodTopic(Topic):
             stream=True)
 
 
-class DontCareTopic(Topic):
+class IgnoreTopic(Topic):
     def __init__(self,
                  definite_regexes,
                  possible_regexes=None,
@@ -135,7 +135,7 @@ class DontCareTopic(Topic):
                  on_date=None,
                  on_date_range=0
                  ):
-        super(DontCareTopic, self).__init__(
+        super(IgnoreTopic, self).__init__(
             definite_regexes,
             possible_regexes,
             from_date,

@@ -49,7 +49,7 @@ def _get_test_data(to_me=False):
         inbox_item.sender = MockInboxItem()
         inbox_item.sender.screen_name = ""
 
-        inbox_item.sender.is_bot = one_in(100)
+        inbox_item.sender.is_awesome_bot = one_in(100)
         inbox_item.sender.is_friend = one_in(100)
         inbox_item.sender.is_arsehole = one_in(100)
         inbox_item.sender.is_retweet_more = one_in(100)

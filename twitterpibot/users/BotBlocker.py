@@ -4,7 +4,7 @@ import os
 
 import twitterpibot.outgoing.OutgoingDirectMessage
 import twitterpibot.twitter.twitterhelper
-from twitterpibot.twitter.topics import Topics
+from twitterpibot.topics import topichelper
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +28,7 @@ def _is_user_bot(identity, user):
 
         logger.info("Checking user profile: " + profile_text)
 
-        profile_topics = Topics.get_topics(profile_text)
+        profile_topics = topichelper.get_topics(profile_text)
         if profile_topics:
             logger.info("Profile topics: " + str(profile_topics))
             block_follower = profile_topics.spam()
@@ -57,7 +57,7 @@ def _is_user_bot(identity, user):
                     reasons.append(str(r))
 
                 if not block_follower:
-                    tweet_topics = Topics.get_topics(tweets_text)
+                    tweet_topics = topichelper.get_topics(tweets_text)
                     if tweet_topics:
                         logger.info("User tweet topics: " + str(tweet_topics))
                         block_follower = tweet_topics.spam()

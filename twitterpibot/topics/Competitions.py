@@ -1,7 +1,7 @@
-from twitterpibot.twitter.topics.Topic import DontCareTopic
+from twitterpibot.topics.Topic import IgnoreTopic
 
 
-class RetweetForXFavouriteForY(DontCareTopic):
+class RetweetForXFavouriteForY(IgnoreTopic):
     def __init__(self):
         super(RetweetForXFavouriteForY, self).__init__([
             # RT to Win

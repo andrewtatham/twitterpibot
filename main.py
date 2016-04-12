@@ -33,7 +33,7 @@ from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDay
 from twitterpibot.responses.ThanksResponse import ThanksResponse
 # from twitterpibot.responses.TimelapseResponse import TimelapseResponse
 from twitterpibot.responses.x_or_y_response import X_Or_Y_Response
-from twitterpibot.schedule.BlankTweetScheduledTask import BlankTweetScheduledTask
+# from twitterpibot.schedule.BlankTweetScheduledTask import BlankTweetScheduledTask
 from twitterpibot.logic.ed_balls_day import TweetEdBallsDayScheduledTask, StreamEdBallsDayScheduledTask
 from twitterpibot.schedule.EggPunScheduledTask import EggPunScheduledTask
 from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
@@ -113,7 +113,7 @@ class Statistics(object):
 
 
 class Identity(object):
-    def __init__(self, screen_name, id_str ):
+    def __init__(self, screen_name, id_str):
         self.screen_name = screen_name
         self.id_str = id_str
         self.admin_screen_name = "andrewtatham"

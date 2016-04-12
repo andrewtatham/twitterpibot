@@ -2,7 +2,8 @@
 
 from twitterpibot.incoming.InboxItem import InboxItem
 from twitterpibot.logic import english, location
-from twitterpibot.twitter.topics import Topics
+from twitterpibot.topics import topichelper
+
 
 try:
     # noinspection PyUnresolvedReferences
@@ -50,7 +51,7 @@ class IncomingTweet(InboxItem):
         self.text = data.get("text")
         if self.text:
             self.text = h.unescape(self.text)
-            self.topics = Topics.get_topics(self.text)
+            self.topics = topichelper.get_topics(self.text)
             self.to_me = False
             self.targets = []
             self.text_stripped = self.text

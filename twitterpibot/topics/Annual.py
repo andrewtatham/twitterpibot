@@ -1,4 +1,4 @@
-from twitterpibot.twitter.topics.Topic import NewsTopic, DontCareTopic
+from twitterpibot.topics.Topic import NewsTopic, IgnoreTopic
 
 
 class NewYear(NewsTopic):
@@ -92,7 +92,7 @@ class Diwali(NewsTopic):
             to_date="21/11")
 
 
-class Thanksgiving(DontCareTopic):
+class Thanksgiving(IgnoreTopic):
     def __init__(self):
         super(Thanksgiving, self).__init__(
             {"Thanksgiving", "Turkey"},
@@ -100,7 +100,7 @@ class Thanksgiving(DontCareTopic):
             to_date="28/11")
 
 
-class BlackFriday(DontCareTopic):
+class BlackFriday(IgnoreTopic):
     def __init__(self):
         super(BlackFriday, self).__init__(
             {"Black Friday"},

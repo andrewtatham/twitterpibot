@@ -1,7 +1,7 @@
-from twitterpibot.twitter.topics.Topic import NewsTopic, DontCareTopic
+from twitterpibot.topics.Topic import NewsTopic, IgnoreTopic
 
 
-class BadThings(NewsTopic):
+class BadThings(IgnoreTopic):
     def __init__(self):
         super(BadThings, self).__init__(
             [
@@ -18,6 +18,7 @@ class BadThings(NewsTopic):
                 "bomb(s)?",
                 "explosion(s)?",
                 "crash",
+                "taliban",
                 "isil",
                 "isis",
                 "jihad(ist)?s?"
@@ -60,7 +61,7 @@ class CivilRights(NewsTopic):
             ])
 
 
-class Weather(DontCareTopic):
+class Weather(IgnoreTopic):
     def __init__(self):
         super(Weather, self).__init__(
             [

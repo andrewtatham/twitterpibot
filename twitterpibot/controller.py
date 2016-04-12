@@ -163,7 +163,7 @@ def get_exceptions():
 
 def _get_exception_summary(exceptions_list):
     retval = []
-    grouper = attrgetter( "label", "message", "stack_trace")
+    grouper = attrgetter("label", "message", "stack_trace")
     if exceptions_list:
         exceptions_list.sort(key=grouper)
         for key, group in groupby(exceptions_list, grouper):

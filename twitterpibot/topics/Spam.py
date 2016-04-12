@@ -1,4 +1,4 @@
-from twitterpibot.twitter.topics.Topic import SpamTopic
+from twitterpibot.topics.Topic import SpamTopic
 
 
 class TooKeen(SpamTopic):

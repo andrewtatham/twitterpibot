@@ -1,14 +1,14 @@
-from twitterpibot.twitter.topics.Topic import DontCareTopic
+from twitterpibot.topics.Topic import IgnoreTopic
 
 
-class XFactor(DontCareTopic):
+class XFactor(IgnoreTopic):
     def __init__(self):
         super(XFactor, self).__init__([
             "XFactor"
         ])
 
 
-class StrictlyComeDancing(DontCareTopic):
+class StrictlyComeDancing(IgnoreTopic):
     def __init__(self):
         super(StrictlyComeDancing, self).__init__([
             "#Strictly",
@@ -18,7 +18,7 @@ class StrictlyComeDancing(DontCareTopic):
         ])
 
 
-class DrWho(DontCareTopic):
+class DrWho(IgnoreTopic):
     def __init__(self):
         super(DrWho, self).__init__([
             "(Dr|Doctor) Who",
@@ -27,49 +27,49 @@ class DrWho(DontCareTopic):
         ])
 
 
-class MostHaunted(DontCareTopic):
+class MostHaunted(IgnoreTopic):
     def __init__(self):
         super(MostHaunted, self).__init__([
             "Most Haunted"
         ])
 
 
-class MatchOfTheDay(DontCareTopic):
+class MatchOfTheDay(IgnoreTopic):
     def __init__(self):
         super(MatchOfTheDay, self).__init__([
             "Match of the Day", "MOTD"
         ])
 
 
-class AndrewMarrShow(DontCareTopic):
+class AndrewMarrShow(IgnoreTopic):
     def __init__(self):
         super(AndrewMarrShow, self).__init__([
             "Andrew Marr"
         ], ["marr"])
 
 
-class TheArchers(DontCareTopic):
+class TheArchers(IgnoreTopic):
     def __init__(self):
         super(TheArchers, self).__init__([
             "#TheArchers"
         ])
 
 
-class AtMidnight(DontCareTopic):
+class AtMidnight(IgnoreTopic):
     def __init__(self):
         super(AtMidnight, self).__init__([
             "@Midnight", "#[\w]+in[\d]+words?"
         ])
 
 
-class WWE(DontCareTopic):
+class WWE(IgnoreTopic):
     def __init__(self):
         super(WWE, self).__init__([
             "WWE"
         ])
 
 
-class ImACelbrityGetMeOutOfHere(DontCareTopic):
+class ImACelbrityGetMeOutOfHere(IgnoreTopic):
     def __init__(self):
         super(ImACelbrityGetMeOutOfHere, self).__init__([
             "I'?m a celeb"
@@ -78,7 +78,7 @@ class ImACelbrityGetMeOutOfHere(DontCareTopic):
         ])
 
 
-class TheApprentice(DontCareTopic):
+class TheApprentice(IgnoreTopic):
     def __init__(self):
         super(TheApprentice, self).__init__([
             "The Apprentice", "(lord|alan) sugar"

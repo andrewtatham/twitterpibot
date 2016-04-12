@@ -1,13 +1,9 @@
-import os
-import pprint
-
 import markovgen
 
 from twitterpibot.logic import webscraper, feedhelper
 from twitterpibot.movies import moviehelper
 from twitterpibot.songs import songhelper
-from twitterpibot.text import textfilehelper
-from twitterpibot.twitter.topics.Topics import get_topics
+from twitterpibot.topics.topichelper import get_topics
 
 
 class MarkovWrapper(object):

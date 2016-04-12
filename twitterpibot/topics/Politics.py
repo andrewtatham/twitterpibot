@@ -1,4 +1,4 @@
-from twitterpibot.twitter.topics.Topic import NewsTopic
+from twitterpibot.topics.Topic import NewsTopic
 
 
 class PoliticsUK(NewsTopic):

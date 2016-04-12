@@ -1,4 +1,5 @@
 import datetime
+import pprint
 
 
 def parse_int(param):
@@ -37,9 +38,13 @@ class User(object):
         self.is_arsehole = False
         self.is_do_not_retweet = False
         self.is_retweet_more = False
-        self.is_bot = False
+        self.is_awesome_bot = False
         self.is_friend = False
         self.is_reply_less = False
+
+        self.is_possibly_bot = self.screen_name and "bot" in self.screen_name.lower() \
+                               or self.name and "bot" in self.name.lower() \
+                               or self.description and "bot" in self.description.lower()
 
     def is_stale(self):
         if self.updated:
@@ -48,3 +53,18 @@ class User(object):
             return mins > 45
         else:
             return True
+
+    def __str__(self):
+        return self.name + " [@" + self.screen_name + "] (" + str(self.description) + ")"
+
+
+if __name__ == '__main__':
+    import main
+
+    identity = main.AndrewTathamPiIdentity(None)
+    members = identity.twitter.get_list_members(identity.lists._list_ids["Awesome Bots"])["users"]
+    pprint.pprint(members)
+    members = list(map(lambda member: User(member, identity.screen_name), members))
+
+    for member in members:
+        print(member)

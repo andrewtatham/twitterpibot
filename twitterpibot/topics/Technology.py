@@ -1,4 +1,4 @@
-from twitterpibot.twitter.topics.Topic import NewsTopic, GoodTopic
+from twitterpibot.topics.Topic import NewsTopic, GoodTopic
 
 
 class FlyingThings(GoodTopic):
@@ -11,7 +11,7 @@ class FlyingThings(GoodTopic):
 class RaspberryPi(GoodTopic):
     def __init__(self):
         super(RaspberryPi, self).__init__(
-            ["Raspberry pi", "PiZero", "raspbian"]
+            ["rpi", "@Raspberry_Pi","Raspberry ?Pi", "Pi ?Zero", "raspbian"]
         )
 
 
@@ -66,7 +66,7 @@ class Linux(NewsTopic):
         )
 
 
-class Bots(NewsTopic):
+class Bots(GoodTopic):
     def __init__(self):
         super(Bots, self).__init__(
             ["bots?", "robots?", "botsummit"]

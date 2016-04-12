@@ -6,11 +6,6 @@ import emoji
 
 artist_palette = u"\N{ARTIST PALETTE}"
 
-
 painting = "\N{FRAME WITH PICTURE}"
 
 emoji.demojize("\N{FRAME WITH PICTURE}")
-
-
-
-

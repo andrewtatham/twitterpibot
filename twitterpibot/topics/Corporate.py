@@ -1,4 +1,4 @@
-from twitterpibot.twitter.topics.Topic import DontCareTopic, SpamTopic
+from twitterpibot.topics.Topic import IgnoreTopic, SpamTopic
 
 
 class DecsAndLondon(SpamTopic):
@@ -6,7 +6,7 @@ class DecsAndLondon(SpamTopic):
         super(DecsAndLondon, self).__init__({"DecsAndLondon", "#DoItLikeItsLegal"})
 
 
-class Starbucks(DontCareTopic):
+class Starbucks(IgnoreTopic):
     def __init__(self):
         super(Starbucks, self).__init__(
             {
@@ -15,17 +15,17 @@ class Starbucks(DontCareTopic):
             })
 
 
-class Nutribullet(DontCareTopic):
+class Nutribullet(IgnoreTopic):
     def __init__(self):
         super(Nutribullet, self).__init__({"NutriBullet(UK)?"})
 
 
-class Deliveroo(DontCareTopic):
+class Deliveroo(IgnoreTopic):
     def __init__(self):
         super(Deliveroo, self).__init__({"Deliveroo"})
 
 
-class OtherCorporate(DontCareTopic):
+class OtherCorporate(IgnoreTopic):
     def __init__(self):
         super(OtherCorporate, self).__init__({"RoundTeam"})
 

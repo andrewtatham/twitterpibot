@@ -1,10 +1,9 @@
-import os
 import pprint
 
 import feedparser
 
-from twitterpibot.logic import urlhelper, markovhelper,webscraper
-from twitterpibot.twitter.topics.Topics import get_topics
+from twitterpibot.logic import urlhelper
+from twitterpibot.topics.topichelper import get_topics
 
 andrew_tatham_github_activity = 'https://github.com/andrewtatham.atom'
 mark_gelder_blog = "http://markgelder.com/feed/"

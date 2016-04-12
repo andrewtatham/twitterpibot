@@ -1,19 +1,19 @@
 from unittest import TestCase
+from twitterpibot.songs import songhelper
 
-import twitterpibot.songs.songhelper as Songs
 from twitterpibot.logic.xmas import is_christmas
 
 
 class TestSongs(TestCase):
     def test_AllKeys(self):
-        k = Songs.songhelper().all_keys()
+        k = songhelper.all_keys()
         self.assertTrue("hammertime" in k)
         self.assertTrue("jinglebells" in k)
         self.assertTrue("indaclub" in k)
 
     def test_Keys(self):
 
-        k = Songs.songhelper().keys()
+        k = songhelper.keys()
 
         self.assertTrue("hammertime" in k)
 

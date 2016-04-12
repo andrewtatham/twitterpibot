@@ -1,7 +1,9 @@
 import logging
 
-from twitterpibot.twitter.topics import Daily, Monthly, Annual, Politics, Sport, Entertainment, Celebrity, News, \
-    Corporate, Technology, Regional, Spam, Competitions
+from twitterpibot.topics import Daily, Monthly, Annual, Politics, Sport, Entertainment, Celebrity, News, \
+    Technology, Regional, Spam, Competitions
+from twitterpibot.topics import religion
+from twitterpibot.topics import Corporate
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +26,7 @@ _topics.extend(Technology.get())
 _topics.extend(Regional.get())
 _topics.extend(Spam.get())
 _topics.extend(Competitions.get())
+_topics.extend(religion.get())
 
 for topic in _topics:
     logger.debug("Topic %s definite: %s",
