@@ -34,3 +34,5 @@ class IdentityMonitorScheduledTask(ScheduledTask):
         text = datetime.datetime.now().strftime("%c")
         text += os.linesep + self.identity.statistics.get_statistics()
         logger.info(Style.BRIGHT + Fore.BLUE + text)
+
+        self.identity.conversations.housekeep()

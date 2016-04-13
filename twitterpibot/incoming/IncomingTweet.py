@@ -90,6 +90,8 @@ class IncomingTweet(InboxItem):
 
             # self.blob = TextBlob(self.text_stripped)
 
+
+
         self.location = None
         place = data.get("place")
         coordinates = data.get("coordinates")

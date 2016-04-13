@@ -50,3 +50,6 @@ class OutgoingTweet(OutboxTextItem):
             url = " https://twitter.com/{}/status/{}".format(quote.sender.screen_name, quote.id_str)
             self.status += " " + url
 
+
+
+

@@ -1,7 +1,7 @@
 import logging
 import os
 import random
-import textwrap
+
 import time
 
 from twython import Twython, TwythonError
@@ -10,7 +10,7 @@ from retrying import retry
 from twitterpibot.exceptionmanager import is_timeout
 
 from twitterpibot.logic import fsh, urlhelper
-from twitterpibot.twitter import authorisationhelper
+from twitterpibot.twitter import authorisationhelper, tweet_splitter
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 from twitterpibot.twitter.streamer import Streamer
@@ -21,11 +21,6 @@ try:
 except ImportError:
     # noinspection PyUnresolvedReferences
     from urllib import quote_plus
-
-
-def _cap(s, l):
-    return s if len(s) <= l else s[0:l - 3] + '...'
-
 
 retry_args = dict(
     stop_max_attempt_number=3,
@@ -59,6 +54,9 @@ class TwitterHelper(object):
     @retry(**retry_args)
     def send(self, outbox_item):
         if type(outbox_item) is OutgoingTweet:
+
+            outbox_item.display()
+
             media_ids = []
             if outbox_item.filePaths and any(outbox_item.filePaths):
                 for filePath in outbox_item.filePaths:
@@ -71,43 +69,21 @@ class TwitterHelper(object):
                     if media_id:
                         media_ids.append(media_id)
 
-                if media_ids:
-                    outbox_item.media_ids = media_ids
-
-            media_count = 0
-            if outbox_item.media_ids:
-                media_count = len(outbox_item.media_ids)
-
-            link_count = urlhelper.count_urls(outbox_item.status)
-
-            outbox_item.display()
+            split_tweets = tweet_splitter.split_tweet(
+                outbox_item,
+                twitter_configuration=self.twitter_configuration,
+                media_ids=media_ids)
 
             in_reply_to_id_str = outbox_item.in_reply_to_id_str
 
-            statuses = self._split_text(
-                _cap(outbox_item.status, 140 * 100),
-                link_count=link_count, image_count=media_count)
-
-            line_number = 0
-            for status in statuses:
-                logger.info("status %s: %s chars: %s", line_number, len(status), status)
-
-                tweet_params = {
-                    "status": status,
-                    "in_reply_to_status_id": in_reply_to_id_str,
-                }
-
-                if line_number == 0 and outbox_item.media_ids:
-                    tweet_params["media_ids"] = outbox_item.media_ids
-                if outbox_item.location:
-                    tweet_params["lat"] = outbox_item.location.latitude,
-                    tweet_params["long"] = outbox_item.location.longitude,
-                    tweet_params["place_id"] = outbox_item.location.place_id_twitter
+            for split_tweet in split_tweets:
+                tweet_params = split_tweet.get_tweet_params(in_reply_to_id_str)
                 logging.info(tweet_params)
                 response = self.twitter.update_status(**tweet_params)
-                in_reply_to_id_str = response["id_str"]
+                sent_tweet_id = response["id_str"]
+                self.identity.conversations.outgoing(split_tweet, sent_tweet_id, in_reply_to_id_str)
                 self.identity.statistics.record_outgoing_tweet()
-                line_number += 1
+                in_reply_to_id_str = sent_tweet_id
 
             return in_reply_to_id_str
 
@@ -167,32 +143,6 @@ class TwitterHelper(object):
             return self.send(dm)
 
         return None
-
-    def _split_text(self, large_text, link_count=0, image_count=0):
-
-        if link_count == 0 and image_count == 0 and len(large_text) <= 140:
-            return [large_text]
-        else:
-            wrap_at = 140
-            wrap_at -= image_count * self.twitter_configuration["characters_reserved_per_media"]
-            wrap_at -= link_count * self.twitter_configuration["short_url_length_https"]
-            logger.info("wrap at %s" % wrap_at)
-            lines = textwrap.wrap(large_text, wrap_at)
-            lines_count = len(lines)
-            line_number = 0
-            return_value = []
-            for line in lines:
-                is_continuation = lines_count > 1 and line_number != 0
-                has_continuation = lines_count > 1 and line_number != lines_count - 1
-                text = ""
-                if is_continuation:
-                    text += "..."
-                text += line
-                if has_continuation:
-                    text += "..."
-                return_value.append(text)
-                line_number += 1
-            return return_value
 
     def _upload_media(self, file_path):
         file = None
@@ -451,6 +401,7 @@ class TwitterHelper(object):
     @retry(**retry_args)
     def get_list_statuses(self, **kwargs):
         return self.twitter.get_list_statuses(**kwargs)
+
 
 if __name__ == "__main__":
     import main

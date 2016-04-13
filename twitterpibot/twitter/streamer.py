@@ -7,12 +7,13 @@ from twitterpibot import hardware
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingEvent import IncomingEvent
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
+from twitterpibot.logic import conversation_helper
 from twitterpibot.twitter import authorisationhelper
 
 logger = logging.getLogger(__name__)
 
-default_backoff = 30
-max_backoff = 300
+default_backoff = 60
+max_backoff = 600
 
 
 class Streamer(TwythonStreamer):
@@ -91,10 +92,17 @@ class Streamer(TwythonStreamer):
             logger.debug(data)
 
     def _determine_response(self, inbox_item):
-        if inbox_item and self.responses:
-            for response in self.responses:
-                if response.condition(inbox_item):
-                    return response
+
+        if inbox_item:
+            conversation = self._identity.conversations.incoming(inbox_item)
+
+            if self.responses:
+                if not conversation or conversation.length() < 20:
+                    for response in self.responses:
+                        if response.condition(inbox_item):
+                            return response
+                else:
+                    logger.warning("conversation limit reached")
         return None
 
     def _respond(self, inbox_item, response):

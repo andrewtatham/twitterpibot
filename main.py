@@ -13,7 +13,7 @@ if __name__ == '__main__':
     from twitterpibot.data_access import dal
 
     dal.export_tokens(fsh.root + "tokens.csv")
-
+from twitterpibot.logic import conversation_helper
 from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask
 from twitterpibot.logic.botgle import BotgleResponse
 from twitterpibot.logic.conversation import ConversationScheduledTask
@@ -127,6 +127,7 @@ class Identity(object):
         self.profile_image_url = None
         self.statistics = Statistics()
         self.lists = lists.Lists(self)
+        self.conversations = conversation_helper.ConversationHelper(self)
 
     @abc.abstractmethod
     def get_tasks(self):
@@ -442,13 +443,13 @@ if __name__ == "__main__":
         all_identities = [
             andrewtatham,
             andrewtathampi,
-            # andrewtathampi2,
-            numberwang_host,
-            julienumberwang,
-            simonnumberwang,
-            eggpunbot,
-            whenmensday,
-            botgleartist
+            # # andrewtathampi2,
+            # numberwang_host,
+            # julienumberwang,
+            # simonnumberwang,
+            # eggpunbot,
+            # whenmensday,
+            # botgleartist
         ]
 
     twitterpibot.bootstrap.run(all_identities)

@@ -4,7 +4,7 @@ import abc
 
 friend_rt_fav = 4
 rt_more = 10
-bot_rt_fav = 100
+bot_rt_fav = 250
 trend_rt_fav = 100
 search_rt_fav = 100
 random_rt_fav = 500
@@ -44,8 +44,6 @@ def mentioned_reply_condition(inbox_item):
 def unmentioned_reply_condition(inbox_item):
     unmentoned = inbox_item.is_tweet and not inbox_item.from_me and not inbox_item.is_retweet_of_my_status \
                  and ((inbox_item.sender.is_awesome_bot and random.randint(0, 100) == 0)
-                      or (inbox_item.sender.is_friend and random.randint(0, 100) == 0)
-                      or (inbox_item.sender.is_retweet_more and random.randint(0, 100) == 0)
                       or random.randint(0, 1000) == 0)
 
     return unmentoned
