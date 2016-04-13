@@ -132,6 +132,15 @@ thanks_and_bye = [
     "Thankyou. Come again.",
 ]
 
+thanks = [
+    "thx",
+    "ta",
+    "thanks",
+    "thankyou",
+    "thank you",
+    "thank u",
+]
+
 weather_responses = [
     "Red sky at night, shepherd's delight. Red sky in the morning, shepherd's warning",
     "When the wind is out of the East, tis never good for man nor beast",
@@ -302,8 +311,8 @@ class ConversationScheduledTask(ScheduledTask):
 
 if __name__ == "__main__":
     admin = None
-    one = identities.AndrewTathamPiIdentity(admin)
-    two = identities.AndrewTathamPi2Identity(admin)
+    one = identities.AndrewTathamIdentity()
+    two = identities.AndrewTathamPiIdentity(admin)
 
     task = ConversationScheduledTask(one, two)
     task.on_run()

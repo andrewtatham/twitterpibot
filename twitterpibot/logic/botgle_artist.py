@@ -202,6 +202,7 @@ def make(board, solution, screen_name):
 
             if path_label_option == PathLabelOptions.TopLeft:
                 solution_draw.text(label_origin, found_word, font=fnt, fill=path_colour)
+                # noinspection PyUnresolvedReferences
                 label_origin = (label_origin[0], label_origin[1] + word_size[1])
             elif path_label_option == PathLabelOptions.BottomLeft:
                 label_origin = (label_origin[0], label_origin[1] - word_size[1])

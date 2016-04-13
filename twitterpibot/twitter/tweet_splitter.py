@@ -57,11 +57,14 @@ def split_tweet(outbox_item, twitter_configuration, media_ids):
     line_number = 0
     for status in statuses:
         logger.info("status %s: %s chars: %s", line_number, len(status), status)
-        tweet = OutgoingSplitTweet(
-            is_first=line_number == 0,
-            status=status,
-            media_ids=media_ids,
-            outbox_item=outbox_item)
+
+        tweet = OutgoingSplitTweet()
+        tweet.status = status
+        tweet.location = outbox_item.location
+        if line_number == 0:
+            if media_ids:
+                tweet.media_ids = media_ids
+
         split_tweets.append(tweet)
         line_number += 1
 

@@ -77,13 +77,12 @@ class TwitterHelper(object):
             in_reply_to_id_str = outbox_item.in_reply_to_id_str
 
             for split_tweet in split_tweets:
-                tweet_params = split_tweet.get_tweet_params(in_reply_to_id_str)
-                logging.info(tweet_params)
-                response = self.twitter.update_status(**tweet_params)
-                sent_tweet_id = response["id_str"]
-                self.identity.conversations.outgoing(split_tweet, sent_tweet_id, in_reply_to_id_str)
+                split_tweet.in_reply_to_id_str = in_reply_to_id_str
+                response = self.twitter.update_status(**split_tweet.get_tweet_params())
+                split_tweet.id_str = response["id_str"]
+                self.identity.conversations.outgoing(split_tweet)
                 self.identity.statistics.record_outgoing_tweet()
-                in_reply_to_id_str = sent_tweet_id
+                in_reply_to_id_str = split_tweet.id_str
 
             return in_reply_to_id_str
 

@@ -10,7 +10,7 @@ from twitterpibot.logic.gender import WhenIsIMDScheduledTask, WhenIsInternationa
 from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
 from twitterpibot.responses.EggPunResponse import EggPunResponse
 from twitterpibot.responses.FavoriteResponse import FavoriteResponse
-from twitterpibot.responses.HelloResponse import HelloResponse
+from twitterpibot.responses.conversationresponses import HelloResponse, ThanksResponse
 from twitterpibot.responses.HiveMindResponse import HiveMindResponse
 from twitterpibot.responses.Magic8BallResponse import Magic8BallResponse
 from twitterpibot.responses.PhotoResponse import PhotoResponse
@@ -18,7 +18,6 @@ from twitterpibot.responses.ReplyResponse import ReplyResponse
 from twitterpibot.responses.RetweetResponse import RetweetResponse
 from twitterpibot.responses.SongResponse import SongResponse
 from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
-from twitterpibot.responses.ThanksResponse import ThanksResponse
 from twitterpibot.responses.x_or_y_response import X_Or_Y_Response
 from twitterpibot.schedule.EggPunScheduledTask import EggPunScheduledTask
 from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
@@ -187,7 +186,6 @@ class NumberwangHostIdentity(BotIdentity):
         return []
 
     def get_scheduled_jobs(self):
-
         jobs = super(NumberwangHostIdentity, self).get_scheduled_jobs()
         # noinspection PyTypeChecker
         jobs.extend([NumberwangHostScheduledTask(self, self.contestants)])
