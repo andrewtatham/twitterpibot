@@ -4,7 +4,6 @@ from twitterpibot.incoming.InboxItem import InboxItem
 from twitterpibot.logic import english, location
 from twitterpibot.topics import topichelper
 
-
 try:
     # noinspection PyUnresolvedReferences
     import html.parser
@@ -42,11 +41,6 @@ class IncomingTweet(InboxItem):
         self.favorited = bool(data.get("favorited"))
         self.retweeted = bool(data.get("retweeted"))
         self.in_reply_to_id_str = data.get("in_reply_to_status_id_str")
-
-        self.source = data.get('tweet_source')
-        self.sourceIsTrend = self.source and 'trend' in self.source
-        self.sourceIsSearch = self.source and 'search' in self.source
-        self.sourceIsStream = self.source and 'stream' in self.source
 
         self.text = data.get("text")
         if self.text:
@@ -88,9 +82,7 @@ class IncomingTweet(InboxItem):
             for word_interesting in self.words_interesting:
                 self.text_interesting += " " + word_interesting
 
-            # self.blob = TextBlob(self.text_stripped)
-
-
+                # self.blob = TextBlob(self.text_stripped)
 
         self.location = None
         place = data.get("place")
@@ -132,4 +124,3 @@ class IncomingTweet(InboxItem):
         # logger.info("noun_phrases: %s", self.blob.noun_phrases)
         # logger.info("sentiment.polarity: %s", self.blob.sentiment.polarity)
         # logger.info("sentiment.subjectivity: %s", self.blob.sentiment.subjectivity)
-

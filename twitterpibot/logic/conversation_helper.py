@@ -33,8 +33,8 @@ class Conversation(object):
 
     def display(self):
         l = self.length()
-        logger.info("{} length {}".format(self.conversation_key, l))
-        if l > 1:
+        if l > 0:
+            logger.info("{} length {}".format(self.conversation_key, l))
             logger.info(pprint.pformat(self.tweets))
 
     def length(self):
@@ -88,10 +88,10 @@ class ConversationHelper(object):
         return None
 
     def incoming(self, inbox_item):
-        conversation_key = self._determine_conversation_key(inbox_item)
+        conversation_key = self._determine_conversation_key(inbox_item=inbox_item)
         if conversation_key:
             if conversation_key not in self._conversations:
-                self._conversations[conversation_key] = Conversation(conversation_key=conversation_key                                                                     )
+                self._conversations[conversation_key] = Conversation(conversation_key=conversation_key)
             else:
                 self._conversations[conversation_key].incoming(inbox_item=inbox_item)
 
@@ -99,7 +99,7 @@ class ConversationHelper(object):
             return self._conversations[conversation_key]
 
     def outgoing(self, outbox_item, sent_tweet_id, in_reply_to_id_str):
-        conversation_key = self._determine_conversation_key(outbox_item)
+        conversation_key = self._determine_conversation_key(outbox_item=outbox_item)
         if conversation_key:
             if conversation_key not in self._conversations:
                 self._conversations[conversation_key] = Conversation(conversation_key=conversation_key

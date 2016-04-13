@@ -5,6 +5,7 @@ __author__ = 'andrewtatham'
 
 class OutgoingSplitTweet(OutboxTextItem):
     def __init__(self, is_first, status, media_ids, outbox_item):
+        super(OutgoingSplitTweet, self).__init__()
         self.tweet_params = {
             "status": status
         }

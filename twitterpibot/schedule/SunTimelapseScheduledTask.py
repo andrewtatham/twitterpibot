@@ -1,7 +1,7 @@
 from apscheduler.triggers.cron import CronTrigger
 
 from twitterpibot import schedule
-import twitterpibot.logic.astronomy as MyAstral
+import twitterpibot.logic.astronomy as astronomy
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.logic.timelapses import Timelapse
 
@@ -11,7 +11,7 @@ class SunTimelapseScheduledTask(ScheduledTask):
         return CronTrigger(hour=3)
 
     def on_run(self):
-        sun = MyAstral.get_today_times()
+        sun = astronomy.get_today_times()
 
         timelapse = Timelapse(
             identity=self.identity,

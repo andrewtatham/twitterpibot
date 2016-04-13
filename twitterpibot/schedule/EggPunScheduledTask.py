@@ -2,6 +2,7 @@ import random
 
 from apscheduler.triggers.interval import IntervalTrigger
 
+import identities
 from twitterpibot.logic import eggpuns, giphyhelper
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
@@ -22,8 +23,6 @@ class EggPunScheduledTask(ScheduledTask):
 
 
 if __name__ == '__main__':
-    import main
-
-    identity = main.EggPunBotIdentity(None)
+    identity = identities.EggPunBotIdentity(None)
     task = EggPunScheduledTask(identity)
     task.on_run()

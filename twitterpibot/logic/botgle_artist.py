@@ -60,10 +60,15 @@ def make(board, solution, screen_name):
     folder = fsh.root + "temp" + os.sep + "botgle" + os.sep + screen_name + os.sep
     fsh.ensure_directory_exists(folder)
 
+    # noinspection PyTypeChecker
     board_option = random.choice(list(BoardOptions))
+    # noinspection PyTypeChecker
     tile_option = random.choice(list(TileOptions))
+    # noinspection PyTypeChecker
     text_option = random.choice(list(TextOptions))
+    # noinspection PyTypeChecker
     path_option = random.choice(list(PathOptions))
+    # noinspection PyTypeChecker
     path_label_option = random.choice(list(PathLabelOptions))
 
     retval = {}

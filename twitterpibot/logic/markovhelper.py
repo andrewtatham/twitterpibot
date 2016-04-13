@@ -1,5 +1,6 @@
 import markovgen
 
+import identities
 from twitterpibot.logic import webscraper, feedhelper
 from twitterpibot.movies import moviehelper
 from twitterpibot.songs import songhelper
@@ -26,8 +27,7 @@ def get(text=None):
 if __name__ == "__main__":
     sep = " "  # os.linesep
     markov = get()
-    import main
-    identity = main.AndrewTathamPiIdentity(None)
+    identity = identities.AndrewTathamPiIdentity(None)
     list_name = "Arseholes"
     tweets = identity.twitter.get_list_statuses(
         list_id=identity.lists._list_ids[list_name],

@@ -2,6 +2,7 @@ import logging
 import pprint
 import random
 
+import identities
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.logic import botgle_solver, botgle_artist
 from twitterpibot.logic.conversation import hello_words
@@ -180,11 +181,10 @@ class BotgleResponse(Response):
 
 
 if __name__ == '__main__':
-    import main
 
     logging.basicConfig(level=logging.INFO)
 
-    identity = main.BotgleArtistIdentity(None)
+    identity = identities.BotgleArtistIdentity(None)
     timeline = identity.twitter.get_user_timeline(screen_name="botgle", exclude_replies=True, count=50)
     tweets = list(map(lambda data: IncomingTweet(data, identity), timeline))
     tweets.reverse()

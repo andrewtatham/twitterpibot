@@ -1,5 +1,6 @@
 import datetime
 import pprint
+import identities
 
 
 def parse_int(param):
@@ -48,6 +49,7 @@ class User(object):
 
     def is_stale(self):
         if self.updated:
+            # noinspection PyTypeChecker
             delta = datetime.datetime.utcnow() - self.updated
             mins = divmod(delta.days * 86400 + delta.seconds, 60)[0]
             return mins > 45
@@ -59,9 +61,9 @@ class User(object):
 
 
 if __name__ == '__main__':
-    import main
 
-    identity = main.AndrewTathamPiIdentity(None)
+
+    identity = identities.AndrewTathamPiIdentity(None)
     members = identity.twitter.get_list_members(identity.lists._list_ids["Awesome Bots"])["users"]
     pprint.pprint(members)
     members = list(map(lambda member: User(member, identity.screen_name), members))

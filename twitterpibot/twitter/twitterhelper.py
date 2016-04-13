@@ -1,15 +1,15 @@
 import logging
 import os
 import random
-
 import time
 
 from twython import Twython, TwythonError
 
 from retrying import retry
-from twitterpibot.exceptionmanager import is_timeout
 
-from twitterpibot.logic import fsh, urlhelper
+import identities
+from twitterpibot.exceptionmanager import is_timeout
+from twitterpibot.logic import fsh
 from twitterpibot.twitter import authorisationhelper, tweet_splitter
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
@@ -404,6 +404,4 @@ class TwitterHelper(object):
 
 
 if __name__ == "__main__":
-    import main
-
-    twitter = TwitterHelper(main.AndrewTathamPiIdentity(main.AndrewTathamIdentity()))
+    twitter = TwitterHelper(identities.AndrewTathamPiIdentity(identities.AndrewTathamIdentity()))

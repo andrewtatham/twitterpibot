@@ -8,18 +8,22 @@ __author__ = 'andrewtatham'
 
 class TestResponse(TestCase):
     def test_mentioned_reply_condition(self):
+        # noinspection PyTypeChecker
         rate = _test_reply_rate(mentioned_reply_condition, True)
         self.assertGreaterEqual(rate, 0.99)
 
     def test_unmentioned_reply_condition(self):
+        # noinspection PyTypeChecker
         rate = _test_reply_rate(unmentioned_reply_condition)
         self.assertLessEqual(rate, 0.01)
 
     def test_retweet_condition(self):
+        # noinspection PyTypeChecker
         rate = _test_reply_rate(retweet_condition)
         self.assertLessEqual(rate, 0.01)
 
     def test_favourite_condition(self):
+        # noinspection PyTypeChecker
         rate = _test_reply_rate(favourite_condition)
         self.assertLessEqual(rate, 0.01)
 

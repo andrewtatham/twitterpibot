@@ -7,7 +7,6 @@ from twitterpibot import hardware
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingEvent import IncomingEvent
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
-from twitterpibot.logic import conversation_helper
 from twitterpibot.twitter import authorisationhelper
 
 logger = logging.getLogger(__name__)

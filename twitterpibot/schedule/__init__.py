@@ -42,7 +42,7 @@ _scheduled_jobs = []
 def set_scheduled_jobs(identities):
     global _scheduled_jobs
     _scheduled_jobs = [
-        # GlobalMonitorScheduledTask(None)
+        GlobalMonitorScheduledTask(None)
     ]
     for identity in identities:
         _scheduled_jobs.extend(identity.get_scheduled_jobs())

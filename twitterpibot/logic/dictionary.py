@@ -13,7 +13,7 @@ boggle_sets = list(map(lambda word: (word, set(word)), boggle_words))
 
 def get_botgle_candidates(letters):
     letters = set(letters)
-    botgle_candidates = list(map(lambda tuple: tuple[0], filter(lambda tuple: tuple[1].issubset(letters), boggle_sets)))
+    botgle_candidates = list(map(lambda t: t[0], filter(lambda t: t[1].issubset(letters), boggle_sets)))
     return botgle_candidates
 
 
