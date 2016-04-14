@@ -1,5 +1,6 @@
 from unittest import TestCase
-from twitterpibot.schedule.RegularTimelapseScheduledTask import RegularTimelapseScheduledTask
+
+from twitterpibot.schedule.timelapse.RegularTimelapseScheduledTask import RegularTimelapseScheduledTask
 
 
 class TestRegularTimelapseScheduledTask(TestCase):

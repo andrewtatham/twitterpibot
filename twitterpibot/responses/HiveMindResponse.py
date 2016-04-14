@@ -24,8 +24,6 @@ class HiveMindResponse(Response):
                 for identity in self.slave_identities:
                     funcs.append(lambda i=identity: i.twitter.retweet(id_str=inbox_item.targetObjectID))
 
-
-
         if funcs:
             for f in funcs:
                 if f:

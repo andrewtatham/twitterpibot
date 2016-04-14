@@ -6,7 +6,6 @@ import identities
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.logic import botgle_solver, botgle_artist
 from twitterpibot.logic.conversation import hello_words
-from twitterpibot.outgoing import OutgoingDirectMessage
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.responses.Response import Response
 
@@ -141,13 +140,13 @@ class BotgleResponse(Response):
         words = words[-10:]
         words.reverse()
         text = ""
-        text += ("%s words found " % len(solutions))
+        text += ("%s words found: " % len(solutions))
         text += " ".join(words)
-        if self._armed:
-            self.identity.twitter.send(
-                OutgoingDirectMessage.OutgoingDirectMessage(text=text, screen_name="andrewtatham"))
-        else:
-            logger.info(text)
+        # if self._armed:
+        #     # self.identity.twitter.send(
+        #     #     OutgoingDirectMessage.OutgoingDirectMessage(text=text, screen_name="andrewtatham"))
+        # else:
+        logger.info(text)
 
     def _reply_with_image(self, image, inbox_item):
         text = ""

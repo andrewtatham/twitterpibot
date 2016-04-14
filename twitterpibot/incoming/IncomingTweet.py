@@ -113,9 +113,9 @@ class IncomingTweet(InboxItem):
         if self.to_me:
             colour += Style.BRIGHT
         elif self.from_me:
-            colour += Style.NORMAL
+            colour += Style.BRIGHT
         else:
-            colour += Style.DIM
+            colour += Style.NORMAL
 
         logger.info(colour + text)
 

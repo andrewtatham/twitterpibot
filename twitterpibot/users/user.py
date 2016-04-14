@@ -62,7 +62,6 @@ class User(object):
 
 if __name__ == '__main__':
 
-
     identity = identities.AndrewTathamPiIdentity(None)
     members = identity.twitter.get_list_members(identity.lists._list_ids["Awesome Bots"])["users"]
     pprint.pprint(members)

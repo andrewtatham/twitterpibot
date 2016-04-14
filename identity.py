@@ -3,12 +3,14 @@ import abc
 import colorama
 
 from twitterpibot.logic import conversation_helper
+from twitterpibot.logic.admin_commands import ImportTokensResponse, ExportTokensResponse, DropCreateTablesResponse
 from twitterpibot.logic.ed_balls_day import TweetEdBallsDayScheduledTask
 from twitterpibot.logic.statstics import Statistics
-from twitterpibot.schedule.FollowScheduledTask import FollowScheduledTask
-from twitterpibot.schedule.MonitorScheduledTask import IdentityMonitorScheduledTask
-from twitterpibot.schedule.SubscribedListsScheduledTask import SubscribedListsScheduledTask
-from twitterpibot.schedule.UserListsScheduledTask import UserListsScheduledTask
+from twitterpibot.schedule.common.FollowScheduledTask import FollowScheduledTask
+from twitterpibot.schedule.common.IdentityMonitorScheduledTask import IdentityMonitorScheduledTask
+from twitterpibot.schedule.common.SubscribedListsScheduledTask import SubscribedListsScheduledTask
+from twitterpibot.schedule.common.SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
+from twitterpibot.schedule.common.UserListsScheduledTask import UserListsScheduledTask
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
 from twitterpibot.twitter import twitterhelper
 from twitterpibot.users import users, lists
@@ -35,7 +37,9 @@ class Identity(object):
 
     @abc.abstractmethod
     def get_tasks(self):
-        return []
+        return [
+            StreamTweetsTask(self)
+        ]
 
     @abc.abstractmethod
     def get_scheduled_jobs(self):
@@ -45,18 +49,14 @@ class Identity(object):
 
     @abc.abstractmethod
     def get_responses(self):
-        return []
+        return [
+        ]
 
 
 class BotIdentity(Identity):
     def __init__(self, screen_name, id_str, admin_identity):
         super(BotIdentity, self).__init__(screen_name, id_str)
         self.admin_identity = admin_identity
-
-    def get_tasks(self):
-        return [
-            StreamTweetsTask(self)
-        ]
 
     def get_scheduled_jobs(self):
         jobs = super(BotIdentity, self).get_scheduled_jobs()
@@ -65,9 +65,17 @@ class BotIdentity(Identity):
             UserListsScheduledTask(self, self.admin_identity),
             SubscribedListsScheduledTask(self, self.admin_identity),
             FollowScheduledTask(self),
+            SuggestedUsersScheduledTask(self)
 
         ])
         return jobs
 
     def get_responses(self):
-        return []
+        responses = super(BotIdentity, self).get_responses()
+        responses.extend([
+            # RestartResponse(self),
+            ImportTokensResponse(self),
+            ExportTokensResponse(self),
+            DropCreateTablesResponse(self),
+        ])
+        return responses

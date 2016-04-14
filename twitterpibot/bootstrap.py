@@ -5,6 +5,9 @@ import colorama
 from twitterpibot import loggingconfig
 from twitterpibot import hardware, tasks, schedule
 from twitterpibot import webserver
+from twitterpibot.schedule import GlobalMonitorScheduledTask
+from twitterpibot.tasks.FadeTask import FadeTask
+from twitterpibot.tasks.LightsTask import LightsTask
 
 if not hardware.is_andrew_desktop:
     colorama.init(autoreset=True)
@@ -26,10 +29,10 @@ def run(identities):
     obviousness = "=" * 5
     logger.info(obviousness + " Starting " + obviousness)
 
-    logger.info("Setting tasks")
-    tasks.set_tasks(all_identities)
-    logger.info("Setting schedule")
-    schedule.set_scheduled_jobs(all_identities)
+    set_tasks(identities)
+
+    set_scheduled_jobs(all_identities)
+
     logger.info("Starting tasks")
     tasks.start()
     logger.info("Starting schedule")
@@ -47,3 +50,28 @@ def run(identities):
     hardware.stop()
 
     logger.info(obviousness + " Stopped " + obviousness)
+
+
+def set_scheduled_jobs(identities):
+    logger.info("Setting schedule")
+    _scheduled_jobs = [
+        GlobalMonitorScheduledTask(None)
+    ]
+    for identity in identities:
+        _scheduled_jobs.extend(identity.get_scheduled_jobs())
+    schedule.set_scheduled_jobs(_scheduled_jobs)
+
+
+def set_tasks(identities):
+    logger.info("Setting tasks")
+    _tasks = []
+    if hardware.is_piglow_attached \
+            or hardware.is_unicornhat_attached \
+            or hardware.is_blinksticknano_attached:
+        _tasks.extend([
+            LightsTask(),
+            FadeTask()
+        ])
+    for identity in identities:
+        _tasks.extend(identity.get_tasks())
+    tasks.set_tasks(_tasks)

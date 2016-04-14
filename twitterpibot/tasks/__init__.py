@@ -80,8 +80,7 @@ def stop():
     logger.info("Stopped")
 
 
-def set_tasks(identities):
+def set_tasks(tasks):
     global _tasks
-    _tasks = []
-    for identity in identities:
-        _tasks.extend(identity.get_tasks())
+    _tasks = tasks
+

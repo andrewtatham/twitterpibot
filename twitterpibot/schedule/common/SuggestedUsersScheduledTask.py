@@ -13,12 +13,12 @@ suggestedUserColours = cycle([Fore.WHITE, Fore.CYAN])
 
 
 class SuggestedUsersScheduledTask(ScheduledTask):
-    def __init__(self):
-        super(SuggestedUsersScheduledTask, self).__init__(self.identity)
+    def __init__(self, identity):
+        super(SuggestedUsersScheduledTask, self).__init__(identity)
         self._slugList = []
 
     def get_trigger(self):
-        return IntervalTrigger(minutes=random.randint(31, 59))
+        return IntervalTrigger(hours=random.randint(3, 6), minutes=random.randint(0, 59))
 
     def on_run(self):
 

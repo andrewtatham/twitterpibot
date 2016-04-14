@@ -11,7 +11,7 @@ class FlyingThings(GoodTopic):
 class RaspberryPi(GoodTopic):
     def __init__(self):
         super(RaspberryPi, self).__init__(
-            ["rpi", "@Raspberry_Pi","Raspberry ?Pi", "Pi ?Zero", "raspbian"]
+            ["rpi", "@Raspberry_Pi", "Raspberry ?Pi", "Pi ?Zero", "raspbian"]
         )
 
 

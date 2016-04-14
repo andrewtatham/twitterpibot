@@ -26,7 +26,6 @@ def is_timeout(exception):
 
 
 def handle(identity, exception, label=None):
-
     if type(exception) is UnicodeEncodeError or type(exception) is TwythonError \
             or type(exception) is IncompleteRead or type(exception) is ChunkedEncodingError:
         _record_warning(identity, exception, label)
@@ -35,7 +34,7 @@ def handle(identity, exception, label=None):
 
 
 def _record_warning(identity, exception, label):
-    logger.warning(Style.DIM + Fore.BLACK + Back.YELLOW + str(exception))
+    logger.warning(Fore.BLACK + Back.YELLOW + str(exception))
     logger.exception(Style.RESET_ALL)
     dal.warning(identity, exception, label)
     if identity:

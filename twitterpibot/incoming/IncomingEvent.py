@@ -52,12 +52,10 @@ class IncomingEvent(InboxItem):
 
         colour = self.identity.colour
 
-        if self.to_me:
+        if self.to_me or self.from_me:
             colour += Style.BRIGHT
-        elif self.from_me:
-            colour += Style.NORMAL
         else:
-            colour += Style.DIM
+            colour += Style.NORMAL
 
         text = "* EVENT: Type: " + self.event + os.linesep \
                + " Source: " + self.source.name + " [@" + self.source.screen_name + "]" + os.linesep \

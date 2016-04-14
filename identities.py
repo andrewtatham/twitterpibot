@@ -1,7 +1,7 @@
 import colorama
+
 from identity import Identity, BotIdentity
 from twitterpibot import hardware
-from twitterpibot.logic.admin_commands import ImportTokensResponse, ExportTokensResponse, DropCreateTablesResponse
 from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask
 from twitterpibot.logic.botgle import BotgleResponse
 from twitterpibot.logic.conversation import ConversationScheduledTask
@@ -10,7 +10,6 @@ from twitterpibot.logic.gender import WhenIsIMDScheduledTask, WhenIsInternationa
 from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
 from twitterpibot.responses.EggPunResponse import EggPunResponse
 from twitterpibot.responses.FavoriteResponse import FavoriteResponse
-from twitterpibot.responses.conversationresponses import HelloResponse, ThanksResponse
 from twitterpibot.responses.HiveMindResponse import HiveMindResponse
 from twitterpibot.responses.Magic8BallResponse import Magic8BallResponse
 from twitterpibot.responses.PhotoResponse import PhotoResponse
@@ -22,90 +21,14 @@ from twitterpibot.responses.x_or_y_response import X_Or_Y_Response
 from twitterpibot.schedule.EggPunScheduledTask import EggPunScheduledTask
 from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
 from twitterpibot.schedule.JokesScheduledTask import JokesScheduledTask
-from twitterpibot.schedule.LightsScheduledTask import LightsScheduledTask
+from twitterpibot.schedule.common.LightsScheduledTask import LightsScheduledTask
 from twitterpibot.schedule.PhotoScheduledTask import PhotoScheduledTask
 from twitterpibot.schedule.SongScheduledTask import SongScheduledTask
 from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
 from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
 from twitterpibot.schedule.WikipediaScheduledTask import WikipediaScheduledTask
-from twitterpibot.tasks.FadeTask import FadeTask
-from twitterpibot.tasks.LightsTask import LightsTask
-from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
 
 __author__ = 'andrewtatham'
-
-
-def get_pi_scheduled_jobs(identity, converse_with_identity):
-    scheduledjobs = [
-        WikipediaScheduledTask(identity),
-        TalkLikeAPirateDayScheduledTask(identity),
-        WeatherScheduledTask(identity),
-        JokesScheduledTask(identity),
-        SongScheduledTask(identity),
-        ConversationScheduledTask(identity, converse_with_identity),
-        HappyBirthdayScheduledTask(identity),
-        # LocationScheduledTask(identity),
-        # RaiseExceptionScheduledTask(identity),
-        StreamEdBallsDayScheduledTask(identity),
-        AprilFoolsDayScheduledTask(identity),
-
-    ]
-
-    if hardware.is_linux and (hardware.is_webcam_attached or hardware.is_picam_attached):
-        scheduledjobs.extend([
-            PhotoScheduledTask(identity),
-        ])
-    if hardware.is_piglow_attached \
-            or hardware.is_unicornhat_attached \
-            or hardware.is_blinksticknano_attached:
-        scheduledjobs.extend([
-            LightsScheduledTask(identity)
-        ])
-    return scheduledjobs
-
-
-def get_pi_responses(identity):
-    responses = []
-
-    responses.extend([
-        # RestartResponse(identity),
-        ImportTokensResponse(identity),
-        ExportTokensResponse(identity),
-        DropCreateTablesResponse(identity),
-
-        SongResponse(identity),
-        TalkLikeAPirateDayResponse(identity),
-        # LocationResponse(identity),
-        X_Or_Y_Response(identity),
-        ThanksResponse(identity),
-        HelloResponse(identity),
-        Magic8BallResponse(identity),
-    ])
-    if hardware.is_picam_attached or hardware.is_webcam_attached:
-        responses.extend([
-            PhotoResponse(identity),
-            # TimelapseResponse(identity)
-        ])
-    responses.extend([
-        ReplyResponse(identity),
-        FavoriteResponse(identity),
-        RetweetResponse(identity),
-    ])
-    return responses
-
-
-def get_pi_tasks(identity):
-    tasks = [
-        StreamTweetsTask(identity)
-    ]
-    if hardware.is_piglow_attached \
-            or hardware.is_unicornhat_attached \
-            or hardware.is_blinksticknano_attached:
-        tasks.extend([
-            LightsTask(),
-            FadeTask()
-        ])
-    return tasks
 
 
 class AndrewTathamIdentity(Identity):
@@ -115,15 +38,10 @@ class AndrewTathamIdentity(Identity):
             id_str="19201332")
         self.followers = None
 
-    def get_tasks(self):
-        return [StreamTweetsTask(self)]
-
-    def get_scheduled_jobs(self):
-        jobs = super(AndrewTathamIdentity, self).get_scheduled_jobs()
-        return jobs
-
     def get_responses(self):
-        return [HiveMindResponse(self, self.followers)]
+        return [
+            HiveMindResponse(self, self.followers)
+        ]
 
 
 class AndrewTathamPiIdentity(BotIdentity):
@@ -135,17 +53,49 @@ class AndrewTathamPiIdentity(BotIdentity):
         self.colour = colorama.Fore.MAGENTA
         self.converse_with = None
 
-    def get_tasks(self):
-        return get_pi_tasks(self)
-
     def get_scheduled_jobs(self):
         jobs = super(AndrewTathamPiIdentity, self).get_scheduled_jobs()
-        jobs.extend(get_pi_scheduled_jobs(self, self.converse_with))
+        jobs.extend([
+            WikipediaScheduledTask(self),
+            TalkLikeAPirateDayScheduledTask(self),
+            WeatherScheduledTask(self),
+            JokesScheduledTask(self),
+            SongScheduledTask(self),
+            ConversationScheduledTask(self, self.converse_with),
+            HappyBirthdayScheduledTask(self),
+            StreamEdBallsDayScheduledTask(self),
+            AprilFoolsDayScheduledTask(self),
+        ])
+
+        if hardware.is_linux and (hardware.is_webcam_attached or hardware.is_picam_attached):
+            jobs.extend([
+                PhotoScheduledTask(self),
+            ])
+        if hardware.is_piglow_attached \
+                or hardware.is_unicornhat_attached \
+                or hardware.is_blinksticknano_attached:
+            jobs.extend([
+                LightsScheduledTask(self)
+            ])
         return jobs
 
     def get_responses(self):
         responses = []
-        responses.extend(get_pi_responses(self))
+        responses.extend([
+            SongResponse(self),
+            TalkLikeAPirateDayResponse(self),
+            X_Or_Y_Response(self),
+            Magic8BallResponse(self),
+        ])
+        if hardware.is_picam_attached or hardware.is_webcam_attached:
+            responses.extend([
+                PhotoResponse(self),
+            ])
+        responses.extend([
+            ReplyResponse(self),
+            FavoriteResponse(self),
+            RetweetResponse(self),
+        ])
         responses.extend(super(AndrewTathamPiIdentity, self).get_responses())
         return responses
 
@@ -159,17 +109,53 @@ class AndrewTathamPi2Identity(BotIdentity):
         self.colour = colorama.Fore.CYAN
         self.converse_with = None
 
-    def get_tasks(self):
-        return get_pi_tasks(self)
-
     def get_scheduled_jobs(self):
         jobs = super(AndrewTathamPi2Identity, self).get_scheduled_jobs()
-        jobs.extend(get_pi_scheduled_jobs(self, self.converse_with))
+        jobs.extend([
+            WikipediaScheduledTask(self),
+            TalkLikeAPirateDayScheduledTask(self),
+            WeatherScheduledTask(self),
+            JokesScheduledTask(self),
+            SongScheduledTask(self),
+            ConversationScheduledTask(self, self.converse_with),
+            HappyBirthdayScheduledTask(self),
+            # LocationScheduledTask(self),
+            # RaiseExceptionScheduledTask(self),
+            StreamEdBallsDayScheduledTask(self),
+            AprilFoolsDayScheduledTask(self),
+        ])
+
+        if hardware.is_linux and (hardware.is_webcam_attached or hardware.is_picam_attached):
+            jobs.extend([
+                PhotoScheduledTask(self),
+            ])
+        if hardware.is_piglow_attached \
+                or hardware.is_unicornhat_attached \
+                or hardware.is_blinksticknano_attached:
+            jobs.extend([
+                LightsScheduledTask(self)
+            ])
         return jobs
 
     def get_responses(self):
         responses = []
-        responses.extend(get_pi_responses(self))
+        responses.extend([
+
+            SongResponse(self),
+            TalkLikeAPirateDayResponse(self),
+            # LocationResponse(self),
+            X_Or_Y_Response(self),
+            Magic8BallResponse(self),
+        ])
+        if hardware.is_picam_attached or hardware.is_webcam_attached:
+            responses.extend([
+                PhotoResponse(self),
+            ])
+        responses.extend([
+            ReplyResponse(self),
+            # FavoriteResponse(self),
+            # RetweetResponse(self),
+        ])
         responses.extend(super(AndrewTathamPi2Identity, self).get_responses())
         return responses
 
@@ -181,9 +167,6 @@ class NumberwangHostIdentity(BotIdentity):
             id_str="4904547543",
             admin_identity=admin_identity)
         self.contestants = None
-
-    def get_tasks(self):
-        return []
 
     def get_scheduled_jobs(self):
         jobs = super(NumberwangHostIdentity, self).get_scheduled_jobs()
@@ -199,9 +182,6 @@ class JulieNumberwangIdentity(BotIdentity):
             id_str="4912246174",
             admin_identity=admin_identity)
 
-    def get_tasks(self):
-        return []
-
 
 class SimonNumberwangIdentity(BotIdentity):
     def __init__(self, admin_identity):
@@ -209,9 +189,6 @@ class SimonNumberwangIdentity(BotIdentity):
             screen_name="SimonNumberwang",
             id_str="4912203173",
             admin_identity=admin_identity)
-
-    def get_tasks(self):
-        return []
 
 
 class EggPunBotIdentity(BotIdentity):
@@ -230,7 +207,9 @@ class EggPunBotIdentity(BotIdentity):
         return jobs
 
     def get_responses(self):
-        return [EggPunResponse(self)]
+        return [
+            EggPunResponse(self)
+        ]
 
 
 class WhenIsInternationalMensDayBotIdentity(BotIdentity):

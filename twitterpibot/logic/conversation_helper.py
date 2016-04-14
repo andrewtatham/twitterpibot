@@ -144,7 +144,7 @@ class ConversationHelper(object):
     def housekeep(self):
         limit = datetime.datetime.now() + datetime.timedelta(hours=-1)
         delete_us = list([k for k, v in self._conversations.items() if v.last_updated() and v.last_updated() < limit])
+        logger.info("removing {} conversations ".format(len(delete_us)))
         for k in delete_us:
-            logger.info("removing conversation " + k)
             self._conversations.pop(k, None)
         logger.info("tracking {} conversations".format(len(self._conversations)))
