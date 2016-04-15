@@ -33,9 +33,15 @@ def get_emojis():
             if cells:
                 if len(cells) >= 15:
                     name = cells[14].text
+                    year = cells[15].text
+                    year = re.match("[0-9]+",year).string[:4]
+                    year = int(year)
+
+
                     if "," not in name \
                             and "Keycap" not in name \
-                            and "Flag" not in name:
+                            and "Flag" not in name\
+                            and year <=2013:
 
                         if "≊" in name:
                             name = name[:name.index("≊")]
