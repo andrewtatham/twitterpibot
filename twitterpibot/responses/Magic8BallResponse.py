@@ -21,4 +21,4 @@ class Magic8BallResponse(Response):
         if inbox_item.is_tweet:
             file_path = [magic8ball.get_image(response)]
         text = response + " #Magic8Ball"
-        self.identity.twitter.reply_with(inbox_item=inbox_item, text=text, file_paths=file_path)
+        self.identity.twitter.quote_tweet(inbox_item=inbox_item, text=text, file_paths=file_path)
