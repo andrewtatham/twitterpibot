@@ -12,6 +12,7 @@ class Conversation(object):
         self.tweet_descriptions = {}
         self.root_id = None
         self._updated = None
+        self._responses = []
 
     def incoming(self, inbox_item):
         if inbox_item.in_reply_to_id_str:
@@ -32,6 +33,10 @@ class Conversation(object):
                 "incoming {} @{} tweeted {}".format(inbox_item.sender.name, inbox_item.sender.screen_name,
                                                     inbox_item.text)
         self._updated = datetime.datetime.now()
+
+        if self._responses:
+            for response in self._responses:
+                response(inbox_item)
 
     def outgoing(self, identity, outbox_item):
 
@@ -78,6 +83,9 @@ class Conversation(object):
         if not self.root_id:
             self.root_id = id_str
 
+    def add_response(self, response):
+        self._responses.append(response)
+
 
 class ConversationHelper(object):
     def __init__(self, identity):
@@ -85,8 +93,16 @@ class ConversationHelper(object):
         self._conversations = dict()
         self._id_keys = dict()
 
-    def _determine_conversation_key(self, inbox_item=None, outbox_item=None):
-        if inbox_item:
+    def _determine_conversation_key(self, screen_name=None, tweet_id=None, inbox_item=None, outbox_item=None):
+        if screen_name and tweet_id:
+            if tweet_id in self._id_keys:
+                return self._id_keys[tweet_id]
+            else:
+                key = "{} {}".format(screen_name, tweet_id)
+                self._id_keys[tweet_id] = key
+                return key
+
+        elif inbox_item:
 
             # todo, retweets, favourites, events esp favourited, DM's
             if inbox_item.is_tweet:
@@ -144,7 +160,15 @@ class ConversationHelper(object):
     def housekeep(self):
         limit = datetime.datetime.now() + datetime.timedelta(hours=-1)
         delete_us = list([k for k, v in self._conversations.items() if v.last_updated() and v.last_updated() < limit])
-        logger.info("removing {} conversations ".format(len(delete_us)))
-        for k in delete_us:
-            self._conversations.pop(k, None)
+        if delete_us:
+            logger.info("removing {} conversations ".format(len(delete_us)))
+            for k in delete_us:
+                self._conversations.pop(k, None)
         logger.info("tracking {} conversations".format(len(self._conversations)))
+
+    def track_replies(self, tweet_id, response):
+        conversation_key = self._determine_conversation_key(
+            screen_name=self._identity.screen_name,
+            tweet_id=tweet_id)
+        if conversation_key:
+            self._conversations[conversation_key].add_response(response=response)

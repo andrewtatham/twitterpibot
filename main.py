@@ -43,7 +43,7 @@ if __name__ == "__main__":
         all_identities = [
             andrewtatham,
             andrewtathampi,
-            # andrewtathampi2,
+            andrewtathampi2,
             numberwang_host,
             julienumberwang,
             simonnumberwang,
@@ -55,7 +55,7 @@ if __name__ == "__main__":
         all_identities = [
             andrewtatham,
             andrewtathampi,
-            # # andrewtathampi2,
+            andrewtathampi2,
             # numberwang_host,
             # julienumberwang,
             # simonnumberwang,
