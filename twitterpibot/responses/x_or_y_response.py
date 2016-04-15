@@ -63,9 +63,10 @@ def _validate(x, y):
 
 class X_Or_Y_Response(Response):
     def condition(self, inbox_item):
-        return (mentioned_reply_condition(inbox_item)
-                or unmentioned_reply_condition(inbox_item)) \
-               and bool(_parse(inbox_item.text_stripped))
+        return (
+                   mentioned_reply_condition(inbox_item)
+                   or unmentioned_reply_condition(inbox_item)
+               ) and bool(_parse(inbox_item.text_stripped))
 
     def respond(self, inbox_item):
         pairs = _parse(inbox_item.text_stripped)

@@ -5,9 +5,10 @@ from twitterpibot.responses.Response import Response, mentioned_reply_condition,
 
 class EggPunResponse(Response):
     def condition(self, inbox_item):
-        return mentioned_reply_condition(inbox_item) \
-               and unmentioned_reply_condition(inbox_item) \
-               and eggpuns.is_egg_pun_trigger(inbox_item.text)
+        return (
+                   mentioned_reply_condition(inbox_item)
+                   or unmentioned_reply_condition(inbox_item)
+               ) and eggpuns.is_egg_pun_trigger(inbox_item.text)
 
     def respond(self, inbox_item):
         response = eggpuns.make_egg_pun_phrase(inbox_item.text)

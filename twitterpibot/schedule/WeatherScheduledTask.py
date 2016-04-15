@@ -24,7 +24,7 @@ class WeatherScheduledTask(ScheduledTask):
         self.identity.conversations.track_replies(tweet_id=tweet_id, response=self.on_response)
 
     def on_response(self, inbox_item):
-        if inbox_item.screen_name == screen_name:
+        if inbox_item.sender.screen_name == screen_name:
 
             emoji = self.get_emoji(inbox_item)
 
@@ -57,24 +57,18 @@ class WeatherScheduledTask(ScheduledTask):
             "sunshine": [
                 emojihelper.sun_with_face,
                 emojihelper.black_sun_with_rays,
-                emojihelper.sunflower,
-                emojihelper.smiling_face_with_sunglasses
+                emojihelper.smiling_face_with_sunglasses,
             ],
             "clear skies": [
                 emojihelper.sun_with_face,
                 emojihelper.black_sun_with_rays,
                 emojihelper.sunflower,
-                emojihelper.smiling_face_with_sunglasses
             ],
             "sunny intervals": [
                 emojihelper.sun_behind_cloud,
-                emojihelper.white_sun_behind_cloud,
-                emojihelper.white_sun_with_small_cloud
             ],
             "partial cloud": [
                 emojihelper.sun_behind_cloud,
-                emojihelper.white_sun_behind_cloud,
-                emojihelper.white_sun_with_small_cloud
             ],
             "white cloud": [
                 emojihelper.cloud
@@ -84,12 +78,12 @@ class WeatherScheduledTask(ScheduledTask):
             ],
 
             "light rain": [
-                emojihelper.white_sun_behind_cloud_with_rain,
+                emojihelper.thunder_cloud_and_rain,
                 emojihelper.droplet,
                 emojihelper.closed_umbrella
             ],
             "light rain showers": [
-                emojihelper.white_sun_behind_cloud_with_rain,
+                emojihelper.thunder_cloud_and_rain,
                 emojihelper.droplet,
                 emojihelper.rainbow,
                 emojihelper.umbrella

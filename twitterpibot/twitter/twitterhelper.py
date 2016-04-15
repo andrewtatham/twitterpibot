@@ -401,6 +401,10 @@ class TwitterHelper(object):
     def get_list_statuses(self, **kwargs):
         return self.twitter.get_list_statuses(**kwargs)
 
+    @retry(**retry_args)
+    def get_user_suggestions_by_slug(self, **kwargs):
+        return self.twitter.get_user_suggestions_by_slug(**kwargs)
+
 
 if __name__ == "__main__":
     twitter = TwitterHelper(identities.AndrewTathamPiIdentity(identities.AndrewTathamIdentity()))

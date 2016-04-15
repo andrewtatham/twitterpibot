@@ -10,9 +10,10 @@ logger = logging.getLogger(__name__)
 
 class Magic8BallResponse(Response):
     def condition(self, inbox_item):
-        return (mentioned_reply_condition(inbox_item)
-                or unmentioned_reply_condition(inbox_item)) \
-               and "?" in inbox_item.text
+        return (
+                   mentioned_reply_condition(inbox_item)
+                   or unmentioned_reply_condition(inbox_item)
+               ) and "?" in inbox_item.text
 
     def respond(self, inbox_item):
         response = magic8ball.get_response()
