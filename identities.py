@@ -40,7 +40,7 @@ class AndrewTathamIdentity(Identity):
 
     def get_responses(self):
         return [
-            HiveMindResponse(self, self.followers)
+            # HiveMindResponse(self, self.followers)
         ]
 
 

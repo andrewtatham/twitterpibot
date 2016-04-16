@@ -18,7 +18,7 @@ class OutgoingTweet(OutboxTextItem):
 
         self.filePaths = file_paths
         self.location = location
-
+        self.media_ids = []
         self.status = ''
         self._determine_reply(in_reply_to_id_str, reply_to)
         self.status += text
@@ -49,7 +49,3 @@ class OutgoingTweet(OutboxTextItem):
         if quote:
             url = " https://twitter.com/{}/status/{}".format(quote.sender.screen_name, quote.id_str)
             self.status += " " + url
-
-
-
-

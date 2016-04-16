@@ -7,8 +7,8 @@ class OutgoingSplitTweet(OutboxTextItem):
     def __init__(self):
         super(OutgoingSplitTweet, self).__init__()
         self.is_tweet = True
-        self.status = None
-        self.media_ids = None
+        self.status = ""
+        self.media_ids = []
         self.location = None
         self.id_str = None
         self.in_reply_to_id_str = None

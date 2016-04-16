@@ -57,7 +57,6 @@ class TwitterHelper(object):
 
             outbox_item.display()
 
-            media_ids = []
             if outbox_item.filePaths and any(outbox_item.filePaths):
                 for filePath in outbox_item.filePaths:
                     ext = os.path.splitext(filePath)
@@ -67,12 +66,9 @@ class TwitterHelper(object):
                     else:
                         media_id = self._upload_media(filePath)
                     if media_id:
-                        media_ids.append(media_id)
+                        outbox_item.media_ids.append(media_id)
 
-            split_tweets = tweet_splitter.split_tweet(
-                outbox_item,
-                twitter_configuration=self.twitter_configuration,
-                media_ids=media_ids)
+            split_tweets = tweet_splitter.split_tweet(outbox_item, self.twitter_configuration)
 
             in_reply_to_id_str = outbox_item.in_reply_to_id_str
 
