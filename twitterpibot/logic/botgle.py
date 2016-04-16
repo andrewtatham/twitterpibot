@@ -1,8 +1,8 @@
 import logging
 import pprint
 import random
+import re
 
-import identities
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.logic import botgle_solver, botgle_artist
 from twitterpibot.logic.conversation import hello_words
@@ -20,18 +20,23 @@ frame_request = [
     "do your thang",
 ]
 
+played_rx = re.compile("@(?P<screen_name>[\w_]+) plays (?P<words>[\w\s]+)")
+
 
 class BotgleGame(object):
     def __init__(self, identity):
         self.board_in_progress = None
         self.solution = None
         self.identity = identity
+        self.played_words = {}
 
     def read_tweet(self, inbox_item):
         retval = {}
         board = botgle_solver.parse_board(inbox_item.text)
         if board:
             self._on_board(board, retval)
+        elif self.is_played_words(inbox_item):
+            self.on_played_word(inbox_item)
         elif self._is_game_over(inbox_item):
             self._on_game_over(retval)
         elif self._is_next_game_in_x_minutes(inbox_item):
@@ -60,6 +65,11 @@ class BotgleGame(object):
         if self.board_in_progress and self.solution:
             image = botgle_artist.make(self.board_in_progress, self.solution, self.identity.screen_name)
             retval["image"] = image
+        # todo follow mentioned users?
+        if self.played_words:
+            for screen_name, words in self.played_words.items():
+                logger.info("{} {}".format(screen_name, words))
+
         self.board_in_progress = None
         self.solution = None
 
@@ -93,6 +103,18 @@ class BotgleGame(object):
         # todo regex
         return "Next game in" in inbox_item.text \
                and "hours" in inbox_item.text
+
+    def is_played_words(self, inbox_item):
+        return " plays " in inbox_item.text
+
+    def on_played_word(self, inbox_item):
+        match = played_rx.search(inbox_item.text)
+        screen_name = str(match.groupdict()["screen_name"])
+        words = set([word for word in match.groupdict()["words"].split(" ") if word])
+        if screen_name not in self.played_words:
+            self.played_words[screen_name] = set()
+        self.played_words[screen_name].update(words)
+        # todo find words on board, make picture if following?
 
 
 class BotgleResponse(Response):
@@ -180,11 +202,12 @@ class BotgleResponse(Response):
 
 
 if __name__ == '__main__':
+    import identities
 
     logging.basicConfig(level=logging.INFO)
 
     identity = identities.BotgleArtistIdentity(None)
-    timeline = identity.twitter.get_user_timeline(screen_name="botgle", exclude_replies=True, count=50)
+    timeline = identity.twitter.get_user_timeline(screen_name="botgle", count=50)
     tweets = list(map(lambda data: IncomingTweet(data, identity), timeline))
     tweets.reverse()
     response = BotgleResponse(identity, armed=False)

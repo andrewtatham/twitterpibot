@@ -5,7 +5,7 @@ import os
 from twitterpibot.logic import fsh
 
 root_logger = logging.getLogger("")
-root_logger.setLevel(logging.INFO)
+root_logger.setLevel(logging.DEBUG)
 
 log_dir = fsh.root + "temp" + os.sep + "log" + os.sep
 

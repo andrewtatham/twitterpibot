@@ -1,3 +1,16 @@
+import re
+import emoji
+import unicodedata
+import pprint
+
+if __name__ == '__main__':
+    # my_text = "\U0001F602  and all of this \U0001F605"
+    # print(re.sub('[\U0001F602-\U0001F64F]', lambda m: unicodedata.name(m.group()), my_text))
+    pprint.pprint(emoji.EMOJI_ALIAS_UNICODE)
+    pprint.pprint(emoji.EMOJI_UNICODE)
+    pprint.pprint(emoji.UNICODE_EMOJI)
+    pprint.pprint(emoji.UNICODE_EMOJI_ALIAS)
+
 grinning_face = "\N{GRINNING FACE}"
 grinning_face_with_smiling_eyes = "\N{GRINNING FACE WITH SMILING EYES}"
 face_with_tears_of_joy = "\N{FACE WITH TEARS OF JOY}"

@@ -1,3 +1,4 @@
+import random
 from unittest import TestCase
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.twitter.tweet_splitter import split_tweet
@@ -14,7 +15,7 @@ class TestSplitTweet(TestCase):
         }
 
         tweet = OutgoingTweet(
-            text="@mention" + " blah" * 30 + " http://link.com/blah" * 2,
+            text="@mention" + " blah" * random.randint(0,200) + " http://link.com/blah" * 2,
             file_paths=[
                 "img0.gif",
                 "img1.gif",
@@ -22,7 +23,7 @@ class TestSplitTweet(TestCase):
 
             ]
         )
-        tweet.media_ids = [str(i) for i in range(4)]
+        tweet.media_ids = [str(i) for i in range(random.randint(0,20))]
 
         split_tweets = split_tweet(tweet, config)
 

@@ -10,7 +10,7 @@ from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 
 screen_name = "BBCWeatherBot"
 fail_rx = re.compile("Sorry|We found more than one location with that name")
-rx = re.compile(".*(?P<temp>temperatures (up to|as low as) [\d]+°C),( (?P<blah1>[\w\s]+))? and (?P<blah2>[\w\s]+)\..*")
+rx = re.compile("(?P<temp>temperatures (up to|as low as) [\d]+°C),( (?P<blah1>[\w\s]+))? and (?P<blah2>[\w\s]+)\.")
 
 logger = logging.getLogger(__name__)
 
@@ -117,9 +117,9 @@ class WeatherScheduledTask(ScheduledTask):
 
     @staticmethod
     def parse(tweet_text):
-        if fail_rx.match(tweet_text):
+        if fail_rx.search(tweet_text):
             return None
-        match = rx.match(tweet_text)
+        match = rx.search(tweet_text)
         if match:
             return list(match.groupdict().values())
         else:

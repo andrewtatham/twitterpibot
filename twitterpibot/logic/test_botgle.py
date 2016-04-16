@@ -1,6 +1,7 @@
 import logging
 import pprint
 from unittest import TestCase
+from twitterpibot.logic.botgle import played_rx
 
 from twitterpibot.logic.botgle_solver import parse_board, solve_board
 
@@ -147,6 +148,20 @@ next_game_tweets = [
 
 ]
 
+played_word_tweets = [
+    "@lmaomaxi plays UDOS LUDS ADOS ILKA GULA SIDA LUGS LUDO AXIL KADI 🚀",
+    "@ahsoftware plays SODA 🚀",
+    "@joe_newlin plays ALL LUX 🐉",
+    "@ahsoftware plays ADIOS 👾",
+    "@joe_newlin plays TUX 🎊",
+    "@joe_newlin plays DOS ADS ☀",
+    "@joe_newlin plays TUGS TUG BUDO 🎊",
+    "@ahsoftware plays ALB DUB 🐉",
+    "@ahsoftware plays SOD 💥",
+    "@joe_newlin plays SULK 💎",
+    "@joe_newlin plays DIS IDS 💯"
+]
+
 
 class Test_Parse_Board(TestCase):
     def test_parse_board_from_tweets(self):
@@ -257,3 +272,18 @@ class Test_Solve_Board(TestCase):
             for unexpected_word in testcase["unexpected_words"]:
                 with self.subTest(unexpected_word=unexpected_word):
                     self.assertNotIn(unexpected_word, solutions)
+
+
+class TestPlayedWords(TestCase):
+    def test_played_words_rx(self):
+        for tweet in played_word_tweets:
+            with self.subTest(tweet=tweet):
+                match = played_rx.search(tweet)
+                ret = {
+                    "screen_name": str(match.groupdict()["screen_name"]),
+                    "words": list([word for word in match.groupdict()["words"].split(" ") if word])
+                }
+                print(ret)
+                self.assertTrue(match)
+                self.assertTrue(ret["screen_name"])
+                self.assertTrue(ret["words"])
