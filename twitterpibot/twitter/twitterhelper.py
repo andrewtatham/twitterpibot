@@ -1,5 +1,6 @@
 import logging
 import os
+import pprint
 import random
 import time
 
@@ -24,7 +25,7 @@ except ImportError:
 
 retry_args = dict(
     stop_max_attempt_number=3,
-    wait_fixed=1000,
+    wait_fixed=100,
     retry_on_exception=is_timeout
 )
 
@@ -401,6 +402,22 @@ class TwitterHelper(object):
     def get_user_suggestions_by_slug(self, **kwargs):
         return self.twitter.get_user_suggestions_by_slug(**kwargs)
 
+    @retry(**retry_args)
+    def get_user_suggestions(self, **kwargs):
+        return self.twitter.get_user_suggestions(**kwargs)
+
+
+class Paginator(object):
+    def __init__(self, data, func, kwargs):
+        pass
+
+    def next(self):
+        pass
+
 
 if __name__ == "__main__":
     twitter = TwitterHelper(identities.AndrewTathamPiIdentity(identities.AndrewTathamIdentity()))
+    slugs = twitter.get_user_suggestions()
+    pprint.pprint(slugs)
+    slug = random.choice(slugs)["slug"]
+    pprint.pprint(twitter.get_user_suggestions_by_slug(slug=slug))

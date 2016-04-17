@@ -60,5 +60,19 @@ def get_emojis():
     return emoji
 
 
+def get_common_words():
+    words = []
+    url = "https://simple.wikipedia.org/wiki/Wikipedia:List_of_1000_basic_words"
+    webpage = six.moves.urllib.request.urlopen(url)
+    soup = BeautifulSoup(webpage, 'html.parser')
+    for dd in soup.find_all('dd'):
+        for a in dd.find_all("a"):
+            word = a.get_text()
+            word = word.lower().strip()
+            words.append(word)
+    words = set(words)
+    return words
+
+
 if __name__ == "__main__":
-    get_emojis()
+    pprint.pprint(get_common_words())

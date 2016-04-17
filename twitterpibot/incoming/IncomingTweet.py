@@ -1,4 +1,4 @@
-# from textblob import TextBlob
+import pprint
 
 from twitterpibot.incoming.InboxItem import InboxItem
 from twitterpibot.logic import english, location
@@ -33,6 +33,7 @@ class IncomingTweet(InboxItem):
         # https://dev.twitter.com/overview/api/tweets
 
         super(IncomingTweet, self).__init__(data, identity)
+
         self.identity_screen_name = identity.screen_name
         self.is_tweet = True
         self.id_str = data.get("id_str")
@@ -41,49 +42,24 @@ class IncomingTweet(InboxItem):
         self.favorited = bool(data.get("favorited"))
         self.retweeted = bool(data.get("retweeted"))
         self.in_reply_to_id_str = data.get("in_reply_to_status_id_str")
+        self.targets = []
+        self.text_stripped = ""
+        self._text(data, identity)
 
-        self.text = data.get("text")
-        if self.text:
-            self.text = h.unescape(self.text)
-            self.topics = topichelper.get_topics(self.text)
-            self.to_me = False
-            self.targets = []
-            self.text_stripped = self.text
-            self.hashtags = None
-            self.mentions = None
-            self.urls = None
-            if "entities" in data:
-                entities = data["entities"]
-                if "user_mentions" in entities:
-                    mentions = entities["user_mentions"]
-                    self.mentions = list(map(lambda m: m["screen_name"], mentions))
-                    for mention in mentions:
-                        self.text_stripped = self.text_stripped.replace("@" + mention["screen_name"], "").strip()
-                        if mention["screen_name"] != identity.screen_name:
-                            self.targets.append(mention["screen_name"])
-                        if mention["screen_name"] == identity.screen_name:
-                            self.to_me = True
-                if "hashtags" in entities:
-                    self.hashtags = list(map(lambda h: h["text"], entities["hashtags"]))
-                    self.text_stripped = self.text_stripped.replace("#", "").strip()
-                if "urls" in entities:
-                    for url in entities["urls"]:
-                        # pprint.pprint(url)
-                        self.text_stripped = self.text_stripped.replace(url["url"], "").strip()
-                if "media" in entities:
-                    self.has_media = True
-                    for media in entities["media"]:
-                        # pprint.pprint(media)
-                        self.text_stripped = self.text_stripped.replace(media["url"], "").strip()
+        self._location(data)
 
-            self.words = self.text_stripped.split()
-            self.words_interesting = list(filter(lambda w: w.lower() not in english.common_words, self.words))
-            self.text_interesting = ""
-            for word_interesting in self.words_interesting:
-                self.text_interesting += " " + word_interesting
+        self._retweet(data, identity)
 
-                # self.blob = TextBlob(self.text_stripped)
+    def _retweet(self, data, identity):
+        self.retweeted_status = None
+        self.is_retweet_of_my_status = False
+        if "retweeted_status" in data:
+            self.retweeted_status = IncomingTweet(data["retweeted_status"], identity)  # retweet recursion!
 
+            if self.retweeted_status.from_me:
+                self.is_retweet_of_my_status = True
+
+    def _location(self, data):
         self.location = None
         place = data.get("place")
         coordinates = data.get("coordinates")
@@ -92,13 +68,46 @@ class IncomingTweet(InboxItem):
                 tweet_coordinates=coordinates,
                 tweet_place=place)
 
-        self.retweeted_status = None
-        self.is_retweet_of_my_status = False
-        if "retweeted_status" in data:
-            self.retweeted_status = IncomingTweet(data["retweeted_status"], identity)  # retweet recursion!
+    def _text(self, data, identity):
+        self.text = data.get("text")
+        if self.text:
+            self.text = h.unescape(self.text)
+            self.topics = topichelper.get_topics(self.text)
+            self.to_me = False
 
-            if self.retweeted_status.from_me:
-                self.is_retweet_of_my_status = True
+            self.text_stripped = self.text
+            self._entities(data, identity)
+
+            self.english = english.get_common_words(self.text_stripped)
+
+    def _entities(self, data, identity):
+        if "entities" in data:
+            entities = data["entities"]
+            if "user_mentions" in entities:
+                mentions = entities["user_mentions"]
+                for mention in mentions:
+                    logger.debug("mention: {}".format(mention))
+                    self.replace_entity(mention["indices"])
+                    if mention["screen_name"] != identity.screen_name:
+                        self.targets.append(mention["screen_name"])
+                    if mention["screen_name"] == identity.screen_name:
+                        self.to_me = True
+            if "hashtags" in entities:
+                hashtags = entities["hashtags"]
+                for hashtag in hashtags:
+                    logger.debug("hashtag: {}".format(hashtag))
+                    # self.replace_entity(hashtag["indices"])
+            if "urls" in entities:
+                for url in entities["urls"]:
+                    logger.debug("url: {}".format(url))
+                    self.replace_entity(url["indices"])
+
+            if "media" in entities:
+                self.has_media = True
+                for media in entities["media"]:
+                    logger.debug("media: {}".format(media))
+
+                    self.replace_entity(media["indices"])
 
     def display(self):
         colour = self.identity.colour
@@ -117,10 +126,28 @@ class IncomingTweet(InboxItem):
         else:
             colour += Style.NORMAL
 
+        logger.info("=" * 80)
         logger.info(colour + text)
 
-        # logger.info("blob: %s", self.blob)
-        # logger.info("tags: %s", self.blob.tags)
-        # logger.info("noun_phrases: %s", self.blob.noun_phrases)
-        # logger.info("sentiment.polarity: %s", self.blob.sentiment.polarity)
-        # logger.info("sentiment.subjectivity: %s", self.blob.sentiment.subjectivity)
+        logger.info("text:             " + self.text.replace('\n', ' '))
+        logger.info("text_stripped:    " + self.text_stripped.replace('\n', ' '))
+        logger.info("english: " + pprint.pformat(self.english))
+
+
+    def replace_entity(self, indices):
+        start = indices[0]
+        end = indices[1]
+        length = end - start
+
+        self.text_stripped = self.text_stripped[:start] + " " * length + self.text_stripped[end:]
+
+
+if __name__ == '__main__':
+    import identities
+
+    logging.basicConfig(level=logging.INFO)
+    identity = identities.AndrewTathamPiIdentity(None)
+    tweets = identity.twitter.get_user_timeline()
+    for tweet_data in tweets:
+        tweet = IncomingTweet(tweet_data, identity)
+        tweet.display()

@@ -10,10 +10,10 @@ class EggPunResponse(Response):
         return (
                    mentioned_reply_condition(inbox_item)
                    or unmentioned_reply_condition(inbox_item)
-               ) and eggpuns.is_egg_pun_trigger(inbox_item.text)
+               ) and eggpuns.is_egg_pun_trigger(inbox_item.text_stripped)
 
     def respond(self, inbox_item):
-        response = eggpuns.make_egg_pun_phrase(inbox_item.text)
+        response = eggpuns.make_egg_pun_phrase(inbox_item.text, mask= inbox_item.text_stripped)
         file_paths = None
         if inbox_item.is_tweet:
             gif_text = eggpuns.get_gif_search_text()

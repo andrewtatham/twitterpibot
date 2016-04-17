@@ -10,3 +10,6 @@
 [submodule "brightpi"]
 	path = brightpi
 	url = https://github.com/andrewtatham/brightpi.git
+[submodule "google-10000-english"]
+	path = google-10000-english
+	url = https://github.com/first20hours/google-10000-english.git

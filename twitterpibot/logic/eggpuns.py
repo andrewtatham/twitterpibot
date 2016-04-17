@@ -64,22 +64,38 @@ def get_gif_search_text():
     return random.choice(trigger_list)
 
 
-def make_egg_pun(text):
-    logger.info(text)
-    matches = stem_rx.findall(text)
-    if matches:
-        logger.debug("matches: {}".format(matches))
-        unique_matches = set(matches)
-        for match in unique_matches:
-            key = match.lower()
-            logger.debug("replacing {} with {}".format(match, replacements[key].upper()))
-            text = re.sub(pattern=match, repl=replacements[key].upper(), string=text, flags=re.IGNORECASE)
-            logger.debug("text: {}".format(text))
-        return text
+def make_egg_pun(text, mask=None):
+    if mask:
+        matches = stem_rx.finditer(mask)
+        if matches:
+            matches = list(matches)
+            matches.sort(key=lambda m: m.start())
+            matches.reverse()
+            for match in matches:
+                key = match.group().lower()
+                indices = (match.start(), match.end())
+                logger.debug("matched key {} at {}".format(key,indices))
+                logger.debug("text before: '{}'".format(text[:indices[0]]))
+                logger.debug("text after: '{}'".format(text[indices[1]:]))
+
+                text = text[:indices[0]] + replacements[key].upper() + text[indices[1]:]
+                text = "".join(text)
+            return text
+    else:
+        matches = stem_rx.findall(text)
+        if matches:
+            # logger.debug("matches: {}".format(matches))
+            unique_matches = set(matches)
+            for match in unique_matches:
+                key = match.lower()
+                logger.debug("replacing {} with {}".format(match, replacements[key].upper()))
+                text = re.sub(pattern=match, repl=replacements[key].upper(), string=text, flags=re.IGNORECASE)
+                logger.debug("text: {}".format(text))
+            return text
     return None
 
 
-def make_egg_pun_phrase(phrase=None):
+def make_egg_pun_phrase(phrase=None, mask=None):
     if not phrase:
         stem = random.choice(stem_list)
         logger.debug("stem: %s" % stem)
@@ -87,7 +103,8 @@ def make_egg_pun_phrase(phrase=None):
         logger.debug("word: %s" % word)
         phrase = wordnikwrapper.get_example(word)
     logger.debug("phrase: %s" % phrase)
-    pun = make_egg_pun(phrase)
+    logger.debug("mask: %s" % str(mask))
+    pun = make_egg_pun(phrase, mask)
     logger.debug("pun: %s" % pun)
     return pun
 
@@ -97,20 +114,20 @@ if __name__ == "__main__":
     logger.info(stem_rx)
     logger.info(replacements)
     phrases = [
-        # "there was an explosion",
-        # "very selfish",
-        # "hello what shall i ",
-        # "dalek",
-        # "six of these",
-        # "Egypt",
-        # "aggregate",
-        # "enough",
-        # "ignite",
-        # "it was a funny joke",
-        # "they were joking around",
-        # "listening to folk music",
-        # "self-aware",
-        # "eggregious",
+        "there was an explosion",
+        "very selfish",
+        "hello what shall i ",
+        "dalek",
+        "six of these",
+        "Egypt",
+        "aggregate",
+        "enough",
+        "ignite",
+        "it was a funny joke",
+        "they were joking around",
+        "listening to folk music",
+        "self-aware",
+        "eggregious",
         "I'm a little teapot",
         "I'm literally",
         "I'm a literary"
@@ -120,5 +137,15 @@ if __name__ == "__main__":
     for phrase in phrases:
         logger.info("%s -> %s" % (phrase, make_egg_pun_phrase(phrase)))
 
-    # for i in range(20):
-    #     logger.info(make_egg_pun_phrase())
+    phrases_with_mask = [
+        [
+            " @imagebot explosion http://blah.com #joke",
+            "           explosion                 #joke"
+        ]
+    ]
+    for phrase in phrases_with_mask:
+        logger.info("%s -> %s" % (phrase[0], make_egg_pun_phrase(phrase[0], phrase[1])))
+
+
+        # for i in range(20):
+        #     logger.info(make_egg_pun_phrase())
