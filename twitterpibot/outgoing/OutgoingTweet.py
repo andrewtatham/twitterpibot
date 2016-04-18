@@ -12,13 +12,19 @@ class OutgoingTweet(OutboxTextItem):
                  in_reply_to_id_str=None,
                  file_paths=None,
                  location=None,
-                 quote=None):
+                 quote=None,
+                 urls=None):
 
         super(OutgoingTweet, self).__init__()
 
         self.filePaths = file_paths
         self.location = location
         self.media_ids = []
+        self.urls = []
+        if urls:
+            self.urls.extend(urls)
+        self.quote_url = None
+
         self.status = ''
         self._determine_reply(in_reply_to_id_str, reply_to)
         self.status += text
@@ -40,12 +46,17 @@ class OutgoingTweet(OutboxTextItem):
 
     def display(self):
         logger.info("-> Tweet: " + self.status)
+        if self.quote_url:
+            logger.info("-> quote_url: {}".format(self.quote_url))
+        if self.urls:
+            for url in self.urls:
+                logger.info("-> url: {}".format(url))
         if self.location:
-            logger.info("-> Location: " + self.location.get_display_name())
+            logger.info("-> Location: {}".format(self.location.get_display_name()))
         if self.filePaths:
-            logger.info("-> filePaths: " + str(self.filePaths))
+            logger.info("-> filePaths: {}".format(self.filePaths))
 
     def _determine_quote(self, quote):
         if quote:
-            url = " https://twitter.com/{}/status/{}".format(quote.sender.screen_name, quote.id_str)
-            self.status += " " + url
+            quote_url = " https://twitter.com/{}/status/{}".format(quote.sender.screen_name, quote.id_str)
+            self.quote_url = quote_url

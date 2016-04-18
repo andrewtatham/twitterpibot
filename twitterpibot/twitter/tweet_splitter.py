@@ -14,16 +14,23 @@ def _cap(s, l):
     return s if len(s) <= l else s[0:l - 3] + '...'
 
 
+def _add_quote(tweet, tweet_number, quote_url):
+    if tweet_number == 0 and quote_url:
+        tweet.status += quote_url
+
+
 def split_tweet(outbox_item, twitter_configuration):
     max_tweet_length = 140
     len_media = twitter_configuration["characters_reserved_per_media"]
     len_url = twitter_configuration["short_url_length_https"]
 
     parse_result = twitter_parser.parse(outbox_item.status)
-
+    # todo count in-status urls properly
     total_chars = len(outbox_item.status) \
-                  + len(outbox_item.media_ids) * len_media
-                  # + len(parse_result.urls) * len_url # todo count urls properly, not twice
+                  + len(outbox_item.media_ids) * len_media \
+                  + len(outbox_item.urls) * len_url \
+                  + int(bool(outbox_item.quote_url)) * len_url
+
     number_of_tweets = total_chars / max_tweet_length
     # print(number_of_tweets)
     words = outbox_item.status.split()
@@ -35,13 +42,13 @@ def split_tweet(outbox_item, twitter_configuration):
     tweet_number = 0
     tweets = []
     while words or medias:
-
         tweet = OutgoingSplitTweet()
         tweet.location = outbox_item.location
 
         _add_media(tweet, tweet_number, number_of_tweets, medias)
 
-        _add_words(tweet, len_media, len_url, max_tweet_length, parse_result, words)
+        _add_words(tweet, tweet_number, len_media, len_url, max_tweet_length, parse_result, words,
+                   outbox_item.quote_url)
 
         tweets.append(tweet)
         tweet_number += 1
@@ -49,7 +56,7 @@ def split_tweet(outbox_item, twitter_configuration):
     return tweets
 
 
-def _add_words(tweet, len_media, len_url, max_tweet_length, parse_result, words):
+def _add_words(tweet, tweet_number, len_media, len_url, max_tweet_length, parse_result, words, quote_url):
     can_add_word = bool(words)
     while can_add_word:
 
@@ -68,16 +75,26 @@ def _add_words(tweet, len_media, len_url, max_tweet_length, parse_result, words)
 
         if next_word:
             if next_word in parse_result.urls:
-                next_word_chars = len_url
+                next_word_chars = 1 + len_url
             else:
-                next_word_chars = len(next_word)
+                next_word_chars = len(" " + next_word)
 
-            if tweet.media_ids:
-                media_chars = len(tweet.media_ids) * len_media
-            else:
-                media_chars = 0
+            # reserve space for media ids
+            media_chars = int(bool(tweet.media_ids)) * len(tweet.media_ids) * len_media
+            # reserve space for quote url
+            len_quote_url = int(bool(quote_url)) * (1 + len_url)
 
-            can_add_word = len(tweet.status) + media_chars + next_word_chars < max_tweet_length
+            can_add_word = len(tweet.status) + \
+                           len_quote_url + \
+                           media_chars + \
+                           next_word_chars < max_tweet_length
+
+            # add quote url to end of first tweet
+            if not can_add_word and quote_url:
+                tweet.status += " " + quote_url
+
+
+
         else:
             can_add_word = False
 

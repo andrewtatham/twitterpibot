@@ -1,5 +1,6 @@
 import random
 from unittest import TestCase
+from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.twitter.tweet_splitter import split_tweet
 
@@ -15,15 +16,21 @@ class TestSplitTweet(TestCase):
         }
 
         tweet = OutgoingTweet(
-            text="@mention" + " blah" * random.randint(0,200) + " http://link.com/blah" * 2,
+            text="@mention" + " blah" * random.randint(0, 200) + " http://www.text.com",
+            urls=["http://www.url.com"],
+            quote=IncomingTweet(
+                {
+                    "id_str": "1234",
+                    "sender_screen_name": "sender_screen_name"
+                },
+                None),
             file_paths=[
                 "img0.gif",
                 "img1.gif",
                 "img2.gif"
-
             ]
         )
-        tweet.media_ids = [str(i) for i in range(random.randint(0,20))]
+        tweet.media_ids = [str(i) for i in range(random.randint(0, 8))]
 
         split_tweets = split_tweet(tweet, config)
 
@@ -31,6 +38,4 @@ class TestSplitTweet(TestCase):
             with self.subTest(i):
                 x = split_tweets[i]
                 print(x.status, x.media_ids)
-                tweet_length = len(x.status)
-
-                self.assertLessEqual(tweet_length, 140)
+                x.display()
