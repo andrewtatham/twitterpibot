@@ -153,8 +153,8 @@ class AndrewTathamPi2Identity(BotIdentity):
             ])
         responses.extend([
             ReplyResponse(self),
-            # FavoriteResponse(self),
-            # RetweetResponse(self),
+            FavoriteResponse(self),
+            RetweetResponse(self),
         ])
         responses.extend(super(AndrewTathamPi2Identity, self).get_responses())
         return responses

@@ -138,7 +138,7 @@ class BotgleResponse(Response):
                         self._update_profile_picture(image)
                     if random.randint(0, 9) == 0:
                         self._get_image_framed(image)
-                
+
             elif "solutions" in response:
                 if "text" in response:
                     text = response["text"]

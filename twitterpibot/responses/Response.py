@@ -9,7 +9,7 @@ unmentioned_reply = 1000
 
 friend_rt_fav = 100
 rt_more = 100
-bot_rt_fav = 250
+bot_rt_fav = 1000
 random_rt_fav = 1000
 
 logger = logging.getLogger(__name__)
