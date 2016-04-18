@@ -1,43 +1,56 @@
 import logging
-import os
-
 import giphypop
-
-from twitterpibot.logic import fsh
 
 logger = logging.getLogger(__name__)
 
-g = None
+g = giphypop.Giphy()
 
 
-def _init(screen_name):
-    global g
-    if not g:
-        g = giphypop.Giphy()
-
-    folder = fsh.root + "temp" + os.sep + "gif" + os.sep + screen_name + os.sep
-    fsh.ensure_directory_exists(folder)
-    return folder
-
-
-def get_random_gif(screen_name, text=None):
-    folder = _init(screen_name)
+def get_random_gif(text=None):
     gif = None
     if text:
         gif = g.translate(text)
     if not gif:
         gif = g.random_gif()
 
-    return _download_gif(folder, gif)
+    url = _get_best_url(gif)
+    return url
 
 
-def get_gif(screen_name, text):
-    folder = _init(screen_name)
-    return _download_gif(folder, g.translate(text))
 
 
-def _download_gif(folder, gif):
-    if gif:
-        return fsh.download_file(folder=folder, url=gif.media_url)
-    else:
-        return None
+
+def get_gif(text):
+    gif = g.translate(text)
+    url = _get_best_url(gif)
+    return url
+
+
+def _get_format(version):
+    if version:
+        if int(version.get("webp_size")) <= _max_image_size:
+            return version.get("webp")
+        if int(version.get("mp4_size")) <= _max_image_size:
+            return version.get("mp4_size")
+        if int(version.get("size")) <= _max_image_size:
+            return version.get("url")
+
+
+def _get_best_url(gif):
+    url = _get_format(gif.get("original"))
+    if not url:
+        url = _get_format(gif.get("raw_data").get("images").get("downsized_large"))
+    if not url:
+        url = _get_format(gif.get("raw_data").get("images").get("downsized_medium"))
+    if not url:
+        url = _get_format(gif.get("raw_data").get("images").get("downsized"))
+    return url
+_max_image_size = 3145728
+
+
+def set_photo_size_limit(photo_size_limit):
+    global _max_image_size
+    _max_image_size = int(photo_size_limit)
+
+if __name__ == '__main__':
+    print(get_random_gif())

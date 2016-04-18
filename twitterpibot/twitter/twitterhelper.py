@@ -8,9 +8,8 @@ from twython import Twython, TwythonError
 
 from retrying import retry
 
-import identities
 from twitterpibot.exceptionmanager import is_timeout
-from twitterpibot.logic import fsh
+from twitterpibot.logic import fsh, giphyhelper
 from twitterpibot.twitter import authorisationhelper, tweet_splitter
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
@@ -47,6 +46,7 @@ class TwitterHelper(object):
         self.twitter_configuration = self.twitter.get_twitter_configuration()
 
         logger.debug(self.twitter_configuration)
+        giphyhelper.set_photo_size_limit(self.twitter_configuration["photo_size_limit"])
 
         me = self.twitter.lookup_user(screen_name=self.identity.screen_name)[0]
         logger.debug(me)
@@ -408,11 +408,15 @@ class TwitterHelper(object):
         return self.twitter.get_user_suggestions(**kwargs)
 
 
-
-
 if __name__ == "__main__":
-    twitter = TwitterHelper(identities.AndrewTathamPiIdentity(identities.AndrewTathamIdentity()))
-    slugs = twitter.get_user_suggestions()
-    pprint.pprint(slugs)
-    slug = random.choice(slugs)["slug"]
-    pprint.pprint(twitter.get_user_suggestions_by_slug(slug=slug))
+    import identities
+
+    identity = identities.AndrewTathamPiIdentity()
+    twitter = TwitterHelper(identity)
+    pprint.pprint(twitter.twitter_configuration)
+
+
+    # slugs = twitter.get_user_suggestions()
+    # pprint.pprint(slugs)
+    # slug = random.choice(slugs)["slug"]
+    # pprint.pprint(twitter.get_user_suggestions_by_slug(slug=slug))
