@@ -96,19 +96,19 @@ def _add_words(tweet, tweet_number, len_media, len_url, max_tweet_length, parse_
         else:
             can_add_word = False
 
-
-
         can_add_url = urls and len_status + (1 + len_url) < max_tweet_length
 
 
         # add urls after all words
         if not can_add_word and urls and can_add_url:
-            tweet.status += " " + urls.pop()
+            if tweet.status: tweet.status += " "
+            tweet.status += urls.pop()
 
 
         # add quote url to end of first tweet
-        if not can_add_word and not can_add_url and  quote_url:
-            tweet.status += " " + quote_url
+        if not can_add_word and not can_add_url and quote_url:
+            if tweet.status: tweet.status += " "
+            tweet.status += quote_url
 
 
 def _add_media(tweet, tweet_number, number_of_tweets, medias):
