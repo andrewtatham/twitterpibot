@@ -45,6 +45,7 @@ class TwitterHelper(object):
         self.mutation = [" ,", " .", " *", " `", " -", " _"]
 
         self.twitter_configuration = self.twitter.get_twitter_configuration()
+
         logger.debug(self.twitter_configuration)
 
         me = self.twitter.lookup_user(screen_name=self.identity.screen_name)[0]

@@ -18,3 +18,8 @@ def get_image(topics):
 def get_reply_image(screen_name, text):
     gif = giphyhelper.get_random_gif(screen_name=screen_name, text=text)
     return gif
+
+
+def get_gif(screen_name, text):
+    gif = giphyhelper.get_gif(screen_name=screen_name, text=text)
+    return gif

@@ -145,3 +145,10 @@ def readlines(path):
     with open(path) as file:
         lines = file.readlines()
     return lines
+
+
+def get_file_size(path):
+    if exists(path):
+        return os.path.getsize(path)
+    else:
+        return 0

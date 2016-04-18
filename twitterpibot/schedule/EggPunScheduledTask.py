@@ -3,7 +3,7 @@ import random
 from apscheduler.triggers.interval import IntervalTrigger
 
 import identities
-from twitterpibot.logic import eggpuns, giphyhelper
+from twitterpibot.logic import eggpuns, imagemanager
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
@@ -15,7 +15,7 @@ class EggPunScheduledTask(ScheduledTask):
     def on_run(self):
         pun = eggpuns.make_egg_pun_phrase()
         text = eggpuns.get_gif_search_text()
-        gif = giphyhelper.get_gif(screen_name=self.identity.screen_name, text=text)
+        gif = imagemanager.get_gif(screen_name=self.identity.screen_name, text=text)
         file_paths = None
         if gif:
             file_paths = [gif]
