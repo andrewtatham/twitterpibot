@@ -7,96 +7,48 @@ from twitterpibot.data_access import dal
 
 logger = logging.getLogger(__name__)
 
-apiUrl = 'http://api.wordnik.com/v4'
-apiKey = dal.get_token("wordnik api")
-client = swagger.ApiClient(apiKey, apiUrl)
+_init = False
 
-account_api = AccountApi.AccountApi(client)
-username = dal.get_token("wordnik username")
-password = dal.get_token("wordnik password")
-auth_token = account_api.authenticate(username, password).token
+word_api = None
+words_api = None
+word_list_api = None
+word_lists_api = None
 
-word_api = WordApi.WordApi(client)
-words_api = WordsApi.WordsApi(client)
-word_list_api = WordListApi.WordListApi(client)
-word_lists_api = WordListsApi.WordListsApi(client)
+account_api = None
+auth_token = None
 
 
-def _get_egg_puns_list():
-    words = []
-    list_words = word_list_api.getWordListWords(permalink="egg-puns", auth_token=auth_token, limit=10000)
-    if list_words:
-        for word in list_words:
-            words.append(word.word)
-    return words
+def init():
+    global _init
 
+    global word_api
+    global words_api
+    global word_list_api
+    global word_lists_api
 
-def chunks(l, n):
-    """Yield successive n-sized chunks from l."""
-    for i in range(0, len(l), n):
-        yield l[i:i + n]
+    global account_api
+    global auth_token
 
+    if not _init:
+        apiUrl = 'http://api.wordnik.com/v4'
+        apiKey = dal.get_token("wordnik api")
+        client = swagger.ApiClient(apiKey, apiUrl)
 
-def _build_egg_puns_list():
-    generated = set(_generate_egg_puns())
-    existing = set(_get_egg_puns_list())
-    new_puns = list(generated.difference(existing))
+        account_api = AccountApi.AccountApi(client)
+        username = dal.get_token("wordnik username")
+        password = dal.get_token("wordnik password")
+        auth_token = account_api.authenticate(username, password).token
 
-    if new_puns:
-        for chunk in chunks(new_puns, 100):
-            print("adding " + chunk[0] + " to " + chunk[-1])
-            word_list_api.addWordsToWordList(permalink="egg-puns", auth_token=auth_token, body=chunk)
+        word_api = WordApi.WordApi(client)
+        words_api = WordsApi.WordsApi(client)
+        word_list_api = WordListApi.WordListApi(client)
+        word_lists_api = WordListsApi.WordListsApi(client)
 
-
-def _generate_egg_puns():
-    puns = []
-
-    for repl in [("ig", "egg"), ("ex", "eggs")]:
-        for i in range(100):
-            search = words_api.searchWords("*" + repl[0] + "*", skip=i * 1000, limit=10000)
-            for w in search.searchResults:
-                if repl[0] in w.word:
-                    pun = w.word.replace(repl[0], repl[1])
-                    puns.append(pun)
-                    # print(egg_word.word + " => " + pun)
-    return puns
-
-
-def get_lists():
-    my_lists = account_api.getWordListsForLoggedInUser(auth_token)
-    for my_list in my_lists:
-        print("{username}, {name}, {numberWordsInList}, {description}, {permalink}".format(**my_list.__dict__))
-        list_words = word_list_api.getWordListWords(permalink=my_list.permalink, auth_token=auth_token, limit=10000)
-        if list_words:
-            for word in list_words:
-                print(" " + word.word)
-
-
-def get_random_words():
-    random_words = words_api.getRandomWords()
-    for word in random_words:
-        print(word.word)
-        definitions = word_api.getDefinitions(word.word)
-        print(" definitons:")
-        for definition in definitions:
-            print("  " + definition.text)
-
-
-if __name__ == "__main__":
-    get_lists()
-    _build_egg_puns_list()
-
-egg_puns = _get_egg_puns_list()
-
-
-# print(egg_puns)
-
-
-def get_egg_puns():
-    return egg_puns
+        _init = True
 
 
 def get_word_matching(stem, rx):
+    init()
     words = []
     word = None
     skip = 0
@@ -115,6 +67,7 @@ def get_word_matching(stem, rx):
 
 
 def get_example(word):
+    init()
     examples = word_api.getExamples(word)
     example = random.choice(examples.examples)
     return example.text

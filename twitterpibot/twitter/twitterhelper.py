@@ -61,12 +61,11 @@ class TwitterHelper(object):
 
             if outbox_item.filePaths and any(outbox_item.filePaths):
                 for filePath in outbox_item.filePaths:
-                    ext = os.path.splitext(filePath)
-
-                    if ext == "mp4":
-                        media_id = self._upload_video(filePath)
-                    else:
-                        media_id = self._upload_media(filePath)
+                    # ext = os.path.splitext(filePath)
+                    # if ext == "mp4":
+                    #     media_id = self._upload_video(filePath)
+                    # else:
+                    media_id = self._upload_media(filePath)
                     if media_id:
                         outbox_item.media_ids.append(media_id)
 

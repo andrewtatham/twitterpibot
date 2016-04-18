@@ -1,9 +1,9 @@
+import logging
 import random
 
 from apscheduler.triggers.interval import IntervalTrigger
 
-import identities
-from twitterpibot.logic import eggpuns, imagemanager
+from twitterpibot.logic import eggpuns, imagemanager, fsh
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
@@ -13,16 +13,22 @@ class EggPunScheduledTask(ScheduledTask):
         return IntervalTrigger(hours=random.randint(3, 6), minutes=random.randint(0, 59))
 
     def on_run(self):
-        pun = eggpuns.make_egg_pun_phrase()
-        text = eggpuns.get_gif_search_text()
-        gif = imagemanager.get_gif(screen_name=self.identity.screen_name, text=text)
         file_paths = None
-        if gif:
-            file_paths = [gif]
-        self.identity.twitter.send(OutgoingTweet(text=pun, file_paths=file_paths))
+        try:
+            pun = eggpuns.make_egg_pun_phrase()
+            text = eggpuns.get_gif_search_text()
+            gif = imagemanager.get_gif(screen_name=self.identity.screen_name, text=text)
+            if gif:
+                file_paths = [gif]
 
+            self.identity.twitter.send(OutgoingTweet(text=pun, file_paths=file_paths))
+        finally:
+            fsh.delete_files(file_paths)
 
 if __name__ == '__main__':
+    import identities
+
+    logging.basicConfig(level=logging.INFO)
     identity = identities.EggPunBotIdentity(None)
     task = EggPunScheduledTask(identity)
     task.on_run()
