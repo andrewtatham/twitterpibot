@@ -14,22 +14,24 @@ class TestSplitTweet(TestCase):
             "short_url_length": 23,
             "short_url_length_https": 23,
         }
-
-        tweet = OutgoingTweet(
-            text="@mention" + " blah" * random.randint(0, 200) + " http://www.text.com",
-            urls=["http://www.url.com"],
-            quote=IncomingTweet(
-                {
-                    "id_str": "1234",
-                    "sender_screen_name": "sender_screen_name"
-                },
-                None),
-            file_paths=[
-                "img0.gif",
-                "img1.gif",
-                "img2.gif"
+        urls = ["http://www.url{}.com".format(i) for i in range(random.randint(0, 3))]
+        quote_tweet = IncomingTweet(
+            {
+                "id_str": "1234",
+                "sender_screen_name": "sender_screen_name"
+            },
+            None)
+        lines = [
+            "@mention{} {} http://www.text{}.com".format(i, " ".join(["blah" for _ in range(random.randint(0, 20))]), i)
+            for i in range(random.randint(0, 4))
             ]
+        text = " ".join(lines)
+        tweet = OutgoingTweet(
+            text=text,
+            urls=urls,
+            quote=quote_tweet,
         )
+        # upload
         tweet.media_ids = [str(i) for i in range(random.randint(0, 8))]
 
         split_tweets = split_tweet(tweet, config)
