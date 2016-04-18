@@ -18,3 +18,9 @@ class SongScheduledTask(ScheduledTask):
         song = songhelper.get_song(song_key=song_key)
         if song:
             self.identity.twitter.sing_song(song=song)
+
+if __name__ == '__main__':
+    import identities
+    identity = identities.AndrewTathamPiIdentity()
+    task = SongScheduledTask(identity)
+    task.on_run()

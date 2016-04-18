@@ -26,5 +26,9 @@ class IncomingDirectMessage(InboxItem):
 
     def display(self):
         colour = self.identity.colour + colorama.Style.BRIGHT
-        text = u" * DM from @" + self.sender.screen_name + u" to @" + self.recipient.screen_name + u": " + self.text
+        text = "DM from {} to {}: {}".format(
+            self.sender.short_description(),
+            self.recipient.short_description(),
+            self.text
+        )
         logger.info(colour + text)

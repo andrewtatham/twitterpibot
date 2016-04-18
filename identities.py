@@ -45,7 +45,7 @@ class AndrewTathamIdentity(Identity):
 
 
 class AndrewTathamPiIdentity(BotIdentity):
-    def __init__(self, admin_identity):
+    def __init__(self, admin_identity=None):
         super(AndrewTathamPiIdentity, self).__init__(
             screen_name="andrewtathampi",
             id_str="2935295111",
@@ -101,7 +101,7 @@ class AndrewTathamPiIdentity(BotIdentity):
 
 
 class AndrewTathamPi2Identity(BotIdentity):
-    def __init__(self, admin_identity):
+    def __init__(self, admin_identity=None):
         super(AndrewTathamPi2Identity, self).__init__(
             screen_name="andrewtathampi2",
             id_str="3892161801",
@@ -161,7 +161,7 @@ class AndrewTathamPi2Identity(BotIdentity):
 
 
 class NumberwangHostIdentity(BotIdentity):
-    def __init__(self, admin_identity):
+    def __init__(self, admin_identity=None):
         super(NumberwangHostIdentity, self).__init__(
             screen_name="numberwang_host",
             id_str="4904547543",
@@ -176,7 +176,7 @@ class NumberwangHostIdentity(BotIdentity):
 
 
 class JulieNumberwangIdentity(BotIdentity):
-    def __init__(self, admin_identity):
+    def __init__(self, admin_identity=None):
         super(JulieNumberwangIdentity, self).__init__(
             screen_name="JulieNumberwang",
             id_str="4912246174",
@@ -184,7 +184,7 @@ class JulieNumberwangIdentity(BotIdentity):
 
 
 class SimonNumberwangIdentity(BotIdentity):
-    def __init__(self, admin_identity):
+    def __init__(self, admin_identity=None):
         super(SimonNumberwangIdentity, self).__init__(
             screen_name="SimonNumberwang",
             id_str="4912203173",
@@ -192,7 +192,7 @@ class SimonNumberwangIdentity(BotIdentity):
 
 
 class EggPunBotIdentity(BotIdentity):
-    def __init__(self, admin_identity):
+    def __init__(self, admin_identity=None):
         super(EggPunBotIdentity, self).__init__(
             screen_name="eggpunbot",
             id_str="706393659244154880",
@@ -213,7 +213,7 @@ class EggPunBotIdentity(BotIdentity):
 
 
 class WhenIsInternationalMensDayBotIdentity(BotIdentity):
-    def __init__(self, admin_identity):
+    def __init__(self, admin_identity=None):
         super(WhenIsInternationalMensDayBotIdentity, self).__init__(
             screen_name="WhenMensDay",
             id_str="708233017639215104",
@@ -230,7 +230,7 @@ class WhenIsInternationalMensDayBotIdentity(BotIdentity):
 
 
 class BotgleArtistIdentity(BotIdentity):
-    def __init__(self, admin_identity):
+    def __init__(self, admin_identity=None):
         super(BotgleArtistIdentity, self).__init__(
             screen_name="BotgleArtist",
             id_str="715477182106079232",

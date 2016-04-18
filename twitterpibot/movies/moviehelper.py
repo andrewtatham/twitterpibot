@@ -45,7 +45,7 @@ def _clean_stage1(lines):
     temp = ""
     for line in lines:
         # print(line)
-        line_encoded = line.replace("\r\n", "")
+        line_encoded = line.replace(os.linesep, "")
         if line_encoded:
 
             if rx.match(line_encoded):

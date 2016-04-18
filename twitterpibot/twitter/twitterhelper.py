@@ -326,16 +326,16 @@ class TwitterHelper(object):
                 text=text,
                 in_reply_to_id_str=in_reply_to_id_str)
         else:
-            text = ""
+            status = ""
             if target:
                 # noinspection PyUnresolvedReferences
                 if isinstance(target, basestring):
-                    text = ".@" + target
+                    status = ".@" + target
                 elif isinstance(target, User.User):
-                    text = ".@" + target.screen_name
-            text += " " + text
+                    status = ".@" + target.screen_name
+            status += " " + text
             tweet = OutgoingTweet(
-                text=text,
+                text=status,
                 in_reply_to_id_str=in_reply_to_id_str)
             return self.send(tweet)
 
@@ -407,12 +407,6 @@ class TwitterHelper(object):
         return self.twitter.get_user_suggestions(**kwargs)
 
 
-class Paginator(object):
-    def __init__(self, data, func, kwargs):
-        pass
-
-    def next(self):
-        pass
 
 
 if __name__ == "__main__":

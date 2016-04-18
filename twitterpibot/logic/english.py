@@ -16,7 +16,7 @@ def sorter(w):
 
 logger = logging.getLogger(__name__)
 
-rx = re.compile("[\w]+")
+rx = re.compile("[\w\-']+")
 
 path = fsh.root + "google-10000-english/20k.txt"
 all_words = textfilehelper.get_text(path=path)

@@ -25,7 +25,7 @@ def split_tweet(outbox_item, twitter_configuration):
                   + len(outbox_item.media_ids) * len_media
                   # + len(parse_result.urls) * len_url # todo count urls properly, not twice
     number_of_tweets = total_chars / max_tweet_length
-    print(number_of_tweets)
+    # print(number_of_tweets)
     words = outbox_item.status.split()
     words.reverse()
 

@@ -63,3 +63,13 @@ def get_news_stories():
     return items
 
 
+if __name__ == '__main__':
+    from twitterpibot.logic import english
+    from twitterpibot.topics import topichelper
+
+    news = get_news_stories()
+    for headline in news:
+        print(headline)
+        pprint.pprint(topichelper.get_topics(headline))
+        pprint.pprint(english.get_common_words(headline))
+        print()

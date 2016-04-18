@@ -5,7 +5,6 @@ import logging
 from twitterpibot.logic import wordnikwrapper
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 replacements = {
     "eg": "egg",

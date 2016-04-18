@@ -1,4 +1,5 @@
 import os
+import pprint
 import random
 import itertools
 
@@ -13,7 +14,7 @@ class CaseInsensitiveDict(dict):
         return super(CaseInsensitiveDict, self).__getitem__(key.lower())
 
 
-songsfolder = fsh.get_root() + "twitterpibot" + os.sep + "songs" + os.sep
+songsfolder = fsh.root + "twitterpibot" + os.sep + "songs" + os.sep
 _songs = CaseInsensitiveDict(
     {
         "500miles": {
@@ -389,8 +390,13 @@ def get_song(song_key):
     lyrics_path = songsfolder + song["lyrics_file"]
     lyrics_file = open(lyrics_path, "r")
     lyrics = lyrics_file.readlines()
-    lyrics = list(filter(lambda line: bool(line), lyrics))
     lyrics = list(map(lambda line: line.strip(), lyrics))
+    lyrics = list(filter(lambda line: bool(line), lyrics))
     lyrics_file.close()
     song["lyrics"] = lyrics
     return song
+
+
+if __name__ == '__main__':
+    key = random.choice(keys())
+    pprint.pprint(get_song(key))

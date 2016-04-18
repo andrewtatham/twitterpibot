@@ -1,6 +1,8 @@
 import datetime
+import os
 import pprint
-import identities
+
+import re
 
 
 def parse_int(param):
@@ -8,6 +10,9 @@ def parse_int(param):
         return int(param)
     else:
         return 0
+
+
+bot_rx = re.compile("bot|ebooks|#botALLY", re.IGNORECASE)
 
 
 class User(object):
@@ -43,9 +48,23 @@ class User(object):
         self.is_friend = False
         self.is_reply_less = False
 
-        self.is_possibly_bot = self.screen_name and "bot" in self.screen_name.lower() \
-                               or self.name and "bot" in self.name.lower() \
-                               or self.description and "bot" in self.description.lower()
+        self.is_possibly_bot = self.screen_name and bot_rx.search(self.screen_name) \
+                               or self.name and bot_rx.search(self.name) \
+                               or self.description and bot_rx.search(self.description)
+        self.flags = ""
+
+        if self.following: self.flags += " F"
+        if self.verified : self.flags += " V"
+        if self.protected: self.flags += " P"
+
+        if self.is_arsehole: self.flags += " AH"
+        if self.is_friend: self.flags += " FR"
+        if self.is_awesome_bot: self.flags += " AB"
+        if self.is_possibly_bot: self.flags += " PB"
+        if self.is_retweet_more: self.flags += " RT+"
+        if self.is_do_not_retweet: self.flags += " RT-"
+        if self.is_reply_less: self.flags += " RP-"
+        self.flags = self.flags.strip()
 
     def is_stale(self):
         if self.updated:
@@ -57,15 +76,37 @@ class User(object):
             return True
 
     def __str__(self):
-        return self.name + " [@" + self.screen_name + "] (" + str(self.description) + ")"
+        return "@{} {}".format(
+            self.screen_name,
+            self.flags
+        )
+
+    def short_description(self):
+        return "{} [@{}] {}".format(
+            self.name,
+            self.screen_name,
+            self.flags,
+
+        )
+
+    def long_description(self):
+        text = self.short_description()
+        if self.description:
+            text += " \"" + self.description.replace(os.linesep, " ") + "\""
+        if self.location:
+            text += " {" + self.location + "}"
+        return text
 
 
 if __name__ == '__main__':
-
+    import identities
     identity = identities.AndrewTathamPiIdentity(None)
     members = identity.twitter.get_list_members(identity.lists._list_ids["Awesome Bots"])["users"]
-    pprint.pprint(members)
+    # pprint.pprint(members)
     members = list(map(lambda member: User(member, identity.screen_name), members))
-
+    i = 0
     for member in members:
-        print(member)
+        print(str(i) + " " + str(member) + os.linesep
+              + member.short_description() + os.linesep
+              + member.long_description())
+        i += 1

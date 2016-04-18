@@ -1,3 +1,4 @@
+import os
 import pprint
 
 from twitterpibot.incoming.InboxItem import InboxItem
@@ -116,8 +117,9 @@ class IncomingTweet(InboxItem):
         if self.location:
             text += " location = " + str(self.location)
 
-        text += self.sender.name + ' [@' + self.sender.screen_name + '] '
-        text += self.text.replace('\n', ' ')
+        text += self.sender.short_description()
+
+        text += self.text.replace(os.linesep, ' ')
 
         if self.to_me:
             colour += Style.BRIGHT
@@ -129,8 +131,8 @@ class IncomingTweet(InboxItem):
         logger.info("=" * 80)
         logger.info(colour + text)
 
-        logger.info("text:             " + self.text.replace('\n', ' '))
-        logger.info("text_stripped:    " + self.text_stripped.replace('\n', ' '))
+        logger.info("text:             " + self.text.replace(os.linesep, ' '))
+        logger.info("text_stripped:    " + self.text_stripped.replace(os.linesep, ' '))
         logger.info("english: " + pprint.pformat(self.english))
 
 

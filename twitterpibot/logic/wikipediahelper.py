@@ -1,3 +1,4 @@
+import os
 import pprint
 import random
 import logging
@@ -12,7 +13,7 @@ def _parse_heading(line):
 def _parse_content_tree(page_content):
     current_heading = "None"
     content_tree = {current_heading: []}
-    for line in page_content.split('\n'):
+    for line in page_content.split(os.linesep):
         if line:
             is_heading, heading = _parse_heading(line)
             if is_heading:

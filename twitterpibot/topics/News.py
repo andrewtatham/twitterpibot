@@ -10,7 +10,7 @@ class BadThings(IgnoreTopic):
                 "Fatal(y|ites)?",
                 "wound(ed)?",
                 "victims?",
-                "murder(er|ed)?",
+                "murder(s|er|ed)?",
                 "suicide",
                 "peadophil(e|es|ic)?",
                 "terror(ist|ism)?",
@@ -34,7 +34,8 @@ class BadThings(IgnoreTopic):
                 "injure(s|ed|ies)",
                 "miscarriage",
                 "trafficking",
-                "abortion"
+                "abortion",
+                "died"
 
             ], [
                 "fire",

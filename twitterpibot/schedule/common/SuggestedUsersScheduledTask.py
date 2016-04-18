@@ -8,6 +8,7 @@ from colorama import Fore
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
 # import random
+from twitterpibot.users.user import User
 
 suggestedUserColours = cycle([Fore.WHITE, Fore.CYAN])
 
@@ -39,10 +40,10 @@ class SuggestedUsersScheduledTask(ScheduledTask, ):
         category = self._slug_list.pop()
         suggested_users = self.identity.twitter.get_user_suggestions_by_slug(slug=category["slug"])["users"]
 
-        for user in suggested_users:
+        for user_data in suggested_users:
             colour = next(suggestedUserColours)
-            logging.info(colour + "User: [" + category["name"] + "] - " + user["name"] + " [@" + user[
-                "screen_name"] + "] - " + user["description"].replace("\n", "   "))
+            user = User(user_data, identity.screen_name)
+            logging.info(colour + "User: [" + category["name"] + "] - " + user.long_description())
 
 
 if __name__ == '__main__':

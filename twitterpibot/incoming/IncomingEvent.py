@@ -58,8 +58,8 @@ class IncomingEvent(InboxItem):
             colour += Style.NORMAL
 
         text = "* EVENT: Type: " + self.event + os.linesep \
-               + " Source: " + self.source.name + " [@" + self.source.screen_name + "]" + os.linesep \
-               + " Target: " + self.target.name + " [@" + self.target.screen_name + "]"
+               + " Source: " + self.source.short_description() + os.linesep \
+               + " Target: " + self.target.short_description()
 
         if self.targetObjectText:
             text += os.linesep + " TargetObject: " + self.targetObjectText
