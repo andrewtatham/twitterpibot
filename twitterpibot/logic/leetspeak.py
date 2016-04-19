@@ -1,4 +1,3 @@
-from twitterpibot.logic import judgement_day, morse_code
 from twitterpibot.logic.cypher_helper import _map
 
 subs = [
@@ -19,24 +18,9 @@ _decode = dict([(v, k) for k, v in subs])
 
 def encode(text):
     code = "".join(map(lambda letter: _map(_encode, letter), list(text)))
-
     return code
 
 
 def decode(code):
     code = "".join(map(lambda letter: _map(_decode, letter), list(code)))
-
     return code
-
-
-if __name__ == '__main__':
-    p = judgement_day.phrase()
-    print(p)
-    l = encode(p)
-    print(l)
-    m = morse_code.encode(l)
-
-    print(len(m),m)
-    l = morse_code.decode(m)
-    print(l)
-    print(decode(l))
