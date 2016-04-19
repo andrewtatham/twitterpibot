@@ -43,6 +43,7 @@ class IncomingTweet(InboxItem):
         else:
             self.sender = dynamic()
             self.sender.screen_name = data.get("sender_screen_name")
+            self.sender.is_me = False
         self.is_tweet = True
         self.id_str = data.get("id_str")
         self.favorited = bool(data.get("favorited"))

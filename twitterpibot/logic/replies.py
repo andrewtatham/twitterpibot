@@ -1,7 +1,6 @@
 import random
-import re
 
-from twitterpibot.logic import jokes
+from twitterpibot.logic import jokes, phrase_generator
 
 _responses = [
 
@@ -136,29 +135,6 @@ _responses = [
 
 ]
 
-choice_rx = re.compile("\(.*\)")
-
-
-def _recurse(text, response):
-    if isinstance(response, list):
-        return _recurse(text, random.choice(response))
-    elif isinstance(response, dict):
-        key = random.choice(response)
-        text += " " + key
-        return _recurse(text, random.choice(response[key]))
-    else:
-        # string
-        matches = choice_rx.findall(response)
-        if matches:
-
-            for match in matches:
-                choices = match[1:-1].split("|")
-                choice = random.choice(choices)
-                response = response.replace(match, choice)
-
-        text += " " + response
-        return text
-
 
 def get_reply():
     joke = None
@@ -168,7 +144,7 @@ def get_reply():
     if joke:
         return joke
     else:
-        return _recurse(text="", response=_responses).strip()
+        return phrase_generator.generate_phrase(_responses).strip()
 
 
 if __name__ == "__main__":

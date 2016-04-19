@@ -42,7 +42,7 @@ class SuggestedUsersScheduledTask(ScheduledTask, ):
 
         for user_data in suggested_users:
             colour = next(suggestedUserColours)
-            user = User(user_data, identity.screen_name)
+            user = User(user_data, self.identity.screen_name)
             logging.info(colour + "User: [" + category["name"] + "] - " + user.long_description())
 
 

@@ -1,7 +1,6 @@
-import re
-import emoji
-import unicodedata
 import pprint
+
+import emoji
 
 if __name__ == '__main__':
     # my_text = "\U0001F602  and all of this \U0001F605"

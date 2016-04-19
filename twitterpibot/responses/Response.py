@@ -40,7 +40,8 @@ def mentioned_reply_condition(inbox_item):
                 and inbox_item.sender \
                 and (not inbox_item.sender.is_reply_less or one_in(mentioned_reply_less)) \
                 and inbox_item.sender.screen_name != "numberwang_host"
-
+    logger.debug("to_me = {}".format(inbox_item.to_me))
+    logger.debug("mentioned = {}".format(mentioned))
     return mentioned
 
 
@@ -52,6 +53,7 @@ def unmentioned_reply_condition(inbox_item):
                      one_in(unmentioned_reply)
                  )
 
+    logger.debug("unmentioned = {}".format(unmentoned))
     return unmentoned
 
 

@@ -1,9 +1,8 @@
 import logging
 
-import textwrap
-from twitterpibot.logic import urlhelper
+from ttp import ttp
+
 from twitterpibot.outgoing.OutgoingSplitTweet import OutgoingSplitTweet
-from ttp import ttp, utils
 
 logger = logging.getLogger(__name__)
 
