@@ -3,7 +3,7 @@ import logging
 import pprint
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 
-from twitterpibot.logic.cypher_helper import _map
+from twitterpibot.logic.cypher_helper import _map, SubstitutionCypher
 from twitterpibot.responses.Response import Response, mentioned_reply_condition, unmentioned_reply_condition
 
 logger = logging.getLogger(__name__)
@@ -60,21 +60,16 @@ def is_morse_code(text):
     return factor >= 0.75
 
 
-def encode(text):
-    code = " ".join(map(lambda letter: _map(_encode, letter), text))
-    return code
-
-
-def decode(code):
-    text = " ".join(map(_decode_word, code.split("  ")))
-    return text
-
-
-def _decode_word(word):
-    return "".join(map(lambda letter: _map(_decode, letter), list(word.strip().split(" "))))
+class MorseCode(SubstitutionCypher):
+    def __init__(self):
+        super(MorseCode, self).__init__(_encode, _decode,
+                                        encode_out_sep=" ", encode_out_word_sep="  ",
+                                        decode_in_word_sep="  ", decode_in_sep=" ")
 
 
 class MorseCodeResponse(Response):
+    morse = MorseCode()
+
     def condition(self, inbox_item):
         return (
                    mentioned_reply_condition(inbox_item) or
@@ -82,21 +77,12 @@ class MorseCodeResponse(Response):
                ) and is_morse_code(inbox_item.text)
 
     def respond(self, inbox_item):
-        code = decode(inbox_item.text)
+        code = self.morse.decode(inbox_item.text)
         self.identity.twitter.quote_tweet(inbox_item, code)
 
 
-# TODO MORSE CODE
-
-# TODO OTHER CYPHERS
-# TODO BREAK CYPHER
 if __name__ == '__main__':
-    # code = "_@andrewtathampi2 --... .... ....- --... .---- ..... --... .... ...-- ..... " \
-    #        '----- ..- -. -.. ----- ..-. .---- -. ...-- ...- .---- --...' \
-    #        '....- ---.. .---- .-.. .---- --... -.--'
-    # print(is_morse_code(code))
-    # text = decode(code)
-    # print(text)
+
 
     import identities
 
