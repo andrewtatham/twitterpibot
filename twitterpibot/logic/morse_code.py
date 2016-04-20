@@ -77,8 +77,8 @@ class MorseCodeResponse(Response):
                ) and is_morse_code(inbox_item.text)
 
     def respond(self, inbox_item):
-        code = self.morse.decode(inbox_item.text)
-        self.identity.twitter.quote_tweet(inbox_item, code)
+        decoded = self.morse.decode(inbox_item.text)
+        self.identity.twitter.quote_tweet(inbox_item, decoded)
 
 
 if __name__ == '__main__':

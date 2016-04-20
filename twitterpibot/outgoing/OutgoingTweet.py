@@ -13,7 +13,8 @@ class OutgoingTweet(OutboxTextItem):
                  file_paths=None,
                  location=None,
                  quote=None,
-                 urls=None):
+                 urls=None
+                 ):
 
         super(OutgoingTweet, self).__init__()
 
@@ -21,13 +22,13 @@ class OutgoingTweet(OutboxTextItem):
         self.location = location
         self.media_ids = []
         self.urls = []
+        self.mentions = []
         if urls:
             self.urls.extend(urls)
         self.quote_url = None
 
-        self.status = ''
         self._determine_reply(in_reply_to_id_str, reply_to)
-        self.status += text
+        self.status = text
         self._determine_quote(quote)
 
     def _determine_reply(self, in_reply_to_id_str, reply_to):
@@ -35,14 +36,14 @@ class OutgoingTweet(OutboxTextItem):
             self.in_reply_to_id_str = in_reply_to_id_str
         elif reply_to and reply_to.is_tweet and reply_to.id_str:
             self.in_reply_to_id_str = reply_to.id_str
+
         if reply_to:
-            self.status += '.'
             if reply_to.sender.screen_name:
-                self.status += '@' + reply_to.sender.screen_name + ' '
-            if reply_to.targets:
-                for to_screen_name in reply_to.targets:
-                    if to_screen_name != reply_to.sender.screen_name:
-                        self.status += '@' + to_screen_name + ' '
+                self.mentions.append(reply_to.sender.screen_name)
+                if reply_to.mentions:
+                    for to_screen_name in reply_to.mentions:
+                        if to_screen_name != reply_to.sender.screen_name:
+                            self.mentions.append(to_screen_name)
 
     def display(self):
         logger.info("-> Tweet: " + self.status)
@@ -60,3 +61,10 @@ class OutgoingTweet(OutboxTextItem):
         if quote:
             quote_url = " https://twitter.com/{}/status/{}".format(quote.sender.screen_name, quote.id_str)
             self.quote_url = quote_url
+
+            if quote.sender.screen_name:
+                self.mentions.append(quote.sender.screen_name)
+                if quote.mentions:
+                    for to_screen_name in quote.mentions:
+                        if to_screen_name != quote.sender.screen_name:
+                            self.mentions.append(to_screen_name)

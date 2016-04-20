@@ -1,4 +1,5 @@
 import logging
+import math
 
 from ttp import ttp
 
@@ -24,14 +25,23 @@ def split_tweet(outbox_item, twitter_configuration):
     len_url = twitter_configuration["short_url_length_https"]
 
     parse_result = twitter_parser.parse(outbox_item.status)
-    # todo count in-status urls properly
-    total_chars = len(outbox_item.status) \
-                  + len(outbox_item.media_ids) * len_media \
-                  + len(outbox_item.urls) * len_url \
-                  + int(bool(outbox_item.quote_url)) * len_url
 
-    number_of_tweets = total_chars / max_tweet_length
-    # print(number_of_tweets)
+    mentions_string = ""
+    if outbox_item.mentions:
+        mentions_string = ".@" + " @".join(outbox_item.mentions)
+
+    # todo count in-status urls properly
+    number_of_tweets = 1
+    for _ in range(5):
+        total_chars = len(mentions_string) * number_of_tweets \
+                      + len(outbox_item.status) \
+                      + len(outbox_item.media_ids) * len_media \
+                      + len(outbox_item.urls) * len_url \
+                      + int(bool(outbox_item.quote_url)) * len_url * number_of_tweets
+
+        number_of_tweets = int(math.ceil(total_chars / max_tweet_length))
+        print(number_of_tweets)
+
     words = outbox_item.status.split()
     words.reverse()
 
@@ -46,6 +56,9 @@ def split_tweet(outbox_item, twitter_configuration):
     while words or medias or urls:
         tweet = OutgoingSplitTweet()
         tweet.location = outbox_item.location
+
+        if outbox_item.mentions:
+            tweet.status += ".@" + " @".join(outbox_item.mentions)
 
         _add_media(tweet, tweet_number, number_of_tweets, medias)
 
@@ -89,14 +102,11 @@ def _add_words(tweet, tweet_number, len_media, len_url, max_tweet_length, parse_
                 next_word_chars = 1 + len_url
             else:
                 next_word_chars = len(" " + next_word)
-
             can_add_word = len_status + next_word_chars < max_tweet_length
-
         else:
             can_add_word = False
 
         can_add_url = urls and len_status + (1 + len_url) < max_tweet_length
-
 
         # add urls after all words
         if not can_add_word and urls and can_add_url:
@@ -115,5 +125,5 @@ def _add_media(tweet, tweet_number, number_of_tweets, medias):
         if medias and len(tweet.media_ids) < 4:
             tweet.media_ids.append(medias.pop())
         # add extra medias if not enough tweets remaining
-        while medias and (number_of_tweets - tweet_number) < len(medias) and len(tweet.media_ids) < 4:
+        while medias and (number_of_tweets - tweet_number - 1) < len(medias) and len(tweet.media_ids) < 4:
             tweet.media_ids.append(medias.pop())

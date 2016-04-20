@@ -21,6 +21,7 @@ class TestSplitTweet(TestCase):
                 "sender_screen_name": "sender_screen_name"
             },
             None)
+        quote_tweet.mentions.append("quoted_mention1")
         lines = [
             "@mention{} {} http://www.text{}.com".format(i, " ".join(["blah" for _ in range(random.randint(0, 20))]), i)
             for i in range(random.randint(0, 4))
@@ -30,6 +31,7 @@ class TestSplitTweet(TestCase):
             text=text,
             urls=urls,
             quote=quote_tweet,
+
         )
         # upload
         tweet.media_ids = [str(i) for i in range(random.randint(0, 8))]

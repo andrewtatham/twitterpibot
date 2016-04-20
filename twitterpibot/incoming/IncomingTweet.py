@@ -49,7 +49,7 @@ class IncomingTweet(InboxItem):
         self.favorited = bool(data.get("favorited"))
         self.retweeted = bool(data.get("retweeted"))
         self.in_reply_to_id_str = data.get("in_reply_to_status_id_str")
-        self.targets = []
+        self.mentions = []
         self.text_stripped = ""
         self._text(data, identity)
 
@@ -88,6 +88,7 @@ class IncomingTweet(InboxItem):
             self.english = english.get_common_words(self.text_stripped)
 
     def _entities(self, data, identity):
+
         if "entities" in data:
             entities = data["entities"]
             if "user_mentions" in entities:
@@ -96,7 +97,7 @@ class IncomingTweet(InboxItem):
                     logger.debug("mention: {}".format(mention))
                     self.replace_entity(mention["indices"])
                     if mention["screen_name"] != identity.screen_name:
-                        self.targets.append(mention["screen_name"])
+                        self.mentions.append(mention["screen_name"])
                     if mention["screen_name"] == identity.screen_name:
                         self.to_me = True
             if "hashtags" in entities:

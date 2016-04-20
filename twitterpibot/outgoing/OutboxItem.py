@@ -5,7 +5,7 @@ class OutboxItem(object):
 
         # Tweets
         self.status = None
-        self.targets = None
+        self.mentions = None
         self.media_ids = None
         self.in_reply_to_id_str = None
 

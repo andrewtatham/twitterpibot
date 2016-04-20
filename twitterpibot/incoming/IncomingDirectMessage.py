@@ -19,7 +19,7 @@ class IncomingDirectMessage(InboxItem):
             self.recipient = identity.users.get_user(user_data=dm["recipient"])
             self.from_me = self.sender.is_me
             self.to_me = self.recipient.is_me
-            self.targets = [self.sender.screen_name]
+            self.mentions = [self.sender.screen_name]
             self.text = dm.get("text")
             self.text_stripped = self.text
             self.words = self.text.split()
