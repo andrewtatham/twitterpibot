@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 replacements = {
     "eg": "egg",
     "ex": "eggs",
+    "ec": "egg",
 
     "sel": "shell",
     "shel": "shell",
@@ -73,7 +74,7 @@ def make_egg_pun(text, mask=None):
             for match in matches:
                 key = match.group().lower()
                 indices = (match.start(), match.end())
-                logger.debug("matched key {} at {}".format(key,indices))
+                logger.debug("matched key {} at {}".format(key, indices))
                 logger.debug("text before: '{}'".format(text[:indices[0]]))
                 logger.debug("text after: '{}'".format(text[indices[1]:]))
 
@@ -129,7 +130,8 @@ if __name__ == "__main__":
         "eggregious",
         "I'm a little teapot",
         "I'm literally",
-        "I'm a literary"
+        "I'm a literary",
+        "corrected"
 
     ]
 
