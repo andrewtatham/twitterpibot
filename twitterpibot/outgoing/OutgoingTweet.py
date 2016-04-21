@@ -59,12 +59,5 @@ class OutgoingTweet(OutboxTextItem):
 
     def _determine_quote(self, quote):
         if quote:
-            quote_url = " https://twitter.com/{}/status/{}".format(quote.sender.screen_name, quote.id_str)
+            quote_url = "https://twitter.com/{}/status/{}".format(quote.sender.screen_name, quote.id_str)
             self.quote_url = quote_url
-
-            if quote.sender.screen_name:
-                self.mentions.append(quote.sender.screen_name)
-                if quote.mentions:
-                    for to_screen_name in quote.mentions:
-                        if to_screen_name != quote.sender.screen_name:
-                            self.mentions.append(to_screen_name)
