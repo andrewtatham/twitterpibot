@@ -1,4 +1,4 @@
-from twitterpibot.logic.cypher_helper import _map, SubstitutionCypher
+from twitterpibot.logic.cypher_helper import SubstitutionCypher
 
 
 class LeetSpeak(SubstitutionCypher):

@@ -1,11 +1,8 @@
-from collections import Counter
 from itertools import cycle
 import pprint
-import random
 import string
 import logging
 
-__author__ = 'andrewtatham'
 logger = logging.getLogger(__name__)
 
 
@@ -128,39 +125,3 @@ class CeaserCypher(SubstitutionCypher):
                 encode[symbol_shifted] = symbol
 
         super(CeaserCypher, self).__init__(encode, decode)
-
-
-class RandomCypher(SubstitutionCypher):
-    def __init__(self):
-        symbols = list(set(string.ascii_uppercase).union(set(string.digits)))
-        list1 = list(symbols)
-        list2 = list(symbols)
-        random.shuffle(list1)
-        random.shuffle(list2)
-        encode_pairs = zip(list1, list2)
-        decode_pairs = zip(list2, list1)
-        encode = dict(encode_pairs)
-        decode = dict(decode_pairs)
-        super(RandomCypher, self).__init__(encode, decode)
-
-
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
-    common = list("ETAOINSHRDLCUMWFGYPBVKJXQZ")
-    common.reverse()
-    repeat = 1
-    common_text = ""
-    for common_letter in common:
-        common_text += "".join(" " + str(common_letter * repeat))
-        repeat += 1
-
-    cypher = RandomCypher()
-
-    code = cypher.encode(common_text)
-    text = cypher.decode(code)
-
-    print(common_text)
-    print(code)
-    print(text)
-    text_counter = Counter(common_text)
-    code_counter = Counter(code)

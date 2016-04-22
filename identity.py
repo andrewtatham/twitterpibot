@@ -8,7 +8,7 @@ from twitterpibot.logic.admin_commands import ImportTokensResponse, ExportTokens
 from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask
 from twitterpibot.logic.conversation import ConversationScheduledTask
 from twitterpibot.logic.ed_balls_day import TweetEdBallsDayScheduledTask, StreamEdBallsDayScheduledTask
-from twitterpibot.logic.judgement_day import JudgementDayScheduledTask
+from twitterpibot.schedule.JudgementDayScheduledTask import JudgementDayScheduledTask
 from twitterpibot.logic.morse_code import MorseCodeResponse
 from twitterpibot.logic.statstics import Statistics
 from twitterpibot.responses.FavoriteResponse import FavoriteResponse

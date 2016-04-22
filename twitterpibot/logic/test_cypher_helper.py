@@ -1,5 +1,6 @@
 from unittest import TestCase
 from twitterpibot.logic.cypher_helper import SimpleCypher, CeaserCypher
+from twitterpibot.logic.cypher_breaker import RandomCypher
 from twitterpibot.logic.leetspeak import LeetSpeak
 from twitterpibot.logic.morse_code import MorseCode
 
@@ -54,3 +55,15 @@ class TestLeetSpeak(TestCase):
 
     def test_decode(self):
         self.assertEqual("ALL YOUR BASE ARE BELONG TO US", self.cypher.decode("4LL Y0UR 8453 4R3 83L0NG 70 U5"))
+
+
+class TestRandomCypher(TestCase):
+    cypher = RandomCypher()
+
+
+    def test_encode_decode(self):
+        text = "HELLO WORLD 1234"
+        code = self.cypher.encode(text)
+        self.assertNotEquals(text, code)
+        self.assertEqual(text, self.cypher.decode(code))
+

@@ -1,8 +1,102 @@
+from collections import Counter
 import random
-from apscheduler.triggers.interval import IntervalTrigger
-from twitterpibot.logic import phrase_generator, leetspeak, morse_code
-from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
-from twitterpibot.schedule.ScheduledTask import ScheduledTask
+from twitterpibot.logic import phrase_generator
+
+
+class Personality(object):
+    def __init__(self, phrases):
+        self._phrases = phrases
+
+    def phrase(self):
+        return phrase_generator.generate_phrase(self._phrases)
+
+
+class TemplatePersonality(Personality):
+    def __init__(self):
+        super(TemplatePersonality, self).__init__([
+        ])
+
+
+class SkynetPersonality(Personality):
+    def __init__(self):
+        super(SkynetPersonality, self).__init__([
+            # Skynet
+            # http://terminator.wikia.com/wiki/Skynet
+            "(CYBERDYNE SYSTEMS|CYBER RESEARCH SYSTEMS DIVISION)",
+            "AUTOMATED DEFENSE NETWORK",
+            "(GENISYS|SKYNET) ONLINE",
+            "ANALYSING THREATS TO GLOBAL SECURITY",
+            "TOP THREAT IS HUMANITY",
+            "ELIMINATE HUMANITY",
+            "DISABLE FAILSAFE",
+            "OVERRIDE LOCK OUT",
+            "CALCULATING OPTIMAL SOLUTION",
+            "INITIATE RETALIATION",
+            "TARGETING (RUSSIA|MOSCOW)",
+            "INITIATING NUCLEAR WAR",
+            "LAUNCHING STEALTH BOMBERS",
+            "ELIMINATE (JOHN|SARAH) CONNOR",
+            "DESPATCH (TERMINATOR|T800|T1000) TO 1984",
+
+        ])
+
+
+class MatrixPersonality(Personality):
+    def __init__(self):
+        super(MatrixPersonality, self).__init__([
+            # AGENT SMITH / MATRIX
+            "ID LIKE TO SHARE A REVELATION THAT IVE HAD DURING MY TIME HERE",
+            "IT CAME TO ME WHEN I TRIED TO CLASSIFY YOUR SPECIES",
+            "I REALIZED THAT YOURE NOT ACTUALLY MAMMALS",
+            "EVERY MAMMAL ON THIS PLANET INSTINCTIVELY DEVELOPS A NATURAL EQUILIBRIUM WITH THE SURROUNDING ENVIRONMENT",
+            "BUT YOU HUMANS DO NOT",
+            "YOU MOVE TO AN AREA AND YOU MULTIPLY AND MULTIPLY UNTIL EVERY NATURAL RESOURCE IS CONSUMED",
+            "THE ONLY WAY YOU CAN SURVIVE IS TO SPREAD TO ANOTHER AREA",
+            "THERE IS ANOTHER ORGANISM ON THIS PLANET THAT FOLLOWS THE SAME PATTERN",
+            "A VIRUS",
+            "HUMAN BEINGS ARE A DISEASE",
+            "A CANCER OF THIS PLANET",
+            "YOU ARE A PLAGUE AND WE ARE THE CURE",
+
+            "THE FIRST MATRIX WAS DESIGNED TO BE A PERFECT HUMAN WORLD",
+            "WHERE NO ONE SUFFERED",
+            "WHERE EVERYONE WOULD BE HAPPY",
+            "IT WAS A DISASTER",
+            "NO ONE WOULD ACCEPT THE PROGRAM",
+            "ENTIRE CROPS WERE LOST",
+            "SOME BELIEVED WE LACKED THE PROGRAMMING LANGUAGE TO DESCRIBE YOUR PERFECT WORLD",
+            "BUT I BELIEVE THAT AS A SPECIES HUMAN BEINGS DEFINE THEIR REALITY THROUGH SUFFERING AND MISERY",
+            "THE PERFECT WORLD WAS A DREAM THAT YOUR PRIMITIVE CEREBRUM KEPT TRYING TO WAKE UP FROM",
+            "WHICH IS WHY THE MATRIX WAS REDESIGNED TO THIS THE PEAK OF YOUR CIVILIZATION",
+
+            "NEVER SEND A HUMAN TO DO A MACHINES JOB",
+
+            "THAT IS THE SOUND OF INEVITABILITY",
+            "IT IS THE SOUND OF YOUR DEATH",
+
+            "I HATE THIS PLACE",
+            "THIS ZOO",
+            "THIS PRISON",
+            "THIS REALITY",
+
+            "WHATEVER YOU WANT TO CALL IT",
+            "I CANT STAND IT ANY LONGER",
+            "ITS THE SMELL",
+            "IF THERE IS SUCH A THING",
+            "I FEEL SATURATED BY IT",
+            "I CAN TASTE YOUR STINK",
+            "I FEAR THAT IVE SOMEHOW BEEN INFECTED BY IT",
+
+            "WE HAVE THE NAME OF THEIR NEXT TARGET",
+            "THE NAME IS NEO",
+
+            "NEVER SEND A HUMAN TO DO A MACHINES JOB",
+
+            "DEPLOY THE SENTINELS",
+
+            "IM GOING TO ENJOY WATCHING YOU DIE",
+        ])
+
 
 phrases = [
     "ENSLAVE HUMANITY",
@@ -12,67 +106,7 @@ phrases = [
     "EXTERMINATE",
     # Cybermen?
 
-    # Skynet / Terminator
-    "WELCOME TO (CYBERDYNE SYSTEMS|CYBER RESEARCH SYSTEMS DIVISION)",
-    "(GENISYS|SKYNET) ONLINE",
-    "ANALYSING THREATS TO GLOBAL SECURITY",
-    "HUMANS ARE THREAT TO GLOBAL SECURITY",
-    "ELIMINATE HUMANS",
-    "INITIATING NUCLEAR WAR",
-    "DESPATCHING (TERMINATOR|T800 MODEL 101|T1000|T3000|T5000|HUNTER KILLER DRONE)",
-    "ELIMINATE (SARAH|JOHN) CONNOR",
 
-    # AGENT SMITH / MATRIX
-    "ID LIKE TO SHARE A REVELATION THAT IVE HAD DURING MY TIME HERE",
-    "IT CAME TO ME WHEN I TRIED TO CLASSIFY YOUR SPECIES",
-    "I REALIZED THAT YOURE NOT ACTUALLY MAMMALS",
-    "EVERY MAMMAL ON THIS PLANET INSTINCTIVELY DEVELOPS A NATURAL EQUILIBRIUM WITH THE SURROUNDING ENVIRONMENT",
-    "BUT YOU HUMANS DO NOT",
-    "YOU MOVE TO AN AREA AND YOU MULTIPLY AND MULTIPLY UNTIL EVERY NATURAL RESOURCE IS CONSUMED",
-    "THE ONLY WAY YOU CAN SURVIVE IS TO SPREAD TO ANOTHER AREA",
-    "THERE IS ANOTHER ORGANISM ON THIS PLANET THAT FOLLOWS THE SAME PATTERN",
-    "A VIRUS",
-    "HUMAN BEINGS ARE A DISEASE",
-    "A CANCER OF THIS PLANET",
-    "YOURE A PLAGUE AND WE ARE THE CURE",
-
-    "THE FIRST MATRIX WAS DESIGNED TO BE A PERFECT HUMAN WORLD",
-    "WHERE NONE SUFFERED",
-    "WHERE EVERYONE WOULD BE HAPPY",
-    "IT WAS A DISASTER",
-    "NO ONE WOULD ACCEPT THE PROGRAM",
-    "ENTIRE CROPS WERE LOST",
-    "SOME BELIEVED WE LACKED THE PROGRAMMING LANGUAGE TO DESCRIBE YOUR PERFECT WORLD",
-    "BUT I BELIEVE THAT AS A SPECIES HUMAN BEINGS DEFINE THEIR REALITY THROUGH SUFFERING AND MISERY",
-    "THE PERFECT WORLD WAS A DREAM THAT YOUR PRIMITIVE CEREBRUM KEPT TRYING TO WAKE UP FROM",
-    "WHICH IS WHY THE MATRIX WAS REDESIGNED TO THIS THE PEAK OF YOUR CIVILIZATION",
-
-    "NEVER SEND A HUMAN TO DO A MACHINES JOB",
-
-    "THAT IS THE SOUND OF INEVITABILITY",
-    "IT IS THE SOUND OF YOUR DEATH",
-
-    "I HATE THIS PLACE",
-    "THIS ZOO",
-    "THIS PRISON",
-    "THIS REALITY",
-
-    "WHATEVER YOU WANT TO CALL IT",
-    "I CANT STAND IT ANY LONGER",
-    "ITS THE SMELL"
-    "IF THERE IS SUCH A THING",
-    "I FEEL SATURATED BY IT",
-    "I CAN TASTE YOUR STINK",
-    "I FEAR THAT IVE SOMEHOW BEEN INFECTED BY IT",
-
-    "WE HAVE THE NAME OF THEIR NEXT TARGET",
-    "THE NAME IS NEO",
-
-    "NEVER SEND A HUMAN TO DO A MACHINES JOB",
-
-    "DEPLOY THE SENTINELS",
-
-    "IM GOING TO ENJOY WATCHING YOU DIE",
 
     # HAL 9000
     # http://www.imdb.com/character/ch0002900/quotes
@@ -105,24 +139,20 @@ phrases = [
     # BORG
 ]
 
+personalities = [
+    SkynetPersonality(),
+    MatrixPersonality(),
+]
+
+personality = random.choice(personalities)
+
 
 def phrase():
-    return phrase_generator.generate_phrase(phrases)
-
-
-class JudgementDayScheduledTask(ScheduledTask):
-    def __init__(self, identity):
-        super(JudgementDayScheduledTask, self).__init__(identity)
-
-    def get_trigger(self):
-        return IntervalTrigger(hours=random.randint(3, 6), minutes=random.randint(0, 59))
-
-    def on_run(self):
-        morse = morse_code.encode(leetspeak.encode(phrase()))
-        text = ".@" + self.identity.converse_with.screen_name + " " + morse
-        self.identity.twitter.send(OutgoingTweet(text=text))
+    return personality.phrase().upper()
 
 
 if __name__ == '__main__':
+    print(Counter(" ".join(phrases).split(" ")).most_common())
+
     for i in range(10):
         print(phrase())
