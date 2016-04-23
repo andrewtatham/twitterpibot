@@ -1,9 +1,8 @@
 from collections import Counter
 import logging
-import pprint
-from twitterpibot.incoming.IncomingTweet import IncomingTweet
 
-from twitterpibot.logic.cypher_helper import _map, SubstitutionCypher
+from twitterpibot.incoming.IncomingTweet import IncomingTweet
+from twitterpibot.logic.cypher_helper import SubstitutionCypher
 from twitterpibot.responses.Response import Response, mentioned_reply_condition, unmentioned_reply_condition
 
 logger = logging.getLogger(__name__)

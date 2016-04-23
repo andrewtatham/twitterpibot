@@ -1,4 +1,5 @@
 import logging
+# noinspection PyUnresolvedReferences
 import math
 
 from ttp import ttp
@@ -40,7 +41,7 @@ def split_tweet(outbox_item, twitter_configuration):
                       + int(bool(outbox_item.quote_url)) * len_url * number_of_tweets
 
         number_of_tweets = int(math.ceil(total_chars / max_tweet_length))
-        print(number_of_tweets)
+        # print(number_of_tweets)
 
     words = outbox_item.status.split()
     words.reverse()

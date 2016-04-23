@@ -1,5 +1,4 @@
 from itertools import cycle
-import pprint
 import string
 import logging
 

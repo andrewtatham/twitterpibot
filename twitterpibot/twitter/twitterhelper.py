@@ -405,6 +405,12 @@ class TwitterHelper(object):
     @retry(**retry_args)
     def get_user_suggestions(self, **kwargs):
         return self.twitter.get_user_suggestions(**kwargs)
+    @retry(**retry_args)
+    def lookup_status(self, **kwargs):
+        return self.twitter.lookup_status(**kwargs)
+
+
+
 
 
 if __name__ == "__main__":

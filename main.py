@@ -1,6 +1,6 @@
 from identities import AndrewTathamIdentity, AndrewTathamPiIdentity, AndrewTathamPi2Identity, NumberwangHostIdentity, \
     JulieNumberwangIdentity, SimonNumberwangIdentity, EggPunBotIdentity, WhenIsInternationalMensDayBotIdentity, \
-    BotgleArtistIdentity
+    BotgleArtistIdentity, TheMachinesCodeIdentity
 from twitterpibot import hardware
 
 if __name__ == '__main__':
@@ -24,6 +24,8 @@ if __name__ == "__main__":
     julienumberwang = JulieNumberwangIdentity(andrewtatham)
     simonnumberwang = SimonNumberwangIdentity(andrewtatham)
 
+
+
     numberwang_host.contestants = [
         [julienumberwang, simonnumberwang],
         [julienumberwang, simonnumberwang],
@@ -39,6 +41,9 @@ if __name__ == "__main__":
     whenmensday = WhenIsInternationalMensDayBotIdentity(andrewtatham)
     botgleartist = BotgleArtistIdentity(andrewtatham)
 
+    themachinescode = TheMachinesCodeIdentity(andrewtatham)
+
+
     if hardware.is_raspberry_pi_2:
         all_identities = [
             andrewtatham,
@@ -49,7 +54,8 @@ if __name__ == "__main__":
             simonnumberwang,
             eggpunbot,
             whenmensday,
-            botgleartist
+            botgleartist,
+            themachinescode
         ]
     else:
         all_identities = [
@@ -61,7 +67,8 @@ if __name__ == "__main__":
             # simonnumberwang,
             # eggpunbot,
             # whenmensday,
-            # botgleartist
+            # botgleartist,
+            themachinescode
         ]
 
     twitterpibot.bootstrap.run(all_identities)

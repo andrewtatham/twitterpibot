@@ -2,6 +2,7 @@ import colorama
 
 from identity import Identity, BotIdentity, PiIdentity
 from twitterpibot.logic.botgle import BotgleResponse
+from twitterpibot.logic.cypher_game import CypherHostMidnightScheduledTask, CypherHostScheduledTask, CypherHostResponse
 from twitterpibot.logic.gender import WhenIsIMDScheduledTask, WhenIsInternationalMensDayResponse
 from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
 from twitterpibot.responses.EggPunResponse import EggPunResponse
@@ -16,11 +17,6 @@ class AndrewTathamIdentity(Identity):
             screen_name="andrewtatham",
             id_str="19201332")
         self.followers = None
-
-    def get_responses(self):
-        return [
-            # HiveMindResponse(self, self.followers)
-        ]
 
 
 class AndrewTathamPiIdentity(PiIdentity):
@@ -118,10 +114,31 @@ class BotgleArtistIdentity(BotIdentity):
             admin_identity=admin_identity)
         self.colour = colorama.Fore.GREEN
 
+    def get_responses(self):
+        return [BotgleResponse(self)]
+
+
+class TheMachinesCodeIdentity(BotIdentity):
+    def __init__(self, admin_identity=None):
+        super(TheMachinesCodeIdentity, self).__init__(
+            screen_name="THEMACHINESCODE",
+            id_str="723742144645718016",
+            admin_identity=admin_identity)
+        self.colour = colorama.Fore.GREEN
+
     def get_scheduled_jobs(self):
-        jobs = super(BotgleArtistIdentity, self).get_scheduled_jobs()
-        # jobs.extend([xxx(self)])
+        jobs = super(TheMachinesCodeIdentity, self).get_scheduled_jobs()
+        # noinspection PyTypeChecker
+        jobs.extend([
+            CypherHostMidnightScheduledTask(self),
+            CypherHostScheduledTask(self)
+        ])
         return jobs
 
     def get_responses(self):
-        return [BotgleResponse(self)]
+        responses = super(TheMachinesCodeIdentity, self).get_responses()
+        # noinspection PyTypeChecker
+        responses.extend([
+            CypherHostResponse(self)
+        ])
+        return responses

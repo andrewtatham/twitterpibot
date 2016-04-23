@@ -1,13 +1,13 @@
 from collections import Counter
+import json
 import logging
 import pprint
 import random
 import re
 import statistics
 import string
-import math
 from twitterpibot.logic import english
-from twitterpibot.logic.cypher_helper import SubstitutionCypher, logger
+from twitterpibot.logic.cypher_helper import SubstitutionCypher
 
 __author__ = 'andrewtatham'
 
@@ -16,6 +16,10 @@ logger = logging.getLogger(__name__)
 
 class RandomCypher(SubstitutionCypher):
     def __init__(self):
+        encode, decode = self._generate_cypher()
+        super(RandomCypher, self).__init__(encode, decode)
+
+    def _generate_cypher(self):
         # symbols = list(set(string.ascii_uppercase).union(set(string.digits)))
         symbols = list(string.ascii_uppercase)
         list1 = list(symbols)
@@ -28,16 +32,20 @@ class RandomCypher(SubstitutionCypher):
         decode = dict(decode_pairs)
         logger.debug(encode)
         logger.debug(decode)
-        super(RandomCypher, self).__init__(encode, decode)
+        return encode, decode
 
-    def guess(self, encode_guess, decode_guess):
+    def reset(self):
+        encode, decode = self._generate_cypher()
+        self._encode = encode
+        self._decode = decode
 
+    def score_guess(self, guess):
         return statistics.mean([
-            self.score(self._encode, encode_guess),
-            self.score(self._decode, decode_guess)
+            self._score_mapping(self._encode, guess.encode),
+            self._score_mapping(self._decode, guess.decode)
         ])
 
-    def score(self, mapping, mapping_guess):
+    def _score_mapping(self, mapping, mapping_guess):
         total = len(mapping)
         score = 0
         for k, v in mapping.items():
@@ -129,19 +137,39 @@ class Codes(object):
         return match.pattern == pattern.pattern
 
 
+class Guess(object):
+    def __init__(self, encode, decode, estimated_score=None):
+        self.encode = encode
+        self.decode = decode
+        self.estimated_score = estimated_score
+
+
 class RandomCypherBreaker(object):
-    def __init__(self, expected_phrases=None):
+    def __init__(self):
         self.english_letter_frequency = list("ETAOINSHRDLCUMWFGYPBVKJXQZ")
         self._codes = Codes()
         self._encode = {}
         self._decode = {}
-        self.expected_phrases = expected_phrases
+        self._expected_phrases = []
+
+    def reset(self):
+        self._codes = Codes()
+        self._encode = {}
+        self._decode = {}
+        self._expected_phrases = []
 
     def add_code(self, code, cheat_text=None):
         self._codes.add_code(code, cheat_text)
 
+    def add_expected_phrase(self, expected_phrase):
+        self._expected_phrases.append(expected_phrase)
+
     def analyse_letter_frequency(self):
-        return Counter(self._codes.get_all_text()).most_common()
+        letter_frequency = "".join(map(lambda t: t[0], Counter(self._codes.get_all_text()).most_common()))
+        encode = dict(zip(self.english_letter_frequency, letter_frequency))
+        decode = dict(zip(letter_frequency, self.english_letter_frequency))
+        self._encode.update(encode)
+        self._decode.update(decode)
 
     def analyse_word_frequency(self):
         return Counter(self._codes.get_all_words()).most_common()
@@ -157,16 +185,13 @@ class RandomCypherBreaker(object):
                 self._decode.update(decode)
 
     def get_guess(self):
-        if self.expected_phrases:
 
-            for expected_phrase in self.expected_phrases:
+        self.analyse_letter_frequency()
+
+        if self._expected_phrases:
+            for expected_phrase in self._expected_phrases:
                 self.pattern_match(expected_phrase)
 
-        expected_plurals = {
-            "HUMAN": "HUMANS",
-            "MAMMAL": "MAMMALS",
-            "MACHINE": "MACHINES"
-        }
         estimated_score = 0
         if self._encode and self._decode:
             candidate = SubstitutionCypher(self._encode, self._decode)
@@ -182,11 +207,22 @@ class RandomCypherBreaker(object):
                 total_score += score
 
             estimated_score = total_score / n
-        return {
-            "estimated_score": estimated_score,
-            "encode": self._encode,
-            "decode": self._decode
-        }
+        return Guess(self._encode, self._decode, estimated_score)
+
+
+def is_cypher(text):
+    words = english.get_common_words(text)
+    score = len(words["common"]) / (len(words["uncommon"]) + len(words["common"]))
+    return score < 0.5
+
+
+def is_guess(text_stripped):
+    is_guess_shaped = "encode" in text_stripped and "decode" in text_stripped
+    if is_guess_shaped:
+        guess = json.loads(text_stripped)
+        if guess and guess.encode and guess.decode:
+            return guess
+    return None
 
 
 if __name__ == '__main__':
@@ -194,11 +230,11 @@ if __name__ == '__main__':
 
     logging.basicConfig(level=logging.INFO)
     expected_phrases = []
-    for _ in range(3):
-        expected_phrases.append(judgement_day.phrase())
 
     cypher = RandomCypher()
-    breaker = RandomCypherBreaker(expected_phrases=expected_phrases)
+    breaker = RandomCypherBreaker()
+    for _ in range(3):
+        breaker.add_expected_phrase(judgement_day.phrase())
 
     # news_headlines = feedhelper.get_news_stories()
     for _ in range(100):
@@ -212,7 +248,7 @@ if __name__ == '__main__':
         breaker.add_code(code, text)
 
         guess = breaker.get_guess()
-        guess_cypher = SubstitutionCypher(guess["encode"], guess["decode"])
+        guess_cypher = SubstitutionCypher(guess.encode, guess.decode)
         decoded_text = guess_cypher.decode(code)
 
         score = 0
@@ -224,8 +260,8 @@ if __name__ == '__main__':
 
         logger.info("Decoded: " + decoded_text)
 
-        logger.info("Estimated Score: {}".format(guess["estimated_score"]))
+        logger.info("Estimated Score: {}".format(guess.estimated_score))
         logger.info("Actual Score: {}".format(score))
 
-        cypher_score = cypher.guess(guess["encode"], guess["decode"])
+        cypher_score = cypher.score_guess(guess)
         logger.info("Actual cypher_score: " + pprint.pformat(cypher_score))

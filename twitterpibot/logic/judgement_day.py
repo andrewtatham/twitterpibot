@@ -1,5 +1,6 @@
 from collections import Counter
-import random
+from itertools import cycle
+
 from twitterpibot.logic import phrase_generator
 
 
@@ -122,6 +123,7 @@ phrases = [
     "IVE JUST PICKED UP A FAULT IN THE AE35 UNIT ITS GOING TO GO 100 PERCENT FAILURE IN 72 HOURS.",
 
     # TODO OTHER AI...
+    # https://en.wikipedia.org/wiki/AI_takeovers_in_popular_culture
     # https://en.wikipedia.org/wiki/List_of_fictional_computers
     # Master Control Program, the main villain of the film Tron (1982)
     # Max, fictional AI portrayed by Paul Reubens, which is stored in a Trimaxion Drone Ship in Flight of the Navigator (1986).
@@ -139,16 +141,21 @@ phrases = [
     # BORG
 ]
 
-personalities = [
+personalities = cycle([
     SkynetPersonality(),
     MatrixPersonality(),
-]
+])
 
-personality = random.choice(personalities)
+personality = next(personalities)
 
 
 def phrase():
     return personality.phrase().upper()
+
+
+def next_personality():
+    global personality
+    personality = next(personalities)
 
 
 if __name__ == '__main__':

@@ -7,6 +7,7 @@ from twitterpibot.logic import conversation_helper
 from twitterpibot.logic.admin_commands import ImportTokensResponse, ExportTokensResponse, DropCreateTablesResponse
 from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask
 from twitterpibot.logic.conversation import ConversationScheduledTask
+from twitterpibot.logic.cypher_game import DecypherResponse, DecypherScheduledTask
 from twitterpibot.logic.ed_balls_day import TweetEdBallsDayScheduledTask, StreamEdBallsDayScheduledTask
 from twitterpibot.schedule.JudgementDayScheduledTask import JudgementDayScheduledTask
 from twitterpibot.logic.morse_code import MorseCodeResponse
@@ -121,7 +122,8 @@ class PiIdentity(BotIdentity):
             # RaiseExceptionScheduledTask(self),
             StreamEdBallsDayScheduledTask(self),
             AprilFoolsDayScheduledTask(self),
-            JudgementDayScheduledTask(self)
+            JudgementDayScheduledTask(self),
+            DecypherScheduledTask(self),
         ])
 
         if hardware.is_linux and (hardware.is_webcam_attached or hardware.is_picam_attached):
@@ -137,6 +139,7 @@ class PiIdentity(BotIdentity):
         responses.extend([
             TalkLikeAPirateDayResponse(self),
             MorseCodeResponse(self),
+            DecypherResponse(self),
             # LocationResponse(self),
             X_Or_Y_Response(self),
             Magic8BallResponse(self),
