@@ -13,6 +13,8 @@ class InboxItem(object):
         self.words = None
         self.in_reply_to_id_str = None
         self.has_media = False
+        self.text = None
+        self.text_stripped = None
 
     def display(self):
         pass
