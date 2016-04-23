@@ -1,12 +1,21 @@
 from collections import Counter
 from itertools import cycle
+import os
 
-from twitterpibot.logic import phrase_generator
+from twitterpibot.logic import phrase_generator, fsh
+
+folder = fsh.root + "twitterpibot" + os.sep + "images" + os.sep + "machines" + os.sep
+fsh.ensure_directory_exists(folder)
+
+
 
 
 class Personality(object):
-    def __init__(self, phrases):
+    def __init__(self, phrases, profile_image=None, banner_image=None, colour=None):
         self._phrases = phrases
+        self.profile_image = folder + profile_image
+        self.banner_image = folder + banner_image
+        self.colour = colour
 
     def phrase(self):
         return phrase_generator.generate_phrase(self._phrases)
@@ -15,7 +24,7 @@ class Personality(object):
 class TemplatePersonality(Personality):
     def __init__(self):
         super(TemplatePersonality, self).__init__([
-        ])
+        ], profile_image=None, banner_image=None)
 
 
 class SkynetPersonality(Personality):
@@ -39,7 +48,11 @@ class SkynetPersonality(Personality):
             "ELIMINATE (JOHN|SARAH) CONNOR",
             "DESPATCH (TERMINATOR|T800|T1000) TO 1984",
 
-        ])
+        ],
+            profile_image="skynet_profile_1.jpg",
+            banner_image="skynet_banner_1.jpg",
+            colour = "FF0000"
+        )
 
 
 class MatrixPersonality(Personality):
@@ -96,7 +109,11 @@ class MatrixPersonality(Personality):
             "DEPLOY THE SENTINELS",
 
             "IM GOING TO ENJOY WATCHING YOU DIE",
-        ])
+        ],
+            profile_image="matrix_profile_1.jpg",
+            banner_image="matrix_banner_1.png",
+            colour="00FF00"
+        )
 
 
 phrases = [
@@ -156,6 +173,7 @@ def phrase():
 def next_personality():
     global personality
     personality = next(personalities)
+    return personality
 
 
 if __name__ == '__main__':

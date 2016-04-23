@@ -395,6 +395,24 @@ class TwitterHelper(object):
                 self.twitter.update_profile_image(image=file)
 
     @retry(**retry_args)
+    def update_profile_banner_image(self, file_path):
+        if file_path:
+            logger.info("updating banner image %s" % file_path)
+            with open(file_path, 'rb') as file:
+                try:
+                    self.twitter.update_profile_banner_image(banner=file)
+                except TwythonError as ex:
+                    if "Response was not valid JSON" in str(ex):
+                        # twython issue i think
+                        logger.warning(ex)
+                    else:
+                        raise
+
+    @retry(**retry_args)
+    def update_profile(self, **kwargs):
+        return self.twitter.update_profile(**kwargs)
+
+    @retry(**retry_args)
     def get_list_statuses(self, **kwargs):
         return self.twitter.get_list_statuses(**kwargs)
 
@@ -405,12 +423,10 @@ class TwitterHelper(object):
     @retry(**retry_args)
     def get_user_suggestions(self, **kwargs):
         return self.twitter.get_user_suggestions(**kwargs)
+
     @retry(**retry_args)
     def lookup_status(self, **kwargs):
         return self.twitter.lookup_status(**kwargs)
-
-
-
 
 
 if __name__ == "__main__":

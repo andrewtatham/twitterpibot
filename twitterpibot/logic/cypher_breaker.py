@@ -143,6 +143,9 @@ class Guess(object):
         self.decode = decode
         self.estimated_score = estimated_score
 
+    def __str__(self):
+        return "estimated score {} encode: {} decode: {}".format(self.estimated_score, self.encode, self.decode)
+
 
 class RandomCypherBreaker(object):
     def __init__(self):
@@ -217,11 +220,12 @@ def is_cypher(text):
 
 
 def is_guess(text_stripped):
-    is_guess_shaped = "encode" in text_stripped and "decode" in text_stripped
-    if is_guess_shaped:
-        guess = json.loads(text_stripped)
-        if guess and guess.encode and guess.decode:
-            return guess
+    if text_stripped:
+        is_guess_shaped = "encode" in text_stripped and "decode" in text_stripped
+        if is_guess_shaped:
+            guess = json.loads(text_stripped)
+            if guess and guess.encode and guess.decode:
+                return guess
     return None
 
 
@@ -236,14 +240,13 @@ if __name__ == '__main__':
     for _ in range(3):
         breaker.add_expected_phrase(judgement_day.phrase())
 
-    # news_headlines = feedhelper.get_news_stories()
     for _ in range(100):
         text = judgement_day.phrase()
 
         text = text.upper()
-        logger.info("Text: " + text)
+        # logger.info("Text: " + text)
         code = cypher.encode(text)
-        logger.info("Code: " + code)
+        # logger.info("Code: " + code)
 
         breaker.add_code(code, text)
 
@@ -258,10 +261,10 @@ if __name__ == '__main__':
                 score += 1
         score /= n
 
-        logger.info("Decoded: " + decoded_text)
+        # logger.info("Decoded: " + decoded_text)
 
-        logger.info("Estimated Score: {}".format(guess.estimated_score))
-        logger.info("Actual Score: {}".format(score))
+        # logger.info("Estimated Score: {}".format(guess.estimated_score))
+        # logger.info("Actual Score: {}".format(score))
 
         cypher_score = cypher.score_guess(guess)
         logger.info("Actual cypher_score: " + pprint.pformat(cypher_score))
