@@ -1,7 +1,7 @@
 import random
 
 from twitterpibot.responses.Response import Response, mentioned_reply_condition
-from twitterpibot.hardware import myhardware
+from twitterpibot.hardware import myperipherals
 
 
 class PhotoResponse(Response):
@@ -10,7 +10,7 @@ class PhotoResponse(Response):
                and "photo" in inbox_item.words
 
     def respond(self, inbox_item):
-        photos = myhardware.take_photo("temp", "PhotoResponse", "jpg")
+        photos = myperipherals.take_photo("temp", "PhotoResponse", "jpg")
         if any(photos):
             messages = ["cheese!", "smile!"]
             self.identity.twitter.reply_with(

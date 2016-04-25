@@ -2,7 +2,7 @@ from apscheduler.triggers.cron import CronTrigger
 
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
-from twitterpibot.hardware import myhardware
+from twitterpibot.hardware import myperipherals
 
 
 class PhotoScheduledTask(ScheduledTask):
@@ -10,6 +10,6 @@ class PhotoScheduledTask(ScheduledTask):
         return CronTrigger(hour="8-22", minute="*/20")
 
     def on_run(self):
-        photos = myhardware.take_photo("temp", "PhotoScheduledTask", "jpg")
+        photos = myperipherals.take_photo("temp", "PhotoScheduledTask", "jpg")
         if any(photos):
             self.identity.twitter.send(OutgoingTweet(file_paths=photos))

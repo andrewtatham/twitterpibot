@@ -8,6 +8,7 @@ from apscheduler.triggers.date import DateTrigger
 import images2gif
 
 import twitterpibot.hardware.myhardware
+from twitterpibot.hardware import myperipherals
 from twitterpibot.logic import fsh
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
@@ -95,7 +96,7 @@ class TimelapsePhotoScheduledTask(ScheduledTask):
 
         name = self.timelapse.name + "_img_" + "{0:05d}".format(self.i)
 
-        twitterpibot.hardware.myhardware.take_photo(
+        myperipherals.take_photo(
             folder=self.timelapse.dirPath,
             name=name,
             ext=self.timelapse.imageExtension)

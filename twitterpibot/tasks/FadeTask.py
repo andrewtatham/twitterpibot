@@ -1,6 +1,6 @@
+from twitterpibot.hardware import myperipherals
 from twitterpibot.tasks.Task import Task
 import time
-import twitterpibot.hardware.myhardware
 
 
 class FadeTask(Task):
@@ -9,5 +9,5 @@ class FadeTask(Task):
         self.core = True
 
     def on_run(self):
-        twitterpibot.hardware.myhardware.on_fade_task()
+        myperipherals.on_fade_task()
         time.sleep(1)
