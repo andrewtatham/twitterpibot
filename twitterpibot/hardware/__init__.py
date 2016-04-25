@@ -53,7 +53,7 @@ elif is_linux:
         is_brightpi_attached = bool(" 70 " in output)
     elif is_raspberry_pi_2:
         is_webcam_attached = False
-        is_unicornhat_attached = False
+        is_unicornhat_attached = True
 
 logger.info("is_webcam_attached: %s", is_webcam_attached)
 logger.info("is_picam_attached: %s", is_picam_attached)
@@ -62,19 +62,19 @@ logger.info("is_piglow_attached: %s", is_piglow_attached)
 logger.info("is_brightpi_attached: %s", is_brightpi_attached)
 
 if is_webcam_attached:
-    import twitterpibot.hardware.MyWebcam as MyWebcam
+    from twitterpibot.hardware import MyWebcam as MyWebcam
 if is_picam_attached:
-    import twitterpibot.hardware.MyPicam as MyPicam
+    from twitterpibot.hardware import MyPicam as MyPicam
 if is_unicornhat_attached:
-    import twitterpibot.hardware.myunicornhat as myunicornhat
+    from twitterpibot.hardware import myunicornhat as myunicornhat
 if is_piglow_attached:
-    import twitterpibot.hardware.MyPiglow as MyPiglow
+    from twitterpibot.hardware import MyPiglow as MyPiglow
 if is_brightpi_attached:
-    import twitterpibot.hardware.MyBrightPi as MyBrightPi
+    from twitterpibot.hardware import MyBrightPi as MyBrightPi
     # noinspection PyUnresolvedReferences
     brightpi = MyBrightPi.BrightPI()
 if is_blinksticknano_attached:
-    import twitterpibot.hardware.MyBlinkstickNano as MyBlinkstickNano
+    from twitterpibot.hardware import MyBlinkstickNano as MyBlinkstickNano
 
 
 def take_photo(folder, name, ext, use_flash=False):
