@@ -10,6 +10,8 @@ if myhardware.is_linux:
 else:
     from twitterpibot.hardware import unicornhat_viz as unicornhat
 
+max_bright = 32
+
 
 def _write_pixel(x, y):
     pixel = _buffer[x][y]
@@ -95,7 +97,7 @@ class FlashMode(UnicornHatMode):
         self.h = image_helper.h_delta(self.h, 1 / 16)
         for y in range(8):
             for x in range(8):
-                rgb = image_helper.hsv_to_rgb(image_helper.h_delta(self.h, x / 16 + y / 32), 1.0, 255)
+                rgb = image_helper.hsv_to_rgb(image_helper.h_delta(self.h, x / 16 + y / 32), 1.0, max_bright)
                 _buffer[x][y] = rgb
         _write_all()
 
@@ -112,7 +114,7 @@ class RainMode(UnicornHatMode):
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
-        rgb = (0, 0, 255)
+        rgb = (0, 0, max_bright)
         self._rain.AddRaindrop(rgb)
         self._rain.WriteToBuffer(False)
         _write_all()
@@ -130,7 +132,7 @@ class MatrixMode(UnicornHatMode):
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
-        rgb = (0, 255, 0)
+        rgb = (0, max_bright, 0)
         self._rain.AddRaindrop(rgb)
         self._rain.WriteToBuffer(False)
         _write_all()
@@ -147,8 +149,8 @@ class FireMode(UnicornHatMode):
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
-        r = random.randint(100, 255)
-        g = random.randint(0, 150)
+        r = random.randint(max_bright, 2*max_bright)
+        g = random.randint(0, max_bright)
         b = 0
         rgb = (r, g, b)
         self._rain.AddRaindrop(rgb)
@@ -167,7 +169,7 @@ class SnowMode(UnicornHatMode):
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
-        rgb = (255, 255, 255)
+        rgb = (max_bright, max_bright, max_bright)
         self._rain.AddRaindrop(rgb)
         self._rain.WriteToBuffer(False)
         _write_all()
@@ -234,11 +236,11 @@ class RainbowMode(UnicornHatMode):
         self.h = 0
 
     def lights(self):
-        self.h = image_helper.h_delta(self.h, 0.1)
+        self.h = image_helper.h_delta(self.h, 0.05)
 
         for y in range(8):
             for x in range(8):
-                h, s, v = (image_helper.h_delta(self.h, 0.5 * x / 8 + 0.25 * y / 8), 1.0, 255)
+                h, s, v = (image_helper.h_delta(self.h, 0.1 * x / 8 + 0.2 * y / 8), 1.0, max_bright)
                 rgb = image_helper.hsv_to_rgb(h, s, v)
                 _buffer[x][y] = rgb
 
@@ -255,12 +257,12 @@ class RainbowRainMode(UnicornHatMode):
         self._rain.WriteToBuffer(True)
         _write_all()
 
-        _sleep(0.25)
+        _sleep(1)
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
-        self.h = image_helper.h_delta(self.h, 0.1)
-        h, s, v = (self.h, 1.0, 255)
+        self.h = image_helper.h_delta(self.h, 0.05)
+        h, s, v = (self.h, 1.0, max_bright)
         rgb = image_helper.hsv_to_rgb(h, s, v)
         self._rain.AddRaindrop(rgb)
         self._rain.WriteToBuffer(False)
@@ -271,10 +273,10 @@ _buffer = [[(0, 0, 0) for x in range(8)] for y in range(8)]
 _modes = itertools.cycle([
     DotsMode(),
     FlashMode(),
-    # SnowMode(),
-    # RainMode(),
-    # FireMode(),
-    # MatrixMode(),
+    SnowMode(),
+    RainMode(),
+    FireMode(),
+    MatrixMode(),
     RainbowMode(),
     RainbowRainMode(),
 

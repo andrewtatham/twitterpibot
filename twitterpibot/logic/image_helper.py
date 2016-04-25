@@ -2,7 +2,7 @@ import colorsys
 import random
 
 __author__ = 'andrewtatham'
-_maxbright = 255
+_maxbright = 32
 
 
 def rectangle(origin, size):
@@ -50,7 +50,7 @@ def h_delta(h, delta):
 def fade_rgb(r, g, b):
     h, s, v = colorsys.rgb_to_hsv(r, g, b)
     # print("before fade: h = %s, s = %s, v = %s, r = %s, g = %s, b = %s" % (h, s, v, r, g, b))
-    v = max(0, v / 3)
+    v = max(0, v * 0.9)
     r, g, b = colorsys.hsv_to_rgb(h, s, v)
     r, g, b = (int(round(x)) for x in (r, g, b))
     # print("after fade: h = %s, s = %s, v = %s, r = %s, g = %s, b = %s" % (h, s, v, r, g, b))
