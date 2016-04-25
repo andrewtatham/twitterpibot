@@ -1,7 +1,8 @@
+import twitterpibot.hardware.myhardware
 from identities import AndrewTathamIdentity, AndrewTathamPiIdentity, AndrewTathamPi2Identity, NumberwangHostIdentity, \
     JulieNumberwangIdentity, SimonNumberwangIdentity, EggPunBotIdentity, WhenIsInternationalMensDayBotIdentity, \
     BotgleArtistIdentity, TheMachinesCodeIdentity
-from twitterpibot import hardware
+
 
 if __name__ == '__main__':
     from twitterpibot.logic import fsh
@@ -44,7 +45,7 @@ if __name__ == "__main__":
     themachinescode = TheMachinesCodeIdentity(andrewtatham)
 
 
-    if hardware.is_raspberry_pi_2:
+    if twitterpibot.hardware.myhardware.is_raspberry_pi_2:
         all_identities = [
             andrewtatham,
             andrewtathampi,

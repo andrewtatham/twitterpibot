@@ -3,7 +3,7 @@ import time
 
 from twython.streaming.api import TwythonStreamer
 
-from twitterpibot import hardware
+from twitterpibot.hardware import myhardware
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingEvent import IncomingEvent
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
@@ -48,7 +48,7 @@ class Streamer(TwythonStreamer):
             data['tweet_source'] = "stream:" + self._topic_name
         inbox_item = self._create_inbox_item(data)
         if inbox_item:
-            hardware.on_inbox_item_received(inbox_item)
+            myhardware.on_inbox_item_received(inbox_item)
             response = self._determine_response(inbox_item)
             if response:
                 inbox_item.display()

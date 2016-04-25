@@ -1,14 +1,12 @@
 import json
-import pprint
 import logging
 
 from apscheduler.triggers.cron import CronTrigger
 
-from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
-from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.logic import judgement_day, cypher_breaker
-
+from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.responses.Response import Response
+from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
 logger = logging.getLogger(__name__)
 
@@ -46,8 +44,8 @@ class CypherHostScheduledTask(ScheduledTask):
         super(CypherHostScheduledTask, self).__init__(identity)
 
     def get_trigger(self):
-        # return CronTrigger(hour="*")
-        return CronTrigger(minute="*/5")
+        return CronTrigger(hour="*")
+        # return CronTrigger(minute="*/5")
 
     def on_run(self):
         text = judgement_day.phrase()
@@ -62,14 +60,15 @@ class CypherHostScheduledTask(ScheduledTask):
 
 class CypherHostResponse(Response):
     def condition(self, inbox_item):
-        guess = cypher_breaker.is_guess(inbox_item.text_stripped)
-        if guess:
-            score = _cypher.score_guess(guess)
-            return inbox_item.is_direct_message \
-                   and guess \
-                   and score > 0.8
-        else:
-            return False
+        if inbox_item.is_tweet or inbox_item.is_direct_message:
+            guess = cypher_breaker.is_guess(inbox_item.text_stripped)
+            if guess:
+                score = _cypher.score_guess(guess)
+                return inbox_item.is_direct_message \
+                       and guess \
+                       and score > 0.8
+
+
 
     def respond(self, inbox_item):
         next_game(self.identity.twitter)
@@ -80,7 +79,7 @@ class DecypherScheduledTask(ScheduledTask):
         super(DecypherScheduledTask, self).__init__(identity)
 
     def get_trigger(self):
-        return CronTrigger(hour="*/20")
+        return CronTrigger(hour="*/2")
 
     def on_run(self):
         for _ in range(2):
@@ -105,7 +104,7 @@ class DecypherResponse(Response):
 
         logger.info(guess)
 
-        if guess.estimated_score > 0:
+        if guess.estimated_score > 0.5:
             guess_cypher = cypher_breaker.SubstitutionCypher(guess.encode, guess.decode)
             decoded_text = guess_cypher.decode(inbox_item.text_stripped)
             logger.info("Decoded: " + decoded_text)
@@ -115,13 +114,13 @@ class DecypherResponse(Response):
                 inbox_item.twitter.reply_with(inbox_item=inbox_item, text=guess_string, as_direct_message=True)
 
 
-if __name__ == '__main__':
-    import identities
-
-    identity = identities.TheMachinesCodeIdentity()
-    task = CypherHostMidnightScheduledTask(identity)
-    # task = CypherHostScheduledTask(identity)
-    task.on_run()
+# if __name__ == '__main__':
+#     import identities
+#
+#     identity = identities.TheMachinesCodeIdentity()
+#     task = CypherHostMidnightScheduledTask(identity)
+#     # task = CypherHostScheduledTask(identity)
+#     task.on_run()
 #
 # if __name__ == '__main__':
 #     from twitterpibot.incoming.IncomingTweet import IncomingTweet

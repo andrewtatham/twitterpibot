@@ -1,9 +1,8 @@
 import os
-import tkinter
-import threading
-
 import time
-from PIL import Image, ImageDraw, ImageFont, ImageTk
+import tkinter
+
+from PIL import Image, ImageDraw, ImageTk
 
 from twitterpibot.logic import image_helper, fsh
 

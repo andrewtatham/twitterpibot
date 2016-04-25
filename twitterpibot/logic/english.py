@@ -7,7 +7,7 @@ from twitterpibot.text import textfilehelper
 
 
 def sorter(w):
-    l = levels.get(w.lower())
+    l = words_by_commonness.get(w.lower())
     if l is None:
         return None
     else:
@@ -20,11 +20,24 @@ rx = re.compile("[\w\-']+")
 
 path = fsh.root + "google-10000-english/20k.txt"
 all_words = textfilehelper.get_text(path=path)
-level = 1
-levels = {}
+commonness_level = 1
+words_by_commonness = {}
 for word in all_words:
-    levels[word.lower()] = level
-    level += 1
+    word = word.upper()
+    words_by_commonness[word] = commonness_level
+    commonness_level += 1
+
+words_by_length = {}
+for word in all_words:
+    word = word.upper()
+    word_length = len(word)
+    if word_length not in words_by_length:
+        words_by_length[word_length] = []
+    words_by_length[word_length].append((word, words_by_commonness[word]))
+
+
+def get_common_words_by_length(word_length):
+    return words_by_length.get(word_length)
 
 
 def get_common_words(text):
@@ -35,11 +48,8 @@ def get_common_words(text):
     common_words = list(filter(lambda w: w[1], words))
     uncommon_words = list(filter(lambda w: not w[1], words))
 
-    common_words.sort(key=lambda w: w[1])
-    common_words.reverse()
-
-    uncommon_words.sort(key=lambda w: len(w[0]))
-    uncommon_words.reverse()
+    common_words.sort(key=lambda w: w[1], reverse=True)
+    uncommon_words.sort(key=lambda w: len(w[0]), reverse=True)
 
     logger.debug("common_words = {}".format(common_words))
     logger.debug("uncommon_words = {}".format(uncommon_words))

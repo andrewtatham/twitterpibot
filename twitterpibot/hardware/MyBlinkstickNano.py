@@ -1,8 +1,7 @@
-import random
-import time
-from blinkstick import blinkstick
-import colorsys
 import itertools
+import time
+
+from blinkstick import blinkstick
 
 from twitterpibot.logic import image_helper
 

@@ -1,7 +1,9 @@
 import abc
 
 import colorama
-from twitterpibot import hardware
+
+import twitterpibot.hardware.myhardware
+
 
 from twitterpibot.logic import conversation_helper
 from twitterpibot.logic.admin_commands import ImportTokensResponse, ExportTokensResponse, DropCreateTablesResponse
@@ -126,11 +128,12 @@ class PiIdentity(BotIdentity):
             DecypherScheduledTask(self),
         ])
 
-        if hardware.is_linux and (hardware.is_webcam_attached or hardware.is_picam_attached):
+        if twitterpibot.hardware.myhardware.is_linux and (
+            twitterpibot.hardware.myhardware.is_webcam_attached or twitterpibot.hardware.myhardware.is_picam_attached):
             jobs.append(PhotoScheduledTask(self))
-        if hardware.is_piglow_attached \
-                or hardware.is_unicornhat_attached \
-                or hardware.is_blinksticknano_attached:
+        if twitterpibot.hardware.myhardware.is_piglow_attached \
+                or twitterpibot.hardware.myhardware.is_unicornhat_attached \
+                or twitterpibot.hardware.myhardware.is_blinksticknano_attached:
             jobs.append(LightsScheduledTask(self))
         return jobs
 
@@ -144,7 +147,7 @@ class PiIdentity(BotIdentity):
             X_Or_Y_Response(self),
             Magic8BallResponse(self),
         ])
-        if hardware.is_picam_attached or hardware.is_webcam_attached:
+        if twitterpibot.hardware.myhardware.is_picam_attached or twitterpibot.hardware.myhardware.is_webcam_attached:
             responses.append(PhotoResponse(self))
         responses.extend([
             ReplyResponse(self),

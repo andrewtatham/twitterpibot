@@ -2,14 +2,13 @@ import logging
 
 import colorama
 
-from twitterpibot import loggingconfig
-from twitterpibot import hardware, tasks, schedule
-from twitterpibot import webserver
+import twitterpibot.hardware.myhardware
+from twitterpibot import tasks, schedule,webserver,loggingconfig
 from twitterpibot.schedule import GlobalMonitorScheduledTask
 from twitterpibot.tasks.FadeTask import FadeTask
 from twitterpibot.tasks.LightsTask import LightsTask
 
-if not hardware.is_andrew_desktop:
+if not twitterpibot.hardware.myhardware.is_andrew_desktop:
     colorama.init(autoreset=True)
 
 # import textblob.download_corpora
@@ -47,7 +46,7 @@ def run(identities):
     logger.info("Stopping tasks")
     tasks.stop()
     logger.info("Stopping hardware")
-    hardware.stop()
+    twitterpibot.hardware.myhardware.stop()
 
     logger.info(obviousness + " Stopped " + obviousness)
 
@@ -65,9 +64,9 @@ def set_scheduled_jobs(identities):
 def set_tasks(identities):
     logger.info("Setting tasks")
     _tasks = []
-    if hardware.is_piglow_attached \
-            or hardware.is_unicornhat_attached \
-            or hardware.is_blinksticknano_attached:
+    if twitterpibot.hardware.myhardware.is_piglow_attached \
+            or twitterpibot.hardware.myhardware.is_unicornhat_attached \
+            or twitterpibot.hardware.myhardware.is_blinksticknano_attached:
         _tasks.extend([
             LightsTask(),
             FadeTask()

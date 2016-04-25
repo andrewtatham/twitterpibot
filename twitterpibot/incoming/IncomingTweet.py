@@ -1,20 +1,10 @@
+import html
 import os
 import pprint
 
 from twitterpibot.incoming.InboxItem import InboxItem
 from twitterpibot.logic import english, location
 from twitterpibot.topics import topichelper
-
-try:
-    # noinspection PyUnresolvedReferences
-    import html.parser
-
-    h = html.parser.HTMLParser()
-except ImportError:
-    # noinspection PyUnresolvedReferences
-    import HTMLParser
-
-    h = HTMLParser.HTMLParser()
 
 from itertools import cycle
 from colorama import Fore, Style
@@ -28,8 +18,10 @@ trendcolours = cycle([Fore.MAGENTA, Fore.WHITE])
 searchcolours = cycle([Fore.CYAN, Fore.WHITE])
 streamcolours = cycle([Fore.YELLOW, Fore.WHITE])
 
+
 class dynamic(object):
     pass
+
 
 class IncomingTweet(InboxItem):
     def __init__(self, data, identity):
@@ -78,7 +70,7 @@ class IncomingTweet(InboxItem):
     def _text(self, data, identity):
         self.text = data.get("text")
         if self.text:
-            self.text = h.unescape(self.text)
+            self.text = html.unescape(self.text)
             self.topics = topichelper.get_topics(self.text)
             self.to_me = False
 
@@ -141,7 +133,6 @@ class IncomingTweet(InboxItem):
         logger.info("text:             " + self.text.replace(os.linesep, ' '))
         logger.info("text_stripped:    " + self.text_stripped.replace(os.linesep, ' '))
         logger.info("english: " + pprint.pformat(self.english))
-
 
     def replace_entity(self, indices):
         start = indices[0]

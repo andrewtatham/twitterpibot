@@ -1,12 +1,11 @@
+import itertools
 import random
 import time
-import itertools
-import colorsys
 
-from twitterpibot import hardware
+from twitterpibot.hardware import myhardware
 from twitterpibot.logic import image_helper
 
-if hardware.is_linux:
+if myhardware.is_linux:
     import unicornhat
 else:
     from twitterpibot.hardware import unicornhat_viz as unicornhat
@@ -28,7 +27,7 @@ def _write_all():
 
 
 def _sleep(seconds):
-    if hardware.is_linux:
+    if myhardware.is_linux:
         time.sleep(seconds)
 
 
@@ -348,5 +347,5 @@ if __name__ == '__main__':
         print(i)
 
     close()
-    if not hardware.is_linux:
+    if not myhardware.is_linux:
         unicornhat.close()

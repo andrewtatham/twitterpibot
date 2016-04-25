@@ -3,7 +3,7 @@ import traceback
 
 from PIL import Image, ImageDraw, ImageFont
 
-from twitterpibot import hardware
+import twitterpibot.hardware.myhardware
 from twitterpibot.logic import fsh
 from twitterpibot.logic.image_helper import rectangle
 
@@ -21,10 +21,10 @@ def put_text_on_an_image(image_path, exception=None, bold_text=None, text=None, 
     txt = Image.new('RGBA', base.size, (255, 255, 255, 0))
 
     # get a font
-    if hardware.is_raspberry_pi_2:
+    if twitterpibot.hardware.myhardware.is_raspberry_pi_2:
         lrg_fnt = ImageFont.truetype('FreeSerif.ttf', 24)
         fnt = ImageFont.truetype('FreeSans.ttf', 12)
-    elif hardware.is_mac_osx:
+    elif twitterpibot.hardware.myhardware.is_mac_osx:
         lrg_fnt = ImageFont.truetype('Georgia Italic.ttf', 24)
         fnt = ImageFont.truetype('Arial.ttf', 12)
     else:

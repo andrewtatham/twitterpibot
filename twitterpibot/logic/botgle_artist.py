@@ -1,21 +1,21 @@
-from itertools import groupby
 import os
 import random
-from enum import Enum
 import textwrap
+from enum import Enum
+from itertools import groupby
 
 from PIL import Image, ImageDraw, ImageFont
 
-from twitterpibot import hardware
+import twitterpibot.hardware.myhardware
 from twitterpibot.logic import image_helper, fsh
 from twitterpibot.logic.image_helper import hsv_to_rgb
 
 __author__ = 'andrewtatham'
 
-if hardware.is_raspberry_pi_2:
+if twitterpibot.hardware.myhardware.is_raspberry_pi_2:
     lrg_fnt = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeSans.ttf', 72)
     fnt = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeSans.ttf', 24)
-elif hardware.is_mac_osx:
+elif twitterpibot.hardware.myhardware.is_mac_osx:
     lrg_fnt = ImageFont.truetype('Arial.ttf', 72)
     fnt = ImageFont.truetype('Arial.ttf', 24)
 else:
@@ -261,7 +261,7 @@ def make(board, solution, screen_name):
     if solution_image:
         out = Image.alpha_composite(out, solution_image)
 
-    if hardware.is_mac_osx:
+    if twitterpibot.hardware.myhardware.is_mac_osx:
         out.show()
     if found_words:
         path = folder + "_".join(found_words) + ".png"

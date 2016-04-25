@@ -1,6 +1,5 @@
 import os
 
-import picamera
 import picamera.array
 
 camera = picamera.PiCamera()

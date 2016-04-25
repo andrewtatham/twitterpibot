@@ -175,25 +175,80 @@ class RandomCypherBreaker(object):
         self._decode.update(decode)
 
     def analyse_word_frequency(self):
-        return Counter(self._codes.get_all_words()).most_common()
+        common_code_words = Counter(self._codes.get_all_words()).most_common()
+        logger.debug(pprint.pformat(common_code_words))
+        for common_code_word in common_code_words:
+            logger.debug(common_code_word)
+            word_length = len(common_code_word[0])
+            common_english_words = english.get_common_words_by_length(word_length)
+
+            possible_matches = []
+
+            if common_english_words:
+                # logger.info(pprint.pformat(common_english_words))
+                for common_english_word in common_english_words:
+                    common_letter_score = 0
+                    common_letters = list("_" * word_length)
+                    encode = {}
+                    decode = {}
+                    for i in range(word_length):
+                        if common_code_word[0][i] == common_english_word[0][i]:
+                            common_letter_score += 1
+                            common_letters[i] = common_code_word[0][i]
+                        else:
+                            encode[common_english_word[0][i]] = common_code_word[0][i]
+                            decode[common_code_word[0][i]] = common_english_word[0][i]
+
+                    common_letter_score /= word_length
+
+                    if 0.5 <= common_letter_score < 1.0:
+                        match = (
+                            common_code_word[0],
+                            common_english_word[0],
+                            "".join(common_letters),
+                            common_letter_score,
+                            common_english_word[1],
+                            encode,
+                            decode
+                        )
+                        logger.debug("possible match: {}".format(match))
+                        possible_matches.append(match)
+
+            if any(possible_matches):
+                # todo dont just pick top match
+                # match = possible_matches[0]
+                # todo hmmmm
+                match = random.choice(possible_matches)
+
+                logger.info("match: {}".format(match))
+                code_word, english_word, common_letters, common_letter_score, commonness, encode, decode = match
+                self._encode.update(encode)
+                self._decode.update(decode)
 
     def pattern_match(self, expected_phrase):
-
         pattern = Pattern(expected_phrase)
         if pattern:
             encode, decode = self._codes.find_pattern(pattern)
+            if encode:
+                for k in list(encode):
+                    if random.randint(0, 1) == 0:
+                        v = encode.pop(k, None)
+                        if v:
+                            decode.pop(v, None)
+
             if encode:
                 self._encode.update(encode)
             if decode:
                 self._decode.update(decode)
 
     def get_guess(self):
-
         self.analyse_letter_frequency()
 
         if self._expected_phrases:
             for expected_phrase in self._expected_phrases:
                 self.pattern_match(expected_phrase)
+
+        self.analyse_word_frequency()
 
         estimated_score = 0
         if self._encode and self._decode:
@@ -237,16 +292,14 @@ if __name__ == '__main__':
 
     cypher = RandomCypher()
     breaker = RandomCypherBreaker()
-    for _ in range(3):
-        breaker.add_expected_phrase(judgement_day.phrase())
 
     for _ in range(100):
         text = judgement_day.phrase()
 
         text = text.upper()
-        # logger.info("Text: " + text)
+        logger.info("Text: " + text)
         code = cypher.encode(text)
-        # logger.info("Code: " + code)
+        logger.info("Code: " + code)
 
         breaker.add_code(code, text)
 
@@ -261,10 +314,14 @@ if __name__ == '__main__':
                 score += 1
         score /= n
 
-        # logger.info("Decoded: " + decoded_text)
+        logger.info("Decoded: " + decoded_text)
 
-        # logger.info("Estimated Score: {}".format(guess.estimated_score))
-        # logger.info("Actual Score: {}".format(score))
+        logger.info("Estimated word Score: {}".format(guess.estimated_score))
+        logger.info("Actual word Score: {}".format(score))
 
         cypher_score = cypher.score_guess(guess)
         logger.info("Actual cypher_score: " + pprint.pformat(cypher_score))
+
+        if _ % 2 == 0:
+            logger.warn("CHEAT")
+            breaker.add_expected_phrase(judgement_day.phrase())

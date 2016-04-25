@@ -8,8 +8,8 @@ from requests.exceptions import ChunkedEncodingError
 
 from twython import TwythonError
 
+import twitterpibot.hardware.myhardware
 from twitterpibot.data_access import dal
-import twitterpibot.hardware
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 
 logger = logging.getLogger(__name__)
@@ -68,7 +68,7 @@ topics = [
 def _try_send_exception(identity, exception):
     try:
         # if identity and twitterpibot.hardware.is_mac_osx:
-        if identity and twitterpibot.hardware.is_linux:
+        if identity and twitterpibot.hardware.myhardware.is_linux:
             # image = imagemanager.get_image(topics=topics)
             # path = textonanimage.put_text_on_an_image(image, exception=exception)
             # identity.twitter.send(OutgoingTweet(
