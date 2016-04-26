@@ -8,4 +8,5 @@ class LightsTask(Task):
         self.core = True
 
     def on_run(self):
+        myperipherals.on_fade_task()
         myperipherals.on_lights_task()

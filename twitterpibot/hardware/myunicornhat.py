@@ -149,7 +149,7 @@ class FireMode(UnicornHatMode):
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
-        r = random.randint(max_bright, 2*max_bright)
+        r = random.randint(max_bright, 2 * max_bright)
         g = random.randint(0, max_bright)
         b = 0
         rgb = (r, g, b)
@@ -182,17 +182,17 @@ class Rain(object):
 
     def AddRaindrop(self, rgb):
         if self._direction == "up":
-            x = random.randint(0, 7)
-            y = 0
-        elif self._direction == "down":
-            x = random.randint(0, 7)
-            y = 7
-        elif self._direction == "left":
-            x = 0
-            y = random.randint(0, 7)
-        elif self._direction == "right":
             x = 7
             y = random.randint(0, 7)
+        elif self._direction == "right":
+            x = random.randint(0, 7)
+            y = 7
+        elif self._direction == "down":
+            x = 0
+            y = random.randint(0, 7)
+        elif self._direction == "left":
+            x = random.randint(0, 7)
+            y = 0
         else:
             raise Exception("Invalid direction")
         self._raindrops.append(Raindrop(x, y, rgb))
@@ -209,18 +209,18 @@ class Rain(object):
     def Iterate(self):
         for r in self._raindrops:
             if self._direction == "up":
-                r.y += 1
-            elif self._direction == "down":
-                r.y -= 1
-            elif self._direction == "left":
-                r.x += 1
-            elif self._direction == "right":
                 r.x -= 1
+            elif self._direction == "right":
+                r.y -= 1
+            elif self._direction == "down":
+                r.x += 1
+            elif self._direction == "left":
+                r.y += 1
 
-            if self._direction == "up" and r.y > 7 \
-                    or self._direction == "down" and r.y < 0 \
-                    or self._direction == "left" and r.x > 7 \
-                    or self._direction == "right" and r.x < 0:
+            if self._direction == "up" and r.x < 0 \
+                    or self._direction == "right" and  r.y < 0 \
+                    or self._direction == "down" and r.x > 7\
+                    or self._direction == "left" and r.y > 7:
                 self._raindrops.remove(r)
 
 
@@ -338,15 +338,14 @@ if __name__ == '__main__':
 
     lights()
     for i in range(1000):
+        print(i)
         if i % 4 == 0:
             fade()
+        lights()
         if i % 15 == 0 or random.randint(0, 3) == 0:
             inbox_item_received(None)
         if i % 100 == 0:
             on_lights_scheduled_task()
-
-        lights()
-        print(i)
 
     close()
     if not myhardware.is_linux:

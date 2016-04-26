@@ -5,7 +5,6 @@ import colorama
 from twitterpibot import tasks, schedule, webserver, loggingconfig
 from twitterpibot.hardware import myhardware, myperipherals
 from twitterpibot.schedule import GlobalMonitorScheduledTask
-from twitterpibot.tasks.FadeTask import FadeTask
 from twitterpibot.tasks.LightsTask import LightsTask
 
 if not myhardware.is_andrew_desktop:
@@ -69,7 +68,7 @@ def set_tasks(identities):
             or myhardware.is_blinksticknano_attached:
         _tasks.extend([
             LightsTask(),
-            FadeTask()
+
         ])
     for identity in identities:
         _tasks.extend(identity.get_tasks())
