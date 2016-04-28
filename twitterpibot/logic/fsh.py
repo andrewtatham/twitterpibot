@@ -152,3 +152,10 @@ def get_file_size(path):
         return os.path.getsize(path)
     else:
         return 0
+
+
+def get_files_in_folder(folder):
+    return [os.path.join(folder, fn) for fn in next(os.walk(folder))[2]]
+
+if __name__ == '__main__':
+    print(get_files_in_folder(root))

@@ -19,8 +19,8 @@ elif twitterpibot.hardware.myhardware.is_mac_osx:
     lrg_fnt = ImageFont.truetype('Arial.ttf', 72)
     fnt = ImageFont.truetype('Arial.ttf', 24)
 else:
-    lrg_fnt = ImageFont.truetype('Arial.ttf', 36)
-    fnt = ImageFont.truetype('Arial.ttf', 24)
+    lrg_fnt = ImageFont.truetype('C:\\windows\\fonts\\Arial.ttf', 36)
+    fnt = ImageFont.truetype('C:\\windows\\fonts\\Arial.ttf', 24)
 
 
 class BoardOptions(Enum):

@@ -42,7 +42,7 @@ def get_common_words_by_length(word_length):
 
 def get_common_words(text):
     words = rx.findall(text)
-    words = list(map(lambda w: (w, sorter(w)), words))
+    words = list(map(lambda w: (w, sorter(w.upper())), words))
     logger.debug("words = {}".format(words))
 
     common_words = list(filter(lambda w: w[1], words))

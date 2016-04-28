@@ -1,17 +1,16 @@
-import twitterpibot.hardware.myhardware
-from identities import AndrewTathamIdentity, AndrewTathamPiIdentity, AndrewTathamPi2Identity, NumberwangHostIdentity, \
-    JulieNumberwangIdentity, SimonNumberwangIdentity, EggPunBotIdentity, WhenIsInternationalMensDayBotIdentity, \
-    BotgleArtistIdentity, TheMachinesCodeIdentity
 
 
 if __name__ == '__main__':
     from twitterpibot.logic import fsh
     from twitterpibot.data_access import dal
-
+    # dal.import_tokens(fsh.root + "tokens.csv")
     dal.export_tokens(fsh.root + "tokens.csv")
 
 if __name__ == "__main__":
-    import twitterpibot.bootstrap
+
+    from identities import AndrewTathamIdentity, AndrewTathamPiIdentity, AndrewTathamPi2Identity, NumberwangHostIdentity, \
+        JulieNumberwangIdentity, SimonNumberwangIdentity, EggPunBotIdentity, WhenIsInternationalMensDayBotIdentity, \
+        BotgleArtistIdentity, TheMachinesCodeIdentity
 
     andrewtatham = AndrewTathamIdentity()
     andrewtathampi = AndrewTathamPiIdentity(andrewtatham)
@@ -45,6 +44,7 @@ if __name__ == "__main__":
     themachinescode = TheMachinesCodeIdentity(andrewtatham)
 
 
+    import twitterpibot.hardware.myhardware
     if twitterpibot.hardware.myhardware.is_raspberry_pi_2:
         all_identities = [
             andrewtatham,
@@ -71,5 +71,5 @@ if __name__ == "__main__":
             # botgleartist,
             themachinescode
         ]
-
+    import twitterpibot.bootstrap
     twitterpibot.bootstrap.run(all_identities)

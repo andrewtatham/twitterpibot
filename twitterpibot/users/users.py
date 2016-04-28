@@ -17,7 +17,7 @@ class Users(object):
 
         if user_data:
             user_id = user_data["id_str"]
-            logger.debug(user_data)
+            # logger.debug(user_data)
             if user_id not in self._users:
                 self._users[user_id] = User(user_data, self._identity.screen_name)
 

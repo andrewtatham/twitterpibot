@@ -5,10 +5,10 @@ import random
 
 from twitterpibot.logic import googlehelper, fsh, giphyhelper
 
-__author__ = 'andrewtatham'
-folder = fsh.root + "temp" + os.sep + "images" + os.sep + "imagemanager" + os.sep
-
 logger = logging.getLogger(__name__)
+folder = fsh.root + "temp" + os.sep + "images" + os.sep + "imagemanager" + os.sep
+ed_balls = []
+ed_balls_folder = fsh.root + "twitterpibot" + os.sep + "images" + os.sep + "edballs" + os.sep
 
 
 # todo empty dir / manage files and cache
@@ -41,8 +41,18 @@ def get_gif(screen_name, text):
     return file_path
 
 
+def get_ed_balls_image():
+    global ed_balls
+    if not ed_balls:
+        ed_balls = list(fsh.get_files_in_folder(ed_balls_folder))
+        random.shuffle(ed_balls)
+    return ed_balls.pop()
+
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    print(get_image(["eggs", "egg"]))
-    print(get_reply_image("test", "blah"))
-    print(get_gif("test", "wat"))
+    # print(get_image(["eggs", "egg"]))
+    # print(get_reply_image("test", "blah"))
+    # print(get_gif("test", "wat"))
+    for _ in range(20):
+        print(get_ed_balls_image())
