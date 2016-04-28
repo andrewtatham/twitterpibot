@@ -10,7 +10,7 @@ from twitterpibot.schedule.StreamTopicScheduledTask import StreamingTopicSchedul
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
-link = "https://twitter.com/edballs/status/63623585020915713"
+the_big_bang = "https://twitter.com/edballs/status/63623585020915713"
 
 
 class TweetEdBallsDayScheduledTask(ScheduledTask):
@@ -39,11 +39,9 @@ class TweetEdBallsDayScheduledTask(ScheduledTask):
 
         quote = None
         if random.randint(0, 1):
-            quote = link
+            quote = the_big_bang
 
-
-        print(text, quote, file_paths)
-        # self.identity.twitter.send(OutgoingTweet(text=text, file_paths=file_paths, quote=quote))
+        self.identity.twitter.send(OutgoingTweet(text=text, file_paths=file_paths, quote=quote))
 
 
 class StreamEdBallsDayScheduledTask(StreamingTopicScheduledTask):
@@ -51,7 +49,7 @@ class StreamEdBallsDayScheduledTask(StreamingTopicScheduledTask):
         super(StreamEdBallsDayScheduledTask, self).__init__(identity=identity, task_key="#EdBallsDay")
 
     def get_trigger(self):
-        return CronTrigger(month=4, day="27-29", minute="*/2")
+        return CronTrigger(month=4, day="27-29", minute="*/30")
 
     def _get_topic_streamer(self):
         return self.identity.twitter.get_streamer(
@@ -64,8 +62,10 @@ class StreamEdBallsDayScheduledTask(StreamingTopicScheduledTask):
     def _should_stream(self, today):
         return today.month == 4 and today.day == 28
 
+
 if __name__ == '__main__':
     import identities
+
     identity = identities.AndrewTathamPi2Identity()
     task = TweetEdBallsDayScheduledTask(identity)
     for _ in range(100):
