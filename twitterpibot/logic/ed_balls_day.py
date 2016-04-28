@@ -28,10 +28,10 @@ class StreamEdBallsDayScheduledTask(StreamingTopicScheduledTask):
 
     def _get_topic_streamer(self):
         return self.identity.twitter.get_streamer(
-            topic="Ed Balls",
+            topic="Ed Balls,#EdBallsDay",
             topic_name=self._task_key,
             responses=[FavoriteResponse(self.identity), RetweetResponse(self.identity)],
-            filter_level="none"
+            filter_level="low"
         )
 
     def _should_stream(self, today):
