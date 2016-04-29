@@ -23,7 +23,8 @@ def solve_anagram(anagram):
 
 class AnagramBotResponse(Response):
     def condition(self, inbox_item):
-        return inbox_item.sender.screen_name == screen_name  and unmentioned_reply_condition(inbox_item, one_in=10)
+        return inbox_item.sender and inbox_item.sender.screen_name == screen_name and \
+               unmentioned_reply_condition(inbox_item, one_in=10)
 
     def respond(self, inbox_item):
         if anagram_text in inbox_item.text:
