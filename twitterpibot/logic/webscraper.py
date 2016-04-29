@@ -21,6 +21,13 @@ def get_malcolm_tucker_quotes():
     return quotes
 
 
+def _convert_unicode(unicode):
+    unicode = unicode.replace("U+", "")
+    unicode = unicode.zfill(8)
+    unicode = "\\U" + unicode
+    return unicode
+
+
 def get_emojis():
     emoji = {}
     url = "http://www.unicode.org/emoji/charts/full-emoji-list.html"
@@ -32,30 +39,35 @@ def get_emojis():
             cells = row.find_all('td')
             if cells:
                 if len(cells) >= 15:
+                    unicode = cells[1].text
                     name = cells[14].text
                     year = cells[15].text
                     year = re.match("[0-9]+", year).string[:4]
                     year = int(year)
 
-                    if "," not in name \
-                            and "Keycap" not in name \
-                            and "Flag" not in name \
-                            and year <= 2013:
+                    if True:
+                        # "," not in name \
+                        #     and "Keycap" not in name \
+                        #     and "Flag" not in name \
+                        #     and year <= 2013:
 
                         if "≊" in name:
                             name = name[:name.index("≊")]
 
-                        val = "\\N{" + name + "}"
+                        unicode = "".join((map(_convert_unicode, unicode.split(" "))))
+
                         name = name \
                             .replace(" ", "_") \
                             .replace("-", "_") \
                             .replace(".", "_") \
+                            .replace(",", "_") \
+                            .replace(":", "_") \
                             .replace("&", "_") \
                             .replace("'", "_") \
                             .replace("’", "_") \
                             .lower()
-                        if name and val:
-                            print("" + name + " = \"" + val + "\"")
+                        if name and unicode:
+                            print("" + name + " = \"" + unicode + "\"")
 
     return emoji
 
@@ -75,4 +87,4 @@ def get_common_words():
 
 
 if __name__ == "__main__":
-    pprint.pprint(get_common_words())
+    pprint.pprint(get_emojis())

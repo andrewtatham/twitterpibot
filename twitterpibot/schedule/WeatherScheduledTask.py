@@ -58,6 +58,7 @@ class WeatherScheduledTask(ScheduledTask):
                 emojihelper.sun_with_face,
                 emojihelper.black_sun_with_rays,
                 emojihelper.smiling_face_with_sunglasses,
+                emojihelper.dark_sunglasses
             ],
             "clear skies": [
                 emojihelper.sun_with_face,
@@ -92,12 +93,11 @@ class WeatherScheduledTask(ScheduledTask):
             "heavy rain showers": [
                 emojihelper.umbrella_with_rain_drops,
                 emojihelper.cloud_with_rain,
-                emojihelper.rain,
+
                 emojihelper.rainbow,
             ],
             "heavy rain": [
                 emojihelper.umbrella_with_rain_drops,
-                emojihelper.rain,
 
             ],
 
@@ -109,9 +109,16 @@ class WeatherScheduledTask(ScheduledTask):
                 emojihelper.wind_blowing_face,
             ],
         }
+
+        unknown_weather_phrases = []
         for phrase in phrases:
             if phrase in inbox_item.text:
                 emoji += random.choice(phrases[phrase])
+            else:
+                unknown_weather_phrases.append(phrase)
+
+        if unknown_weather_phrases:
+            self.identity.twitter.send(OutgoingDirectMessage(text="Unknown Weather: " + ", ".join(unknown_weather_phrases)))
 
         return emoji
 
