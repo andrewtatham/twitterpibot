@@ -7,7 +7,7 @@ from twitterpibot.text import textfilehelper
 
 
 def sorter(w):
-    l = words_by_commonness.get(w.lower())
+    l = words_by_commonness.get(w.upper())
     if l is None:
         return None
     else:
