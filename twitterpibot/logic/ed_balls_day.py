@@ -11,6 +11,47 @@ from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
 the_big_bang = "https://twitter.com/edballs/status/63623585020915713"
+days_before = set([1, 2, 3, 7, 14, 21, 25, 50, 100, 150, 200, 250, 300, 350, 364])
+
+
+class TweetBeforeEdBallsDayScheduledTask(ScheduledTask):
+    def get_trigger(self):
+        return CronTrigger(hour=16, minute=20)
+
+    def on_run(self):
+
+        today = datetime.date.today()
+        y = today.year
+        m = today.month
+        d = today.day
+
+        is_ed_balls_day = d == 28 and m == 4
+        if not is_ed_balls_day:
+            is_ebd_next_year = m == 4 and d > 28 or m > 4
+            if is_ebd_next_year:
+                y += 1
+            next_ed_balls_day = datetime.date(y, 4, 28)
+            days_until_ebd = (next_ed_balls_day - datetime.date.today()).days
+
+            if days_until_ebd in days_before:
+                if days_until_ebd == 1:
+                    text = random.choice(["GAAAH", "OMG", "ZOMG"])
+                    text += " #EdBallsDay is "
+                    text += random.choice(["nearly here", "so close"])
+                else:
+                    text = random.choice(["Only", "Just"])
+                    text += " {} days until #EdBallsDay".format(days_until_ebd)
+                text += "!" * random.randint(1, 7)
+
+                file_path = imagemanager.get_ed_balls_image()
+                file_paths = None
+                if file_path:
+                    file_paths = [file_path]
+
+                if random.randint(0, 1):
+                    text += " " + the_big_bang
+
+                self.identity.twitter.send(OutgoingTweet(text=text, file_paths=file_paths))
 
 
 class TweetEdBallsDayScheduledTask(ScheduledTask):
@@ -66,7 +107,6 @@ class StreamEdBallsDayScheduledTask(StreamingTopicScheduledTask):
 if __name__ == '__main__':
     import identities
 
-    identity = identities.AndrewTathamPi2Identity()
-    task = TweetEdBallsDayScheduledTask(identity)
-    for _ in range(100):
-        task.on_run()
+    identity = identities.AndrewTathamIdentity()
+    task = TweetBeforeEdBallsDayScheduledTask(identity)
+    task.on_run()

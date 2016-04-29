@@ -10,7 +10,8 @@ from twitterpibot.logic.admin_commands import ImportTokensResponse, ExportTokens
 from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask
 from twitterpibot.logic.conversation import ConversationScheduledTask
 from twitterpibot.logic.cypher_game import DecypherResponse, DecypherScheduledTask
-from twitterpibot.logic.ed_balls_day import TweetEdBallsDayScheduledTask, StreamEdBallsDayScheduledTask
+from twitterpibot.logic.ed_balls_day import TweetEdBallsDayScheduledTask, StreamEdBallsDayScheduledTask, \
+    TweetBeforeEdBallsDayScheduledTask
 from twitterpibot.schedule.JudgementDayScheduledTask import JudgementDayScheduledTask
 from twitterpibot.logic.morse_code import MorseCodeResponse
 from twitterpibot.logic.statstics import Statistics
@@ -122,6 +123,7 @@ class PiIdentity(BotIdentity):
             HappyBirthdayScheduledTask(self),
             # LocationScheduledTask(self),
             # RaiseExceptionScheduledTask(self),
+            TweetBeforeEdBallsDayScheduledTask(self),
             StreamEdBallsDayScheduledTask(self),
             AprilFoolsDayScheduledTask(self),
             JudgementDayScheduledTask(self),
