@@ -4,9 +4,9 @@ import colorama
 
 import twitterpibot.hardware.myhardware
 
-
 from twitterpibot.logic import conversation_helper
 from twitterpibot.logic.admin_commands import ImportTokensResponse, ExportTokensResponse, DropCreateTablesResponse
+from twitterpibot.logic.anagram_solver import AnagramBotResponse
 from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask
 from twitterpibot.logic.conversation import ConversationScheduledTask
 from twitterpibot.logic.cypher_game import DecypherResponse, DecypherScheduledTask
@@ -131,7 +131,7 @@ class PiIdentity(BotIdentity):
         ])
 
         if twitterpibot.hardware.myhardware.is_linux and (
-            twitterpibot.hardware.myhardware.is_webcam_attached or twitterpibot.hardware.myhardware.is_picam_attached):
+                    twitterpibot.hardware.myhardware.is_webcam_attached or twitterpibot.hardware.myhardware.is_picam_attached):
             jobs.append(PhotoScheduledTask(self))
         if twitterpibot.hardware.myhardware.is_piglow_attached \
                 or twitterpibot.hardware.myhardware.is_unicornhat_attached \
@@ -143,6 +143,7 @@ class PiIdentity(BotIdentity):
         responses = []
         responses.extend([
             TalkLikeAPirateDayResponse(self),
+            AnagramBotResponse(self),
             MorseCodeResponse(self),
             DecypherResponse(self),
             # LocationResponse(self),

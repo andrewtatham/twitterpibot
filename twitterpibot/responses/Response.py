@@ -15,7 +15,7 @@ random_rt_fav = 1000
 logger = logging.getLogger(__name__)
 
 
-def one_in(prob):
+def _one_in(prob):
     return random.randint(0, prob - 1) == 0
 
 
@@ -38,19 +38,20 @@ def mentioned_reply_condition(inbox_item):
                 and inbox_item.to_me \
                 and not inbox_item.from_me \
                 and inbox_item.sender \
-                and (not inbox_item.sender.is_reply_less or one_in(mentioned_reply_less)) \
+                and (not inbox_item.sender.is_reply_less or _one_in(mentioned_reply_less)) \
                 and inbox_item.sender.screen_name != "numberwang_host"
     logger.debug("to_me = {}".format(inbox_item.to_me))
     logger.debug("mentioned = {}".format(mentioned))
     return mentioned
 
 
-def unmentioned_reply_condition(inbox_item):
+def unmentioned_reply_condition(inbox_item, one_in=None):
     unmentoned = inbox_item.is_tweet and not inbox_item.from_me and not inbox_item.is_retweet_of_my_status and \
                  (
-                     (inbox_item.sender.is_awesome_bot and one_in(bot_unmentioned_reply)) or
-                     (inbox_item.sender.is_possibly_bot and one_in(bot_unmentioned_reply)) or
-                     one_in(unmentioned_reply)
+                     (inbox_item.sender.is_awesome_bot and _one_in(bot_unmentioned_reply)) or
+                     (inbox_item.sender.is_possibly_bot and _one_in(bot_unmentioned_reply)) or
+                     (one_in and _one_in(one_in)) or
+                     _one_in(unmentioned_reply)
                  )
 
     logger.debug("unmentioned = {}".format(unmentoned))
@@ -75,11 +76,11 @@ def retweet_condition(inbox_item):
            ) and \
            (not inbox_item.topics or inbox_item.topics.retweet()) and \
            (
-               (inbox_item.sender.is_awesome_bot and one_in(bot_rt_fav)) or
-               (inbox_item.sender.is_possibly_bot and one_in(bot_rt_fav)) or
-               (inbox_item.sender.is_friend and one_in(friend_rt_fav)) or
-               (inbox_item.sender.is_retweet_more and one_in(rt_more)) or
-               one_in(random_rt_fav))
+               (inbox_item.sender.is_awesome_bot and _one_in(bot_rt_fav)) or
+               (inbox_item.sender.is_possibly_bot and _one_in(bot_rt_fav)) or
+               (inbox_item.sender.is_friend and _one_in(friend_rt_fav)) or
+               (inbox_item.sender.is_retweet_more and _one_in(rt_more)) or
+               _one_in(random_rt_fav))
 
 
 def testing_reply_condition(inbox_item):
@@ -98,7 +99,7 @@ def favourite_condition(inbox_item):
            not inbox_item.sender.is_arsehole and \
            (not inbox_item.topics or inbox_item.topics.retweet()) and \
            (
-               (inbox_item.sender.is_awesome_bot and one_in(bot_rt_fav)) or
-               (inbox_item.sender.is_possibly_bot and one_in(bot_rt_fav)) or
-               (inbox_item.sender.is_friend and one_in(friend_rt_fav)) or
-               one_in(random_rt_fav))
+               (inbox_item.sender.is_awesome_bot and _one_in(bot_rt_fav)) or
+               (inbox_item.sender.is_possibly_bot and _one_in(bot_rt_fav)) or
+               (inbox_item.sender.is_friend and _one_in(friend_rt_fav)) or
+               _one_in(random_rt_fav))
