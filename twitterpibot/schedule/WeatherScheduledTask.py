@@ -11,6 +11,62 @@ from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 screen_name = "BBCWeatherBot"
 fail_rx = re.compile("Sorry|We found more than one location with that name")
 rx = re.compile("(?P<temp>temperatures (up to|as low as) [\d]+°C),( (?P<blah1>[\w\s]+))? and (?P<blah2>[\w\s]+)\.")
+phrases_emoji = {
+    "sunshine": [
+        emojihelper.sun_with_face,
+        emojihelper.black_sun_with_rays,
+        emojihelper.smiling_face_with_sunglasses,
+        emojihelper.dark_sunglasses
+    ],
+    "clear skies": [
+        emojihelper.sun_with_face,
+        emojihelper.black_sun_with_rays,
+        emojihelper.sunflower,
+    ],
+    "sunny intervals": [
+        emojihelper.sun_behind_cloud,
+    ],
+    "partial cloud": [
+        emojihelper.sun_behind_cloud,
+    ],
+    "white cloud": [
+        emojihelper.cloud
+    ],
+    "grey cloud": [
+        emojihelper.cloud
+    ],
+
+    "light rain": [
+        emojihelper.thunder_cloud_and_rain,
+        emojihelper.droplet,
+        emojihelper.closed_umbrella
+    ],
+    "light rain showers": [
+        emojihelper.thunder_cloud_and_rain,
+        emojihelper.droplet,
+        emojihelper.rainbow,
+        emojihelper.umbrella
+
+    ],
+    "heavy rain showers": [
+        emojihelper.umbrella_with_rain_drops,
+        emojihelper.cloud_with_rain,
+
+        emojihelper.rainbow,
+    ],
+    "heavy rain": [
+        emojihelper.umbrella_with_rain_drops,
+
+    ],
+
+    "a little wind": [
+        emojihelper.wind_chime,
+        emojihelper.leaf_fluttering_in_wind,
+    ],
+    "a strong breeze": [
+        emojihelper.wind_blowing_face,
+    ],
+}
 
 logger = logging.getLogger(__name__)
 
@@ -53,67 +109,11 @@ class WeatherScheduledTask(ScheduledTask):
 
     def get_emoji(self, inbox_item):
         emoji = ""
-        phrases = {
-            "sunshine": [
-                emojihelper.sun_with_face,
-                emojihelper.black_sun_with_rays,
-                emojihelper.smiling_face_with_sunglasses,
-                emojihelper.dark_sunglasses
-            ],
-            "clear skies": [
-                emojihelper.sun_with_face,
-                emojihelper.black_sun_with_rays,
-                emojihelper.sunflower,
-            ],
-            "sunny intervals": [
-                emojihelper.sun_behind_cloud,
-            ],
-            "partial cloud": [
-                emojihelper.sun_behind_cloud,
-            ],
-            "white cloud": [
-                emojihelper.cloud
-            ],
-            "grey cloud": [
-                emojihelper.cloud
-            ],
-
-            "light rain": [
-                emojihelper.thunder_cloud_and_rain,
-                emojihelper.droplet,
-                emojihelper.closed_umbrella
-            ],
-            "light rain showers": [
-                emojihelper.thunder_cloud_and_rain,
-                emojihelper.droplet,
-                emojihelper.rainbow,
-                emojihelper.umbrella
-
-            ],
-            "heavy rain showers": [
-                emojihelper.umbrella_with_rain_drops,
-                emojihelper.cloud_with_rain,
-
-                emojihelper.rainbow,
-            ],
-            "heavy rain": [
-                emojihelper.umbrella_with_rain_drops,
-
-            ],
-
-            "a little wind": [
-                emojihelper.wind_chime,
-                emojihelper.leaf_fluttering_in_wind,
-            ],
-            "a strong breeze": [
-                emojihelper.wind_blowing_face,
-            ],
-        }
 
         unknown_weather_phrases = []
-        for phrase in phrases:
+        for phrase in phrases_emoji:
             if phrase in inbox_item.text:
-                emoji += random.choice(phrases[phrase])
+                emoji += random.choice(phrases_emoji[phrase])
             else:
                 unknown_weather_phrases.append(phrase)
 
