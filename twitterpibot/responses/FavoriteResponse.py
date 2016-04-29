@@ -11,4 +11,4 @@ class FavoriteResponse(Response):
 
     def respond(self, inbox_item):
         logger.info("favoriting status id %s", inbox_item.id_str)
-        self.identity.twitter.create_favorite(inbox_item.id_str)
+        self.identity.twitter.favourite(inbox_item.id_str)

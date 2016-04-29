@@ -223,7 +223,7 @@ class TwitterHelper(object):
         return self.twitter.search(q=query, result_type=result_type)["statuses"]
 
     @retry(**retry_args)
-    def create_favorite(self, id_str):
+    def favourite(self, id_str):
         try:
             self.twitter.create_favorite(id=id_str)
             self.identity.statistics.record_favourite()
