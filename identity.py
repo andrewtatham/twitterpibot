@@ -12,6 +12,7 @@ from twitterpibot.logic.conversation import ConversationScheduledTask
 from twitterpibot.logic.cypher_game import DecypherResponse, DecypherScheduledTask
 from twitterpibot.logic.ed_balls_day import TweetEdBallsDayScheduledTask, StreamEdBallsDayScheduledTask, \
     TweetBeforeEdBallsDayScheduledTask
+from twitterpibot.responses.weather_response import WeatherResponse
 from twitterpibot.schedule.JudgementDayScheduledTask import JudgementDayScheduledTask
 from twitterpibot.logic.morse_code import MorseCodeResponse
 from twitterpibot.logic.statstics import Statistics
@@ -147,6 +148,7 @@ class PiIdentity(BotIdentity):
             MorseCodeResponse(self),
             DecypherResponse(self),
             # LocationResponse(self),
+            WeatherResponse(self),
             X_Or_Y_Response(self),
             Magic8BallResponse(self),
         ])

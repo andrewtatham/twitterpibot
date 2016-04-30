@@ -140,17 +140,7 @@ thanks = [
     "thank u",
 ]
 
-weather_responses = [
-    "Red sky at night, shepherd's delight. Red sky in the morning, shepherd's warning",
-    "When the wind is out of the East, tis never good for man nor beast",
-    "When halo rings Moon or Sun, rain's approaching on the run",
-    "Mackerel sky and mare's tails make tall ships carry low sails",
-    "Rain before seven, fine by eleven",
-    "If crows fly low, winds going to blow; If crows fly high, winds going to die.",
-    "Whether it's cold or whether it's hot; We shall have weather, whether or not!",
-    "No weather is ill, if the wind is still",
-    "Rain, rain go away; come back another day"
-]
+
 
 weekend_past_responses = [
     "It was awesome!",
@@ -233,8 +223,9 @@ levels = {
         "How's tricks?": how_are_you_responses,
         "How ya diddlin'?": how_are_you_responses,
 
-        "How's the weather where you are?": weather_responses,
-        "So what about all this weather we've been having?": weather_responses
+        # todo weather conversation
+        # "How's the weather where you are?": weather_responses,
+        # "So what about all this weather we've been having?": weather_responses
 
     },
     1: {
