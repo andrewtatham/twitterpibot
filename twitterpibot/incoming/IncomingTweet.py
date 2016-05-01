@@ -132,7 +132,8 @@ class IncomingTweet(InboxItem):
 
         logger.info("text:             " + self.text.replace(os.linesep, ' '))
         logger.info("text_stripped:    " + self.text_stripped.replace(os.linesep, ' '))
-        logger.info("english: " + pprint.pformat(self.english))
+        logger.info("common: " + str(self.english["common"]))
+        logger.info("uncommon: " + str(self.english["uncommon"]))
 
         if self.conversation:
             self.conversation.display()

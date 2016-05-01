@@ -1,5 +1,6 @@
 import datetime
 import logging
+import os
 import pprint
 
 logger = logging.getLogger(__name__)
@@ -21,17 +22,19 @@ class Conversation(object):
             else:
                 self._ensure_root_id(inbox_item.in_reply_to_id_str)
                 self.tweet_tree[inbox_item.in_reply_to_id_str] = [inbox_item.id_str]
-            self.tweet_descriptions[inbox_item.id_str] = \
-                "incoming {} @{} replied {}".format(inbox_item.sender.name, inbox_item.sender.screen_name,
-                                                    inbox_item.text)
+            self.tweet_descriptions[inbox_item.id_str] = "incoming {} @{} replied {}".format(
+                inbox_item.sender.name,
+                inbox_item.sender.screen_name,
+                inbox_item.text)
 
         else:
 
             self._ensure_root_id(inbox_item.id_str)
             self.tweet_tree[inbox_item.id_str] = []
-            self.tweet_descriptions[inbox_item.id_str] = \
-                "incoming {} @{} tweeted {}".format(inbox_item.sender.name, inbox_item.sender.screen_name,
-                                                    inbox_item.text)
+            self.tweet_descriptions[inbox_item.id_str] = "incoming {} @{} tweeted {}".format(
+                inbox_item.sender.name,
+                inbox_item.sender.screen_name,
+                inbox_item.text)
         self._updated = datetime.datetime.now()
 
         if self._responses:
@@ -67,13 +70,12 @@ class Conversation(object):
             self._display(self.root_id)
 
     def _display(self, tweet_id, level=0):
-        desc = self.tweet_descriptions.get(tweet_id)
-        line = ">" * level + " " + tweet_id + " " + str(desc)
+        desc = self.tweet_descriptions.get(tweet_id).replace(os.linesep, " ")
+        line = ">" * level + " " + str(desc)
         logger.info(line)
         if tweet_id in self.tweet_tree:
             for child_id in self.tweet_tree[tweet_id]:
                 self._display(child_id, level + 1)
-
 
     def length(self):
         return len(self.tweet_tree)
