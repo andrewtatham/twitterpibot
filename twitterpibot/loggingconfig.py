@@ -36,5 +36,13 @@ console_log.setFormatter(console_formatter)
 root_logger.addHandler(console_log)
 
 
+class MuteFilter(logging.Filter):
+    def filter(self, record):
+        return False  # not record.msg.startswith('Running job')
+
+
+logging.getLogger("apscheduler.scheduler").addFilter(MuteFilter())
+
+
 def init():
     return None
