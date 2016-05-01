@@ -52,9 +52,6 @@ class Streamer(TwythonStreamer):
             response = self._determine_response(inbox_item)
             if response:
                 inbox_item.display()
-            # else:
-            #     inbox_item.display()
-            if response:
                 self._respond(inbox_item=inbox_item, response=response)
 
     def on_error(self, status_code, data):
@@ -92,17 +89,17 @@ class Streamer(TwythonStreamer):
 
     def _determine_response(self, inbox_item):
 
-        if inbox_item:
+        if inbox_item and self.responses:
             conversation = self._identity.conversations.incoming(inbox_item)
+            if conversation:
+                inbox_item.conversation = conversation
 
-            if self.responses:
-                if not conversation or conversation.length() < 20:
-                    for response in self.responses:
-                        if response.condition(inbox_item):
-                            return response
-                else:
-                    logger.warning("conversation limit reached")
-        return None
+            if not conversation or conversation.length() < 20:
+                for response in self.responses:
+                    if response.condition(inbox_item):
+                        return response
+            else:
+                logger.warning("conversation limit reached")
 
     def _respond(self, inbox_item, response):
         self._identity.statistics.increment("Responses")

@@ -59,10 +59,11 @@ class Conversation(object):
         self._updated = datetime.datetime.now()
 
     def display(self):
-        logger.info("conversation {} length {}".format(self.conversation_key, self.length()))
-        logger.info(pprint.pformat(self.tweet_tree))
+
+        logger.debug("conversation {} length {}".format(self.conversation_key, self.length()))
+        logger.debug(pprint.pformat(self.tweet_tree))
         if self.root_id:
-            logger.info("root id = " + str(self.root_id))
+            logger.debug("root id = " + str(self.root_id))
             self._display(self.root_id)
 
     def _display(self, tweet_id, level=0):
@@ -72,6 +73,7 @@ class Conversation(object):
         if tweet_id in self.tweet_tree:
             for child_id in self.tweet_tree[tweet_id]:
                 self._display(child_id, level + 1)
+
 
     def length(self):
         return len(self.tweet_tree)
@@ -142,9 +144,7 @@ class ConversationHelper(object):
                 self._conversations[conversation_key] = Conversation(conversation_key=conversation_key)
             conversation = self._conversations[conversation_key]
             conversation.incoming(inbox_item=inbox_item)
-            if conversation.length() > 1:
-                conversation.display()
-            return self._conversations[conversation_key]
+            return conversation
 
     def outgoing(self, outbox_item):
         conversation_key = self._determine_conversation_key(outbox_item=outbox_item)
@@ -153,9 +153,7 @@ class ConversationHelper(object):
                 self._conversations[conversation_key] = Conversation(conversation_key=conversation_key)
             conversation = self._conversations[conversation_key]
             conversation.outgoing(identity=self._identity, outbox_item=outbox_item)
-            if conversation.length() > 1:
-                self._conversations[conversation_key].display()
-            return self._conversations[conversation_key]
+            return conversation
 
     def housekeep(self):
         limit = datetime.datetime.now() + datetime.timedelta(hours=-1)

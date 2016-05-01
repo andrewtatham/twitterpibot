@@ -134,6 +134,9 @@ class IncomingTweet(InboxItem):
         logger.info("text_stripped:    " + self.text_stripped.replace(os.linesep, ' '))
         logger.info("english: " + pprint.pformat(self.english))
 
+        if self.conversation:
+            self.conversation.display()
+
     def replace_entity(self, indices):
         start = indices[0]
         end = indices[1]
