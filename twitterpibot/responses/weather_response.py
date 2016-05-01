@@ -6,24 +6,28 @@ from twitterpibot.responses.Response import Response, unmentioned_reply_conditio
 
 logger = logging.getLogger(__name__)
 
-weather_screen_names = [
-    bbc_weather_bot.screen_name,
-    # "metoffice",
-    # "bbcweather",
-    # "BBCWthrWatchers"
-
-]
 
 
 class WeatherResponse(Response):
+    def __init__(self, identity):
+        super(WeatherResponse,self).__init__(identity)
+        # todo more weather accounts
+        # "metoffice",
+        # "bbcweather",
+        # "BBCWthrWatchers"
+        self.weather_screen_names = {
+            bbc_weather_bot.screen_name,
+            self.identity.converse_with.screen_name
+        }
+
     def condition(self, inbox_item):
         return (
-                   unmentioned_reply_condition(inbox_item, one_in=4) or
+                   unmentioned_reply_condition(inbox_item) or
                    mentioned_reply_condition(inbox_item)
                    # todo  or is part of tracked conversation
                ) and (
-                   inbox_item.sender and inbox_item.sender.screen_name in weather_screen_names
-                   or weather.is_weather(inbox_item.text)
+                   inbox_item.sender and inbox_item.sender.screen_name in self.weather_screen_names
+                   and weather.is_weather(inbox_item.text)
                )
 
     def respond(self, inbox_item):
