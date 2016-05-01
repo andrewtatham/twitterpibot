@@ -37,19 +37,22 @@ class FollowScheduledTask(ScheduledTask):
         return to_follow
 
     def on_run(self):
+        can_follow = len(self.identity.following) < 5000
 
-        if not self.to_follow:
-            to_follow = set()
-            to_follow.update(self._get_unfollowed_list_members(list_names=["Friends", "Awesome Bots", "Retweet More"]))
-            to_follow.update(self._get_unfollowed_subscribed_list_members())
-            self.to_follow = list(to_follow)
-            logger.info("To follow %s users" % len(self.to_follow))
-            random.shuffle(self.to_follow)
+        if can_follow:
 
-        if self.to_follow:
-            for i in range(random.randint(1, 10)):
-                if self.to_follow:
-                    self._follow(self.to_follow.pop())
+            if not self.to_follow:
+                to_follow = set()
+                to_follow.update(self._get_unfollowed_list_members(list_names=["Friends", "Awesome Bots", "Retweet More"]))
+                to_follow.update(self._get_unfollowed_subscribed_list_members())
+                self.to_follow = list(to_follow)
+                logger.info("To follow %s users" % len(self.to_follow))
+                random.shuffle(self.to_follow)
+
+            if self.to_follow:
+                for i in range(random.randint(1, 10)):
+                    if self.to_follow:
+                        self._follow(self.to_follow.pop())
 
     def _follow(self, user_id):
         logger.info("Following user id %s" % user_id)
