@@ -108,6 +108,7 @@ class IncomingTweet(InboxItem):
             if "media" in entities:
                 self.medias = entities["media"]
                 for media in entities["media"]:
+                    self.has_media = True
                     logger.debug("media: {}".format(media))
 
                     self.replace_entity(media["indices"])

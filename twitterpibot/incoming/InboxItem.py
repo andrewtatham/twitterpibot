@@ -15,6 +15,7 @@ class InboxItem(object):
         self.text = None
         self.text_stripped = None
         self.conversation = None
+        self.has_media = False
 
     def display(self):
         pass
