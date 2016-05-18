@@ -71,6 +71,9 @@ class Identity(object):
     def get_scheduled_jobs(self):
         return [
             TweetEdBallsDayScheduledTask(self),
+            SuggestedUsersScheduledTask(self),
+            ScoreUsersScheduledTask(self),
+            RateLimitsScheduledTask(self)
 
         ]
 
@@ -92,9 +95,6 @@ class BotIdentity(Identity):
             UserListsScheduledTask(self, self.admin_identity),
             SubscribedListsScheduledTask(self, self.admin_identity),
             FollowScheduledTask(self),
-            SuggestedUsersScheduledTask(self),
-            ScoreUsersScheduledTask(self),
-            RateLimitsScheduledTask(self)
 
         ])
         return jobs

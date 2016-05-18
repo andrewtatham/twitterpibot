@@ -70,7 +70,10 @@ class Conversation(object):
             self._display(self.root_id)
 
     def _display(self, tweet_id, level=0):
-        desc = self.tweet_descriptions.get(tweet_id).replace(os.linesep, " ")
+
+        desc = self.tweet_descriptions.get(tweet_id)
+        if desc:
+            desc = desc.replace(os.linesep, " ")
         line = ">" * level + " " + str(desc)
         logger.info(line)
         if tweet_id in self.tweet_tree:
