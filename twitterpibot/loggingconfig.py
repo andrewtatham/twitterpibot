@@ -48,3 +48,4 @@ class MuteFilter(logging.Filter):
 
 def mute_scheduler():
     logging.getLogger("apscheduler.scheduler").addFilter(MuteFilter())
+    logging.getLogger("apscheduler.executors.default").addFilter(MuteFilter())
