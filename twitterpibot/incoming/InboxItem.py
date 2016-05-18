@@ -12,7 +12,6 @@ class InboxItem(object):
         self.is_retweet_of_my_status = False
         self.words = None
         self.in_reply_to_id_str = None
-        self.has_media = False
         self.text = None
         self.text_stripped = None
         self.conversation = None

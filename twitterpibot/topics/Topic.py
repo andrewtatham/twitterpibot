@@ -25,13 +25,15 @@ class Topic(object):
                  retweet=False,
                  reply=False,
                  stream=False,
-                 spam=False
+                 spam=False,
+                 score=0
                  ):
 
         self._retweet = retweet
         self._reply = reply
         self._stream = stream
         self._spam = spam
+        self._score = score
 
         self.definite_rx = _init_regex(definite_regexes)
         self.possible_rx = None
@@ -75,7 +77,8 @@ class Topic(object):
             'retweet': self._retweet,
             'reply': self._reply,
             'stream': self._stream,
-            'spam': self._spam
+            'spam': self._spam,
+            'score': self._score
         }
 
         has_date_range = self._from_date and self._from_month and self._to_date and self._to_month
@@ -123,7 +126,8 @@ class GoodTopic(Topic):
             on_date_range,
             retweet=True,
             reply=True,
-            stream=True)
+            stream=True,
+            score=1)
 
 
 class IgnoreTopic(Topic):
@@ -144,7 +148,8 @@ class IgnoreTopic(Topic):
             on_date_range,
             retweet=False,
             reply=False,
-            stream=False)
+            stream=False,
+            score=-1)
 
 
 class NewsTopic(Topic):
@@ -165,7 +170,8 @@ class NewsTopic(Topic):
             on_date_range,
             retweet=True,
             reply=False,
-            stream=True)
+            stream=True,
+        score=0)
 
 
 class SpamTopic(Topic):
@@ -187,4 +193,5 @@ class SpamTopic(Topic):
             retweet=False,
             reply=False,
             stream=False,
-            spam=True)
+            spam=True,
+            score=-1)

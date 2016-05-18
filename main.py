@@ -1,4 +1,7 @@
 
+from twitterpibot import loggingconfig
+loggingconfig.init()
+
 
 if __name__ == '__main__':
     from twitterpibot.logic import fsh
@@ -15,34 +18,32 @@ if __name__ == "__main__":
     andrewtatham = AndrewTathamIdentity()
     andrewtathampi = AndrewTathamPiIdentity(andrewtatham)
     andrewtathampi2 = AndrewTathamPi2Identity(andrewtatham)
-
-    andrewtatham.followers = [andrewtathampi, andrewtathampi2]
-    andrewtathampi.converse_with = andrewtathampi2
-    andrewtathampi2.converse_with = andrewtathampi
-
     numberwang_host = NumberwangHostIdentity(andrewtatham)
     julienumberwang = JulieNumberwangIdentity(andrewtatham)
     simonnumberwang = SimonNumberwangIdentity(andrewtatham)
+    eggpunbot = EggPunBotIdentity(andrewtatham)
+    whenmensday = WhenIsInternationalMensDayBotIdentity(andrewtatham)
+    botgleartist = BotgleArtistIdentity(andrewtatham)
+    themachinescode = TheMachinesCodeIdentity(andrewtatham)
 
-
+    andrewtatham.buddies = [andrewtathampi, andrewtathampi2]
+    andrewtathampi.converse_with = andrewtathampi2
+    andrewtathampi2.converse_with = andrewtathampi
 
     numberwang_host.contestants = [
         [julienumberwang, simonnumberwang],
         [julienumberwang, simonnumberwang],
         [julienumberwang, simonnumberwang],
+        [julienumberwang, simonnumberwang],
+        [julienumberwang, simonnumberwang],
+        [julienumberwang, simonnumberwang],
+        [julienumberwang, simonnumberwang],
+        [julienumberwang, simonnumberwang],
+        [julienumberwang, simonnumberwang],
         [andrewtatham, julienumberwang],
         [andrewtatham, simonnumberwang],
-        [andrewtatham, andrewtathampi],
-        [andrewtatham, andrewtathampi2],
-        [andrewtathampi, andrewtathampi2]
+        [andrewtathampi, andrewtathampi2],
     ]
-
-    eggpunbot = EggPunBotIdentity(andrewtatham)
-    whenmensday = WhenIsInternationalMensDayBotIdentity(andrewtatham)
-    botgleartist = BotgleArtistIdentity(andrewtatham)
-
-    themachinescode = TheMachinesCodeIdentity(andrewtatham)
-
 
     import twitterpibot.hardware.myhardware
     if twitterpibot.hardware.myhardware.is_raspberry_pi_2:
@@ -60,7 +61,7 @@ if __name__ == "__main__":
         ]
     else:
         all_identities = [
-            andrewtatham,
+            # andrewtatham,
             andrewtathampi,
             andrewtathampi2,
             # numberwang_host,
@@ -69,7 +70,7 @@ if __name__ == "__main__":
             # eggpunbot,
             # whenmensday,
             # botgleartist,
-            themachinescode
+            # themachinescode
         ]
     import twitterpibot.bootstrap
     twitterpibot.bootstrap.run(all_identities)

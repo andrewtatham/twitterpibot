@@ -1,3 +1,4 @@
+import os
 import pprint
 import re
 
@@ -86,5 +87,38 @@ def get_common_words():
     return words
 
 
+def get_yep_reviews():
+    reviews = []
+    yep_eating_out = "http://www.yorkshireeveningpost.co.uk/lifestyle/eating-out"
+    webpage = six.moves.urllib.request.urlopen(yep_eating_out)
+    soup = BeautifulSoup(webpage, 'html.parser')
+    for article in soup.find_all('article'):
+        for h3 in article.find_all("h3"):
+            title = h3.get_text().strip()
+            if "review" in title.lower():
+                print(title)
+                link = article.find("a")
+
+                review = BeautifulSoup(six.moves.urllib.request.urlopen(link["href"]), 'html.parser')
+                review_article = review.find("article")
+                review_text = ""
+                for p in review_article.find_all("p"):
+                    p_text = p.get_text().strip()
+                    review_text += p_text + " "
+                reviews.append(title + " " + review_text)
+
+    return reviews
+
+
 if __name__ == "__main__":
-    pprint.pprint(get_emojis())
+    reviews = get_yep_reviews()
+    from twitterpibot.logic import markovhelper
+    from twitterpibot.movies import moviehelper
+
+    markov = markovhelper.get(" ".join(reviews))
+
+    markov.train(" ".join(reviews))
+    markov.train(" ".join(moviehelper.get_lines("matrix")))
+    markov.train(" ".join(get_malcolm_tucker_quotes()))
+    for _ in range(100):
+        print(markov.speak())

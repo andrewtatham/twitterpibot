@@ -42,6 +42,8 @@ class IncomingTweet(InboxItem):
         self.retweeted = bool(data.get("retweeted"))
         self.in_reply_to_id_str = data.get("in_reply_to_status_id_str")
         self.mentions = []
+        self.urls = []
+        self.medias = []
         self.text_stripped = ""
         self._text(data, identity)
 
@@ -98,12 +100,13 @@ class IncomingTweet(InboxItem):
                     logger.debug("hashtag: {}".format(hashtag))
                     # self.replace_entity(hashtag["indices"])
             if "urls" in entities:
+                self.urls = entities["urls"]
                 for url in entities["urls"]:
                     logger.debug("url: {}".format(url))
                     self.replace_entity(url["indices"])
 
             if "media" in entities:
-                self.has_media = True
+                self.medias = entities["media"]
                 for media in entities["media"]:
                     logger.debug("media: {}".format(media))
 
@@ -118,7 +121,7 @@ class IncomingTweet(InboxItem):
 
         text += self.sender.short_description()
 
-        text += self.text.replace(os.linesep, ' ')
+        text += " " + self.text.replace(os.linesep, ' ')
 
         if self.to_me:
             colour += Style.BRIGHT
@@ -130,13 +133,25 @@ class IncomingTweet(InboxItem):
         logger.info("=" * 80)
         logger.info(colour + text)
 
-        logger.info("text:             " + self.text.replace(os.linesep, ' '))
-        logger.info("text_stripped:    " + self.text_stripped.replace(os.linesep, ' '))
-        logger.info("common: " + str(self.english["common"]))
-        logger.info("uncommon: " + str(self.english["uncommon"]))
+        logger.info("         text: " + self.text.replace(os.linesep, ' '))
+        logger.info("text_stripped: " + self.text_stripped.replace(os.linesep, ' '))
+        logger.info("       common: " + str(self.english["common"]))
+        logger.info("     uncommon: " + str(self.english["uncommon"]))
 
         if self.conversation:
             self.conversation.display()
+
+    def description(self):
+        text = ""
+        text += "text: " + self.text.replace(os.linesep, ' ')
+        if self.medias:
+            for media in self.medias:
+                text += os.linesep + "medis: " + media["type"] + " " + media["expanded_url"]
+        if self.urls:
+            for url in self.urls:
+                text += os.linesep + "url: " + url["expanded_url"]
+
+        return text
 
     def replace_entity(self, indices):
         start = indices[0]

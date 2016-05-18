@@ -20,11 +20,11 @@ class Lists(object):
         self._sets = {}
         self._list_ids = {}
 
-        self.update_lists()
+
 
     def update_lists(self):
 
-        logger.info("[%s] Getting lists" % self._identity.screen_name)
+        logger.info("[%s] Getting lists " % self._identity.screen_name)
         twitter_lists = self._identity.twitter.show_owned_lists()
         twitter_lists_names_set = set(map(lambda tl: tl["name"], twitter_lists))
         any_new_lists_created = False
@@ -55,15 +55,13 @@ class Lists(object):
         self._identity.twitter.add_user_to_list(list_id, user_id, screen_name)
         self._sets[list_name].add(user_id)
 
-    def update_user(self, user):
+    def update_user_list_memberships(self, user):
         if not self._sets or not self._list_ids:
             self.update_lists()
 
-        user.is_arsehole = "Arseholes" in self._sets and user.id_str in self._sets.get("Arseholes")
-        user.is_reply_less = "Reply Less" in self._sets and user.id_str in self._sets.get("Reply Less")
-        user.is_do_not_retweet = "Dont Retweet" in self._sets and user.id_str in self._sets.get("Dont Retweet")
-        user.is_retweet_more = "Retweet More" in self._sets and user.id_str in self._sets.get("Retweet More")
-        user.is_awesome_bot = "Awesome Bots" in self._sets and user.id_str in self._sets.get("Awesome Bots")
-        user.is_friend = "Friends" in self._sets and user.id_str in self._sets.get("Friends")
+        list_memberships = set()
+        for list_name in self._sets:
+            if user.id_str in self._sets[list_name]:
+                list_memberships.add(list_name)
 
-        user.updated = datetime.datetime.utcnow()
+        user.update_list_memberships(list_memberships)

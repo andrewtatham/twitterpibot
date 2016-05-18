@@ -29,6 +29,24 @@ retry_args = dict(
 )
 
 
+class RateLimits(object):
+    def __init__(self, data):
+        self._data = data
+
+    def can(self, key):
+        parts = key.split("/")
+        resource = parts[1]
+        remaining = self._data["resources"][resource][key]["remaining"]
+        if remaining > 0:
+            remaining -= 1
+            logger.debug("{} remaining calls {}".format(key, remaining))
+            self._data["resources"][resource][key]["remaining"] = remaining
+            return True
+        else:
+            logger.warning("Rate limit exceeded for {}".format(key))
+            return False
+
+
 class TwitterHelper(object):
     def __init__(self, identity):
         self.identity = identity
@@ -52,6 +70,9 @@ class TwitterHelper(object):
         logger.debug(me)
         self.identity.id_str = me["id_str"]
         self.identity.profile_image_url = me["profile_image_url"]
+
+        self.rates = None
+        self.update_rate_limits()
 
     @retry(**retry_args)
     def send(self, outbox_item):
@@ -254,7 +275,10 @@ class TwitterHelper(object):
 
     @retry(**retry_args)
     def get_user_timeline(self, **kwargs):
-        return self.twitter.get_user_timeline(**kwargs)
+        if self.rates.can("/statuses/user_timeline"):
+            return self.twitter.get_user_timeline(**kwargs)
+        else:
+            return None
 
     def unblock_user(self, user):
         self.twitter.destroy_block(user_id=user.id, screen_name=user.screen_name)
@@ -428,14 +452,45 @@ class TwitterHelper(object):
     def lookup_status(self, **kwargs):
         return self.twitter.lookup_status(**kwargs)
 
+    @retry(**retry_args)
+    def get_followers(self, **kwargs):
+        kwargs["stringify_ids"] = True
+        followers = set()
+        cursor = -1
+        while cursor != "0":
+            kwargs["cursor"] = cursor
+            response = self.twitter.get_followers_ids(**kwargs)
+            cursor = response["next_cursor_str"]
+            followers = followers.union(set(response["ids"]))
+
+        return followers
+
+    @retry(**retry_args)
+    def get_following(self, **kwargs):
+        kwargs["stringify_ids"] = True
+        following = set()
+        cursor = -1
+        while cursor != "0":
+            kwargs["cursor"] = cursor
+            response = self.twitter.get_friends_ids(**kwargs)
+            cursor = response["next_cursor_str"]
+            following = following.union(set(response["ids"]))
+        return following
+
+    @retry(**retry_args)
+    def update_rate_limits(self):
+        data = self.twitter.get_application_rate_limit_status()
+        self.rates = RateLimits(data)
+
 
 if __name__ == "__main__":
     import identities
 
-    identity = identities.AndrewTathamPiIdentity()
+    identity = identities.AndrewTathamIdentity()
     twitter = TwitterHelper(identity)
-    pprint.pprint(twitter.twitter_configuration)
+    # pprint.pprint(twitter.twitter_configuration)
 
+    twitter.get_following()
 
     # slugs = twitter.get_user_suggestions()
     # pprint.pprint(slugs)

@@ -13,7 +13,7 @@ if not myhardware.is_andrew_desktop:
 # import textblob.download_corpora
 #
 # textblob.download_corpora.download_lite()
-loggingconfig.init()
+
 
 __author__ = 'andrewtatham'
 
@@ -35,6 +35,7 @@ def run(identities):
     tasks.start()
     logger.info("Starting schedule")
     schedule.start()
+    loggingconfig.mute_scheduler()
 
     logger.info(obviousness + " Starting UI " + obviousness)
     webserver.app.run(debug=False, host='0.0.0.0')

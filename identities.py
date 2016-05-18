@@ -16,7 +16,7 @@ class AndrewTathamIdentity(Identity):
         super(AndrewTathamIdentity, self).__init__(
             screen_name="andrewtatham",
             id_str="19201332")
-        self.followers = None
+        self.buddies = None
 
 
 class AndrewTathamPiIdentity(PiIdentity):

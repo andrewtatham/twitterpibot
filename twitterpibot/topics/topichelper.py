@@ -1,4 +1,5 @@
 import logging
+import pprint
 
 from twitterpibot.topics import Daily, Monthly, Annual, Politics, Sport, Entertainment, Celebrity, News, \
     Technology, Regional, Spam, Competitions
@@ -60,8 +61,11 @@ class Topics(object):
         bools = map(lambda t: bool(t['spam']), self._topics_list)
         return reduce(lambda t1, t2: t1 or t2, bools)
 
-    def __str__(self):
-        return str(self._topics_list)
+    def display(self):
+        return pprint.pformat(self._topics_list)
+
+    def list(self):
+        return self._topics_list
 
 
 def get_topics(text):

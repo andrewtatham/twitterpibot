@@ -43,7 +43,8 @@ class FollowScheduledTask(ScheduledTask):
 
             if not self.to_follow:
                 to_follow = set()
-                to_follow.update(self._get_unfollowed_list_members(list_names=["Friends", "Awesome Bots", "Retweet More"]))
+                to_follow.update(
+                    self._get_unfollowed_list_members(list_names=["Friends", "Awesome Bots", "Retweet More"]))
                 to_follow.update(self._get_unfollowed_subscribed_list_members())
                 self.to_follow = list(to_follow)
                 logger.info("To follow %s users" % len(self.to_follow))
@@ -59,3 +60,36 @@ class FollowScheduledTask(ScheduledTask):
         self.identity.twitter.follow(user_id=user_id)
         self.identity.following.add(user_id)
         time.sleep(random.randint(1, 3))
+
+
+
+
+class ScoreUsersScheduledTask(ScheduledTask):
+    def __init__(self, identity):
+        super(ScoreUsersScheduledTask, self).__init__(identity)
+        self._all_user_ids = []
+
+    def get_trigger(self):
+        return IntervalTrigger(hours=random.randint(1, 2), minutes=random.randint(0, 59))
+
+    def on_run(self):
+        if not self._all_user_ids:
+            all_user_ids = set()
+            all_user_ids.update(self.identity.users.get_following())
+            all_user_ids.update(self.identity.users.get_followers())
+            all_user_ids = list(all_user_ids)
+            random.shuffle(all_user_ids)
+            self._all_user_ids = all_user_ids
+
+        if self._all_user_ids:
+            batch = []
+            for _ in range(100):
+                batch.append(self._all_user_ids.pop())
+            # get user data, so users who dont tweet are cached
+            self.identity.users.get_users(batch)
+
+        no_of_scores = self.identity.users.score_users(100)
+        if no_of_scores > 10:
+            self.identity.users.get_leaderboard(10)
+
+
