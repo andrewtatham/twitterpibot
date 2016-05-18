@@ -40,17 +40,17 @@ def get_identities_dto(identity):
 
 def get_identity_dto(identity):
     dto = get_identities_dto(identity)
-    if identity.following:
-        dto["following"] = [{"follower_id": f} for f in identity.following]
-    if identity.lists:
+    if identity.users.following:
+        dto["following"] = [{"follower_id": f} for f in identity.users.following]
+    if identity.users.lists:
         dto["lists"] = [
             {
                 "list_name": l,
                 "members": [
                     {
                         "list_member_id": list_member_id
-                    } for list_member_id in identity.lists._sets[l]]
-            } for l in identity.lists._sets]
+                    } for list_member_id in identity.users.lists._sets[l]]
+            } for l in identity.users.lists._sets]
     if identity.users:
         dto["users"] = [get_user_dto(user)
                         for user_id, user in identity.users._users.items()]
@@ -84,8 +84,8 @@ def get_actions():
 def get_following():
     dto = []
     for identity in twitterpibot.bootstrap.all_identities:
-        if identity.following:
-            for following in identity.following:
+        if identity.users.following:
+            for following in identity.users.following:
                 dto.append((identity.id_str, following))
 
     return dto
@@ -109,7 +109,7 @@ def get_following_graph():
 
         # add edges between identities
         for identity2 in twitterpibot.bootstrap.all_identities:
-            if identity2.id_str in identity.following:
+            if identity2.id_str in identity.users.following:
                 edge_data = {"length": random.randint(50, 70)}
                 edges[identity.id_str][identity2.id_str] = edge_data
 
@@ -134,7 +134,7 @@ def get_following_graph():
 
             # add following edges
             for identity in twitterpibot.bootstrap.all_identities:
-                if user.id_str in identity.following:
+                if user.id_str in identity.users.following:
                     edge_data = {"length": random.randint(20, 40)}
                     edges[identity.id_str][user.id_str] = edge_data
 

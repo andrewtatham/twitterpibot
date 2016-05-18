@@ -21,7 +21,7 @@ class UserListsScheduledTask(ScheduledTask):
         self.synchronize_lists()
 
     def synchronize_lists(self):
-        self.identity.lists.update_lists()
+        self.identity.users.lists.update_lists()
 
         if self._master_identity:
             self._synchronize([self.identity, self._master_identity])
@@ -33,14 +33,14 @@ class UserListsScheduledTask(ScheduledTask):
 
             master_list = set()
             for identity in identities:
-                master_list.update(identity.lists._sets[user_list])
+                master_list.update(identity.users.lists._sets[user_list])
 
             for identity in identities:
                 self._add_missing_users(identity, user_list, master_list)
 
     def _add_missing_users(self, identity, user_list, master_list):
-        missing_users = master_list.difference(identity.lists._sets[user_list])
+        missing_users = master_list.difference(identity.users.lists._sets[user_list])
         if missing_users:
             for missing_user in missing_users:
                 logger.info("adding " + missing_user + " to " + identity.screen_name + " " + user_list)
-                identity.lists.add_user(user_list, user_id=missing_user, screen_name=None)
+                identity.users.lists.add_user(user_list, user_id=missing_user, screen_name=None)

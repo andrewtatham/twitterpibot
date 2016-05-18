@@ -174,7 +174,14 @@ class User(object):
 
     def _get_topic_text(self):
         topic_text = ""
-        topic_text += self.name + " " + self.screen_name + " " + self.description + os.linesep
+        if self.name:
+            topic_text += self.name
+        if self.screen_name:
+            topic_text += " " + self.screen_name
+        if self.description:
+            topic_text += " " + self.description
+
+        topic_text += os.linesep
         tweets = self._get_latest_tweets()
         if tweets:
             tweets_text = map(lambda t: " " + t.text, tweets)
