@@ -37,7 +37,7 @@ class FollowScheduledTask(ScheduledTask):
         return to_follow
 
     def on_run(self):
-        can_follow = len(self.identity.users.following) < 5000
+        can_follow = len(self.identity.users._followers) < 4500
 
         if can_follow:
 
