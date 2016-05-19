@@ -1,9 +1,7 @@
-import logging
-
 import datetime
+import logging
 import random
 
-from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.users import lists
 from twitterpibot.users.user import User
 

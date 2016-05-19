@@ -1,6 +1,3 @@
-from twitterpibot.topics.Topic import IgnoreTopic
-
-
 # class RetweetForXFavouriteForY(IgnoreTopic):
 #     def __init__(self):
 #         super(RetweetForXFavouriteForY, self).__init__([

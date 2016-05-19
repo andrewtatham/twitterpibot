@@ -1,4 +1,9 @@
-from twitterpibot.topics.Topic import IgnoreTopic, SpamTopic
+from twitterpibot.topics.Topic import IgnoreTopic, SpamTopic, GoodTopic
+
+
+class Lego(GoodTopic):
+    def __init__(self):
+        super(Lego, self).__init__({"Lego"})
 
 
 class DecsAndLondon(SpamTopic):
@@ -32,6 +37,8 @@ class OtherCorporate(IgnoreTopic):
 
 def get():
     return [
+        Lego(),
+
         Starbucks(),
         DecsAndLondon(),
         Nutribullet(),

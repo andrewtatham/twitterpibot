@@ -32,7 +32,7 @@ class SmutSpamGeneral(SpamTopic):
 class BizSpam(SpamTopic):
     def __init__(self):
         super(BizSpam, self).__init__(
-            ["Buy followers"]
+            ["Buy followers","therealstrategy"]
         )
 
 #

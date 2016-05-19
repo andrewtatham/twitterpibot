@@ -1,15 +1,13 @@
 import html
+import logging
 import os
-import pprint
+from itertools import cycle
+
+from colorama import Fore, Style
 
 from twitterpibot.incoming.InboxItem import InboxItem
 from twitterpibot.logic import english, location
 from twitterpibot.topics import topichelper
-
-from itertools import cycle
-from colorama import Fore, Style
-
-import logging
 
 logger = logging.getLogger(__name__)
 

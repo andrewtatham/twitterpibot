@@ -2,7 +2,8 @@ import time
 import random
 import itertools
 
-from PyGlow import PyGlow
+# noinspection PyUnresolvedReferences
+import PyGlow
 
 
 def _get_led(arm, colour):

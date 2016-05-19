@@ -1,18 +1,16 @@
 import logging
 import os
-import pprint
 import random
 import time
 
-from twython import Twython, TwythonError
-
 from retrying import retry
+from twython import Twython, TwythonError
 
 from twitterpibot.exceptionmanager import is_timeout
 from twitterpibot.logic import fsh, giphyhelper
-from twitterpibot.twitter import authorisationhelper, tweet_splitter
-from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
+from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
+from twitterpibot.twitter import authorisationhelper, tweet_splitter
 from twitterpibot.twitter.streamer import Streamer
 
 logger = logging.getLogger(__name__)

@@ -40,7 +40,7 @@ from twitterpibot.schedule.common.UserListsScheduledTask import UserListsSchedul
 from twitterpibot.schedule.common.ratelimitsscheduledtask import RateLimitsScheduledTask
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
 from twitterpibot.twitter import twitterhelper
-from twitterpibot.users import users, lists
+from twitterpibot.users import users
 
 __author__ = 'andrewtatham'
 

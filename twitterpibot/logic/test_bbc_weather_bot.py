@@ -1,11 +1,12 @@
 from unittest import TestCase
 
-from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
+from twitterpibot.logic import bbc_weather_bot
+
 
 __author__ = 'andrewtatham'
 
 
-class TestWeatherScheduledTask(TestCase):
+class TestBBCWeatherBot(TestCase):
     def test_parse(self):
         fail_tweets = [
             "@Tmckinnin Sorry, we're not sure where you mean. Try using a postcode or including the county. Weather homepage: https://t.co/KCtAKSzXgW",
@@ -218,8 +219,8 @@ class TestWeatherScheduledTask(TestCase):
         ]
         for tweet in tweets:
             with self.subTest(tweet=tweet):
-                self.assertTrue(WeatherScheduledTask.parse(tweet))
+                self.assertTrue(bbc_weather_bot._parse(tweet))
 
         for tweet in fail_tweets:
             with self.subTest(tweet=tweet):
-                self.assertFalse(WeatherScheduledTask.parse(tweet))
+                self.assertFalse(bbc_weather_bot._parse(tweet))

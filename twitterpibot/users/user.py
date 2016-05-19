@@ -1,15 +1,11 @@
 import datetime
-import logging
 import os
-import pprint
 import random
-
 import re
 
 import dateutil.parser
 import humanize
 
-from twitterpibot import topics
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.topics import topichelper
 

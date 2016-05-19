@@ -20,10 +20,10 @@ class FollowScheduledTask(ScheduledTask):
     def _get_unfollowed_list_members(self, list_names):
         to_follow = set()
         for list_name in list_names:
-            if list_name in self.identity.users.lists._sets:
-                list_members = self.identity.users.lists._sets[list_name]
-                if list_members and self.identity.users.following:
-                    to_follow.update(list_members.difference(self.identity.users.following))
+            if list_name in self.identity.users._lists._sets:
+                list_members = self.identity.users._lists._sets[list_name]
+                if list_members and self.identity.users._following:
+                    to_follow.update(list_members.difference(self.identity.users._following))
         return to_follow
 
     def _get_unfollowed_subscribed_list_members(self):
@@ -32,8 +32,8 @@ class FollowScheduledTask(ScheduledTask):
         for subscribed_list in subscriptions["lists"]:
             subscribed_list_members = self.identity.twitter.get_list_members(list_id=subscribed_list["id_str"])
             ids = set(map(lambda usr: usr["id_str"], subscribed_list_members["users"]))
-            if ids and self.identity.users.following:
-                to_follow.update(ids.difference(self.identity.users.following))
+            if ids and self.identity.users._following:
+                to_follow.update(ids.difference(self.identity.users._following))
         return to_follow
 
     def on_run(self):
@@ -58,7 +58,7 @@ class FollowScheduledTask(ScheduledTask):
     def _follow(self, user_id):
         logger.info("Following user id %s" % user_id)
         self.identity.twitter.follow(user_id=user_id)
-        self.identity.users.following.add(user_id)
+        self.identity.users._following.add(user_id)
         time.sleep(random.randint(1, 3))
 
 

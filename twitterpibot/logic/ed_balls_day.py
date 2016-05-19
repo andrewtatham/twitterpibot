@@ -11,7 +11,7 @@ from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
 the_big_bang = "https://twitter.com/edballs/status/63623585020915713"
-days_before = set([1, 2, 3, 7, 14, 21, 25, 50, 100, 150, 200, 250, 300, 350, 364])
+days_before = {1, 2, 3, 7, 14, 21, 25, 50, 100, 150, 200, 250, 300, 350, 364}
 
 
 class TweetBeforeEdBallsDayScheduledTask(ScheduledTask):

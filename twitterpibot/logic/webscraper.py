@@ -1,9 +1,6 @@
-import os
-import pprint
 import re
 
 import six
-
 from bs4 import BeautifulSoup
 
 
