@@ -45,6 +45,7 @@ class User(object):
         self.id_str = data.get("id_str")
         self.name = data.get("name")
         self.screen_name = data.get("screen_name")
+        self.profile_url = "https://twitter.com/" + self.screen_name
         self.description = data.get("description")
         self.url = data.get("url")
         self.profile_image_url = data.get("profile_image_url")
@@ -134,7 +135,7 @@ class User(object):
 
     def long_description(self):
 
-        text = self.short_description() + " https://twitter.com/" + self.screen_name
+        text = self.short_description() + " " + self.profile_url
         if self.description:
             text += os.linesep + "description: " + self.description.replace(os.linesep, " ")
         if self.location:

@@ -1,6 +1,49 @@
 <h2>Identities</h2>
-<ul>
-    <li ng-repeat="identity in identities">
-        <a href="[[identity.url]]">[[identity.screen_name]]</a>
-    </li>
-</ul>
+<div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" ng-repeat="identity in identities">
+            <a href="#[[identity.screen_name]]" aria-controls="[[identity.screen_name]]" role="tab" data-toggle="tab">
+                <span><img src="[[identity.profile_image_url]]">[[identity.screen_name]]</span>
+            </a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div ng-repeat="identity in identities" role="tabpanel" class="tab-pane" id="[[identity.screen_name]]">
+            <div>
+                <img src="[[identity.profile_image_url]]">
+
+                <a href="[[identity.url]]">[[identity.screen_name]]</a>
+
+                <div>
+                    <h4>Users:</h4>
+                    <table class="table">
+                        <tr ng-repeat="user in identity.users">
+                            <td>
+                                <div style="position:relative;">
+                                    <img class="user_banner" src="[[user.profile_banner_url]]">
+                                    <img src="[[user.profile_image_url]]">
+                                    [[user.name]] <a href="[[user.profile_url]]">@[[user.screen_name]]</a>
+                                    [[user.flags]]
+                                </div>
+                                <div>[[user.location]]</div>
+                                <div>[[user.description]]</div>
+                                <div><a href="[[user.url]]">[[user.url]]</a></div>
+                            </td>
+                            <td>[[user.latest_tweets]]</td>
+                            <td>[[user.score]]</td>
+                        </tr>
+                    </table>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+

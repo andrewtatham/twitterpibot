@@ -1,6 +1,9 @@
+import pprint
 from itertools import groupby
 from operator import attrgetter
 import random
+
+from flask import url_for
 
 import twitterpibot
 import twitterpibot.bootstrap
@@ -9,17 +12,30 @@ from twitterpibot.data_access import dal
 __author__ = 'andrewtatham'
 
 
+def get_tweet_dto(tweet):
+    tweet_dto = {
+        "text": tweet.text
+    }
+    return tweet_dto
+
+
 def get_user_dto(user):
-    return {
-        "user_id": user.id,
+    user_dto = {
+        "user_id": user.id_str,
         "name": user.name,
         "screen_name": user.screen_name,
         "description": user.description,
+        "flags": user.flags,
         "url": user.url,
         "profile_image_url": user.profile_image_url,
-        "profile_banner_url": user.profile_banner_url
+        "profile_banner_url": user.profile_banner_url,
+        "location": user.location,
+        "profile_url": user.profile_url,
+        "score": user._user_score,
+        "latest_tweets": list(map(get_tweet_dto, user._latest_tweets))
 
     }
+    return user_dto
 
 
 def get_action_dto(label, url):
@@ -29,28 +45,24 @@ def get_action_dto(label, url):
     }
 
 
-def get_identities_dto(identity):
+def get_identity_dto(identity):
     dto = {
         "screen_name": identity.screen_name,
         "id_str": identity.id_str,
-        "url": "identity/" + identity.screen_name
+        "url": "identity/" + identity.screen_name,
+        "profile_image_url": identity.profile_image_url
     }
-    return dto
-
-
-def get_identity_dto(identity):
-    dto = get_identities_dto(identity)
-    if identity.users._following:
-        dto["following"] = [{"follower_id": f} for f in identity.users._following]
-    if identity.users._lists:
-        dto["lists"] = [
-            {
-                "list_name": l,
-                "members": [
-                    {
-                        "list_member_id": list_member_id
-                    } for list_member_id in identity.users._lists._sets[l]]
-            } for l in identity.users._lists._sets]
+    # if identity.users._following:
+    #     dto["following"] = [{"follower_id": f} for f in identity.users._following]
+    # if identity.users._lists:
+    #     dto["lists"] = [
+    #         {
+    #             "list_name": l,
+    #             "members": [
+    #                 {
+    #                     "list_member_id": list_member_id
+    #                 } for list_member_id in identity.users._lists._sets[l]]
+    #         } for l in identity.users._lists._sets]
     if identity.users:
         dto["users"] = [get_user_dto(user)
                         for user_id, user in identity.users._users.items()]
@@ -58,7 +70,7 @@ def get_identity_dto(identity):
 
 
 def get_identities():
-    return [get_identities_dto(i) for i in twitterpibot.bootstrap.all_identities]
+    return [get_identity_dto(i) for i in twitterpibot.bootstrap.all_identities]
 
 
 def get_identity(screen_name=None):
@@ -112,7 +124,6 @@ def get_following_graph():
             if identity2.id_str in identity.users._following:
                 edge_data = {"length": random.randint(50, 70)}
                 edges[identity.id_str][identity2.id_str] = edge_data
-
 
     # get a list of users to add
     users_list = []
@@ -206,7 +217,7 @@ def get_exceptions_chart_data():
 
         exceptions_list.sort(key=hour_grouper)
         for date_key, date_group in groupby(exceptions_list, hour_grouper):
-            print(date_key)
+
             row = list(date_key)
 
             date_group_list = list(date_group)
@@ -216,7 +227,6 @@ def get_exceptions_chart_data():
                 "Excepton": 0
             }
             for type_key, type_group in groupby(date_group_list, ex_type_grouper):
-                print(type_key)
                 d[type_key] = len(list(type_group))
             row.append(d["Excepton"])
             row.append(d["Warning"])
@@ -225,4 +235,6 @@ def get_exceptions_chart_data():
 
 
 if __name__ == '__main__':
-    print(get_exceptions_chart_data())
+    pprint.pprint(get_exceptions())
+    pprint.pprint(get_exception_summary())
+    pprint.pprint(get_exceptions_chart_data())

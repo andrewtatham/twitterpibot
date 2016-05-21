@@ -99,4 +99,5 @@ def _shutdown_server():
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
+    app.config['SERVER_NAME'] = "localhost:5000"
     app.run(debug=True, host='0.0.0.0')
