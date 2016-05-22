@@ -1,0 +1,21 @@
+<h4>Identity:</h4>
+<div style="position:relative;">
+    <img class="user_banner" src="[[identity.profile_banner_url]]">
+    <img src="[[identity.profile_image_url]]">
+    [[identity.name]] <a href="[[identity.profile_url]]" target="_blank">@[[identity.screen_name]]</a>
+</div>
+<div>[[identity.location]]</div>
+<div>[[identity.description]]</div>
+<div><a href="[[identity.url]]" target="_blank">[[identity.url]]</a></div>
+<div>
+    following_count: [[identity.following_count]]
+    followers_count: [[identity.followers_count]]
+    statuses_count: [[identity.statuses_count]]
+    favourites_count: [[identity.favourites_count]]
+</div>
+
+<div>
+    {% include "identity_users.html" %}
+</div>
+
+

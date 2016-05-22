@@ -273,7 +273,11 @@ class TwitterHelper(object):
     @retry(**retry_args)
     def get_user_timeline(self, **kwargs):
         if self.rates.can("/statuses/user_timeline"):
-            return self.twitter.get_user_timeline(**kwargs)
+            try:
+                return self.twitter.get_user_timeline(**kwargs)
+            except Exception as ex:
+                logger.warning(ex)
+                return None
         else:
             return None
 
@@ -299,9 +303,24 @@ class TwitterHelper(object):
         return self.twitter.create_list(name=name, mode=mode)
 
     @retry(**retry_args)
-    def follow(self, screen_name=None, user_id=None):
+    def follow(self, user_id=None):
         self.identity.statistics.increment("Follows")
-        return self.twitter.create_friendship(screen_name=screen_name, user_id=user_id)
+        return self.twitter.create_friendship(user_id=user_id)
+
+    @retry(**retry_args)
+    def unfollow(self, user_id=None):
+        self.identity.statistics.increment("Unfollows")
+        return self.twitter.destroy_friendship(user_id=user_id)
+
+    @retry(**retry_args)
+    def block(self, user_id=None):
+        self.identity.statistics.increment("Blocks")
+        return self.twitter.create_block(user_id=user_id)
+
+    @retry(**retry_args)
+    def report(self, user_id=None):
+        self.identity.statistics.increment("Reports")
+        return self.twitter.report_spam(user_id=user_id)
 
     @retry(**retry_args)
     def lookup_user(self, user_id):

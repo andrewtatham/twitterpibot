@@ -7,11 +7,18 @@ from twitterpibot.data_access import dal
 
 __author__ = 'andrewtatham'
 
-identities = []
+_identities_list = []
+_identities_dic = {}
+
+
+def set_identities(identities):
+    global _identities_list
+    global _identities_dic
+    _identities_list = identities
+    _identities_dic = dict(map(lambda i: (i.id_str, i), identities))
 
 
 def get_tweet_dto(tweet):
-
     tweet_dto = {
         "text": tweet.text
     }
@@ -84,11 +91,11 @@ def get_identity_dto(identity):
 
 
 def get_identities():
-    return [get_identity_dto(i) for i in identities]
+    return [get_identity_dto(i) for i in _identities_list]
 
 
 def get_identity(screen_name=None):
-    return [get_identity_dto(i) for i in identities
+    return [get_identity_dto(i) for i in _identities_list
             if screen_name == i.screen_name][0]
 
 
@@ -109,7 +116,7 @@ def get_actions():
 
 def get_following():
     dto = []
-    for identity in identities:
+    for identity in _identities_list:
         if identity.users._following:
             for following in identity.users._following:
                 dto.append((identity.id_str, following))
@@ -122,7 +129,7 @@ def get_following_graph():
     edges = {}
     identity_ids = set()
     # add identity nodes
-    for identity in identities:
+    for identity in _identities_list:
         identity_ids.add(identity.id_str)
         nodes[identity.id_str] = \
             {
@@ -134,14 +141,14 @@ def get_following_graph():
         edges[identity.id_str] = {}
 
         # add edges between identities
-        for identity2 in identities:
+        for identity2 in _identities_list:
             if identity2.id_str in identity.users._following:
                 edge_data = {"length": random.randint(50, 70)}
                 edges[identity.id_str][identity2.id_str] = edge_data
 
     # get a list of users to add
     users_list = []
-    for identity in identities:
+    for identity in _identities_list:
         identity_users_list = []
         for k, v in identity.users._users.items():
             identity_users_list.append(v)
@@ -158,7 +165,7 @@ def get_following_graph():
                 }
 
             # add following edges
-            for identity in identities:
+            for identity in _identities_list:
                 if user.id_str in identity.users._following:
                     edge_data = {"length": random.randint(20, 40)}
                     edges[identity.id_str][user.id_str] = edge_data
@@ -252,3 +259,23 @@ if __name__ == '__main__':
     pprint.pprint(get_exceptions())
     pprint.pprint(get_exception_summary())
     pprint.pprint(get_exceptions_chart_data())
+
+
+def follow(identity_id, user_id):
+    if identity_id in _identities_dic:
+        _identities_dic[identity_id].users.follow(user_id)
+
+
+def unfollow(identity_id, user_id):
+    if identity_id in _identities_dic:
+        _identities_dic[identity_id].users.unfollow(user_id)
+
+
+def block(identity_id, user_id):
+    if identity_id in _identities_dic:
+        _identities_dic[identity_id].users.block(user_id)
+
+
+def report(identity_id, user_id):
+    if identity_id in _identities_dic:
+        _identities_dic[identity_id].users.report(user_id)

@@ -8,6 +8,8 @@ from twitterpibot import controller
 logger = logging.getLogger(__name__)
 app = flask.Flask("twitterpibot")
 
+ok = flask.Response(status=200)
+
 
 @app.route('/')
 def index():
@@ -85,6 +87,42 @@ def exceptionsummarys():
     return flask.jsonify(retval)
 
 
+@app.route('/follow', methods=['POST'])
+def follow():
+    logger.info(flask.request.json)
+    identity_id = flask.request.json["identity_id"]
+    user_id = flask.request.json["user_id"]
+    controller.follow(identity_id, user_id)
+    return ok
+
+
+@app.route('/unfollow', methods=['POST'])
+def unfollow():
+    logger.info(flask.request.json)
+    identity_id = flask.request.json["identity_id"]
+    user_id = flask.request.json["user_id"]
+    controller.unfollow(identity_id, user_id)
+    return ok
+
+
+@app.route('/block', methods=['POST'])
+def block():
+    logger.info(flask.request.json)
+    identity_id = flask.request.json["identity_id"]
+    user_id = flask.request.json["user_id"]
+    controller.block(identity_id, user_id)
+    return ok
+
+
+@app.route('/report', methods=['POST'])
+def report():
+    logger.info(flask.request.json)
+    identity_id = flask.request.json["identity_id"]
+    user_id = flask.request.json["user_id"]
+    controller.report(identity_id, user_id)
+    return ok
+
+
 @app.route('/shutdown')
 def shutdown():
     _shutdown_server()
@@ -99,7 +137,6 @@ def _shutdown_server():
 
 
 if __name__ == '__main__':
-
     logging.basicConfig(level=logging.DEBUG)
 
     import identities
@@ -107,10 +144,10 @@ if __name__ == '__main__':
     pi = identities.AndrewTathamPiIdentity()
     pi2 = identities.AndrewTathamPi2Identity()
 
-    pi.users.get_users(random.sample(pi.users.get_followers(),100))
-    pi.users.score_users(20)
+    pi.users.get_users(random.sample(pi.users.get_followers(), 10))
+    pi.users.score_users(5)
 
-    controller.identities = [pi,pi2]
+    controller.set_identities([pi, pi2])
 
     # app.config['SERVER_NAME'] = "localhost:5000"
     app.run(debug=False, host='0.0.0.0')

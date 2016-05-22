@@ -111,6 +111,25 @@ class Users(object):
         for worst_user in worst:
             logger.info(worst_user.long_description())
 
+    def follow(self, user_id):
+        self._identity.twitter.follow(user_id=user_id)
+        self._following.add(user_id)
+
+    def unfollow(self, user_id):
+        self._identity.twitter.unfollow(user_id=user_id)
+        if user_id in self._following:
+            self._following.remove(user_id)
+
+    def block(self, user_id):
+        self._identity.twitter.block(user_id=user_id)
+        if user_id in self._following:
+            self._following.remove(user_id)
+
+    def report(self, user_id):
+        self._identity.twitter.report(user_id=user_id)
+        if user_id in self._following:
+            self._following.remove(user_id)
+
 
 if __name__ == '__main__':
     import identities

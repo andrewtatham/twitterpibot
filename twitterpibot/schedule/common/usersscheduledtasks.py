@@ -57,8 +57,8 @@ class FollowScheduledTask(ScheduledTask):
 
     def _follow(self, user_id):
         logger.info("Following user id %s" % user_id)
-        self.identity.twitter.follow(user_id=user_id)
-        self.identity.users._following.add(user_id)
+        self.identity.users.follow(user_id=user_id)
+
         time.sleep(random.randint(1, 3))
 
 

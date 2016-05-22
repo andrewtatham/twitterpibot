@@ -35,7 +35,7 @@ def run(identities):
     loggingconfig.mute_scheduler()
 
     logger.info(obviousness + " Starting UI " + obviousness)
-    controller.identities = identities
+    controller.set_identities(identities)
     webserver.app.run(debug=False, host='0.0.0.0')
     logger.info(obviousness + " Stopped UI " + obviousness)
 
