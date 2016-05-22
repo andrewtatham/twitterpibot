@@ -62,15 +62,13 @@ class FollowScheduledTask(ScheduledTask):
         time.sleep(random.randint(1, 3))
 
 
-
-
 class ScoreUsersScheduledTask(ScheduledTask):
     def __init__(self, identity):
         super(ScoreUsersScheduledTask, self).__init__(identity)
         self._all_user_ids = []
 
     def get_trigger(self):
-        return IntervalTrigger(hours=random.randint(1, 2), minutes=random.randint(0, 59))
+        return IntervalTrigger(minutes=random.randint(5, 7))
 
     def on_run(self):
         if not self._all_user_ids:
@@ -83,13 +81,11 @@ class ScoreUsersScheduledTask(ScheduledTask):
 
         if self._all_user_ids:
             batch = []
-            for _ in range(100):
+            for _ in range(300):
                 batch.append(self._all_user_ids.pop())
             # get user data, so users who dont tweet are cached
             self.identity.users.get_users(batch)
 
-        no_of_scores = self.identity.users.score_users(100)
+        no_of_scores = self.identity.users.score_users(60)
         if no_of_scores > 10:
             self.identity.users.get_leaderboard(10)
-
-
