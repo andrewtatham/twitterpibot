@@ -258,8 +258,7 @@ if __name__ == '__main__':
 
     identity = identities.AndrewTathamPiIdentity(None)
     user_ids = list(identity.users.get_followers())
-    random.shuffle(user_ids)
-    user_ids = user_ids[:2]
+    random.sample(user_ids, 2)
 
     i = 0
     for user_id in user_ids:

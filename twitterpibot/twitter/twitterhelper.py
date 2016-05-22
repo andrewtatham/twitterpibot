@@ -66,8 +66,7 @@ class TwitterHelper(object):
 
         me = self.twitter.lookup_user(screen_name=self.identity.screen_name)[0]
         logger.debug(me)
-        self.identity.id_str = me["id_str"]
-        self.identity.profile_image_url = me["profile_image_url"]
+        self.identity.update(me)
 
         self.rates = None
         self.update_rate_limits()

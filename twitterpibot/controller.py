@@ -3,16 +3,15 @@ from itertools import groupby
 from operator import attrgetter
 import random
 
-from flask import url_for
-
-import twitterpibot
-import twitterpibot.bootstrap
 from twitterpibot.data_access import dal
 
 __author__ = 'andrewtatham'
 
+identities = []
+
 
 def get_tweet_dto(tweet):
+
     tweet_dto = {
         "text": tweet.text
     }
@@ -31,10 +30,13 @@ def get_user_dto(user):
         "profile_banner_url": user.profile_banner_url,
         "location": user.location,
         "profile_url": user.profile_url,
-        "score": user._user_score,
-        "latest_tweets": list(map(get_tweet_dto, user._latest_tweets))
 
     }
+    if user._latest_tweets:
+        user_dto["latest_tweets"] = list(map(get_tweet_dto, user._latest_tweets))
+    if user._user_score:
+        user_dto["score"] = user._user_score._scores
+
     return user_dto
 
 
@@ -47,10 +49,22 @@ def get_action_dto(label, url):
 
 def get_identity_dto(identity):
     dto = {
-        "screen_name": identity.screen_name,
         "id_str": identity.id_str,
-        "url": "identity/" + identity.screen_name,
-        "profile_image_url": identity.profile_image_url
+        "name": identity.name,
+        "screen_name": identity.screen_name,
+        "description": identity.description,
+        "location": identity.location,
+        "url": identity.url,
+        "profile_url": identity.profile_url,
+        "profile_banner_url": identity.profile_banner_url,
+        "profile_image_url": identity.profile_image_url,
+
+        "action_url": "identity/" + identity.screen_name,
+
+        "following_count": identity.following_count,
+        "followers_count": identity.followers_count,
+        "statuses_count": identity.statuses_count,
+        "favourites_count": identity.favourites_count,
     }
     # if identity.users._following:
     #     dto["following"] = [{"follower_id": f} for f in identity.users._following]
@@ -70,11 +84,11 @@ def get_identity_dto(identity):
 
 
 def get_identities():
-    return [get_identity_dto(i) for i in twitterpibot.bootstrap.all_identities]
+    return [get_identity_dto(i) for i in identities]
 
 
 def get_identity(screen_name=None):
-    return [get_identity_dto(i) for i in twitterpibot.bootstrap.all_identities
+    return [get_identity_dto(i) for i in identities
             if screen_name == i.screen_name][0]
 
 
@@ -95,7 +109,7 @@ def get_actions():
 
 def get_following():
     dto = []
-    for identity in twitterpibot.bootstrap.all_identities:
+    for identity in identities:
         if identity.users._following:
             for following in identity.users._following:
                 dto.append((identity.id_str, following))
@@ -108,7 +122,7 @@ def get_following_graph():
     edges = {}
     identity_ids = set()
     # add identity nodes
-    for identity in twitterpibot.bootstrap.all_identities:
+    for identity in identities:
         identity_ids.add(identity.id_str)
         nodes[identity.id_str] = \
             {
@@ -120,14 +134,14 @@ def get_following_graph():
         edges[identity.id_str] = {}
 
         # add edges between identities
-        for identity2 in twitterpibot.bootstrap.all_identities:
+        for identity2 in identities:
             if identity2.id_str in identity.users._following:
                 edge_data = {"length": random.randint(50, 70)}
                 edges[identity.id_str][identity2.id_str] = edge_data
 
     # get a list of users to add
     users_list = []
-    for identity in twitterpibot.bootstrap.all_identities:
+    for identity in identities:
         identity_users_list = []
         for k, v in identity.users._users.items():
             identity_users_list.append(v)
@@ -144,7 +158,7 @@ def get_following_graph():
                 }
 
             # add following edges
-            for identity in twitterpibot.bootstrap.all_identities:
+            for identity in identities:
                 if user.id_str in identity.users._following:
                     edge_data = {"length": random.randint(20, 40)}
                     edges[identity.id_str][user.id_str] = edge_data

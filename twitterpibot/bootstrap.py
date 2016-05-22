@@ -2,7 +2,7 @@ import logging
 
 import colorama
 
-from twitterpibot import tasks, schedule, webserver, loggingconfig
+from twitterpibot import tasks, schedule, webserver, loggingconfig, controller
 from twitterpibot.hardware import myhardware, myperipherals
 from twitterpibot.schedule import GlobalMonitorScheduledTask
 from twitterpibot.tasks.LightsTask import LightsTask
@@ -18,18 +18,15 @@ if not myhardware.is_andrew_desktop:
 __author__ = 'andrewtatham'
 
 logger = logging.getLogger(__name__)
-all_identities = []
 
 
 def run(identities):
-    global all_identities
-    all_identities = identities
     obviousness = "=" * 5
     logger.info(obviousness + " Starting " + obviousness)
 
     set_tasks(identities)
 
-    set_scheduled_jobs(all_identities)
+    set_scheduled_jobs(identities)
 
     logger.info("Starting tasks")
     tasks.start()
@@ -38,6 +35,7 @@ def run(identities):
     loggingconfig.mute_scheduler()
 
     logger.info(obviousness + " Starting UI " + obviousness)
+    controller.identities = identities
     webserver.app.run(debug=False, host='0.0.0.0')
     logger.info(obviousness + " Stopped UI " + obviousness)
 

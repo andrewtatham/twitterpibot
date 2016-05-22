@@ -11,7 +11,8 @@ class SmutSpamSpecific(SpamTopic):
         super(SmutSpamSpecific, self).__init__(
             [
                 "selenaxxxusaxxx","webcam789",
-                "I can fulfill any wish for you", "show this post and get me for free"
+                "I can fulfill any wish for you", "show this post and get me for free",
+                "Let's chat tonight! Join me!"
             ]
         )
 
@@ -32,7 +33,13 @@ class SmutSpamGeneral(SpamTopic):
 class BizSpam(SpamTopic):
     def __init__(self):
         super(BizSpam, self).__init__(
-            ["Buy followers","therealstrategy"]
+            [
+                "Buy followers","therealstrategy"
+                 "NOW HIRING",
+                "per hour jobs",
+                "Learn more",
+                "Apply now"
+            ]
         )
 
 #

@@ -1,4 +1,5 @@
 import logging
+import random
 
 import flask
 
@@ -98,6 +99,18 @@ def _shutdown_server():
 
 
 if __name__ == '__main__':
+
     logging.basicConfig(level=logging.DEBUG)
-    app.config['SERVER_NAME'] = "localhost:5000"
-    app.run(debug=True, host='0.0.0.0')
+
+    import identities
+
+    pi = identities.AndrewTathamPiIdentity()
+    pi2 = identities.AndrewTathamPi2Identity()
+
+    pi.users.get_users(random.sample(pi.users.get_followers(),100))
+    pi.users.score_users(20)
+
+    controller.identities = [pi,pi2]
+
+    # app.config['SERVER_NAME'] = "localhost:5000"
+    app.run(debug=False, host='0.0.0.0')

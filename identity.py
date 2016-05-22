@@ -47,19 +47,49 @@ __author__ = 'andrewtatham'
 
 class Identity(object):
     def __init__(self, screen_name, id_str):
+        self.id_str = id_str
+        self.screen_name = screen_name
+        self.profile_url = "https://twitter.com/" + self.screen_name
         self.admin_screen_name = "andrewtatham"
         self.colour = colorama.Fore.WHITE
-        self.screen_name = screen_name
-        self.id_str = id_str
         self.tokens = None
         self.streamer = None
+
+        self.name = None
+        self.description = None
+        self.location = None
+        self.profile_banner_url = None
         self.profile_image_url = None
+        self.url = None
+
+        self.following_count = None
+        self.followers_count = None
+        self.statuses_count = None
+        self.favourites_count = None
+
         self.twitter = twitterhelper.TwitterHelper(self)
 
         self.users = users.Users(self)
         self.statistics = Statistics()
         self.conversations = conversation_helper.ConversationHelper(self)
         self.converse_with = None
+
+    def update(self, me):
+        self.id_str = me["id_str"]
+        self.name = me["name"]
+        self.description = me["description"]
+        self.location = me["location"]
+        self.profile_banner_url = me["profile_banner_url"]
+        if self.profile_banner_url:
+            self.profile_banner_url += "/300x100"
+
+        self.profile_image_url = me["profile_image_url"]
+        self.url = me["url"]
+
+        self.following_count = me["friends_count"]
+        self.followers_count = me["followers_count"]
+        self.statuses_count = me["statuses_count"]
+        self.favourites_count = me["favourites_count"]
 
     @abc.abstractmethod
     def get_tasks(self):
