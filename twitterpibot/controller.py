@@ -85,8 +85,10 @@ def get_identity_dto(identity):
     #                 } for list_member_id in identity.users._lists._sets[l]]
     #         } for l in identity.users._lists._sets]
     if identity.users:
-        dto["users"] = [get_user_dto(user)
-                        for user_id, user in identity.users._users.items()]
+        users = list(filter(lambda u: u._user_score, identity.users._users.values()))
+        users.sort(key=lambda u: u._user_score._scores["total"])
+        users = list(map(get_user_dto, users))
+        dto["users"] = users
     return dto
 
 

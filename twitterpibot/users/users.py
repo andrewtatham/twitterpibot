@@ -122,13 +122,19 @@ class Users(object):
 
     def block(self, user_id):
         self._identity.twitter.block(user_id=user_id)
-        if user_id in self._following:
-            self._following.remove(user_id)
+        self._forget_user_id(user_id)
 
     def report(self, user_id):
         self._identity.twitter.report(user_id=user_id)
+        self._forget_user_id(user_id)
+
+    def _forget_user_id(self, user_id):
         if user_id in self._following:
             self._following.remove(user_id)
+        if user_id in self._followers:
+            self._followers.remove(user_id)
+        if user_id in self._users:
+            self._users.pop(user_id, None)
 
 
 if __name__ == '__main__':

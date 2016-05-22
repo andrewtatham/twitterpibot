@@ -147,7 +147,9 @@ if __name__ == '__main__':
     pi.users.get_users(random.sample(pi.users.get_followers(), 10))
     pi.users.score_users(5)
 
+    pi2.users.get_users(random.sample(pi.users.get_followers(), 10))
+    pi2.users.score_users(5)
+
     controller.set_identities([pi, pi2])
 
-    # app.config['SERVER_NAME'] = "localhost:5000"
     app.run(debug=False, host='0.0.0.0')
