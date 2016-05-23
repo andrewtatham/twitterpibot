@@ -2,8 +2,11 @@
 <div>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" ng-repeat="identity in identities">
-            <a href="#[[identity.screen_name]]" aria-controls="[[identity.screen_name]]" role="tab" data-toggle="tab">
+        <li role="presentation" ng-repeat="identity in identities"
+            ng-class={active:(activeIndex?activeIndex==$index:$first)}>
+            <a href="#[[identity.screen_name]]_identity"
+               aria-controls="[[identity.screen_name]]_identity" role="tab"
+               data-toggle="tab">
                 <span><img src="[[identity.profile_image_url]]">[[identity.screen_name]]</span>
             </a>
         </li>
@@ -11,7 +14,7 @@
 
     <!-- Tab panes -->
     <div class="tab-content">
-        <div ng-repeat="identity in identities" id="[[identity.screen_name]]"
+        <div ng-repeat="identity in identities" id="[[identity.screen_name]]_identity"
              role="tabpanel" class="tab-pane"
              ng-class={active:(activeIndex?activeIndex==$index:$first)}>
 

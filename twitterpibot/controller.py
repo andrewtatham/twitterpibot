@@ -37,6 +37,8 @@ def get_user_dto(user):
         "profile_banner_url": user.profile_banner_url,
         "location": user.location,
         "profile_url": user.profile_url,
+        "last_tweeted_at":user.last_tweeted_at,
+        "last_tweeted": user.get_last_tweeted(),
 
     }
     if user._latest_tweets:

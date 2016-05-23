@@ -296,7 +296,7 @@ class TwitterHelper(object):
 
     @retry(**retry_args)
     def get_list_members(self, list_id):
-        return self.twitter.get_list_members(list_id=list_id, count=5000, include_entities=False, skip_status=True)
+        return self.twitter.get_list_members(list_id=list_id, count=5000, include_entities=False)
 
     @retry(**retry_args)
     def create_list(self, name, mode):

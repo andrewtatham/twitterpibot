@@ -107,8 +107,6 @@ class User(object):
 
         self._latest_tweets = []
         self._user_score = None
-        self._follower_score = None
-        self._following_score = None
 
     def is_stale(self):
         if self.updated:
@@ -133,6 +131,14 @@ class User(object):
 
         )
 
+    def get_last_tweet_delta(self):
+        if self.last_tweeted_at:
+            return datetime.datetime.now(datetime.timezone.utc) - self.last_tweeted_at
+
+    def get_last_tweeted(self):
+        if self.last_tweeted_at:
+            return humanize.naturaldelta(self.get_last_tweet_delta())
+
     def long_description(self):
 
         text = self.short_description() + " " + self.profile_url
@@ -141,15 +147,9 @@ class User(object):
         if self.location:
             text += os.linesep + "location: " + self.location
         if self.last_tweeted_at:
-            delta = datetime.datetime.now(datetime.timezone.utc) - self.last_tweeted_at
-            humanized = humanize.naturaldelta(delta)
-            text += os.linesep + "last tweeted {} ago".format(humanized)
+            text += os.linesep + "last tweeted {} ago".format(self.get_last_tweeted())
         if self._user_score:
             text += os.linesep + "user score: " + str(self._user_score)
-        if self._follower_score:
-            text += os.linesep + "follower score: " + str(self._follower_score)
-        if self._following_score:
-            text += os.linesep + "following score: " + str(self._following_score)
 
         return text
 
@@ -214,6 +214,12 @@ class User(object):
             if self.is_possibly_bot:
                 user_score.add(5, "possibly bot")
 
+            if self.last_tweeted_at:
+                delta = self.get_last_tweet_delta()
+                if delta.days >= 60:
+                    last_tweeted_score = -int(delta.days * 50 / 365)
+                    user_score.add(last_tweeted_score, "last tweeted " + self.get_last_tweeted())
+
             self.get_tweet_score(user_score)
 
             # todo why does not work?
@@ -236,21 +242,6 @@ class User(object):
                     possible_description = "topic: " + topic["topic"] \
                                            + " possible_matches: " + str(topic["possible_matches"])
                     user_score.add(possible_score, possible_description)
-
-    def get_follower_score(self):
-        if not self._follower_score:
-            follower_score = self.get_user_score()
-            # todo are they a spam bot
-            # are they always tweeting links
-            self._follower_score = follower_score
-        return self._follower_score
-
-    def get_following_score(self):
-        if not self._following_score:
-            following_score = self.get_user_score()
-            # todo have they tweeted recently
-            self._following_score = following_score
-        return self._following_score
 
 
 if __name__ == '__main__':
