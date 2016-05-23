@@ -40,20 +40,22 @@ class Users(object):
 
         return self._users[user_id]
 
-    def get_users(self, user_ids):
+    def get_users(self, user_ids, lookup=True):
         users = []
         cached = list(filter(lambda u: u in self._users, user_ids))
-        to_lookup = list(filter(lambda u: not u in self._users, user_ids))
+        if lookup:
+            to_lookup = list(filter(lambda u: not u in self._users, user_ids))
 
         for user_id in cached:
             users.append(self.get_user(user_id=user_id))
 
-        n = 100
-        for chunk in [to_lookup[i:i + n] for i in range(0, len(to_lookup), n)]:
-            ids_csv = ",".join(chunk)
-            user_datas = self._identity.twitter.lookup_user(user_id=ids_csv)
-            for user_data in user_datas:
-                users.append(self.get_user(user_data=user_data))
+        if lookup:
+            n = 100
+            for chunk in [to_lookup[i:i + n] for i in range(0, len(to_lookup), n)]:
+                ids_csv = ",".join(chunk)
+                user_datas = self._identity.twitter.lookup_user(user_id=ids_csv)
+                for user_data in user_datas:
+                    users.append(self.get_user(user_data=user_data))
 
         return users
 

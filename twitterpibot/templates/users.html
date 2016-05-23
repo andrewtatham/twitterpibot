@@ -1,0 +1,56 @@
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+        <a role="tab" data-toggle="tab"
+           href="#[[identity.screen_name]]_users_following_followers">following_followers</a>
+    </li>
+    <li role="presentation">
+        <a role="tab" data-toggle="tab"
+           href="#[[identity.screen_name]]_users_following_only">following_only</a>
+    </li>
+    <li role="presentation">
+        <a role="tab" data-toggle="tab"
+           href="#[[identity.screen_name]]_users_followers_only">followers_only</a>
+    </li>
+    <li role="presentation">
+        <a role="tab" data-toggle="tab"
+           href="#[[identity.screen_name]]_users_others">others</a>
+    </li>
+    
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div id="[[identity.screen_name]]_users_following_followers" role="tabpanel" class="tab-pane active">
+        <h4>following_followers:</h4>
+        <table class="table">
+            <tr ng-repeat="user in identity.users.following_followers">
+                {% include "user.html" %}
+            </tr>
+        </table>
+    </div>
+    <div id="[[identity.screen_name]]_users_following_only" role="tabpanel" class="tab-pane">
+        <h4>following_only:</h4>
+        <table class="table">
+            <tr ng-repeat="user in identity.users.following_only">
+                {% include "user.html" %}
+            </tr>
+        </table>
+    </div>
+    <div id="[[identity.screen_name]]_users_followers_only" role="tabpanel" class="tab-pane">
+        <h4>followers_only:</h4>
+        <table class="table">
+            <tr ng-repeat="user in identity.users.followers_only">
+                {% include "user.html" %}
+            </tr>
+        </table>
+    </div>
+    <div id="[[identity.screen_name]]_users_others" role="tabpanel" class="tab-pane">
+        <h4>others:</h4>
+        <table class="table">
+            <tr ng-repeat="user in identity.users.others">
+                {% include "user.html" %}
+            </tr>
+        </table>
+    </div>
+</div>

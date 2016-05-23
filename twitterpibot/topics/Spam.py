@@ -10,7 +10,7 @@ class SmutSpamSpecific(SpamTopic):
     def __init__(self):
         super(SmutSpamSpecific, self).__init__(
             [
-                "selenaxxxusaxxx","webcam789",
+                "selenaxxxusaxxx","webcam789","CAM456",
                 "I can fulfill any wish for you", "show this post and get me for free",
                 "Let's chat tonight! Join me!"
             ]

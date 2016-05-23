@@ -1,0 +1,32 @@
+<td>
+    <div style="position:relative;">
+        <img class="user_banner" src="[[user.profile_banner_url]]">
+        <img src="[[user.profile_image_url]]">
+        [[user.name]] <a href="[[user.profile_url]]"
+                         target="_blank">@[[user.screen_name]]</a>
+        [[user.flags]]
+    </div>
+    <div>[[user.location]]</div>
+    <div>[[user.description]]</div>
+    <div><a href="[[user.url]]" target="_blank">[[user.url]]</a></div>
+</td>
+<td>[[user.latest_tweets]]</td>
+<td>[[user.score]]</td>
+<td>
+    <button type="button" class="btn btn-sm btn-primary btn-outline"
+            ng-click="follow(identity.id_str,user.user_id)">
+        Follow @[[user.screen_name]]
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary btn-outline"
+            ng-click="unfollow(identity.id_str,user.user_id)">
+        Unfollow @[[user.screen_name]]
+    </button>
+    <button type="button" class="btn btn-sm btn-warning btn-outline"
+            ng-click="block(identity.id_str,user.user_id)">
+        Block @[[user.screen_name]]
+    </button>
+    <button type="button" class="btn btn-sm btn-danger btn-outline"
+            ng-click="report(identity.id_str,user.user_id)">
+        Report @[[user.screen_name]]
+    </button>
+</td>

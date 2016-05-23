@@ -47,6 +47,44 @@ def get_user_dto(user):
     return user_dto
 
 
+def _filter_users(users):
+    return list(filter(lambda u: u._user_score, users))
+
+
+def _sort_users(users):
+    users.sort(key=lambda u: u._user_score._scores["total"])
+    return users
+
+
+def _map_users(users):
+    return list(map(get_user_dto, users))
+
+
+def get_users_dto(users):
+    following = set(users.get_following())
+    followers = set(users.get_followers())
+    all = set(users._users.keys())
+
+    following_followers = users.get_users(following.intersection(followers), lookup=False)
+    following_only = users.get_users(following.difference(followers), lookup=False)
+    followers_only = users.get_users(followers.difference(following), lookup=False)
+    others = users.get_users(all.difference(following.union(followers)), lookup=False)
+
+    following_followers = _map_users(_sort_users(_filter_users(following_followers)))
+    following_only = _map_users(_sort_users(_filter_users(following_only)))
+    followers_only = _map_users(_sort_users(_filter_users(followers_only)))
+    others = _map_users(_sort_users(_filter_users(others)))
+
+    dto = {
+        "following_followers": following_followers,
+        "following_only": following_only,
+        "followers_only": followers_only,
+        "others": others,
+    }
+
+    return dto
+
+
 def get_action_dto(label, url):
     return {
         "label": label,
@@ -85,10 +123,7 @@ def get_identity_dto(identity):
     #                 } for list_member_id in identity.users._lists._sets[l]]
     #         } for l in identity.users._lists._sets]
     if identity.users:
-        users = list(filter(lambda u: u._user_score, identity.users._users.values()))
-        users.sort(key=lambda u: u._user_score._scores["total"])
-        users = list(map(get_user_dto, users))
-        dto["users"] = users
+        dto["users"] = get_users_dto(identity.users)
     return dto
 
 

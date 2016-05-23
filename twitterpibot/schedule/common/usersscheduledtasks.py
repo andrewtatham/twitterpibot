@@ -82,7 +82,10 @@ class ScoreUsersScheduledTask(ScheduledTask):
         if self._all_user_ids:
             batch = []
             for _ in range(300):
-                batch.append(self._all_user_ids.pop())
+                if self._all_user_ids:
+                    batch.append(self._all_user_ids.pop())
+                else:
+                    break
             # get user data, so users who dont tweet are cached
             self.identity.users.get_users(batch)
 
