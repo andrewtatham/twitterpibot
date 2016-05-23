@@ -45,7 +45,7 @@ class FollowScheduledTask(ScheduledTask):
                 to_follow = set()
                 to_follow.update(
                     self._get_unfollowed_list_members(list_names=["Friends", "Awesome Bots", "Retweet More"]))
-                to_follow.update(self._get_unfollowed_subscribed_list_members())
+                # to_follow.update(self._get_unfollowed_subscribed_list_members())
                 self.to_follow = list(to_follow)
                 logger.info("To follow %s users" % len(self.to_follow))
                 random.shuffle(self.to_follow)
@@ -90,5 +90,5 @@ class ScoreUsersScheduledTask(ScheduledTask):
             self.identity.users.get_users(batch)
 
         no_of_scores = self.identity.users.score_users(60)
-        if no_of_scores > 10:
-            self.identity.users.get_leaderboard(10)
+        # if no_of_scores > 10:
+        #     self.identity.users.get_leaderboard(10)
