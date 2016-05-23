@@ -66,6 +66,8 @@ class Users(object):
         user.follower = user.id_str in self._followers
         user.following = user.id_str in self._following
 
+        user.update_flags()
+
         user.updated = datetime.datetime.utcnow()
 
     def friends(self, friends):
@@ -99,9 +101,7 @@ class Users(object):
         return len(users_with_scores)
 
     def get_leaderboard(self, n=3):
-
         users_with_scores = list(filter(lambda u: u._user_score, list(self._users.values())))
-
         users_with_scores.sort(key=lambda u: u._user_score.total())
         worst = users_with_scores[:n]
         best = users_with_scores[-n:]
@@ -119,8 +119,7 @@ class Users(object):
 
     def unfollow(self, user_id):
         self._identity.twitter.unfollow(user_id=user_id)
-        if user_id in self._following:
-            self._following.remove(user_id)
+        self._forget_user_id(user_id)
 
     def block(self, user_id):
         self._identity.twitter.block(user_id=user_id)

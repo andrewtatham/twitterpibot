@@ -80,6 +80,18 @@ class User(object):
                                or self.description and bot_rx.search(self.description)
 
         self.flags = ""
+
+
+        status = data.get("status")
+
+        self.last_tweeted_at = None
+        if status:
+            self.last_tweeted_at = dateutil.parser.parse(status.get("created_at"))
+
+        self._latest_tweets = []
+        self._user_score = None
+
+    def update_flags(self):
         if self.following and self.follower:
             self.flags += " FF"
         elif self.following:
@@ -99,14 +111,6 @@ class User(object):
         if self.is_reply_less: self.flags += " RP-"
         self.flags = self.flags.strip()
 
-        status = data.get("status")
-
-        self.last_tweeted_at = None
-        if status:
-            self.last_tweeted_at = dateutil.parser.parse(status.get("created_at"))
-
-        self._latest_tweets = []
-        self._user_score = None
 
     def is_stale(self):
         if self.updated:
