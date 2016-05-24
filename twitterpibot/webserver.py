@@ -47,9 +47,9 @@ def identities():
     return flask.jsonify(retval)
 
 
-@app.route('/identity/<screen_name>')
-def identity(screen_name):
-    retval = {"identity": controller.get_identity(screen_name)}
+@app.route('/identity/<id_str>')
+def identity(id_str):
+    retval = {"identity": controller.get_identity(id_str)}
     logger.debug(retval)
     return flask.jsonify(retval)
 

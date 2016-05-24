@@ -21,8 +21,41 @@ bot_rx = re.compile("bot|ebooks|#botALLY", re.IGNORECASE)
 
 
 class UserScore(object):
-    def __init__(self):
+    def __init__(self, user):
         self._scores = {"total": 0}
+
+        if user.is_arsehole:
+            self.add(-200, "arsehole")
+    
+        if user.is_friend:
+            self.add(100, "friend")
+        if user.is_awesome_bot:
+            self.add(75, "awesome bot")
+        if user.verified:
+            self.add(5, "verified")
+    
+        if user.follower:
+            self.add(5, "follower")
+        if user.following:
+            self.add(5, "following")
+        if user.is_retweet_more:
+            self.add(25, "retweet more")
+    
+        if user.is_reply_less:
+            self.add(-10, "reply less")
+        if user.is_do_not_retweet:
+            self.add(-10, "do not retweet")
+    
+        if user.is_possibly_bot:
+            self.add(5, "possibly bot")
+    
+        if user.last_tweeted_at:
+            delta = user.get_last_tweet_delta()
+            if delta.days >= 60:
+                last_tweeted_score = -int(delta.days * 50 / 365)
+                self.add(last_tweeted_score, "last tweeted " + user.get_last_tweeted())
+            # TODO get_tweet_score
+            # user.get_tweet_score()
 
     def __str__(self):
         return str(self._scores)
@@ -81,7 +114,6 @@ class User(object):
 
         self.flags = ""
 
-
         status = data.get("status")
 
         self.last_tweeted_at = None
@@ -92,6 +124,7 @@ class User(object):
         self._user_score = None
 
     def update_flags(self):
+        self.flags = ""
         if self.following and self.follower:
             self.flags += " FF"
         elif self.following:
@@ -110,7 +143,6 @@ class User(object):
         if self.is_do_not_retweet: self.flags += " RT-"
         if self.is_reply_less: self.flags += " RP-"
         self.flags = self.flags.strip()
-
 
     def is_stale(self):
         if self.updated:
@@ -152,8 +184,8 @@ class User(object):
             text += os.linesep + "location: " + self.location
         if self.last_tweeted_at:
             text += os.linesep + "last tweeted {} ago".format(self.get_last_tweeted())
-        if self._user_score:
-            text += os.linesep + "user score: " + str(self._user_score)
+        if self._self:
+            text += os.linesep + "user score: " + str(self._self)
 
         return text
 
@@ -184,6 +216,8 @@ class User(object):
 
         topic_text += os.linesep
         tweets = self._get_latest_tweets()
+        # wtf why needed
+        self._latest_tweets = tweets
         if tweets:
             tweets_text = map(lambda t: " " + t.text, tweets)
             topic_text += os.linesep.join(tweets_text)
@@ -191,47 +225,12 @@ class User(object):
 
     def get_user_score(self):
         if not self._user_score:
-            user_score = UserScore()
-
-            if self.is_arsehole:
-                user_score.add(-200, "arsehole")
-
-            if self.is_friend:
-                user_score.add(100, "friend")
-            if self.is_awesome_bot:
-                user_score.add(75, "awesome bot")
-            if self.verified:
-                user_score.add(50, "verified")
-
-            if self.follower:
-                user_score.add(25, "follower")
-            if self.following:
-                user_score.add(25, "following")
-            if self.is_retweet_more:
-                user_score.add(25, "retweet more")
-
-            if self.is_reply_less:
-                user_score.add(-10, "reply less")
-            if self.is_do_not_retweet:
-                user_score.add(-10, "do not retweet")
-
-            if self.is_possibly_bot:
-                user_score.add(5, "possibly bot")
-
-            if self.last_tweeted_at:
-                delta = self.get_last_tweet_delta()
-                if delta.days >= 60:
-                    last_tweeted_score = -int(delta.days * 50 / 365)
-                    user_score.add(last_tweeted_score, "last tweeted " + self.get_last_tweeted())
-
-            self.get_tweet_score(user_score)
-
-            # todo why does not work?
-            self._user_score = user_score
+            # todo update
+            self._user_score = UserScore(self)
 
         return self._user_score
 
-    def get_tweet_score(self, user_score):
+    def get_tweet_score(self):
 
         topics = topichelper.get_topics(self._get_topic_text())
         if topics:

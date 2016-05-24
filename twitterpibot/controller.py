@@ -3,10 +3,11 @@ from itertools import groupby
 from operator import attrgetter
 import random
 
+import logging
 from twitterpibot.data_access import dal
 
 __author__ = 'andrewtatham'
-
+logger = logging.getLogger(__name__)
 _identities_list = []
 _identities_dic = {}
 
@@ -37,7 +38,7 @@ def get_user_dto(user):
         "profile_banner_url": user.profile_banner_url,
         "location": user.location,
         "profile_url": user.profile_url,
-        "last_tweeted_at":user.last_tweeted_at,
+        "last_tweeted_at": user.last_tweeted_at,
         "last_tweeted": user.get_last_tweeted(),
 
     }
@@ -45,7 +46,7 @@ def get_user_dto(user):
         user_dto["latest_tweets"] = list(map(get_tweet_dto, user._latest_tweets))
     if user._user_score:
         user_dto["score"] = user._user_score._scores
-
+    # todo availiable actions e.g. can follow, unfollow, block, report etc - enable/disable buttons
     return user_dto
 
 
@@ -94,6 +95,17 @@ def get_action_dto(label, url):
     }
 
 
+def get_identities_dto(identity):
+    dto = {
+        "id_str": identity.id_str,
+        "name": identity.name,
+        "screen_name": identity.screen_name,
+        "profile_image_url": identity.profile_image_url,
+        "action_url": "identity/" + identity.id_str,
+    }
+    return dto
+
+
 def get_identity_dto(identity):
     dto = {
         "id_str": identity.id_str,
@@ -106,7 +118,6 @@ def get_identity_dto(identity):
         "profile_banner_url": identity.profile_banner_url,
         "profile_image_url": identity.profile_image_url,
 
-        "action_url": "identity/" + identity.screen_name,
 
         "following_count": identity.following_count,
         "followers_count": identity.followers_count,
@@ -130,27 +141,33 @@ def get_identity_dto(identity):
 
 
 def get_identities():
-    return [get_identity_dto(i) for i in _identities_list]
+    return [get_identities_dto(i) for i in _identities_list]
 
 
-def get_identity(screen_name=None):
-    return [get_identity_dto(i) for i in _identities_list
-            if screen_name == i.screen_name][0]
+def get_identity(id_str):
+    identity = _identities_dic.get(id_str)
+    if identity:
+        return get_identity_dto(identity)
 
 
 def get_actions():
-    return [get_action_dto(a[0], a[1]) for a in [
+    actions = [
         ("home", "/"),
         ("demo", "/demo"),
         ("init", "/init"),
         ("actions", "/actions"),
         ("identities", "/identities"),
+    ]
+    actions.extend([("identitity @" + i.screen_name, "/identity/" + i.id_str) for i in _identities_list])
+
+    actions.extend([
         ("following", "/following"),
         ("followinggraph", "/followinggraph"),
         ("exceptions", "/exceptions"),
         ("exceptionsummary", "/exceptionsummary"),
         ("shutdown", "/shutdown")
-    ]]
+    ])
+    return [get_action_dto(a[0], a[1]) for a in actions]
 
 
 def get_following():
@@ -302,19 +319,23 @@ if __name__ == '__main__':
 
 def follow(identity_id, user_id):
     if identity_id in _identities_dic:
+        logger.info("following user id {}".format(user_id))
         _identities_dic[identity_id].users.follow(user_id)
 
 
 def unfollow(identity_id, user_id):
     if identity_id in _identities_dic:
+        logger.info("unfollowing user id {}".format(user_id))
         _identities_dic[identity_id].users.unfollow(user_id)
 
 
 def block(identity_id, user_id):
     if identity_id in _identities_dic:
+        logger.info("blocking user id {}".format(user_id))
         _identities_dic[identity_id].users.block(user_id)
 
 
 def report(identity_id, user_id):
     if identity_id in _identities_dic:
+        logger.info("reporting user id {}".format(user_id))
         _identities_dic[identity_id].users.report(user_id)

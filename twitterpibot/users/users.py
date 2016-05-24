@@ -22,7 +22,7 @@ class Users(object):
         self.get_following()
 
     def get_user(self, user_id=None, user_data=None):
-
+        user = None
         if user_id and user_id in self._users:
             user = self._users[user_id]
         else:
@@ -32,30 +32,34 @@ class Users(object):
                 user_data = self._identity.twitter.lookup_user(user_id=user_id)[0]
             elif not user_id and user_data:
                 user_id = user_data.get("id_str")
-            user = User(user_data, self._identity)
-            self._users[user_id] = user
 
-        if user.is_stale():
+            if user_data:
+                user = User(user_data, self._identity)
+                self._users[user_id] = user
+
+        if user and user.is_stale():
             self.update_user(user=user)
 
-        return self._users[user_id]
+        return self._users.get(user_id)
 
     def get_users(self, user_ids, lookup=True):
         users = []
         cached = list(filter(lambda u: u in self._users, user_ids))
+        to_lookup = None
         if lookup:
             to_lookup = list(filter(lambda u: not u in self._users, user_ids))
 
         for user_id in cached:
             users.append(self.get_user(user_id=user_id))
 
-        if lookup:
+        if lookup and to_lookup:
             n = 100
             for chunk in [to_lookup[i:i + n] for i in range(0, len(to_lookup), n)]:
                 ids_csv = ",".join(chunk)
                 user_datas = self._identity.twitter.lookup_user(user_id=ids_csv)
-                for user_data in user_datas:
-                    users.append(self.get_user(user_data=user_data))
+                if user_datas:
+                    for user_data in user_datas:
+                        users.append(self.get_user(user_data=user_data))
 
         return users
 
@@ -114,18 +118,22 @@ class Users(object):
             logger.info(worst_user.long_description())
 
     def follow(self, user_id):
+        logger.info("following user id %s" % user_id)
         self._identity.twitter.follow(user_id=user_id)
         self._following.add(user_id)
 
     def unfollow(self, user_id):
+        logger.info("unfollowing user id %s" % user_id)
         self._identity.twitter.unfollow(user_id=user_id)
         self._forget_user_id(user_id)
 
     def block(self, user_id):
+        logger.info("blocking user id %s" % user_id)
         self._identity.twitter.block(user_id=user_id)
         self._forget_user_id(user_id)
 
     def report(self, user_id):
+        logger.info("reporting user id %s" % user_id)
         self._identity.twitter.report(user_id=user_id)
         self._forget_user_id(user_id)
 

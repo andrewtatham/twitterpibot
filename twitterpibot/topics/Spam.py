@@ -38,7 +38,8 @@ class BizSpam(SpamTopic):
                  "NOW HIRING",
                 "per hour jobs",
                 "Learn more",
-                "Apply now"
+                "Apply now",
+                "Discount Ray Ban sunglasses",
             ]
         )
 

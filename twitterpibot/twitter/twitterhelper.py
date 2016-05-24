@@ -31,17 +31,25 @@ class RateLimits(object):
     def __init__(self, data):
         self._data = data
 
-    def can(self, key):
+    def get(self, key):
         parts = key.split("/")
         resource = parts[1]
         remaining = self._data["resources"][resource][key]["remaining"]
+        return remaining
+
+    def set(self, key, remaining):
+        parts = key.split("/")
+        resource = parts[1]
+        self._data["resources"][resource][key]["remaining"] = remaining
+
+    def can(self, key):
+        remaining = self.get(key)
         if remaining > 0:
-            remaining -= 1
+            remaining -= 1  # assume a call will be made
             logger.debug("{} remaining calls {}".format(key, remaining))
-            self._data["resources"][resource][key]["remaining"] = remaining
+            self.set(key, remaining)
             return True
         else:
-            logger.warning("Rate limit exceeded for {}".format(key))
             return False
 
 
@@ -272,14 +280,7 @@ class TwitterHelper(object):
 
     @retry(**retry_args)
     def get_user_timeline(self, **kwargs):
-        if self.rates.can("/statuses/user_timeline"):
-            try:
-                return self.twitter.get_user_timeline(**kwargs)
-            except Exception as ex:
-                logger.warning(ex)
-                return None
-        else:
-            return None
+        return self._rate_limit("/statuses/user_timeline", self.twitter.get_user_timeline, **kwargs)
 
     def unblock_user(self, user):
         self.twitter.destroy_block(user_id=user.id, screen_name=user.screen_name)
@@ -303,28 +304,32 @@ class TwitterHelper(object):
         return self.twitter.create_list(name=name, mode=mode)
 
     @retry(**retry_args)
-    def follow(self, user_id=None):
+    def follow(self, user_id):
+        logger.info("following user id {}".format(user_id))
+        self.twitter.create_friendship(user_id=user_id)
         self.identity.statistics.increment("Follows")
-        return self.twitter.create_friendship(user_id=user_id)
 
     @retry(**retry_args)
-    def unfollow(self, user_id=None):
+    def unfollow(self, user_id):
+        logger.info("unfollowing user id {}".format(user_id))
+        self.twitter.destroy_friendship(user_id=user_id)
         self.identity.statistics.increment("Unfollows")
-        return self.twitter.destroy_friendship(user_id=user_id)
 
     @retry(**retry_args)
-    def block(self, user_id=None):
+    def block(self, user_id):
+        logger.info("blocking user id {}".format(user_id))
+        self.twitter.create_block(user_id=user_id)
         self.identity.statistics.increment("Blocks")
-        return self.twitter.create_block(user_id=user_id)
 
     @retry(**retry_args)
-    def report(self, user_id=None):
+    def report(self, user_id):
+        logger.info("reporting user id {}".format(user_id))
+        self.twitter.report_spam(user_id=user_id)
         self.identity.statistics.increment("Reports")
-        return self.twitter.report_spam(user_id=user_id)
 
     @retry(**retry_args)
     def lookup_user(self, user_id):
-        return self.twitter.lookup_user(user_id=user_id)
+        return self._rate_limit("/users/lookup", self.twitter.lookup_user, user_id=user_id)
 
     def sing_song(self, song, target=None, inbox_item=None, text=None, hashtag=None):
         if not text:
@@ -497,6 +502,17 @@ class TwitterHelper(object):
     def update_rate_limits(self):
         data = self.twitter.get_application_rate_limit_status()
         self.rates = RateLimits(data)
+
+    def _rate_limit(self, limit_name, func, *args, **kwargs):
+        if self.rates.can(limit_name):
+            try:
+                return func(*args, **kwargs)
+            except Exception as ex:
+                logger.warning(ex)
+                return None
+        else:
+            logger.warning("{} limit exceeded".format(limit_name))
+            return None
 
 
 if __name__ == "__main__":
