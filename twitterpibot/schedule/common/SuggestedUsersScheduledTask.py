@@ -43,7 +43,7 @@ class SuggestedUsersScheduledTask(ScheduledTask, ):
         for user_data in suggested_users:
             colour = next(suggestedUserColours)
             # user cache will be populated with suggested users
-            user = self.identity.get_user(user_data=user_data)
+            user = self.identity.users.get_user(user_data=user_data)
             if user:
                 logging.info(colour + "User: [" + category["name"] + "] - " + user.long_description())
 
