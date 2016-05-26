@@ -66,7 +66,6 @@ def get_user_dto(user):
 
 
 def _filter_users(users):
-    return users
     return list(filter(lambda u: u.user_score, users))
 
 
