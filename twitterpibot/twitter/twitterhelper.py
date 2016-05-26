@@ -4,6 +4,7 @@ import random
 import time
 
 from retrying import retry
+
 from twython import Twython, TwythonError
 
 from twitterpibot.exceptionmanager import is_timeout
@@ -51,6 +52,10 @@ class RateLimits(object):
             return True
         else:
             return False
+
+    def display(self):
+        keys = ["/statuses/user_timeline", "/users/lookup"]
+        return str(dict(map(lambda key: (key, self.get(key)), keys)))
 
 
 class TwitterHelper(object):
@@ -502,6 +507,7 @@ class TwitterHelper(object):
     def update_rate_limits(self):
         data = self.twitter.get_application_rate_limit_status()
         self.rates = RateLimits(data)
+        logger.info("Updated rate limits for {}: {}".format(self.identity.screen_name, self.rates.display()))
 
     def _rate_limit(self, limit_name, func, *args, **kwargs):
         if self.rates.can(limit_name):

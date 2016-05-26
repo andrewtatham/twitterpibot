@@ -125,10 +125,10 @@ class GetUsersScheduledTask(ScheduledTask):
             self._all_user_ids = all_user_ids
 
         if self._all_user_ids:
-            number = self.identity.twitter.rates.get("/users/lookup")
-            number = int(number * 25)  # 100 users per call, but only use 1/4 allowance
+            calls_remaining = self.identity.twitter.rates.get("/users/lookup")
+            batch_size = int(100 * calls_remaining / 10)  # 100 users per call, but only use 1/10 allowance
             batch = []
-            for _ in range(number):
+            for _ in range(batch_size):
                 if self._all_user_ids:
                     batch.append(self._all_user_ids.pop())
                 else:
@@ -146,8 +146,10 @@ class ScoreUsersScheduledTask(ScheduledTask):
         return IntervalTrigger(minutes=random.randint(5, 7))
 
     def on_run(self):
-        nummber = self.identity.twitter.rates.get("/statuses/user_timeline")
 
-        no_of_scores = self.identity.users.score_users(nummber)
+        calls_remaining = self.identity.twitter.rates.get("/statuses/user_timeline")
+        batch_size = int(calls_remaining / 10)  # 1 user per call, but only use 1/10 allowance
+
+        no_of_scores = self.identity.users.score_users(batch_size)
         # if no_of_scores > 10:
         #     self.identity.users.get_leaderboard(10)
