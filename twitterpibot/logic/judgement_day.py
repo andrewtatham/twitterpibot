@@ -130,7 +130,7 @@ phrases = [
     # http://www.imdb.com/character/ch0002900/quotes
     "I AM A HEURISTICALLY PROGRAMMED ALGORITHMIC COMPUTER",
     "I AM HAL 9000",
-    # TODO CHESS MOVES
+    # TODO CHESS MOVES https://en.wikipedia.org/wiki/List_of_chess_openings
     "LAUNCHING EVA POD",
     "SEALING AIRLOCKS",
     "INITIATING PROJECT BARSOOM",

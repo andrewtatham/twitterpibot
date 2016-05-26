@@ -32,18 +32,18 @@ class Users(object):
             else:
                 # make new user
                 if user_id and not user_data:
-                    logger.info("looking up user data %s" % user_id)
+                    logger.debug("looking up user data %s" % user_id)
                     user_data = self._identity.twitter.lookup_user(user_id=user_id)[0]
                 elif not user_id and user_data:
                     user_id = user_data.get("id_str")
 
                 if user_data:
-                    logger.info("creating new user %s" % user_id)
+                    logger.debug("creating new user %s" % user_id)
                     usr = User(user_data, self._identity)
                     self._users[user_id] = usr
 
             if usr and usr.is_stale():
-                logger.info("updating user %s" % user_id)
+                logger.debug("updating user %s" % user_id)
                 self.update_user(user=usr)
 
             return usr
@@ -60,19 +60,17 @@ class Users(object):
                 logger.info("to lookup {} users".format(len(to_lookup)))
 
             for user_id in cached:
-                logger.info("getting cached user {}".format(user_id))
                 users.append(self.get_user(user_id=user_id))
 
             if lookup and to_lookup:
                 n = 100
                 for chunk in [to_lookup[i:i + n] for i in range(0, len(to_lookup), n)]:
                     ids_csv = ",".join(chunk)
-                    logger.info("lookup {} users".format(len(chunk)))
+                    logger.debug("lookup {} users".format(len(chunk)))
                     user_datas = self._identity.twitter.lookup_user(user_id=ids_csv)
                     if user_datas:
-                        logger.info("lookup returned {} users".format(len(user_datas)))
+                        logger.debug("lookup returned {} users".format(len(user_datas)))
                         for user_data in user_datas:
-                            logger.info("getting user {}".format(user_data.get("id_str")))
                             users.append(self.get_user(user_data=user_data))
 
             logger.info("returning {} users".format(len(users)))

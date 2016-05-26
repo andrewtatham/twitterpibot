@@ -126,7 +126,7 @@ class GetUsersScheduledTask(ScheduledTask):
 
         if self._all_user_ids:
             calls_remaining = self.identity.twitter.rates.get("/users/lookup")
-            batch_size = int(100 * calls_remaining / 10)  # 100 users per call, but only use 1/10 allowance
+            batch_size = int(100 * calls_remaining / 3)  # 100 users per call, but only use 1/3 allowance
             batch = []
             for _ in range(batch_size):
                 if self._all_user_ids:
@@ -148,7 +148,7 @@ class ScoreUsersScheduledTask(ScheduledTask):
     def on_run(self):
 
         calls_remaining = self.identity.twitter.rates.get("/statuses/user_timeline")
-        batch_size = int(calls_remaining / 10)  # 1 user per call, but only use 1/10 allowance
+        batch_size = int(calls_remaining / 3)  # 1 user per call, but only use 1/3 allowance
 
         no_of_scores = self.identity.users.score_users(batch_size)
         # if no_of_scores > 10:

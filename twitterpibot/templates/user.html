@@ -5,27 +5,41 @@
         <strong>[[user.name]]</strong><br>
         <a href="[[user.profile_url]]" target="_blank">@[[user.screen_name]]</a> <strong>[[user.flags]]</strong><br>
         <em><span class="glyphicon glyphicon-info-sign"></span> [[user.description]]</em>
-        <div><span class="glyphicon glyphicon-link"></span> <a href="[[user.url]]" target="_blank">[[user.url]]</a></div>
-        <div><span class="glyphicon glyphicon-map-marker"></span> [[user.location]]</div>
-        <div><span class="glyphicon glyphicon-comment"></span> [[user.lang]]</div>
-        <div><span class="glyphicon glyphicon-globe"></span> [[user.time_zone]]</div>
-        <div><span class="glyphicon glyphicon-time"></span> [[user.utc_offset]]</div>
-        <div><span class="glyphicon glyphicon glyphicon-calendar"></span> [[user.created_at]]</div>
+
+        <button data-toggle="collapse"
+                data-target="#[[identity.id_str]]_[[user.user_id]]_profile_collapse">More info
+        </button>
+        <div id="[[identity.id_str]]_[[user.user_id]]_profile_collapse" class="collapse">
+            <div>
+                <span class="glyphicon glyphicon-link"></span> <a href="[[user.url]]" target="_blank">[[user.url]]</a>
+            </div>
+            <div><span class="glyphicon glyphicon-map-marker"></span> [[user.location]]</div>
+            <div><span class="glyphicon glyphicon-comment"></span> [[user.lang]]</div>
+            <div><span class="glyphicon glyphicon-globe"></span> [[user.time_zone]]</div>
+            <div><span class="glyphicon glyphicon-time"></span> [[user.utc_offset]]</div>
+            <div><span class="glyphicon glyphicon glyphicon-calendar"></span> [[user.created_at]]</div>
+
+        </div>
+
+
     </div>
 </td>
 <td>
 
     <div>Last tweeted: [[user.last_tweeted_at]] [[user.last_tweeted]]</div>
     <div>Status: [[user.status]]</div>
-    <div>Latest Tweets:
+    <button data-toggle="collapse"
+            data-target="#[[identity.id_str]]_[[user.user_id]]_latest_tweets_collapse">Latest Tweets
+    </button>
+    <div id="[[identity.id_str]]_[[user.user_id]]_latest_tweets_collapse" class="collapse">
         <ul>
             <li ng-repeat="tweet in user.latest_tweets">
                 [[tweet.text]]
 
             </li>
         </ul>
-
     </div>
+
 </td>
 <td>[[user.user_score]]</td>
 <td>
