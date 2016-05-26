@@ -1,6 +1,7 @@
 import datetime
 import logging
 import random
+from threading import Lock
 
 from twitterpibot.users import lists
 from twitterpibot.users.user import User
@@ -11,6 +12,8 @@ logger = logging.getLogger(__name__)
 class Users(object):
     def __init__(self, identity):
         self._identity = identity
+        self._lock1 = Lock()
+        self._lock2 = Lock()
         self._users = {}
 
         self._following = set()
@@ -22,46 +25,58 @@ class Users(object):
         self.get_following()
 
     def get_user(self, user_id=None, user_data=None):
-        user = None
-        if user_id and user_id in self._users:
-            user = self._users[user_id]
-        else:
-            # make new user
-            if user_id and not user_data:
-                logger.debug("looking up user %s" % user_id)
-                user_data = self._identity.twitter.lookup_user(user_id=user_id)[0]
-            elif not user_id and user_data:
-                user_id = user_data.get("id_str")
+        with self._lock1:
+            usr = None
+            if user_id and user_id in self._users:
+                usr = self._users[user_id]
+            else:
+                # make new user
+                if user_id and not user_data:
+                    logger.info("looking up user data %s" % user_id)
+                    user_data = self._identity.twitter.lookup_user(user_id=user_id)[0]
+                elif not user_id and user_data:
+                    user_id = user_data.get("id_str")
 
-            if user_data:
-                user = User(user_data, self._identity)
-                self._users[user_id] = user
+                if user_data:
+                    logger.info("creating new user %s" % user_id)
+                    usr = User(user_data, self._identity)
+                    self._users[user_id] = usr
 
-        if user and user.is_stale():
-            self.update_user(user=user)
+            if usr and usr.is_stale():
+                logger.info("updating user %s" % user_id)
+                self.update_user(user=usr)
 
-        return self._users.get(user_id)
+            return usr
 
     def get_users(self, user_ids, lookup=True):
-        users = []
-        cached = list(filter(lambda u: u in self._users, user_ids))
-        to_lookup = None
-        if lookup:
-            to_lookup = list(filter(lambda u: not u in self._users, user_ids))
+        with self._lock2:
+            logger.info("getting {} users".format(len(user_ids)))
+            users = []
+            cached = list(filter(lambda u: u in self._users, user_ids))
+            logger.info("{} cached users".format(len(cached)))
+            to_lookup = None
+            if lookup:
+                to_lookup = list(filter(lambda u: not u in self._users, user_ids))
+                logger.info("to lookup {} users".format(len(to_lookup)))
 
-        for user_id in cached:
-            users.append(self.get_user(user_id=user_id))
+            for user_id in cached:
+                logger.info("getting cached user {}".format(user_id))
+                users.append(self.get_user(user_id=user_id))
 
-        if lookup and to_lookup:
-            n = 100
-            for chunk in [to_lookup[i:i + n] for i in range(0, len(to_lookup), n)]:
-                ids_csv = ",".join(chunk)
-                user_datas = self._identity.twitter.lookup_user(user_id=ids_csv)
-                if user_datas:
-                    for user_data in user_datas:
-                        users.append(self.get_user(user_data=user_data))
+            if lookup and to_lookup:
+                n = 100
+                for chunk in [to_lookup[i:i + n] for i in range(0, len(to_lookup), n)]:
+                    ids_csv = ",".join(chunk)
+                    logger.info("lookup {} users".format(len(chunk)))
+                    user_datas = self._identity.twitter.lookup_user(user_id=ids_csv)
+                    if user_datas:
+                        logger.info("lookup returned {} users".format(len(user_datas)))
+                        for user_data in user_datas:
+                            logger.info("getting user {}".format(user_data.get("id_str")))
+                            users.append(self.get_user(user_data=user_data))
 
-        return users
+            logger.info("returning {} users".format(len(users)))
+            return users
 
     def update_user(self, user):
 
@@ -93,12 +108,15 @@ class Users(object):
     def score_users(self, n=None):
         users_without_scores = list(filter(lambda u: not u.user_score, list(self._users.values())))
         random.shuffle(users_without_scores)
+        logger.info("{} users without scores".format(len(users_without_scores)))
         if n:
             users_without_scores = users_without_scores[:n]
+        logger.info("scoring {} users".format(len(users_without_scores)))
         for user in users_without_scores:
             user.get_user_score()
 
         users_with_scores = list(filter(lambda u: u.user_score, list(self._users.values())))
+        logger.info("{} with scores".format(len(users_with_scores)))
         return len(users_with_scores)
 
     def get_leaderboard(self, n=3):

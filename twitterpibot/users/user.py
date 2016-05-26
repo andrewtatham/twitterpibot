@@ -188,7 +188,7 @@ class User(object):
         status = data.get("status")
         self.status = None
         if status:
-            self.status = IncomingTweet(status, self.identity)
+            self.status = IncomingTweet(status, self.identity, skip_user=True)
 
         self.last_tweeted_at = None
         if self.status:
@@ -286,11 +286,12 @@ class User(object):
             tweets = self.identity.twitter.get_user_timeline(user_id=self.id_str)
             logger.debug("tweets = {}".format(tweets))
             if tweets:
-                self._latest_tweets = list(map(lambda t: IncomingTweet(t, self.identity), tweets))
+                self._latest_tweets = list(map(lambda t: IncomingTweet(t, self.identity, skip_user=True), tweets))
         return self._latest_tweets
 
     def get_user_score(self):
         if not self.user_score:
+            logger.info("scoring user: {} {}".format(self.id_str, self.short_description()))
             # todo update
             user_score = UserScore(self)
             self.user_score = user_score

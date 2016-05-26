@@ -89,7 +89,6 @@ def exceptionsummarys():
 
 @app.route('/follow', methods=['POST'])
 def follow():
-    logger.info(flask.request.json)
     identity_id = flask.request.json["identity_id"]
     user_id = flask.request.json["user_id"]
     controller.follow(identity_id, user_id)
@@ -98,7 +97,6 @@ def follow():
 
 @app.route('/unfollow', methods=['POST'])
 def unfollow():
-    logger.info(flask.request.json)
     identity_id = flask.request.json["identity_id"]
     user_id = flask.request.json["user_id"]
     controller.unfollow(identity_id, user_id)
@@ -107,7 +105,6 @@ def unfollow():
 
 @app.route('/block', methods=['POST'])
 def block():
-    logger.info(flask.request.json)
     identity_id = flask.request.json["identity_id"]
     user_id = flask.request.json["user_id"]
     controller.block(identity_id, user_id)
@@ -116,7 +113,6 @@ def block():
 
 @app.route('/report', methods=['POST'])
 def report():
-    logger.info(flask.request.json)
     identity_id = flask.request.json["identity_id"]
     user_id = flask.request.json["user_id"]
     controller.report(identity_id, user_id)

@@ -23,14 +23,15 @@ class dynamic(object):
 
 
 class IncomingTweet(InboxItem):
-    def __init__(self, data, identity):
+    def __init__(self, data, identity, skip_user = False):
         # https://dev.twitter.com/overview/api/tweets
 
         super(IncomingTweet, self).__init__(data, identity)
         if identity:
             self.identity_screen_name = identity.screen_name
-            self.sender = identity.users.get_user(user_data=data.get("user"))
-            self.from_me = self.sender and self.sender.is_me
+            if not skip_user:
+                self.sender = identity.users.get_user(user_data=data.get("user"))
+                self.from_me = self.sender and self.sender.is_me
         else:
             self.sender = dynamic()
             self.sender.screen_name = data.get("sender_screen_name")
@@ -49,13 +50,13 @@ class IncomingTweet(InboxItem):
 
         self._location(data)
 
-        self._retweet(data, identity)
+        self._retweet(data, identity, skip_user)
 
-    def _retweet(self, data, identity):
+    def _retweet(self, data, identity, skip_user):
         self.retweeted_status = None
         self.is_retweet_of_my_status = False
         if "retweeted_status" in data:
-            self.retweeted_status = IncomingTweet(data["retweeted_status"], identity)  # retweet recursion!
+            self.retweeted_status = IncomingTweet(data["retweeted_status"], identity, skip_user)  # retweet recursion!
 
             if self.retweeted_status.from_me:
                 self.is_retweet_of_my_status = True
