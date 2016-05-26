@@ -1,6 +1,6 @@
 import logging
-from itertools import cycle
 import random
+from itertools import cycle
 
 from apscheduler.triggers.interval import IntervalTrigger
 from colorama import Fore
@@ -8,7 +8,6 @@ from colorama import Fore
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
 # import random
-from twitterpibot.users.user import User
 
 suggestedUserColours = cycle([Fore.WHITE, Fore.CYAN])
 

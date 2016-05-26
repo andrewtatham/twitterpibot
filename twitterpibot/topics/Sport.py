@@ -51,7 +51,7 @@ class Cricket(IgnoreTopic):
                 "Cricket", "wicket", "the toss", "ODIs?", "batsman", "bowler", "field(ing|er)"
             } | set(["%s to (bat|field|bowl)".format(team) for team in teams]),
             [
-                "field", "bowl(ing)?"
+                "bowl(ing)?"
             ]
         )
 

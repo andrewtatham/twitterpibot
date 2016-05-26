@@ -74,6 +74,22 @@ class Bots(GoodTopic):
         )
 
 
+class APIs(GoodTopic):
+    def __init__(self):
+        super(APIs, self).__init__(
+            ["APIs?", "REST(ful)?","web ?services?"]
+
+        )
+
+
+class OpenSource(GoodTopic):
+    def __init__(self):
+        super(OpenSource, self).__init__(
+            ["Open Source", "OSS"]
+
+        )
+
+
 def get():
     return [
         RaspberryPi(),
@@ -84,5 +100,7 @@ def get():
         Microsoft(),
         Google(),
         Linux(),
-        Bots()
+        Bots(),
+        APIs(),
+        OpenSource()
     ]

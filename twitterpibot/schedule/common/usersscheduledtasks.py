@@ -1,6 +1,5 @@
 import logging
 import random
-import time
 
 from apscheduler.triggers.interval import IntervalTrigger
 

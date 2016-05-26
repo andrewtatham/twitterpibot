@@ -1,5 +1,12 @@
 <h2>Identities</h2>
 <div>
+    <div class="btn-group btn-group-sm">
+        <button type="button" class="btn" ng-repeat="identity in identities" ng-click="getIdentity(identity.id_str)">
+            <span class="glyphicon glyphicon-refresh"></span>
+            @[[identity.screen_name]]
+        </button>
+    </div>
+
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" ng-repeat="identity in identities"

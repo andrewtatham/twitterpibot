@@ -174,6 +174,29 @@ class NewsTopic(Topic):
         score=0)
 
 
+class BadTopic(Topic):
+    def __init__(self,
+                 definite_regexes,
+                 possible_regexes=None,
+                 from_date=None,
+                 to_date=None,
+                 on_date=None,
+                 on_date_range=0
+                 ):
+        super(BadTopic, self).__init__(
+            definite_regexes,
+            possible_regexes,
+            from_date,
+            to_date,
+            on_date,
+            on_date_range,
+            retweet=False,
+            reply=False,
+            stream=False,
+            spam=False,
+            score=-5)
+
+
 class SpamTopic(Topic):
     def __init__(self,
                  definite_regexes,

@@ -278,7 +278,7 @@ _modes = itertools.cycle([
     RainbowMode(),
     RainbowRainMode(),
 
-    # TODO
+    # TODO unicorn hat patterns
     # Rain
     # matrix
     # Fire

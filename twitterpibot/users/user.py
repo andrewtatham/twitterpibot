@@ -9,6 +9,10 @@ import humanize
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.topics import topichelper
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def parse_int(param):
     if param:
@@ -26,36 +30,56 @@ class UserScore(object):
 
         if user.is_arsehole:
             self.add(-200, "arsehole")
-    
+
         if user.is_friend:
             self.add(100, "friend")
         if user.is_awesome_bot:
             self.add(75, "awesome bot")
         if user.verified:
             self.add(5, "verified")
-    
+
         if user.follower:
             self.add(5, "follower")
         if user.following:
             self.add(5, "following")
         if user.is_retweet_more:
             self.add(25, "retweet more")
-    
+        if user.protected:
+            self.add(5, "protected")
+
+
         if user.is_reply_less:
             self.add(-10, "reply less")
         if user.is_do_not_retweet:
             self.add(-10, "do not retweet")
-    
+
         if user.is_possibly_bot:
             self.add(5, "possibly bot")
-    
+
+        if user.lang == "en-gb":
+            self.add(5, "the queens english")
+        elif user.lang == "en-US":
+            self.add(-5, "bloody yanks")
+        elif user.lang != "en":
+            self.add(-10, "bloody foreigners")
+
         if user.last_tweeted_at:
             delta = user.get_last_tweet_delta()
             if delta.days >= 60:
                 last_tweeted_score = -int(delta.days * 50 / 365)
                 self.add(last_tweeted_score, "last tweeted " + user.get_last_tweeted())
-            # TODO get_tweet_score
-            # user.get_tweet_score()
+
+        user_topics = self.get_user_topics(user)
+        if user_topics:
+            topics_score = self.get_score(user_topics)
+            self.extend(topics_score)
+
+        tweets = user.get_latest_tweets()
+        if tweets:
+            tweet_topics = self._get_tweet_topics(tweets)
+            if tweet_topics:
+                tweet_score = self.get_score(tweet_topics)
+                self.extend(tweet_score)
 
     def __str__(self):
         return str(self._scores)
@@ -71,6 +95,46 @@ class UserScore(object):
     def total(self):
         return self._scores["total"]
 
+    def _get_tweet_topics(self, tweets):
+        if tweets:
+            topic_text = os.linesep.join(map(lambda t: " " + t.text, tweets))
+            if topic_text:
+                topics = topichelper.get_topics(topic_text)
+                return topics
+
+    def get_user_topics(self, user):
+        topic_text = ""
+        if user.name:
+            topic_text += user.name
+        if user.screen_name:
+            topic_text += " " + user.screen_name
+        if user.description:
+            topic_text += " " + user.description
+
+        topics = topichelper.get_topics(topic_text)
+        return topics
+
+    def extend(self, topics_score):
+        if topics_score:
+            for k, v in topics_score.items():
+                self.add(v, k)
+
+    def get_score(self, topics):
+        user_score = {}
+        if topics:
+            for topic in topics.list():
+                if "definite_matches" in topic:
+                    definite_score = 5 * topic["score"] * len(topic["definite_matches"])
+                    definite_description = "topic: " + topic["topic"] \
+                                           + ", definite_matches: " + str(topic["definite_matches"])
+                    user_score[definite_description] = definite_score
+                if "possible_matches" in topic:
+                    possible_score = topic["score"] * len(topic["possible_matches"])
+                    possible_description = "topic: " + topic["topic"] \
+                                           + " possible_matches: " + str(topic["possible_matches"])
+                    user_score[possible_description] = possible_score
+            return user_score
+
 
 class User(object):
     def __init__(self, data, identity):
@@ -85,6 +149,12 @@ class User(object):
         self.profile_banner_url = data.get("profile_banner_url")
         if self.profile_banner_url:
             self.profile_banner_url += "/300x100"
+        self.created_at = dateutil.parser.parse(data.get("created_at"))
+        self.entities = data.get("entities")  # TODO get mentions/display urls
+        self.lang = data.get("lang")
+        self.time_zone = data.get("time_zone")
+        self.utc_offset = data.get("utc_offset")
+
         self.identity = identity
         self.is_me = bool(self.screen_name == identity.screen_name)
 
@@ -98,6 +168,7 @@ class User(object):
         self.friends_count = parse_int(data.get("friends_count"))
         self.followers_count = parse_int(data.get("followers_count"))
         self.statuses_count = parse_int(data.get("statuses_count"))
+        self.listed_count = parse_int(data.get("listed_count"))
 
         self.updated = None
 
@@ -115,13 +186,16 @@ class User(object):
         self.flags = ""
 
         status = data.get("status")
+        self.status = None
+        if status:
+            self.status = IncomingTweet(status, self.identity)
 
         self.last_tweeted_at = None
-        if status:
-            self.last_tweeted_at = dateutil.parser.parse(status.get("created_at"))
+        if self.status:
+            self.last_tweeted_at = self.status.created_at
 
         self._latest_tweets = []
-        self._user_score = None
+        self.user_score = None
 
     def update_flags(self):
         self.flags = ""
@@ -180,12 +254,20 @@ class User(object):
         text = self.short_description() + " " + self.profile_url
         if self.description:
             text += os.linesep + "description: " + self.description.replace(os.linesep, " ")
+        if self.status:
+            text += os.linesep + "status: " + self.status.display()
+        if self.lang:
+            text += os.linesep + "lang: " + self.lang
         if self.location:
             text += os.linesep + "location: " + self.location
+        if self.time_zone:
+            text += os.linesep + "time_zone: " + self.time_zone
+        if self.utc_offset:
+            text += os.linesep + "utc_offset: " + self.location
         if self.last_tweeted_at:
             text += os.linesep + "last tweeted {} ago".format(self.get_last_tweeted())
-        if self._self:
-            text += os.linesep + "user score: " + str(self._self)
+        if self.user_score:
+            text += os.linesep + "user score: " + str(self.user_score)
 
         return text
 
@@ -197,54 +279,23 @@ class User(object):
         self.is_awesome_bot = "Awesome Bots" in list_memberships
         self.is_friend = "Friends" in list_memberships
 
-    def _get_latest_tweets(self):
+    def get_latest_tweets(self):
         # todo invalidate cache
         if not self._latest_tweets:
+            logger.debug("getting tweets")
             tweets = self.identity.twitter.get_user_timeline(user_id=self.id_str)
+            logger.debug("tweets = {}".format(tweets))
             if tweets:
                 self._latest_tweets = list(map(lambda t: IncomingTweet(t, self.identity), tweets))
         return self._latest_tweets
 
-    def _get_topic_text(self):
-        topic_text = ""
-        if self.name:
-            topic_text += self.name
-        if self.screen_name:
-            topic_text += " " + self.screen_name
-        if self.description:
-            topic_text += " " + self.description
-
-        topic_text += os.linesep
-        tweets = self._get_latest_tweets()
-        # wtf why needed
-        self._latest_tweets = tweets
-        if tweets:
-            tweets_text = map(lambda t: " " + t.text, tweets)
-            topic_text += os.linesep.join(tweets_text)
-        return topic_text
-
     def get_user_score(self):
-        if not self._user_score:
+        if not self.user_score:
             # todo update
-            self._user_score = UserScore(self)
+            user_score = UserScore(self)
+            self.user_score = user_score
 
-        return self._user_score
-
-    def get_tweet_score(self):
-
-        topics = topichelper.get_topics(self._get_topic_text())
-        if topics:
-            for topic in topics.list():
-                if "definite_matches" in topic:
-                    definite_score = 5 * topic["score"] * len(topic["definite_matches"])
-                    definite_description = "topic: " + topic["topic"] \
-                                           + ", definite_matches: " + str(topic["definite_matches"])
-                    user_score.add(definite_score, definite_description)
-                if "possible_matches" in topic:
-                    possible_score = topic["score"] * len(topic["possible_matches"])
-                    possible_description = "topic: " + topic["topic"] \
-                                           + " possible_matches: " + str(topic["possible_matches"])
-                    user_score.add(possible_score, possible_description)
+        return self.user_score
 
 
 if __name__ == '__main__':
@@ -260,6 +311,6 @@ if __name__ == '__main__':
         print("-" * 80)
         user.get_user_score()
         print("user: " + user.long_description())
-        # print("tweets: " + os.linesep.join(map(lambda t: t.description(), user._get_latest_tweets())))
+        # print("tweets: " + os.linesep.join(map(lambda t: t.description(), user.get_latest_tweets())))
         # print("follower score: " + str(user.get_follower_score()))
         # print("following score: " + str(user.get_following_score()))

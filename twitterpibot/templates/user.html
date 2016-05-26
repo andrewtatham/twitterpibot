@@ -4,17 +4,30 @@
         <img src="[[user.profile_image_url]]">
         <strong>[[user.name]]</strong><br>
         <a href="[[user.profile_url]]" target="_blank">@[[user.screen_name]]</a> <strong>[[user.flags]]</strong><br>
-        <em>[[user.description]]</em>
-        <div><span class="glyphicon glyphicon-map-marker"></span> [[user.location]]</div>
+        <em><span class="glyphicon glyphicon-info-sign"></span> [[user.description]]</em>
         <div><span class="glyphicon glyphicon-link"></span> <a href="[[user.url]]" target="_blank">[[user.url]]</a></div>
+        <div><span class="glyphicon glyphicon-map-marker"></span> [[user.location]]</div>
+        <div><span class="glyphicon glyphicon-comment"></span> [[user.lang]]</div>
+        <div><span class="glyphicon glyphicon-globe"></span> [[user.time_zone]]</div>
+        <div><span class="glyphicon glyphicon-time"></span> [[user.utc_offset]]</div>
+        <div><span class="glyphicon glyphicon glyphicon-calendar"></span> [[user.created_at]]</div>
     </div>
 </td>
 <td>
-    Last tweeted:
-    <div>[[user.last_tweeted_at]] [[user.last_tweeted]]</div>
-    Tweets: [[user.latest_tweets]]
+
+    <div>Last tweeted: [[user.last_tweeted_at]] [[user.last_tweeted]]</div>
+    <div>Status: [[user.status]]</div>
+    <div>Latest Tweets:
+        <ul>
+            <li ng-repeat="tweet in user.latest_tweets">
+                [[tweet.text]]
+
+            </li>
+        </ul>
+
+    </div>
 </td>
-<td>[[user.score]]</td>
+<td>[[user.user_score]]</td>
 <td>
     <div class="btn-group btn-group-sm btn-group-vertical">
         <button type="button" class="btn btn-primary"

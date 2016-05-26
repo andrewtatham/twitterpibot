@@ -91,22 +91,19 @@ class Users(object):
         return self._followers
 
     def score_users(self, n=None):
-        user_ids = list(self._users)
-        random.shuffle(user_ids)
+        users_without_scores = list(filter(lambda u: not u.user_score, list(self._users.values())))
+        random.shuffle(users_without_scores)
         if n:
-            user_ids = user_ids[:n]
-        for user_id in user_ids:
-            if not self._users[user_id]._user_score:
-                user_score = self._users[user_id].get_user_score()
-                # todo should not be needed
-                self._users[user_id]._user_score = user_score
+            users_without_scores = users_without_scores[:n]
+        for user in users_without_scores:
+            user.get_user_score()
 
-        users_with_scores = list(filter(lambda u: u._user_score, list(self._users.values())))
+        users_with_scores = list(filter(lambda u: u.user_score, list(self._users.values())))
         return len(users_with_scores)
 
     def get_leaderboard(self, n=3):
-        users_with_scores = list(filter(lambda u: u._user_score, list(self._users.values())))
-        users_with_scores.sort(key=lambda u: u._user_score.total())
+        users_with_scores = list(filter(lambda u: u.user_score, list(self._users.values())))
+        users_with_scores.sort(key=lambda u: u.user_score.total())
         worst = users_with_scores[:n]
         best = users_with_scores[-n:]
         logger.info("USER LEADERBOARD")

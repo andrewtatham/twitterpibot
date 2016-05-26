@@ -24,13 +24,9 @@ app.controller( 'MainCtrl', function($scope, $http) {
         });
     };
     $scope.getIdentities = function(){
-      $http.get('identities').then(function(response) {
-
-
-        $scope.identities = response.data.identities;
-
+        $http.get('identities').then(function(response) {
+            $scope.identities = response.data.identities;
         });
-
     };
     $scope.getIdentity = function(id_str){
         $http.get('identity/' + id_str).then(function(response) {

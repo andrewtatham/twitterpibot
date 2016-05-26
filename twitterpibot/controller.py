@@ -20,10 +20,21 @@ def set_identities(identities):
 
 
 def get_tweet_dto(tweet):
-    tweet_dto = {
-        "text": tweet.text
-    }
-    return tweet_dto
+    if tweet:
+        tweet_dto = {
+            "text": tweet.text
+        }
+        return tweet_dto
+
+
+def get_tweets_dto(tweets):
+    if tweets:
+        return list(map(get_tweet_dto, tweets))
+
+
+def get_user_score_dto(user_score):
+    if user_score:
+        return user_score._scores
 
 
 def get_user_dto(user):
@@ -34,28 +45,33 @@ def get_user_dto(user):
         "description": user.description,
         "flags": user.flags,
         "url": user.url,
+        "lang": user.lang,
+        "time_zone": user.time_zone,
+        "utc_offset": user.utc_offset,
+        "created_at": user.created_at,
         "profile_image_url": user.profile_image_url,
         "profile_banner_url": user.profile_banner_url,
         "location": user.location,
         "profile_url": user.profile_url,
         "last_tweeted_at": user.last_tweeted_at,
         "last_tweeted": user.get_last_tweeted(),
+        "status": get_tweet_dto(user.status),
+        "latest_tweets": get_tweets_dto(user.get_latest_tweets()),
+        "user_score": get_user_score_dto(user.get_user_score()),
 
     }
-    if user._latest_tweets:
-        user_dto["latest_tweets"] = list(map(get_tweet_dto, user._latest_tweets))
-    if user._user_score:
-        user_dto["score"] = user._user_score._scores
+
     # todo availiable actions e.g. can follow, unfollow, block, report etc - enable/disable buttons
     return user_dto
 
 
 def _filter_users(users):
-    return list(filter(lambda u: u._user_score, users))
+    return users
+    return list(filter(lambda u: u.user_score, users))
 
 
 def _sort_users(users):
-    users.sort(key=lambda u: u._user_score._scores["total"])
+    users.sort(key=lambda u: u.user_score.total() if u.user_score else 0)
     return users
 
 
@@ -68,10 +84,15 @@ def get_users_dto(users):
     followers = set(users.get_followers())
     all = set(users._users.keys())
 
-    following_followers = users.get_users(following.intersection(followers), lookup=False)
-    following_only = users.get_users(following.difference(followers), lookup=False)
-    followers_only = users.get_users(followers.difference(following), lookup=False)
-    others = users.get_users(all.difference(following.union(followers)), lookup=False)
+    following_followers = following.intersection(followers)
+    following_only = following.difference(followers)
+    followers_only = followers.difference(following)
+    others = all.difference(following.union(followers))
+
+    following_followers = users.get_users(following_followers, lookup=False)
+    following_only = users.get_users(following_only, lookup=False)
+    followers_only = users.get_users(followers_only, lookup=False)
+    others = users.get_users(others, lookup=False)
 
     following_followers = _map_users(_sort_users(_filter_users(following_followers)))
     following_only = _map_users(_sort_users(_filter_users(following_only)))
@@ -117,7 +138,6 @@ def get_identity_dto(identity):
         "profile_url": identity.profile_url,
         "profile_banner_url": identity.profile_banner_url,
         "profile_image_url": identity.profile_image_url,
-
 
         "following_count": identity.following_count,
         "followers_count": identity.followers_count,

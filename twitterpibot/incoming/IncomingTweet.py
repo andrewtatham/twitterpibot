@@ -3,6 +3,7 @@ import logging
 import os
 from itertools import cycle
 
+import dateutil.parser
 from colorama import Fore, Style
 
 from twitterpibot.incoming.InboxItem import InboxItem
@@ -38,6 +39,7 @@ class IncomingTweet(InboxItem):
         self.id_str = data.get("id_str")
         self.favorited = bool(data.get("favorited"))
         self.retweeted = bool(data.get("retweeted"))
+        self.created_at = dateutil.parser.parse(data.get("created_at"))
         self.in_reply_to_id_str = data.get("in_reply_to_status_id_str")
         self.mentions = []
         self.urls = []
