@@ -47,7 +47,6 @@ class UserScore(object):
         if user.protected:
             self.add(5, "protected")
 
-
         if user.is_reply_less:
             self.add(-10, "reply less")
         if user.is_do_not_retweet:
@@ -142,21 +141,25 @@ class User(object):
         self.id_str = data.get("id_str")
         self.name = data.get("name")
         self.screen_name = data.get("screen_name")
-        self.profile_url = "https://twitter.com/" + self.screen_name
+        self.profile_url = "https://twitter.com/" + str(self.screen_name)
         self.description = data.get("description")
         self.url = data.get("url")
         self.profile_image_url = data.get("profile_image_url")
         self.profile_banner_url = data.get("profile_banner_url")
         if self.profile_banner_url:
             self.profile_banner_url += "/300x100"
-        self.created_at = dateutil.parser.parse(data.get("created_at"))
+
+        self.created_at = data.get("created_at")
+        if self.created_at:
+            self.created_at = dateutil.parser.parse(self.created_at)
+
         self.entities = data.get("entities")  # TODO get mentions/display urls
         self.lang = data.get("lang")
         self.time_zone = data.get("time_zone")
         self.utc_offset = data.get("utc_offset")
 
         self.identity = identity
-        self.is_me = bool(self.screen_name == identity.screen_name)
+        self.is_me = identity and bool(self.screen_name == identity.screen_name)
 
         self.following = bool(data.get("following"))
         self.follower = bool(data.get("following"))
@@ -297,6 +300,10 @@ class User(object):
             self.user_score = user_score
 
         return self.user_score
+
+    def is_inactive(self):
+        delta = self.get_last_tweet_delta()
+        return delta and delta > datetime.timedelta(365)
 
 
 if __name__ == '__main__':

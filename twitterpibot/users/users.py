@@ -158,6 +158,42 @@ class Users(object):
         if user_id in self._users:
             self._users.pop(user_id, None)
 
+    def _get_unfollowed_list_members(self, list_names):
+        to_follow = set()
+        for list_name in list_names:
+            if list_name in self._lists._sets:
+                list_members = self._lists._sets[list_name]
+                if list_members and self._following:
+                    to_follow.update(list_members.difference(self._following))
+        return to_follow
+
+    def _get_subscribed_list_members(self):
+        members = set()
+        subscriptions = self._identity.twitter.get_list_subscriptions()
+        for subscribed_list in subscriptions["lists"]:
+            subscribed_list_members = self._identity.twitter.get_list_members(list_id=subscribed_list["id_str"])
+            ids = set(map(lambda usr: usr["id_str"], subscribed_list_members["users"]))
+            members.update(ids)
+        return members
+
+    def _get_followed_subscribed_list_members(self):
+        followed = set()
+        members = self._get_subscribed_list_members()
+        if members and self._following:
+            followed.update(members.intersection(self._following))
+        return followed
+
+    def _get_unfollowed_subscribed_list_members(self):
+        unfollowed = set()
+        members = self._get_subscribed_list_members()
+        if members and self._following:
+            unfollowed.update(members.difference(self._following))
+        return unfollowed
+
+    def _get_followed_inactive(self):
+        inactive = set([id_str for id_str, user in self._users.items() if user.is_inactive()])
+        return self._following.intersection(inactive)
+
 
 if __name__ == '__main__':
     import identities

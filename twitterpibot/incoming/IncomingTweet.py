@@ -23,7 +23,7 @@ class dynamic(object):
 
 
 class IncomingTweet(InboxItem):
-    def __init__(self, data, identity, skip_user = False):
+    def __init__(self, data, identity, skip_user=False):
         # https://dev.twitter.com/overview/api/tweets
 
         super(IncomingTweet, self).__init__(data, identity)
@@ -40,7 +40,9 @@ class IncomingTweet(InboxItem):
         self.id_str = data.get("id_str")
         self.favorited = bool(data.get("favorited"))
         self.retweeted = bool(data.get("retweeted"))
-        self.created_at = dateutil.parser.parse(data.get("created_at"))
+        self.created_at = data.get("created_at")
+        if self.created_at:
+            self.created_at = dateutil.parser.parse(self.created_at)
         self.in_reply_to_id_str = data.get("in_reply_to_status_id_str")
         self.mentions = []
         self.urls = []

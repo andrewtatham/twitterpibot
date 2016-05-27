@@ -1,6 +1,7 @@
 import logging
 import random
 
+import datetime
 from apscheduler.triggers.interval import IntervalTrigger
 
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
@@ -8,9 +9,9 @@ from twitterpibot.schedule.ScheduledTask import ScheduledTask
 logger = logging.getLogger(__name__)
 
 
-class FollowScheduledTask(ScheduledTask):
+class ManageUsersScheduledTask(ScheduledTask):
     def __init__(self, identity):
-        super(FollowScheduledTask, self).__init__(identity)
+        super(ManageUsersScheduledTask, self).__init__(identity)
         self.to_follow = []
         self.to_unfollow = []
         self.to_block = []
@@ -20,37 +21,7 @@ class FollowScheduledTask(ScheduledTask):
         return IntervalTrigger(hours=random.randint(3, 6), minutes=random.randint(0, 59))
         # return IntervalTrigger(minutes=3)
 
-    def _get_unfollowed_list_members(self, list_names):
-        to_follow = set()
-        for list_name in list_names:
-            if list_name in self.identity.users._lists._sets:
-                list_members = self.identity.users._lists._sets[list_name]
-                if list_members and self.identity.users._following:
-                    to_follow.update(list_members.difference(self.identity.users._following))
-        return to_follow
 
-    def _get_subscribed_list_members(self):
-        members = set()
-        subscriptions = self.identity.twitter.get_list_subscriptions()
-        for subscribed_list in subscriptions["lists"]:
-            subscribed_list_members = self.identity.twitter.get_list_members(list_id=subscribed_list["id_str"])
-            ids = set(map(lambda usr: usr["id_str"], subscribed_list_members["users"]))
-            members.update(ids)
-        return members
-
-    def _get_followed_subscribed_list_members(self):
-        followed = set()
-        members = self._get_subscribed_list_members()
-        if members and self.identity.users._following:
-            followed.update(members.intersection(self.identity.users._following))
-        return followed
-
-    def _get_unfollowed_subscribed_list_members(self):
-        unfollowed = set()
-        members = self._get_subscribed_list_members()
-        if members and self.identity.users._following:
-            unfollowed.update(members.difference(self.identity.users._following))
-        return unfollowed
 
     def _get_to_follow(self):
         to_follow = set()
@@ -65,10 +36,9 @@ class FollowScheduledTask(ScheduledTask):
 
     def _get_to_unfollow(self):
         to_unfollow = set()
+        to_unfollow.update(self.identity.users._get_followed_subscribed_list_members())
+        to_unfollow.update(self.identity.users._get_followed_inactive(datetime.timedelta))
 
-        to_unfollow.update(self._get_followed_subscribed_list_members())
-        # todo unfollow
-        # inactive > 1 year
         # japanese/non english
 
         to_unfollow = list(to_unfollow)
@@ -105,6 +75,7 @@ class FollowScheduledTask(ScheduledTask):
             for i in range(random.randint(1, 10)):
                 if self.to_unfollow:
                     self.identity.users.unfollow(user_id=self.to_unfollow.pop())
+
 
 
 class GetUsersScheduledTask(ScheduledTask):
@@ -148,8 +119,7 @@ class ScoreUsersScheduledTask(ScheduledTask):
     def on_run(self):
 
         calls_remaining = self.identity.twitter.rates.get("/statuses/user_timeline")
-        batch_size = int(calls_remaining / 3)  # 1 user per call, but only use 1/3 allowance
-
+        batch_size = int(calls_remaining / 10)
         no_of_scores = self.identity.users.score_users(batch_size)
         # if no_of_scores > 10:
         #     self.identity.users.get_leaderboard(10)

@@ -31,7 +31,7 @@ from twitterpibot.schedule.SongScheduledTask import SongScheduledTask
 from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
 from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
 from twitterpibot.schedule.WikipediaScheduledTask import WikipediaScheduledTask
-from twitterpibot.schedule.common.usersscheduledtasks import FollowScheduledTask, ScoreUsersScheduledTask, \
+from twitterpibot.schedule.common.usersscheduledtasks import ManageUsersScheduledTask, ScoreUsersScheduledTask, \
     GetUsersScheduledTask
 from twitterpibot.schedule.common.IdentityMonitorScheduledTask import IdentityMonitorScheduledTask
 from twitterpibot.schedule.common.LightsScheduledTask import LightsScheduledTask
@@ -126,7 +126,7 @@ class BotIdentity(Identity):
             IdentityMonitorScheduledTask(self),
             UserListsScheduledTask(self, self.admin_identity),
             SubscribedListsScheduledTask(self, self.admin_identity),
-            FollowScheduledTask(self),
+            ManageUsersScheduledTask(self),
 
         ])
         return jobs

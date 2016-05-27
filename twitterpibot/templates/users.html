@@ -24,7 +24,13 @@
     <div id="[[identity.screen_name]]_users_following_followers" role="tabpanel" class="tab-pane active">
         <h4>following_followers:</h4>
         <table class="table">
-            <tr ng-repeat="user in identity.users.following_followers">
+            <tr ng-repeat="user in identity.users.following_followers.top">
+                {% include "user.html" %}
+            </tr>
+        </table>
+        <hr>
+        <table class="table">
+            <tr ng-repeat="user in identity.users.following_followers.bottom">
                 {% include "user.html" %}
             </tr>
         </table>
@@ -32,7 +38,13 @@
     <div id="[[identity.screen_name]]_users_following_only" role="tabpanel" class="tab-pane">
         <h4>following_only:</h4>
         <table class="table">
-            <tr ng-repeat="user in identity.users.following_only">
+            <tr ng-repeat="user in identity.users.following_only.top">
+                {% include "user.html" %}
+            </tr>
+        </table>
+        <hr>
+        <table class="table">
+            <tr ng-repeat="user in identity.users.following_only.bottom">
                 {% include "user.html" %}
             </tr>
         </table>
@@ -40,7 +52,14 @@
     <div id="[[identity.screen_name]]_users_followers_only" role="tabpanel" class="tab-pane">
         <h4>followers_only:</h4>
         <table class="table">
-            <tr ng-repeat="user in identity.users.followers_only">
+            <tr ng-repeat="user in identity.users.followers_only.top">
+                {% include "user.html" %}
+            </tr>
+
+        </table>
+        <hr>
+        <table class="table">
+            <tr ng-repeat="user in identity.users.followers_only.bottom">
                 {% include "user.html" %}
             </tr>
         </table>
@@ -48,7 +67,13 @@
     <div id="[[identity.screen_name]]_users_others" role="tabpanel" class="tab-pane">
         <h4>others:</h4>
         <table class="table">
-            <tr ng-repeat="user in identity.users.others">
+            <tr ng-repeat="user in identity.users.others.top">
+                {% include "user.html" %}
+            </tr>
+        </table>
+        <hr>
+        <table class="table">
+            <tr ng-repeat="user in identity.users.others.bottom">
                 {% include "user.html" %}
             </tr>
         </table>

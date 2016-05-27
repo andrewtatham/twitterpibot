@@ -74,8 +74,18 @@ def _sort_users(users):
     return users
 
 
-def _map_users(users):
+def _map_users_all(users):
     return list(map(get_user_dto, users))
+
+
+def _map_users_top_bottom(users, n=3):
+    bottom = users[:n]
+    top = users[-n:]
+
+    return {
+        "bottom": list(map(get_user_dto, bottom)),
+        "top": list(map(get_user_dto, top)),
+    }
 
 
 def get_users_dto(users):
@@ -93,10 +103,10 @@ def get_users_dto(users):
     followers_only = users.get_users(followers_only, lookup=False)
     others = users.get_users(others, lookup=False)
 
-    following_followers = _map_users(_sort_users(_filter_users(following_followers)))
-    following_only = _map_users(_sort_users(_filter_users(following_only)))
-    followers_only = _map_users(_sort_users(_filter_users(followers_only)))
-    others = _map_users(_sort_users(_filter_users(others)))
+    following_followers = _map_users_top_bottom(_sort_users(_filter_users(following_followers)))
+    following_only = _map_users_top_bottom(_sort_users(_filter_users(following_only)))
+    followers_only = _map_users_top_bottom(_sort_users(_filter_users(followers_only)))
+    others = _map_users_top_bottom(_sort_users(_filter_users(others)))
 
     dto = {
         "following_followers": following_followers,
