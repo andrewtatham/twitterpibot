@@ -127,7 +127,7 @@ class GoodTopic(Topic):
             retweet=True,
             reply=True,
             stream=True,
-            score=1)
+            score=2)
 
 
 class IgnoreTopic(Topic):
@@ -171,7 +171,7 @@ class NewsTopic(Topic):
             retweet=True,
             reply=False,
             stream=True,
-        score=0)
+            score=0)
 
 
 class BadTopic(Topic):
@@ -194,7 +194,7 @@ class BadTopic(Topic):
             reply=False,
             stream=False,
             spam=False,
-            score=-5)
+            score=-1)
 
 
 class SpamTopic(Topic):
@@ -217,4 +217,4 @@ class SpamTopic(Topic):
             reply=False,
             stream=False,
             spam=True,
-            score=-1)
+            score=-5)

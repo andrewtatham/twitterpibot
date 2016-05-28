@@ -12,8 +12,10 @@ logger = logging.getLogger(__name__)
 class ManageUsersScheduledTask(ScheduledTask):
     def __init__(self, identity):
         super(ManageUsersScheduledTask, self).__init__(identity)
-        self.to_follow = []
-        self.to_unfollow = []
+        self.to_follow_set = {}
+        self.to_follow_list = []
+        self.to_unfollow_set = {}
+        self.to_unfollow_list = []
         self.to_block = []
         self.to_report = []
 
@@ -21,61 +23,58 @@ class ManageUsersScheduledTask(ScheduledTask):
         return IntervalTrigger(hours=random.randint(3, 6), minutes=random.randint(0, 59))
         # return IntervalTrigger(minutes=3)
 
-
-
     def _get_to_follow(self):
         to_follow = set()
         # todo get high scoring users and follow
         # to_follow.update(
         #     self._get_unfollowed_list_members(list_names=["Friends", "Awesome Bots", "Retweet More"]))
         # to_follow.update(self._get_unfollowed_subscribed_list_members())
-        to_follow = list(to_follow)
-        logger.info("To follow %s users" % len(to_follow))
-        random.shuffle(to_follow)
+
         return to_follow
 
     def _get_to_unfollow(self):
         to_unfollow = set()
         to_unfollow.update(self.identity.users._get_followed_subscribed_list_members())
-        to_unfollow.update(self.identity.users._get_followed_inactive(datetime.timedelta))
-
-        # japanese/non english
-
-        to_unfollow = list(to_unfollow)
-        logger.info("To unfollow %s users" % len(to_unfollow))
-        random.shuffle(to_unfollow)
+        to_unfollow.update(self.identity.users._get_followed_inactive())
         return to_unfollow
 
+    @staticmethod
+    def _set_to_shuffled_list(a_set):
+        a_list = list(a_set)
+        random.shuffle(a_list)
+        return a_list
+
     def on_run(self):
-        self._unfollow()
         # todo block/report
         # smut spam bots
         # biz spam bots
 
-        self._follow()
+        if not self.to_unfollow_list:
+            self.to_unfollow_set = self._get_to_unfollow()
+        if not self.to_follow_list:
+            self.to_follow_set = self._get_to_follow()
 
-    def _follow(self):
-        can_follow = len(self.identity.users._followers) < 4500
-        if can_follow:
-            if not self.to_follow:
-                self.to_follow = self._get_to_follow()
+        if self.to_unfollow_set and not self.to_unfollow_list:
+            self.to_unfollow_list = self._set_to_shuffled_list(self.to_unfollow_set)
+            logger.info("To unfollow %s users" % len(self.to_unfollow_list))
+        if self.to_follow_set and not self.to_follow_list:
+            self.to_follow_list = self._set_to_shuffled_list(self.to_follow_set.difference(self.to_unfollow_set))
+            logger.info("To follow %s users" % len(self.to_follow_list))
 
-            if self.to_follow:
-                for i in range(random.randint(1, 10)):
-                    if self.to_follow:
-                        user_id = self.to_follow.pop()
-                        user = self.identity.users.get_user(user_id=user_id)
-                        if user and not user.is_me and not user.follow_request_sent:
-                            self.identity.users.follow(user_id=user_id)
-
-    def _unfollow(self):
-        if not self.to_unfollow:
-            self.to_unfollow = self._get_to_unfollow()
-        if self.to_unfollow:
+        if self.to_unfollow_list:
             for i in range(random.randint(1, 10)):
-                if self.to_unfollow:
-                    self.identity.users.unfollow(user_id=self.to_unfollow.pop())
+                if self.to_unfollow_list:
+                    self.identity.users.unfollow(user_id=self.to_unfollow_list.pop())
 
+        can_follow = len(self.identity.users._followers) < 4500
+
+        if self.to_follow_list and can_follow:
+            for i in range(random.randint(1, 10)):
+                if self.to_follow_list:
+                    user_id = self.to_follow_list.pop()
+                    user = self.identity.users.get_user(user_id=user_id)
+                    if user and not user.is_me and not user.follow_request_sent:
+                        self.identity.users.follow(user_id=user_id)
 
 
 class GetUsersScheduledTask(ScheduledTask):
@@ -117,7 +116,6 @@ class ScoreUsersScheduledTask(ScheduledTask):
         return IntervalTrigger(minutes=random.randint(5, 7))
 
     def on_run(self):
-
         calls_remaining = self.identity.twitter.rates.get("/statuses/user_timeline")
         batch_size = int(calls_remaining / 10)
         no_of_scores = self.identity.users.score_users(batch_size)

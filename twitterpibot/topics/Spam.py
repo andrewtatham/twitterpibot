@@ -1,11 +1,5 @@
 from twitterpibot.topics.Topic import SpamTopic
-#
-#
-# class TooKeen(SpamTopic):
-#     def __init__(self):
-#         super(TooKeen, self).__init__(
-#             ["(follow|DM|join|retweet|contact) (me|us|back|now)"]
-#         )
+
 class SmutSpamSpecific(SpamTopic):
     def __init__(self):
         super(SmutSpamSpecific, self).__init__(
@@ -23,7 +17,7 @@ class SmutSpamGeneral(SpamTopic):
     def __init__(self):
         super(SmutSpamGeneral, self).__init__(
             ["kinky", "frisky", "cum", "horny", "housewi(fe|ves?)", "boobs?", "tits?", "puss(y|ies)",
-             "milf", "hoes?", "boot(y|ies)", "18\+", "slut", "bitch",
+             "milf", "hoes?", "boot(y|ies)", "18 ?\+", "slut", "bitch",
              "dildo"],
             ["latina", "sexy", "ass", "dirty", "naked", "naughty", "bored", "teen", "sex", "xxx", "babe",
              "blonde", "redhead", "brunette"]
@@ -34,14 +28,32 @@ class BizSpam(SpamTopic):
     def __init__(self):
         super(BizSpam, self).__init__(
             [
-                "Buy followers","therealstrategy"
+
                  "NOW HIRING",
                 "per hour jobs",
                 "Learn more",
                 "Apply now",
-                "Discount Ray Ban sunglasses",
+
             ]
         )
+
+class BuyFollowers(SpamTopic):
+    def __init__(self):
+        super(BuyFollowers, self).__init__({
+            "Buy followers"
+        })
+class RayBanSunglasses(SpamTopic):
+    def __init__(self):
+        super(RayBanSunglasses, self).__init__({
+            "Discount Ray Ban sunglasses"
+        })
+
+
+class TheRealStrategy(SpamTopic):
+    def __init__(self):
+        super(TheRealStrategy, self).__init__({
+            "The Real Strategy", "TheRealStrategy\.com"
+        })
 
 #
 # class Clickbait(SpamTopic):
@@ -70,5 +82,8 @@ def get():
         SmutSpamSpecific(),
         SmutSpamGeneral(),
         BizSpam(),
+        BuyFollowers(),
+        RayBanSunglasses(),
+        TheRealStrategy(),
         # Clickbait()
     ]
