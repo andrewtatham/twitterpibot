@@ -1,4 +1,4 @@
-from twitterpibot.topics.Topic import GoodTopic, IgnoreTopic, BadTopic
+from twitterpibot.topics.Topic import GoodTopic, IgnoreTopic
 
 
 class Swearing(GoodTopic):
@@ -16,10 +16,17 @@ class Racism(IgnoreTopic):
             "niggers?"
         })
 
+class Hippies(IgnoreTopic):
+    def __init__(self):
+        super(Hippies, self).__init__({
+            "Psychic",
+            "Spiritual Healer"
+        })
 
 
 def get():
     return [
         Swearing(),
-        Racism()
+        Racism(),
+        Hippies()
     ]

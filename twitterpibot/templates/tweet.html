@@ -1,0 +1,12 @@
+<div>[[tweet.id_str]]</div>
+<div>[[tweet.text]]</div>
+<div>
+    <ul>
+        <li ng-repeat="media in tweet.medias">
+            <a href="[[media.url]]" target="_blank">
+                <img src="[[media.thumbnail_url]]" height="150" width="150">
+                <!--[[media.url]]-->
+            </a>
+        </li>
+    </ul>
+</div>

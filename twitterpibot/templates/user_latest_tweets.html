@@ -1,0 +1,12 @@
+    <button data-toggle="collapse"
+            data-target="#[[identity.id_str]]_[[user.user_id]]_latest_tweets_collapse">Latest Tweets
+    </button>
+
+
+    <div id="[[identity.id_str]]_[[user.user_id]]_latest_tweets_collapse" class="collapse">
+        <ul>
+            <li ng-repeat="tweet in user.latest_tweets">
+                {% include "tweet.html" %}
+            </li>
+        </ul>
+    </div>

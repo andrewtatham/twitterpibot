@@ -8,8 +8,6 @@ folder = fsh.root + "twitterpibot" + os.sep + "images" + os.sep + "machines" + o
 fsh.ensure_directory_exists(folder)
 
 
-
-
 class Personality(object):
     def __init__(self, phrases, profile_image=None, banner_image=None, colour=None):
         self._phrases = phrases
@@ -51,7 +49,7 @@ class SkynetPersonality(Personality):
         ],
             profile_image="skynet_profile_1.jpg",
             banner_image="skynet_banner_1.jpg",
-            colour = "FF0000"
+            colour="FF0000"
         )
 
 

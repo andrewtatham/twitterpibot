@@ -5,7 +5,6 @@ import os
 from twitterpibot.logic import fsh
 
 
-
 def init():
     root_logger = logging.getLogger("")
     root_logger.setLevel(logging.DEBUG)
@@ -41,10 +40,10 @@ def init():
     root_logger.addHandler(console_log)
 
 
-
 class MuteFilter(logging.Filter):
     def filter(self, record):
         return False  # not record.msg.startswith('Running job')
+
 
 def mute_scheduler():
     logging.getLogger("apscheduler.scheduler").addFilter(MuteFilter())

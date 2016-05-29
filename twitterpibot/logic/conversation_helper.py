@@ -16,25 +16,32 @@ class Conversation(object):
         self._responses = []
 
     def incoming(self, inbox_item):
+
         if inbox_item.in_reply_to_id_str:
+            action = "replied"
             if inbox_item.in_reply_to_id_str in self.tweet_tree:
                 self.tweet_tree[inbox_item.in_reply_to_id_str].append(inbox_item.id_str)
             else:
                 self._ensure_root_id(inbox_item.in_reply_to_id_str)
                 self.tweet_tree[inbox_item.in_reply_to_id_str] = [inbox_item.id_str]
-            self.tweet_descriptions[inbox_item.id_str] = "incoming {} @{} replied {}".format(
-                inbox_item.sender.name,
-                inbox_item.sender.screen_name,
-                inbox_item.text)
+        elif inbox_item.quoted_status_id_str:
+            action = "quoted"
+            if inbox_item.quoted_status_id_str in self.tweet_tree:
+                self.tweet_tree[inbox_item.quoted_status_id_str].append(inbox_item.id_str)
+            else:
+                self._ensure_root_id(inbox_item.quoted_status_id_str)
+                self.tweet_tree[inbox_item.quoted_status_id_str] = [inbox_item.id_str]
 
         else:
-
+            action = "tweeted"
             self._ensure_root_id(inbox_item.id_str)
             self.tweet_tree[inbox_item.id_str] = []
-            self.tweet_descriptions[inbox_item.id_str] = "incoming {} @{} tweeted {}".format(
-                inbox_item.sender.name,
-                inbox_item.sender.screen_name,
-                inbox_item.text)
+
+        self.tweet_descriptions[inbox_item.id_str] = "incoming {} @{} {} {}".format(
+            inbox_item.sender.name,
+            inbox_item.sender.screen_name,
+            action,
+            inbox_item.text)
         self._updated = datetime.datetime.now()
 
         if self._responses:
@@ -62,20 +69,17 @@ class Conversation(object):
         self._updated = datetime.datetime.now()
 
     def display(self):
-
-        logger.debug("conversation {} length {}".format(self.conversation_key, self.length()))
-        logger.debug(pprint.pformat(self.tweet_tree))
+        text = []
         if self.root_id:
-            logger.debug("root id = " + str(self.root_id))
-            self._display(self.root_id)
+            self._display(self.root_id, level=0, text=text)
+        return os.linesep.join(text)
 
-    def _display(self, tweet_id, level=0):
-
+    def _display(self, tweet_id, level, text):
         desc = self.tweet_descriptions.get(tweet_id)
         if desc:
             desc = desc.replace(os.linesep, " ")
         line = ">" * level + " " + str(desc)
-        logger.info(line)
+        text.append(line)
         if tweet_id in self.tweet_tree:
             for child_id in self.tweet_tree[tweet_id]:
                 self._display(child_id, level + 1)
@@ -111,12 +115,17 @@ class ConversationHelper(object):
 
         elif inbox_item:
 
-            # todo, retweets, favourites, events esp favourited, DM's
+            # todo,  favourites, events esp favourited, DM's
             if inbox_item.is_tweet:
 
-                # todo quote tweets
                 if inbox_item.in_reply_to_id_str and inbox_item.in_reply_to_id_str in self._id_keys:
                     # replied
+                    return self._id_keys[inbox_item.in_reply_to_id_str]
+                elif inbox_item.quoted_status_id_str and inbox_item.quoted_status_id_str in self._id_keys:
+                    # quoted
+                    return self._id_keys[inbox_item.quoted_status_id_str]
+                elif inbox_item.in_reply_to_id_str and inbox_item.in_reply_to_id_str in self._id_keys:
+                    # retweeted
                     return self._id_keys[inbox_item.in_reply_to_id_str]
                 elif inbox_item.id_str in self._id_keys:
                     # incoming new (dont think this could happen?)
@@ -134,6 +143,7 @@ class ConversationHelper(object):
                 if outbox_item.in_reply_to_id_str and outbox_item.in_reply_to_id_str in self._id_keys:
                     # replied
                     return self._id_keys[outbox_item.in_reply_to_id_str]
+                # todo retweet/quote
                 else:
                     # outgoing new
                     key = "{} {}".format(self._identity.screen_name, outbox_item.id_str)

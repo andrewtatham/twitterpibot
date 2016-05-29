@@ -62,6 +62,15 @@ class TheRealStrategy(SpamTopic):
         })
 
 
+class TopNews(SpamTopic):
+    def __init__(self):
+        super(TopNews, self).__init__({
+            "gettopical\.com", "Follow us for the top .* news, curated by the Twitter community"
+        }, [
+            "Top News",
+        ])
+
+
 #
 # class Clickbait(SpamTopic):
 #     def __init__(self):
@@ -92,5 +101,6 @@ def get():
         BuyFollowers(),
         RayBanSunglasses(),
         TheRealStrategy(),
-        # Clickbait()
+        # Clickbait(),
+        TopNews()
     ]

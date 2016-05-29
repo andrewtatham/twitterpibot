@@ -82,7 +82,6 @@ class MorseCodeResponse(Response):
 
 if __name__ == '__main__':
 
-
     import identities
 
     logging.basicConfig(level=logging.DEBUG)

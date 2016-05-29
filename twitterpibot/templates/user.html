@@ -28,17 +28,8 @@
 
     <div>Last tweeted: [[user.last_tweeted_at]] [[user.last_tweeted]]</div>
     <div>Status: [[user.status]]</div>
-    <button data-toggle="collapse"
-            data-target="#[[identity.id_str]]_[[user.user_id]]_latest_tweets_collapse">Latest Tweets
-    </button>
-    <div id="[[identity.id_str]]_[[user.user_id]]_latest_tweets_collapse" class="collapse">
-        <ul>
-            <li ng-repeat="tweet in user.latest_tweets">
-                [[tweet.text]]
 
-            </li>
-        </ul>
-    </div>
+    {% include "user_latest_tweets.html" %}
 
 </td>
 <td>[[user.user_score]]</td>

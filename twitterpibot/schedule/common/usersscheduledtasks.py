@@ -1,7 +1,6 @@
 import logging
 import random
 
-import datetime
 from apscheduler.triggers.interval import IntervalTrigger
 
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
@@ -27,15 +26,15 @@ class ManageUsersScheduledTask(ScheduledTask):
         to_follow = set()
         # todo get high scoring users and follow
         # to_follow.update(
-        #     self._get_unfollowed_list_members(list_names=["Friends", "Awesome Bots", "Retweet More"]))
-        # to_follow.update(self._get_unfollowed_subscribed_list_members())
+        #     self.get_unfollowed_list_members(list_names=["Friends", "Awesome Bots", "Retweet More"]))
+        # to_follow.update(self.get_unfollowed_subscribed_list_members())
 
         return to_follow
 
     def _get_to_unfollow(self):
         to_unfollow = set()
-        to_unfollow.update(self.identity.users._get_followed_subscribed_list_members())
-        to_unfollow.update(self.identity.users._get_followed_inactive())
+        to_unfollow.update(self.identity.users.get_followed_subscribed_list_members())
+        to_unfollow.update(self.identity.users.get_followed_inactive())
         return to_unfollow
 
     @staticmethod
@@ -87,16 +86,11 @@ class GetUsersScheduledTask(ScheduledTask):
 
     def on_run(self):
         if not self._all_user_ids:
-            all_user_ids = set()
-            all_user_ids.update(self.identity.users.get_following())
-            all_user_ids.update(self.identity.users.get_followers())
-            all_user_ids = list(all_user_ids)
-            random.shuffle(all_user_ids)
-            self._all_user_ids = all_user_ids
+            self._all_user_ids = self.identity.users.get_uncached_user_ids()
 
         if self._all_user_ids:
             calls_remaining = self.identity.twitter.rates.get("/users/lookup")
-            batch_size = int(100 * calls_remaining / 3)  # 100 users per call, but only use 1/3 allowance
+            batch_size = int(100 * calls_remaining / 10)  # 100 users per call, but only use 1/3 allowance
             batch = []
             for _ in range(batch_size):
                 if self._all_user_ids:

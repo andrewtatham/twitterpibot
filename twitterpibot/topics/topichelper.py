@@ -2,7 +2,7 @@ import logging
 import pprint
 
 from twitterpibot.topics import Daily, Monthly, Annual, Politics, Sport, Entertainment, Celebrity, News, \
-    Technology, Regional, Spam, Competitions, misc, food, nature, science
+    Technology, Regional, Spam, Competitions, misc, food, nature, science, memes
 from twitterpibot.topics import religion
 from twitterpibot.topics import Corporate
 
@@ -32,6 +32,7 @@ _topics.extend(misc.get())
 _topics.extend(food.get())
 _topics.extend(nature.get())
 _topics.extend(science.get())
+_topics.extend(memes.get())
 
 for topic in _topics:
     logger.debug("Topic %s definite: %s",

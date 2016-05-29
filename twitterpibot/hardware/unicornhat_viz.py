@@ -65,7 +65,6 @@ def change_image(path):
 def close():
     global root
     global label
-    global image
     root = tkinter.Tk()
 
     label = tkinter.Label(root)

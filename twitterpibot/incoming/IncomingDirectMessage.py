@@ -31,4 +31,4 @@ class IncomingDirectMessage(InboxItem):
             self.recipient.short_description(),
             self.text
         )
-        logger.info(colour + text)
+        return colour + text

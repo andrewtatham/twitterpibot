@@ -26,7 +26,8 @@ class Topic(object):
                  reply=False,
                  stream=False,
                  spam=False,
-                 score=0
+                 score=0,
+                 except_regexes=None
                  ):
 
         self._retweet = retweet
@@ -36,9 +37,14 @@ class Topic(object):
         self._score = score
 
         self.definite_rx = _init_regex(definite_regexes)
+
         self.possible_rx = None
         if possible_regexes:
             self.possible_rx = _init_regex(possible_regexes)
+
+        self.except_rx = None
+        if except_regexes:
+            self.except_rx = _init_regex(except_regexes)
 
         self._init_date_range(from_date, to_date, on_date, on_date_range)
 
@@ -93,19 +99,19 @@ class Topic(object):
                             and self._from_month <= today.month <= self._to_month
 
         if not has_date_range or is_date_match:
-            definite_matches = [match.group(0) for match in self.definite_rx.finditer(text) if match]
-            if definite_matches:
-                result["definite_matches"] = definite_matches
-                return result
-            elif self.possible_rx:
-                possible_matches = [match.group(0) for match in self.possible_rx.finditer(text) if match]
-                if possible_matches:
-                    result["possible_matches"] = possible_matches
+            except_matches = None
+            if self.except_rx:
+                except_matches = [match.group(0) for match in self.except_rx.finditer(text) if match]
+            if not except_matches:
+                definite_matches = [match.group(0) for match in self.definite_rx.finditer(text) if match]
+                if definite_matches:
+                    result["definite_matches"] = definite_matches
                     return result
-                else:
-                    return None
-        else:
-            return None
+                elif self.possible_rx:
+                    possible_matches = [match.group(0) for match in self.possible_rx.finditer(text) if match]
+                    if possible_matches:
+                        result["possible_matches"] = possible_matches
+                        return result
 
 
 class GoodTopic(Topic):
@@ -115,7 +121,8 @@ class GoodTopic(Topic):
                  from_date=None,
                  to_date=None,
                  on_date=None,
-                 on_date_range=0
+                 on_date_range=0,
+                 except_regexes=None
                  ):
         super(GoodTopic, self).__init__(
             definite_regexes,
@@ -127,7 +134,8 @@ class GoodTopic(Topic):
             retweet=True,
             reply=True,
             stream=True,
-            score=2)
+            score=2,
+            except_regexes=except_regexes)
 
 
 class IgnoreTopic(Topic):
@@ -137,7 +145,8 @@ class IgnoreTopic(Topic):
                  from_date=None,
                  to_date=None,
                  on_date=None,
-                 on_date_range=0
+                 on_date_range=0,
+                 except_regexes=None
                  ):
         super(IgnoreTopic, self).__init__(
             definite_regexes,
@@ -149,7 +158,8 @@ class IgnoreTopic(Topic):
             retweet=False,
             reply=False,
             stream=False,
-            score=-1)
+            score=-1,
+            except_regexes=except_regexes)
 
 
 class NewsTopic(Topic):
@@ -159,7 +169,8 @@ class NewsTopic(Topic):
                  from_date=None,
                  to_date=None,
                  on_date=None,
-                 on_date_range=0
+                 on_date_range=0,
+                 except_regexes=None
                  ):
         super(NewsTopic, self).__init__(
             definite_regexes,
@@ -171,7 +182,8 @@ class NewsTopic(Topic):
             retweet=True,
             reply=False,
             stream=True,
-            score=0)
+            score=0,
+            except_regexes=except_regexes)
 
 
 class BadTopic(Topic):
@@ -181,7 +193,8 @@ class BadTopic(Topic):
                  from_date=None,
                  to_date=None,
                  on_date=None,
-                 on_date_range=0
+                 on_date_range=0,
+                 except_regexes=None
                  ):
         super(BadTopic, self).__init__(
             definite_regexes,
@@ -194,7 +207,8 @@ class BadTopic(Topic):
             reply=False,
             stream=False,
             spam=False,
-            score=-1)
+            score=-1,
+            except_regexes=except_regexes)
 
 
 class SpamTopic(Topic):
@@ -204,7 +218,8 @@ class SpamTopic(Topic):
                  from_date=None,
                  to_date=None,
                  on_date=None,
-                 on_date_range=0
+                 on_date_range=0,
+                 except_regexes=None
                  ):
         super(SpamTopic, self).__init__(
             definite_regexes,
@@ -217,4 +232,5 @@ class SpamTopic(Topic):
             reply=False,
             stream=False,
             spam=True,
-            score=-5)
+            score=-5,
+            except_regexes=except_regexes)

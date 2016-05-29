@@ -1,4 +1,4 @@
-from twitterpibot.topics.Topic import IgnoreTopic, NewsTopic
+from twitterpibot.topics.Topic import IgnoreTopic, NewsTopic, GoodTopic
 
 
 class FootballUK(IgnoreTopic):
@@ -74,7 +74,7 @@ class SportOther(IgnoreTopic):
         ])
 
 
-class FormulaOne(NewsTopic):
+class FormulaOne(GoodTopic):
     def __init__(self):
         super(FormulaOne, self).__init__({"F1", "Formula One"})
 

@@ -1,6 +1,7 @@
 import html
 import logging
 import os
+import pprint
 from itertools import cycle
 
 import dateutil.parser
@@ -22,6 +23,65 @@ class dynamic(object):
     pass
 
 
+class Media(object):
+    def __init__(self, data):
+        self._data = data
+        self.type = data["type"]
+        self.sizes = data["sizes"]
+        self.indices = data["indices"]
+
+        self.display_url = data["display_url"]
+        self.expanded_url = data["expanded_url"]
+        self.media_url_https = data["media_url_https"]
+        self.url = data["url"]
+
+    def __str__(self):
+        return pprint.pformat(self._data)
+
+    def short_description(self):
+        text = ""
+        text += self.display_url + " -> " + self.url
+        text += os.linesep + " [ " + self.expanded_url + " ]"
+        text += os.linesep + " L: " + self.get_large()
+        text += os.linesep + " M: " + self.get_medium()
+        text += os.linesep + " S: " + self.get_small()
+        text += os.linesep + " T: " + self.get_thumbnail()
+
+        return text
+
+    def get_large(self):
+        return self._get_size("large")
+
+    def get_medium(self):
+        return self._get_size("medium")
+
+    def get_small(self):
+        return self._get_size("small")
+
+    def get_thumbnail(self):
+        return self._get_size("thumb")
+
+    def _get_size(self, size):
+        if size in self.sizes:
+            return self.media_url_https + ":" + size
+        else:
+            return self.media_url_https
+
+
+class Medias(object):
+    def __init__(self, data):
+        self._data = data
+        self._medias = []
+        for media in data:
+            self._medias.append(Media(media))
+
+    def __str__(self):
+        return pprint.pformat(self._data)
+
+    def __iter__(self):
+        return iter(self._medias)
+
+
 class IncomingTweet(InboxItem):
     def __init__(self, data, identity, skip_user=False):
         # https://dev.twitter.com/overview/api/tweets
@@ -38,12 +98,20 @@ class IncomingTweet(InboxItem):
             self.sender.is_me = False
         self.is_tweet = True
         self.id_str = data.get("id_str")
+        self.lang = data.get("lang")
+        if self.lang and self.lang == "und":
+            self.lang = None
+        self.possibly_sensitive = bool(data.get("possibly_sensitive"))
         self.favorited = bool(data.get("favorited"))
         self.retweeted = bool(data.get("retweeted"))
+        self.favorite_count = int(data.get("favorite_count"))
+        self.retweet_count = int(data.get("retweet_count"))
         self.created_at = data.get("created_at")
+        self.source = "source"
         if self.created_at:
             self.created_at = dateutil.parser.parse(self.created_at)
         self.in_reply_to_id_str = data.get("in_reply_to_status_id_str")
+        self.quoted_status_id_str = data.get("quoted_status_id_str")
         self.mentions = []
         self.urls = []
         self.medias = []
@@ -52,7 +120,19 @@ class IncomingTweet(InboxItem):
 
         self._location(data)
 
+        self.retweeted_status = None
         self._retweet(data, identity, skip_user)
+
+        self.quoted_status = None
+        self._quote_tweet(data, identity)
+
+        topic_text = self.text
+        if self.quoted_status:
+            topic_text += os.linesep + self.quoted_status.text
+        if self.retweeted_status:
+            topic_text += os.linesep + self.retweeted_status.text
+
+        self.topics = topichelper.get_topics(topic_text)
 
     def _retweet(self, data, identity, skip_user):
         self.retweeted_status = None
@@ -76,7 +156,6 @@ class IncomingTweet(InboxItem):
         self.text = data.get("text")
         if self.text:
             self.text = html.unescape(self.text)
-            self.topics = topichelper.get_topics(self.text)
             self.to_me = False
 
             self.text_stripped = self.text
@@ -109,24 +188,21 @@ class IncomingTweet(InboxItem):
                     self.replace_entity(url["indices"])
 
             if "media" in entities:
-                self.medias = entities["media"]
+                self.medias = Medias(entities["media"])
+
                 for media in entities["media"]:
                     self.has_media = True
                     logger.debug("media: {}".format(media))
 
                     self.replace_entity(media["indices"])
 
+    def short_description(self):
+        text = self.sender.short_description()
+        text += " " + self.text.replace(os.linesep, ' ')
+        return text
+
     def display(self):
         colour = self.identity.colour
-        text = "[" + self.identity_screen_name + "] "
-
-        if self.location:
-            text += " location = " + str(self.location)
-
-        text += self.sender.short_description()
-
-        text += " " + self.text.replace(os.linesep, ' ')
-
         if self.to_me:
             colour += Style.BRIGHT
         elif self.from_me:
@@ -134,26 +210,35 @@ class IncomingTweet(InboxItem):
         else:
             colour += Style.NORMAL
 
-        logger.info("=" * 80)
-        logger.info(colour + text)
+        text = colour
 
-        logger.info("         text: " + self.text.replace(os.linesep, ' '))
-        logger.info("text_stripped: " + self.text_stripped.replace(os.linesep, ' '))
-        logger.info("       common: " + str(self.english["common"]))
-        logger.info("     uncommon: " + str(self.english["uncommon"]))
+        text += "[" + self.identity_screen_name + "] "
+        text += self.short_description()
 
-        if self.conversation:
-            self.conversation.display()
+        n = 16
 
-    def description(self):
-        text = ""
-        text += "text: " + self.text.replace(os.linesep, ' ')
+        text += os.linesep + "text: ".rjust(n, " ") + self.text.replace(os.linesep, ' ')
+        text += os.linesep + "text_stripped: ".rjust(n, " ") + self.text_stripped.replace(os.linesep, ' ')
+        text += os.linesep + "common: ".rjust(n, " ") + str(self.english["common"])
+        text += os.linesep + "uncommon: ".rjust(n, " ") + str(self.english["uncommon"])
+        if self.location:
+            text += os.linesep + "location: ".rjust(n, " ") + str(self.location)
+        if self.lang:
+            text += os.linesep + "lang: ".rjust(n, " ") + str(self.lang)
         if self.medias:
             for media in self.medias:
-                text += os.linesep + "medis: " + media["type"] + " " + media["expanded_url"]
+                text += os.linesep + (media.type + ": ").rjust(n, " ") + media.short_description()
+
+                print(media)
         if self.urls:
             for url in self.urls:
-                text += os.linesep + "url: " + url["expanded_url"]
+                text += os.linesep + "url: ".rjust(n, " ") + url["expanded_url"]
+
+        if self.conversation:
+            text += os.linesep + "conversation: ".rjust(n, " ") + self.conversation.display()
+
+        if self.quoted_status:
+            text += os.linesep + "quoted_status: ".rjust(n, " ") + self.quoted_status.short_description()
 
         return text
 
@@ -164,6 +249,10 @@ class IncomingTweet(InboxItem):
 
         self.text_stripped = self.text_stripped[:start] + " " * length + self.text_stripped[end:]
 
+    def _quote_tweet(self, data, identity):
+        if "quoted_status" in data:
+            self.quoted_status = IncomingTweet(data.get("quoted_status"), identity)
+
 
 if __name__ == '__main__':
     import identities
@@ -173,4 +262,4 @@ if __name__ == '__main__':
     tweets = identity.twitter.get_user_timeline()
     for tweet_data in tweets:
         tweet = IncomingTweet(tweet_data, identity)
-        tweet.display()
+        logging.info(tweet.display())

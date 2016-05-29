@@ -114,7 +114,6 @@ def _add_words(tweet, tweet_number, len_media, len_url, max_tweet_length, parse_
             if tweet.status: tweet.status += " "
             tweet.status += urls.pop()
 
-
         # add quote url to end of first tweet
         if not can_add_word and not can_add_url and quote_url:
             if tweet.status: tweet.status += " "

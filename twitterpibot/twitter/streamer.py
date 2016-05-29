@@ -50,8 +50,10 @@ class Streamer(TwythonStreamer):
         if inbox_item:
             myperipherals.on_inbox_item_received(inbox_item)
             response = self._determine_response(inbox_item)
+
+            if inbox_item.is_tweet and response or inbox_item.is_event or inbox_item.is_direct_message:
+                logger.info("[{}] {}".format(self._identity.screen_name, inbox_item.display()))
             if response:
-                inbox_item.display()
                 self._respond(inbox_item=inbox_item, response=response)
 
     def on_error(self, status_code, data):

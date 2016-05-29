@@ -46,7 +46,8 @@ def mentioned_reply_condition(inbox_item):
 
 
 def unmentioned_reply_condition(inbox_item, one_in=None):
-    unmentoned = inbox_item.is_tweet and not inbox_item.from_me and not inbox_item.is_retweet_of_my_status and \
+    unmentoned = inbox_item.is_tweet and not inbox_item.from_me and\
+                 not inbox_item.is_retweet_of_my_status and \
                  (
                      (inbox_item.sender.is_awesome_bot and _one_in(bot_unmentioned_reply)) or
                      (inbox_item.sender.is_possibly_bot and _one_in(bot_unmentioned_reply)) or

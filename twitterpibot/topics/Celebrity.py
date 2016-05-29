@@ -1,4 +1,4 @@
-from twitterpibot.topics.Topic import IgnoreTopic, BadTopic
+from twitterpibot.topics.Topic import BadTopic
 
 
 class OneDirection(BadTopic):

@@ -237,12 +237,16 @@ class User(object):
         )
 
     def short_description(self):
-        return "{} [@{}] {}".format(
+        desc = "{} [@{}".format(
             self.name,
             self.screen_name,
-            self.flags,
-
         )
+        if self.flags:
+            desc += ", flags:{}".format(self.flags)
+        if self.user_score:
+            desc += ", score:{}".format(self.user_score.total())
+        desc += "]"
+        return desc
 
     def get_last_tweet_delta(self):
         if self.last_tweeted_at:
@@ -294,10 +298,11 @@ class User(object):
 
     def get_user_score(self):
         if not self.user_score:
-            logger.info("scoring user: {} {}".format(self.id_str, self.short_description()))
+            logger.debug("scoring user: {}".format(self.short_description()))
             # todo update
             user_score = UserScore(self)
             self.user_score = user_score
+            logger.info("scored user: {}".format(self.short_description()))
 
         return self.user_score
 

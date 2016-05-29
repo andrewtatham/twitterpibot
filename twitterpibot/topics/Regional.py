@@ -119,7 +119,7 @@ class Leeds(GoodTopic):
                 "Woodlesford",
                 "Wortley",
                 "Wykebeck",
-             ]
+            ]
         )
 
 
@@ -128,7 +128,6 @@ class Yorkshire(GoodTopic):
         super(Yorkshire, self).__init__(
             ["Yorkshire"],
             yorkshire_places
-
 
         )
 

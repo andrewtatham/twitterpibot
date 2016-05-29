@@ -68,8 +68,6 @@ class CypherHostResponse(Response):
                        and guess \
                        and score > 0.8
 
-
-
     def respond(self, inbox_item):
         next_game(self.identity.twitter)
 
@@ -112,7 +110,6 @@ class DecypherResponse(Response):
             if guess.estimated_score > 0.8:
                 guess_string = json.dumps(guess)
                 inbox_item.twitter.reply_with(inbox_item=inbox_item, text=guess_string, as_direct_message=True)
-
 
 # if __name__ == '__main__':
 #     import identities

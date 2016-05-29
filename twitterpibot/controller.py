@@ -19,11 +19,26 @@ def set_identities(identities):
     _identities_dic = dict(map(lambda i: (i.id_str, i), identities))
 
 
+def get_medias_dto(medias):
+    medias_dto = []
+    for media in medias:
+        media_dto = {
+            "type": media.type,
+            "display_url": media.display_url,
+            "url": media.url,
+            "thumbnail_url": media.get_thumbnail(),
+        }
+        medias_dto.append(media_dto)
+    return medias_dto
+
 def get_tweet_dto(tweet):
     if tweet:
         tweet_dto = {
+            "id_str": tweet.id_str,
             "text": tweet.text
         }
+        if tweet.has_media:
+            tweet_dto["medias"] = get_medias_dto(tweet.medias)
         return tweet_dto
 
 

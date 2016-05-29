@@ -7,10 +7,9 @@ from twitterpibot.responses.Response import Response, unmentioned_reply_conditio
 logger = logging.getLogger(__name__)
 
 
-
 class WeatherResponse(Response):
     def __init__(self, identity):
-        super(WeatherResponse,self).__init__(identity)
+        super(WeatherResponse, self).__init__(identity)
         # todo more weather accounts
         # "metoffice",
         # "bbcweather",

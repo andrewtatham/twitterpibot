@@ -1,7 +1,6 @@
 import datetime
 import logging
 import random
-from threading import Lock
 
 from twitterpibot.users import lists
 from twitterpibot.users.user import User
@@ -46,14 +45,15 @@ class Users(object):
         return usr
 
     def get_users(self, user_ids, lookup=True):
-        logger.info("getting {} users".format(len(user_ids)))
+        n_requested_total = len(user_ids)
+        logger.debug("getting {} users".format(n_requested_total))
         users = []
         cached = list(filter(lambda u: u in self._users, user_ids))
-        logger.info("{} cached users".format(len(cached)))
-        to_lookup = None
-        if lookup:
-            to_lookup = list(filter(lambda u: not u in self._users, user_ids))
-            logger.info("to lookup {} users".format(len(to_lookup)))
+        to_lookup = list(filter(lambda u: not u in self._users, user_ids))
+        n_cached = len(cached)
+        n_uncached = len(to_lookup)
+        logger.debug("{} cached user ids {:.0%}".format(n_cached, n_cached / n_requested_total))
+        logger.debug("{} uncached user ids {:.0%}".format(n_uncached, n_cached / n_requested_total))
 
         for user_id in cached:
             users.append(self.get_user(user_id=user_id))
@@ -69,7 +69,8 @@ class Users(object):
                     for user_data in user_datas:
                         users.append(self.get_user(user_data=user_data))
 
-        logger.info("returning {} users".format(len(users)))
+        n_returned_total = len(users)
+        logger.info("returning {} users {:.0%}".format(n_returned_total, n_returned_total/n_requested_total))
         return users
 
     def update_user(self, user):
@@ -154,7 +155,7 @@ class Users(object):
         if user_id in self._users:
             self._users.pop(user_id, None)
 
-    def _get_unfollowed_list_members(self, list_names):
+    def get_unfollowed_list_members(self, list_names):
         to_follow = set()
         for list_name in list_names:
             if list_name in self._lists._sets:
@@ -163,7 +164,7 @@ class Users(object):
                     to_follow.update(list_members.difference(self._following))
         return to_follow
 
-    def _get_subscribed_list_members(self):
+    def get_subscribed_list_members(self):
         members = set()
         subscriptions = self._identity.twitter.get_list_subscriptions()
         for subscribed_list in subscriptions["lists"]:
@@ -172,23 +173,32 @@ class Users(object):
             members.update(ids)
         return members
 
-    def _get_followed_subscribed_list_members(self):
+    def get_followed_subscribed_list_members(self):
         followed = set()
-        members = self._get_subscribed_list_members()
+        members = self.get_subscribed_list_members()
         if members and self._following:
             followed.update(members.intersection(self._following))
         return followed
 
-    def _get_unfollowed_subscribed_list_members(self):
+    def get_unfollowed_subscribed_list_members(self):
         unfollowed = set()
-        members = self._get_subscribed_list_members()
+        members = self.get_subscribed_list_members()
         if members and self._following:
             unfollowed.update(members.difference(self._following))
         return unfollowed
 
-    def _get_followed_inactive(self):
+    def get_followed_inactive(self):
         inactive = set([id_str for id_str, user in self._users.items() if user.is_inactive()])
         return self._following.intersection(inactive)
+
+    def get_uncached_user_ids(self):
+        all_user_ids = set()
+        all_user_ids.update(self.get_following())
+        all_user_ids.update(self.get_followers())
+        all_user_ids.difference_update(self._users)
+        all_user_ids = list(all_user_ids)
+        random.shuffle(all_user_ids)
+        return all_user_ids
 
 
 if __name__ == '__main__':
@@ -196,13 +206,7 @@ if __name__ == '__main__':
 
     identity = identities.AndrewTathamPi2Identity(None)
 
-    all_user_ids = set()
-    all_user_ids.update(identity.users.get_following())
-    all_user_ids.update(identity.users.get_followers())
-    all_user_ids = list(all_user_ids)
-    print(len(all_user_ids))
-    random.shuffle(all_user_ids)
-    all_user_ids = all_user_ids[:20]
+    all_user_ids = identity.users.get_uncached_user_ids()[:20]
 
     identity.users.get_users(all_user_ids)
 

@@ -64,4 +64,4 @@ class IncomingEvent(InboxItem):
         if self.targetObjectText:
             text += os.linesep + " TargetObject: " + self.targetObjectText
 
-        logger.info(colour + text)
+        return colour + text

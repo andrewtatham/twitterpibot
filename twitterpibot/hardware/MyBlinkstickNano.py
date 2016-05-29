@@ -22,7 +22,7 @@ class BlinkstickNanoMode(object):
 
         for led in range(2):
             r, g, b = _blinkstick.get_color(led)
-            r,g,b=image_helper.fade_rgb(r,g,b)
+            r, g, b = image_helper.fade_rgb(r, g, b)
 
             _blinkstick.set_color(channel=0, index=led, red=r, green=g, blue=b)
 
