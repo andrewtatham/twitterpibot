@@ -82,7 +82,7 @@ class Conversation(object):
         text.append(line)
         if tweet_id in self.tweet_tree:
             for child_id in self.tweet_tree[tweet_id]:
-                self._display(child_id, level + 1)
+                self._display(child_id, level + 1, text)
 
     def length(self):
         return len(self.tweet_tree)
