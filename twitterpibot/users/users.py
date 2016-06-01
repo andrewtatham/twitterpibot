@@ -1,5 +1,6 @@
 import datetime
 import logging
+import pprint
 import random
 
 from twitterpibot.users import lists
@@ -52,8 +53,9 @@ class Users(object):
         to_lookup = list(filter(lambda u: not u in self._users, user_ids))
         n_cached = len(cached)
         n_uncached = len(to_lookup)
-        logger.debug("{} cached user ids {:.0%}".format(n_cached, n_cached / n_requested_total))
-        logger.debug("{} uncached user ids {:.0%}".format(n_uncached, n_cached / n_requested_total))
+        if n_requested_total:
+            logger.debug("{} cached user ids {:.0%}".format(n_cached, n_cached / n_requested_total))
+            logger.debug("{} uncached user ids {:.0%}".format(n_uncached, n_cached / n_requested_total))
 
         for user_id in cached:
             users.append(self.get_user(user_id=user_id))
@@ -70,7 +72,8 @@ class Users(object):
                         users.append(self.get_user(user_data=user_data))
 
         n_returned_total = len(users)
-        logger.info("returning {} users {:.0%}".format(n_returned_total, n_returned_total/n_requested_total))
+        if n_requested_total:
+            logger.info("returning {} users {:.0%}".format(n_returned_total, n_returned_total / n_requested_total))
         return users
 
     def update_user(self, user):
@@ -100,22 +103,38 @@ class Users(object):
             logger.info("[%s] followers %s" % (self._identity.screen_name, len(self._followers)))
         return self._followers
 
+    def get_following_followers(self):
+        following_followers = self.get_following().intersection(self.get_following())
+        return following_followers
+
+    def get_following_only(self):
+        following_only = self.get_following().difference(self.get_followers())
+        return following_only
+
+    def get_followers_only(self):
+        followers_only = self.get_followers().difference(self.get_following())
+        return followers_only
+
+    def get_others(self):
+        others = set(self._users).difference(self.get_following().union(self.get_followers()))
+        return others
+
+    def get_users_with_scores(self):
+        return list(filter(lambda u: u.user_score, list(self._users.values())))
+
+    def get_users_without_scores(self):
+        return list(filter(lambda u: not u.user_score, list(self._users.values())))
+
     def score_users(self, n=None):
-        users_without_scores = list(filter(lambda u: not u.user_score, list(self._users.values())))
+        users_without_scores = self.get_users_without_scores()
         random.shuffle(users_without_scores)
-        logger.info("{} users without scores".format(len(users_without_scores)))
         if n:
             users_without_scores = users_without_scores[:n]
-        logger.info("scoring {} users".format(len(users_without_scores)))
         for user in users_without_scores:
             user.get_user_score()
 
-        users_with_scores = list(filter(lambda u: u.user_score, list(self._users.values())))
-        logger.info("{} with scores".format(len(users_with_scores)))
-        return len(users_with_scores)
-
     def get_leaderboard(self, n=3):
-        users_with_scores = list(filter(lambda u: u.user_score, list(self._users.values())))
+        users_with_scores = self.get_users_with_scores()
         users_with_scores.sort(key=lambda u: u.user_score.total())
         worst = users_with_scores[:n]
         best = users_with_scores[-n:]
@@ -200,20 +219,74 @@ class Users(object):
         random.shuffle(all_user_ids)
         return all_user_ids
 
+    def _get_user_score_statistics(self, user_list):
+        if user_list:
+            scores = list(map(lambda u: u.user_score.total(), filter(lambda u: u.user_score, user_list)))
+            if scores:
+                scores.sort()
+                return {
+                    "len": len(scores),
+                    "min": min(scores),
+                    "max": max(scores),
+                    "avg": sum(scores) / len(scores),
+                }
+
+    def get_user_groups(self):
+        following_followers = self.get_following_followers()
+        following_only = self.get_following_only()
+        followers_only = self.get_followers_only()
+        others = self.get_others()
+
+        following_followers = self.get_users(following_followers, lookup=False)
+        following_only = self.get_users(following_only, lookup=False)
+        followers_only = self.get_users(followers_only, lookup=False)
+        others = self.get_users(others, lookup=False)
+
+        groups = {
+            "following_followers": following_followers,
+            "following_only": following_only,
+            "followers_only": followers_only,
+            "others": others,
+        }
+        return groups
+
+    def get_statistics(self):
+        uncached_user_ids = self.get_uncached_user_ids()
+        users_with_scores = self.get_users_with_scores()
+        users_without_scores = self.get_users_without_scores()
+
+        statistics = {
+            "number_of_uncached_users": len(uncached_user_ids),
+            "number_of_cached_users": len(self._users),
+            "number_of_cached_scored_users": len(users_with_scores),
+            "number_of_cached_unscored_users": len(users_without_scores),
+            "scores": self._get_user_score_statistics(users_with_scores),
+
+        }
+
+        for group_name, group_users in self.get_user_groups().items():
+            statistics[group_name] = self._get_user_score_statistics(group_users)
+
+        return statistics
+
 
 if __name__ == '__main__':
     import identities
 
+    logging.basicConfig(level=logging.INFO)
+
     identity = identities.AndrewTathamPi2Identity(None)
+
+    logging.info(pprint.pformat(identity.users.get_statistics()))
 
     all_user_ids = identity.users.get_uncached_user_ids()[:20]
 
     identity.users.get_users(all_user_ids)
 
-    try:
-        no_of_scores = identity.users.score_users()
-        print(no_of_scores)
-    except Exception as ex:
-        print(ex)
-    finally:
-        identity.users.get_leaderboard()
+    logging.info(pprint.pformat(identity.users.get_statistics()))
+
+    identity.users.score_users()
+
+    logging.info(pprint.pformat(identity.users.get_statistics()))
+
+    identity.users.get_leaderboard()

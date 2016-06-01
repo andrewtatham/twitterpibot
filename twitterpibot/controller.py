@@ -31,6 +31,7 @@ def get_medias_dto(medias):
         medias_dto.append(media_dto)
     return medias_dto
 
+
 def get_tweet_dto(tweet):
     if tweet:
         tweet_dto = {
@@ -96,7 +97,6 @@ def _map_users_all(users):
 def _map_users_top_bottom(users, n=3):
     bottom = users[:n]
     top = users[-n:]
-
     return {
         "bottom": list(map(get_user_dto, bottom)),
         "top": list(map(get_user_dto, top)),
@@ -104,32 +104,9 @@ def _map_users_top_bottom(users, n=3):
 
 
 def get_users_dto(users):
-    following = set(users.get_following())
-    followers = set(users.get_followers())
-    all = set(users._users.keys())
-
-    following_followers = following.intersection(followers)
-    following_only = following.difference(followers)
-    followers_only = followers.difference(following)
-    others = all.difference(following.union(followers))
-
-    following_followers = users.get_users(following_followers, lookup=False)
-    following_only = users.get_users(following_only, lookup=False)
-    followers_only = users.get_users(followers_only, lookup=False)
-    others = users.get_users(others, lookup=False)
-
-    following_followers = _map_users_top_bottom(_sort_users(_filter_users(following_followers)))
-    following_only = _map_users_top_bottom(_sort_users(_filter_users(following_only)))
-    followers_only = _map_users_top_bottom(_sort_users(_filter_users(followers_only)))
-    others = _map_users_top_bottom(_sort_users(_filter_users(others)))
-
-    dto = {
-        "following_followers": following_followers,
-        "following_only": following_only,
-        "followers_only": followers_only,
-        "others": others,
-    }
-
+    dto = {}
+    for group_name, group_users in users.get_user_groups().items():
+        dto[group_name] = _map_users_top_bottom(_sort_users(_filter_users(group_users)))
     return dto
 
 
@@ -181,6 +158,9 @@ def get_identity_dto(identity):
     #         } for l in identity.users._lists._sets]
     if identity.users:
         dto["users"] = get_users_dto(identity.users)
+        # todo display stats
+        dto["users_statistics"] = identity.users.get_statistics()
+
     return dto
 
 

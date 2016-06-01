@@ -1,0 +1,538 @@
+import logging
+import numbers
+import os
+import pprint
+import random
+import re
+
+from collections import Counter
+
+from twitterpibot.incoming.IncomingTweet import IncomingTweet
+
+logger = logging.getLogger(__name__)
+
+
+class Profile(object):
+    def __init__(self, types):
+        self._types = types
+
+    def get_score(self, counter):
+        score = 0
+
+        if counter:
+
+            # todo cumulative% of characters
+
+            cumulative_percentage = 0
+            types = set()
+            threshold = 80
+            for item in counter:
+
+                if cumulative_percentage < 30:
+                    cumulative_percentage += item["percentage"]
+                    types.add(item["name"])
+                    logger.debug("cumulative percent {} types: {}".format(cumulative_percentage, types))
+
+            logger.debug("profile {} expects types: {}".format(self.__class__, self._types))
+            logger.debug("text contains types[{}]: {}".format(threshold, types))
+            score = int(bool(types) and set(types).issubset(set(self._types)))
+            logger.debug("profile {} score: {}".format(self.__class__, score))
+
+        return score
+
+
+class LatinText(Profile):
+    def __init__(self):
+        super(LatinText, self).__init__([
+            'letters'
+
+        ])
+
+
+class NumericText(Profile):
+    def __init__(self):
+        super(NumericText, self).__init__([
+            'digits'
+
+        ])
+
+
+class UnicodeArt(Profile):
+    def __init__(self):
+        super(UnicodeArt, self).__init__([
+            'other',
+            'Emoticons (Emoji)',
+            'punctuation',
+            'whitespace',
+            'line ending'
+        ])
+
+
+_profiles = [
+    UnicodeArt(),
+    NumericText(),
+    LatinText(),
+]
+
+# http://unicode-table.com/en/blocks/
+_unicode_ranges = [
+    # "0000—001F Control character",
+    # "0020—007F Basic LatinText",
+    # "0080—00FF LatinText-1 Supplement",
+    # "0100—017F LatinText Extended-A",
+    # "0180—024F LatinText Extended-B",
+    # "0250—02AF IPA Extensions",
+    # "02B0—02FF Spacing Modifier Letters",
+    # "0300—036F Combining Diacritical Marks",
+    # "0370—03FF Greek and Coptic",
+    # "0400—04FF Cyrillic",
+    # "0500—052F Cyrillic Supplement",
+    # "0530—058F Armenian",
+    # "0590—05FF Hebrew",
+    # "0600—06FF Arabic",
+    # "0700—074F Syriac",
+    # "0750—077F Arabic Supplement",
+    # "0780—07BF Thaana",
+    # "07C0—07FF NKo",
+    # "0800—083F Samaritan",
+    # "0840—085F Mandaic",
+    # "08A0—08FF Arabic Extended-A",
+    # "0900—097F Devanagari",
+    # "0980—09FF Bengali",
+    # "0A00—0A7F Gurmukhi",
+    # "0A80—0AFF Gujarati",
+    # "0B00—0B7F Oriya",
+    # "0B80—0BFF Tamil",
+    # "0C00—0C7F Telugu",
+    # "0C80—0CFF Kannada",
+    # "0D00—0D7F Malayalam",
+    # "0D80—0DFF Sinhala",
+    # "0E00—0E7F Thai",
+    # "0E80—0EFF Lao",
+    # "0F00—0FFF Tibetan",
+    # "1000—109F Myanmar",
+    # "10A0—10FF Georgian",
+    # "1100—11FF Hangul Jamo",
+    # "1200—137F Ethiopic",
+    # "1380—139F Ethiopic Supplement",
+    # "13A0—13FF Cherokee",
+    # "1400—167F Unified Canadian Aboriginal Syllabics",
+    # "1680—169F Ogham",
+    # "16A0—16FF Runic",
+    # "1700—171F Tagalog",
+    # "1720—173F Hanunoo",
+    # "1740—175F Buhid",
+    # "1760—177F Tagbanwa",
+    # "1780—17FF Khmer",
+    # "1800—18AF Mongolian",
+    # "18B0—18FF Unified Canadian Aboriginal Syllabics Extended",
+    # "1900—194F Limbu",
+    # "1950—197F Tai Le",
+    # "1980—19DF New Tai Lue",
+    # "19E0—19FF Khmer Symbols",
+    # "1A00—1A1F Buginese",
+    # "1A20—1AAF Tai Tham",
+    # "1AB0—1AFF Combining Diacritical Marks Extended",
+    # "1B00—1B7F Balinese",
+    # "1B80—1BBF Sundanese",
+    # "1BC0—1BFF Batak",
+    # "1C00—1C4F Lepcha",
+    # "1C50—1C7F Ol Chiki",
+    # "1C80—1C87 Cyrillic Extended C",
+    # "1CC0—1CCF Sundanese Supplement",
+    # "1CD0—1CFF Vedic Extensions",
+    # "1D00—1D7F Phonetic Extensions",
+    # "1D80—1DBF Phonetic Extensions Supplement",
+    # "1DC0—1DFF Combining Diacritical Marks Supplement",
+    # "1E00—1EFF LatinText Extended Additional",
+    # "1F00—1FFF Greek Extended",
+    # "2000—206F General Punctuation",
+    # "2070—209F Superscripts and Subscripts",
+    # "20A0—20CF Currency Symbols",
+    # "20D0—20FF Combining Diacritical Marks for Symbols",
+    # "2100—214F Letterlike Symbols",
+    # "2150—218F Number Forms",
+    # "2190—21FF Arrows",
+    # "2200—22FF Mathematical Operators",
+    # "2300—23FF Miscellaneous Technical",
+    # "2400—243F Control Pictures",
+    # "2440—245F Optical Character Recognition",
+    # "2460—24FF Enclosed Alphanumerics",
+    # "2500—257F Box Drawing",
+    # "2580—259F Block Elements",
+    # "25A0—25FF Geometric Shapes",
+    # "2600—26FF Miscellaneous Symbols",
+    # "2700—27BF Dingbats",
+    # "27C0—27EF Miscellaneous Mathematical Symbols-A",
+    # "27F0—27FF Supplemental Arrows-A",
+    # "2800—28FF Braille Patterns",
+    # "2900—297F Supplemental Arrows-B",
+    # "2980—29FF Miscellaneous Mathematical Symbols-B",
+    # "2A00—2AFF Supplemental Mathematical Operators",
+    # "2B00—2BFF Miscellaneous Symbols and Arrows",
+    # "2C00—2C5F Glagolitic",
+    # "2C60—2C7F LatinText Extended-C",
+    # "2C80—2CFF Coptic",
+    # "2D00—2D2F Georgian Supplement",
+    # "2D30—2D7F Tifinagh",
+    # "2D80—2DDF Ethiopic Extended",
+    # "2DE0—2DFF Cyrillic Extended-A",
+    # "2E00—2E7F Supplemental Punctuation",
+    # "2E80—2EFF CJK Radicals Supplement",
+    # "2F00—2FDF Kangxi Radicals",
+    # "2FF0—2FFF Ideographic Description Characters",
+    # "3000—303F CJK Symbols and Punctuation",
+    # "3040—309F Hiragana",
+    # "30A0—30FF Katakana",
+    # "3100—312F Bopomofo",
+    # "3130—318F Hangul Compatibility Jamo",
+    # "3190—319F Kanbun",
+    # "31A0—31BF Bopomofo Extended",
+    # "31C0—31EF CJK Strokes",
+    # "31F0—31FF Katakana Phonetic Extensions",
+    # "3200—32FF Enclosed CJK Letters and Months",
+    # "3300—33FF CJK Compatibility",
+    # "3400—4DBF CJK Unified Ideographs Extension A",
+    # "4DC0—4DFF Yijing Hexagram Symbols",
+    # "4E00—9FFF CJK Unified Ideographs",
+    # "A000—A48F Yi Syllables",
+    # "A490—A4CF Yi Radicals",
+    # "A4D0—A4FF Lisu",
+    # "A500—A63F Vai",
+    # "A640—A69F Cyrillic Extended-B",
+    # "A6A0—A6FF Bamum",
+    # "A700—A71F Modifier Tone Letters",
+    # "A720—A7FF LatinText Extended-D",
+    # "A800—A82F Syloti Nagri",
+    # "A830—A83F Common Indic Number Forms",
+    # "A840—A87F Phags-pa",
+    # "A880—A8DF Saurashtra",
+    # "A8E0—A8FF Devanagari Extended",
+    # "A900—A92F Kayah Li",
+    # "A930—A95F Rejang",
+    # "A960—A97F Hangul Jamo Extended-A",
+    # "A980—A9DF Javanese",
+    # "A9E0—A9FF Myanmar Extended-B",
+    # "AA00—AA5F Cham",
+    # "AA60—AA7F Myanmar Extended-A",
+    # "AA80—AADF Tai Viet",
+    # "AAE0—AAFF Meetei Mayek Extensions",
+    # "AB00—AB2F Ethiopic Extended-A",
+    # "AB30—AB6F LatinText Extended-E",
+    # "AB70—ABBF Cherokee Supplement",
+    # "ABC0—ABFF Meetei Mayek",
+    # "AC00—D7AF Hangul Syllables",
+    # "D7B0—D7FF Hangul Jamo Extended-B",
+    # "D800—DB7F High Surrogates",
+    # "DB80—DBFF High Private Use Surrogates",
+    # "DC00—DFFF Low Surrogates",
+    # "E000—F8FF Private Use Area",
+    # "F900—FAFF CJK Compatibility Ideographs",
+    # "FB00—FB4F Alphabetic Presentation Forms",
+    # "FB50—FDFF Arabic Presentation Forms-A",
+    # "FE00—FE0F Variation Selectors",
+    # "FE10—FE1F Vertical Forms",
+    # "FE20—FE2F Combining Half Marks",
+    # "FE30—FE4F CJK Compatibility Forms",
+    # "FE50—FE6F Small Form Variants",
+    # "FE70—FEFF Arabic Presentation Forms-B",
+    # "FF00—FFEF Halfwidth and Fullwidth Forms",
+    # "FFF0—FFFF Specials",
+    # "10000—1007F Linear B Syllabary",
+    # "10080—100FF Linear B Ideograms",
+    # "10100—1013F Aegean Numbers",
+    # "10140—1018F Ancient Greek Numbers",
+    # "10190—101CF Ancient Symbols",
+    # "101D0—101FF Phaistos Disc",
+    # "10280—1029F Lycian",
+    # "102A0—102DF Carian",
+    # "102E0—102FF Coptic Epact Numbers",
+    # "10300—1032F Old Italic",
+    # "10330—1034F Gothic",
+    # "10350—1037F Old Permic",
+    # "10380—1039F Ugaritic",
+    # "103A0—103DF Old Persian",
+    # "10400—1044F Deseret",
+    # "10450—1047F Shavian",
+    # "10480—104AF Osmanya",
+    # "104B0—104FF Osage",
+    # "10500—1052F Elbasan",
+    # "10530—1056F Caucasian Albanian",
+    # "10600—1077F Linear A",
+    # "10800—1083F Cypriot Syllabary",
+    # "10840—1085F Imperial Aramaic",
+    # "10860—1087F Palmyrene",
+    # "10880—108AF Nabataean",
+    # "108E0—108FF Hatran",
+    # "10900—1091F Phoenician",
+    # "10920—1093F Lydian",
+    # "10980—1099F Meroitic Hieroglyphs",
+    # "109A0—109FF Meroitic Cursive",
+    # "10A00—10A5F Kharoshthi",
+    # "10A60—10A7F Old South Arabian",
+    # "10A80—10A9F Old North Arabian",
+    # "10AC0—10AFF Manichaean",
+    # "10B00—10B3F Avestan",
+    # "10B40—10B5F Inscriptional Parthian",
+    # "10B60—10B7F Inscriptional Pahlavi",
+    # "10B80—10BAF Psalter Pahlavi",
+    # "10C00—10C4F Old Turkic",
+    # "10C80—10CFF Old Hungarian",
+    # "10E60—10E7F Rumi Numeral Symbols",
+    # "11000—1107F Brahmi",
+    # "11080—110CF Kaithi",
+    # "110D0—110FF Sora Sompeng",
+    # "11100—1114F Chakma",
+    # "11150—1117F Mahajani",
+    # "11180—111DF Sharada",
+    # "111E0—111FF Sinhala Archaic Numbers",
+    # "11200—1124F Khojki",
+    # "11280—112AF Multani",
+    # "112B0—112FF Khudawadi",
+    # "11300—1137F Grantha",
+    # "11400—1147F Newa",
+    # "11480—114DF Tirhuta",
+    # "11580—115FF Siddham",
+    # "11600—1165F Modi",
+    # "11660—1167F Mongolian Supplement",
+    # "11680—116CF Takri",
+    # "11700—1173F Ahom",
+    # "118A0—118FF Warang Citi",
+    # "11AC0—11AFF Pau Cin Hau",
+    # "11C00—11C6F Bhaiksuki",
+    # "11C70—11CBF Marchen",
+    # "12000—123FF Cuneiform",
+    # "12400—1247F Cuneiform Numbers and Punctuation",
+    # "12480—1254F Early Dynastic Cuneiform",
+    # "13000—1342F Egyptian Hieroglyphs",
+    # "14400—1467F Anatolian Hieroglyphs",
+    # "16800—16A3F Bamum Supplement",
+    # "16A40—16A6F Mro",
+    # "16AD0—16AFF Bassa Vah",
+    # "16B00—16B8F Pahawh Hmong",
+    # "16F00—16F9F Miao",
+    # "16FE0—16FFF Ideographic Symbols and Punctuation",
+    # "17000—187FF Tangut",
+    # "18800—18AFF Tangut Components",
+    # "1B000—1B0FF Kana Supplement",
+    # "1BC00—1BC9F Duployan",
+    # "1BCA0—1BCAF Shorthand Format Controls",
+    # "1D000—1D0FF Byzantine Musical Symbols",
+    # "1D100—1D1FF Musical Symbols",
+    # "1D200—1D24F Ancient Greek Musical Notation",
+    # "1D300—1D35F Tai Xuan Jing Symbols",
+    # "1D360—1D37F Counting Rod Numerals",
+    # "1D400—1D7FF Mathematical Alphanumeric Symbols",
+    # "1D800—1DAAF Sutton SignWriting",
+    # "1E000—1E02F Glagolitic Supplement",
+    # "1E800—1E8DF Mende Kikakui",
+    # "1E900—1E95F Adlam",
+    # "1EE00—1EEFF Arabic Mathematical Alphabetic Symbols",
+    # "1F000—1F02F Mahjong Tiles",
+    # "1F030—1F09F Domino Tiles",
+    # "1F0A0—1F0FF Playing Cards",
+    # "1F100—1F1FF Enclosed Alphanumeric Supplement",
+    # "1F200—1F2FF Enclosed Ideographic Supplement",
+
+
+    "2600—26FF Emoticons (Emoji)",
+
+    "1F300—1F9FF Emoticons (Emoji)",
+
+    # "1F300—1F5FF Miscellaneous Symbols and Pictographs",
+    # "1F600—1F64F Emoticons (Emoji)",
+    # "1F650—1F67F Ornamental Dingbats",
+    # "1F680—1F6FF Transport and Map Symbols",
+    # "1F700—1F77F Alchemical Symbols",
+    # "1F780—1F7FF Geometric Shapes Extended",
+    # "1F800—1F8FF Supplemental Arrows-C",
+    # "1F900—1F9FF Supplemental Symbols and Pictographs"
+]
+
+rx = re.compile("(?P<hex_from>[0-9A-F]+)—(?P<hex_to>[0-9A-F]+) (?P<name>.*)")
+
+
+def _parse_unicode_ranges(range):
+    match = rx.search(range)
+    return match.group("hex_from"), \
+           match.group("hex_to"), \
+           match.group("name")
+
+
+_character_range_mapping = {}
+
+
+def build_ascii_mapping():
+    _ascii_ranges = {
+        "non-printing": [(0, 31), (127, 160)],
+        "whitespace": [32, 9],
+        "line ending": [10, 13],
+        "punctuation": [
+            (33, 47),
+            (58, 64),
+            (91, 96),
+            (123, 126)
+        ],
+        "digits": [(48, 57)],
+        "letters": [(65, 90), (97, 122)],
+
+    }
+    for name, ascii_ranges in _ascii_ranges.items():
+        for ascii_range in ascii_ranges:
+            if isinstance(ascii_range, numbers.Number):
+                _character_range_mapping[ascii_range] = name
+            elif isinstance(ascii_range, tuple):
+                for ordinal in range(ascii_range[0], ascii_range[1] + 1):
+                    _character_range_mapping[ordinal] = name
+
+
+def build_unicode_mapping():
+    for blah in _unicode_ranges:
+        hex_from, hex_to, name = _parse_unicode_ranges(blah)
+        dec_from = int(hex_from, 16)
+        dec_to = int(hex_to, 16)
+        sample_text = "adding range {} [dec:{}-{},hex:{}-{}]: ".format(
+            name, dec_from, dec_to, hex_from, hex_to)
+        for dec in range(dec_from, dec_to):
+            # print(dec, name)
+            _character_range_mapping[dec] = name
+            try:
+                sample_text += chr(dec)
+            except Exception as ex:
+                sample_text += "[{} {}]".format(dec, str(ex))
+        try:
+            print(sample_text)
+        except Exception as ex:
+            print("adding {} [dec:{}-{},hex:{}-{}]: {} ".format(
+                name, dec_from, dec_to, hex_from, hex_to, str(ex)))
+
+
+build_unicode_mapping()
+build_ascii_mapping()
+
+
+def _get_character_category(ordinal):
+    category = _character_range_mapping.get(ordinal)
+    if category:
+        return category
+    else:
+        return "other"
+        # useful for finding unknown chars
+        # return str(ordinal) + " " + chr(ordinal)
+
+
+def _map_item(name, count, length, index):
+    return {
+        "name": name,
+        "index": index,
+        "count": count,
+        "percentage": 100 * count / length
+    }
+
+
+def _count_character_ranges(text):
+    length = len(text)
+    character_ordinals = map(ord, text)
+    character_categories = map(_get_character_category, character_ordinals)
+    counter = Counter(character_categories)
+    logger.debug("counter={}".format(counter))
+    counter = list(counter.items())
+    logger.debug("list(counter.items())={}".format(counter))
+    counter.sort(key=lambda count: count[1], reverse=True)
+    logger.debug("sorted list(counter.items())={}".format(counter))
+    mapped = []
+    index = 0
+    for count in counter:
+        mapped.append(_map_item(count[0], count[1], length, index))
+        index += 1
+    return mapped
+
+
+def _classify(counter):
+    profile_scores = []
+    for profile in _profiles:
+        profile_scores.append((profile, profile.get_score(counter)))
+
+    profile_scores.sort(key=lambda t: t[1], reverse=True)
+
+    index = 0
+    logger.debug("scores...")
+    for profile_score in profile_scores:
+        logger.debug(" {}: {}".format(index, profile_score))
+        index += 1
+    c = None
+    if any(map(lambda t: t[1], profile_scores)):
+        c = profile_scores[0][0]
+    return c
+
+
+def analyse(text):
+    logger.info("text = {}".format(text))
+    counter = _count_character_ranges(text)
+    if counter:
+        logger.info("text contains types: {}".format(counter))
+    classification = _classify(counter)
+    logger.info("classification: {}".format(classification))
+    return classification
+
+
+if __name__ == '__main__':
+    import identities
+
+    logging.basicConfig(level=logging.INFO)
+
+    screen_names = [
+        "kpcuk",
+        "FFD8FFDB",
+        "C0NSTELLATl0NS",
+        "cat_in_field",
+        "bobbo_bot",
+        "tele_phone_",
+        "ASCIImouse",
+        "oka_dangomusi",
+        "ciphersext",
+        "lindenmoji",
+        "TwitAA_bot",
+        "emoji__polls",
+        "LSystemBot",
+        "tiny_bus_stop",
+        "emojitoemoji",
+        "botmaze",
+        "unicode_garden",
+        "unix_timestamp",
+        "DATAM0SHER",
+        "everyhaiku",
+        "kagoubutsu_bot",
+        "yulelogbot",
+        "mobile_aa",
+        "BloubBloubBloub",
+        "tele_phone_",
+        "TwitAA_bot",
+        "oka_dangomusi"
+
+    ]
+
+    identity = identities.AndrewTathamPi2Identity(None)
+
+    if False:
+        list_name = "Awesome Bots"
+        tweets = identity.twitter.get_list_statuses(
+            list_id=identity.users._lists._list_ids[list_name],
+            slug=list_name,
+            owner_screen_name=identity.screen_name,
+            owner_id=identity.id_str,
+            count=200)
+    else:
+        screen_name = random.choice(screen_names)
+        logging.info("screen_name = {}".format(screen_name))
+        tweets = identity.twitter.get_user_timeline(screen_name=screen_name)
+
+    for tweet_data in tweets:
+        tweet = IncomingTweet(tweet_data, identity)
+        text = tweet.text_stripped
+        classification = analyse(text)
+        logger.info(pprint.pformat({
+            "text": text,
+            "text_utf8": text.encode("utf-8"),
+            "expected": classification
+        }))
