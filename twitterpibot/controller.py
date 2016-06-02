@@ -36,10 +36,13 @@ def get_tweet_dto(tweet):
     if tweet:
         tweet_dto = {
             "id_str": tweet.id_str,
-            "text": tweet.text
+            "text": tweet.text,
         }
+
         if tweet.has_media:
             tweet_dto["medias"] = get_medias_dto(tweet.medias)
+        if tweet.tweet_score:
+            tweet_dto["tweet_score"] = get_score_dto(tweet.tweet_score)
         return tweet_dto
 
 
@@ -48,10 +51,9 @@ def get_tweets_dto(tweets):
         return list(map(get_tweet_dto, tweets))
 
 
-def get_user_score_dto(user_score):
-    if user_score:
-        return user_score._scores
-
+def get_score_dto(score):
+    if score:
+        return score._scores
 
 def get_user_dto(user):
     user_dto = {
@@ -73,7 +75,7 @@ def get_user_dto(user):
         "last_tweeted": user.get_last_tweeted(),
         "status": get_tweet_dto(user.status),
         "latest_tweets": get_tweets_dto(user.get_latest_tweets()),
-        "user_score": get_user_score_dto(user.get_user_score()),
+        "user_score": get_score_dto(user.user_score),
 
     }
 

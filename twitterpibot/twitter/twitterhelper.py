@@ -485,6 +485,7 @@ class TwitterHelper(object):
         cursor = -1
         while cursor != "0":
             kwargs["cursor"] = cursor
+            logger.info("getting followers")
             response = self.twitter.get_followers_ids(**kwargs)
             cursor = response["next_cursor_str"]
             followers = followers.union(set(response["ids"]))
@@ -498,6 +499,7 @@ class TwitterHelper(object):
         cursor = -1
         while cursor != "0":
             kwargs["cursor"] = cursor
+            logger.info("getting following")
             response = self.twitter.get_friends_ids(**kwargs)
             cursor = response["next_cursor_str"]
             following = following.union(set(response["ids"]))

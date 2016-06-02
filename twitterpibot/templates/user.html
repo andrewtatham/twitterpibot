@@ -27,9 +27,8 @@
 <td>
 
     <div>Last tweeted: [[user.last_tweeted_at]] [[user.last_tweeted]]</div>
-    <div>Status: [[user.status]]</div>
-
-    {% include "user_latest_tweets.html" %}
+    <div>Status: <span ng-init="tweet=user.status">{% include "tweet.html" %}</span></div>
+    <div>{% include "user_latest_tweets.html" %}</div>
 
 </td>
 <td>[[user.user_score]]</td>

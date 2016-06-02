@@ -84,6 +84,7 @@ class Users(object):
         user.following = user.id_str in self._following
 
         user.update_flags()
+        user.get_user_score()
 
         user.updated = datetime.datetime.utcnow()
 
@@ -91,32 +92,36 @@ class Users(object):
         logger.info("[%s] Friends %s" % (self._identity.screen_name, len(friends)))
         self._following = set([str(f) for f in friends])
 
-    def get_following(self):
-        if not self._following:
+    def get_following(self, force=False):
+        if not self._following or force:
             self._following = self._identity.twitter.get_following()
-            logger.info("[%s] following %s" % (self._identity.screen_name, len(self._following)))
+        logger.info("[%s] following %s" % (self._identity.screen_name, len(self._following)))
         return self._following
 
-    def get_followers(self):
-        if not self._followers:
+    def get_followers(self, force=False):
+        if not self._followers or force:
             self._followers = self._identity.twitter.get_followers()
-            logger.info("[%s] followers %s" % (self._identity.screen_name, len(self._followers)))
+        logger.info("[%s] followers %s" % (self._identity.screen_name, len(self._followers)))
         return self._followers
 
     def get_following_followers(self):
         following_followers = self.get_following().intersection(self.get_following())
+        logger.info("[%s] following_followers %s" % (self._identity.screen_name, len(following_followers)))
         return following_followers
 
     def get_following_only(self):
         following_only = self.get_following().difference(self.get_followers())
+        logger.info("[%s] following_only %s" % (self._identity.screen_name, len(following_only)))
         return following_only
 
     def get_followers_only(self):
         followers_only = self.get_followers().difference(self.get_following())
+        logger.info("[%s] followers_only %s" % (self._identity.screen_name, len(followers_only)))
         return followers_only
 
     def get_others(self):
         others = set(self._users).difference(self.get_following().union(self.get_followers()))
+        logger.info("[%s] others %s" % (self._identity.screen_name, len(others)))
         return others
 
     def get_users_with_scores(self):

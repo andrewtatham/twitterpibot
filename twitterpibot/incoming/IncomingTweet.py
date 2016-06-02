@@ -8,8 +8,9 @@ import dateutil.parser
 from colorama import Fore, Style
 
 from twitterpibot.incoming.InboxItem import InboxItem
-from twitterpibot.logic import english, location
+from twitterpibot.logic import english, location, unicode_helper
 from twitterpibot.topics import topichelper
+from twitterpibot.users.scores import TweetScore
 
 logger = logging.getLogger(__name__)
 
@@ -81,6 +82,9 @@ class Medias(object):
     def __iter__(self):
         return iter(self._medias)
 
+    def __len__(self):
+        return len(self._medias)
+
 
 class IncomingTweet(InboxItem):
     def __init__(self, data, identity, skip_user=False):
@@ -116,6 +120,7 @@ class IncomingTweet(InboxItem):
         self.urls = []
         self.medias = []
         self.text_stripped = ""
+        self.text_stripped_whitespace_removed = ""
         self._text(data, identity)
 
         self._location(data)
@@ -133,6 +138,7 @@ class IncomingTweet(InboxItem):
             topic_text += os.linesep + self.retweeted_status.text
 
         self.topics = topichelper.get_topics(topic_text)
+        self.tweet_score = TweetScore(self)
 
     def _retweet(self, data, identity, skip_user):
         self.retweeted_status = None
@@ -160,8 +166,13 @@ class IncomingTweet(InboxItem):
 
             self.text_stripped = self.text
             self._entities(data, identity)
-
             self.english = english.get_common_words(self.text_stripped)
+
+            self.text_stripped_whitespace_removed = self.text_stripped
+            while "  " in self.text_stripped_whitespace_removed:
+                self.text_stripped_whitespace_removed = self.text_stripped_whitespace_removed.replace("  ", " ")
+
+            self._classification = unicode_helper.analyse(self.text_stripped_whitespace_removed)
 
     def _entities(self, data, identity):
 
@@ -200,6 +211,9 @@ class IncomingTweet(InboxItem):
         text = ""
         if self.sender:
             text += self.sender.short_description()
+        if self.tweet_score:
+            text += " tweet score:{}".format(self.tweet_score.total())
+
         text += " " + self.text.replace(os.linesep, ' ')
         return text
 
@@ -221,8 +235,16 @@ class IncomingTweet(InboxItem):
 
         text += os.linesep + "text: ".rjust(n, " ") + self.text.replace(os.linesep, ' ')
         text += os.linesep + "text_stripped: ".rjust(n, " ") + self.text_stripped.replace(os.linesep, ' ')
-        text += os.linesep + "common: ".rjust(n, " ") + str(self.english["common"])
-        text += os.linesep + "uncommon: ".rjust(n, " ") + str(self.english["uncommon"])
+        text += os.linesep + "text_stripped_whitespace_removed: ".rjust(n,
+                                                                        " ") + self.text_stripped_whitespace_removed.replace(
+            os.linesep, ' ')
+        if self._classification:
+            text += os.linesep + "classification: ".rjust(n, " ") + str(self._classification)
+        if self.english:
+            if self.english["common"]:
+                text += os.linesep + "common: ".rjust(n, " ") + str(self.english["common"])
+            if self.english["uncommon"]:
+                text += os.linesep + "uncommon: ".rjust(n, " ") + str(self.english["uncommon"])
         if self.location:
             text += os.linesep + "location: ".rjust(n, " ") + str(self.location)
         if self.lang:
@@ -230,8 +252,6 @@ class IncomingTweet(InboxItem):
         if self.medias:
             for media in self.medias:
                 text += os.linesep + (media.type + ": ").rjust(n, " ") + media.short_description()
-
-                print(media)
         if self.urls:
             for url in self.urls:
                 text += os.linesep + "url: ".rjust(n, " ") + url["expanded_url"]
@@ -241,6 +261,9 @@ class IncomingTweet(InboxItem):
 
         if self.quoted_status:
             text += os.linesep + "quoted_status: ".rjust(n, " ") + self.quoted_status.short_description()
+
+        if self.tweet_score:
+            text += os.linesep + "tweet_score: ".rjust(n, " ") + str(self.tweet_score)
 
         return text
 

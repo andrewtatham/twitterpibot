@@ -76,6 +76,28 @@ class ManageUsersScheduledTask(ScheduledTask):
                         self.identity.users.follow(user_id=user_id)
 
 
+class UpdateFollowersScheduledTask(ScheduledTask):
+    def __init__(self, identity):
+        super(UpdateFollowersScheduledTask, self).__init__(identity)
+        self._all_user_ids = []
+
+    def get_trigger(self):
+        return IntervalTrigger(minutes=random.randint(10,407))
+
+    def on_run(self):
+        self.identity.users.get_followers(force=True)
+
+class UpdateFollowingScheduledTask(ScheduledTask):
+    def __init__(self, identity):
+        super(UpdateFollowingScheduledTask, self).__init__(identity)
+        self._all_user_ids = []
+
+    def get_trigger(self):
+        return IntervalTrigger(minutes=random.randint(15, 7))
+
+    def on_run(self):
+        self.identity.users.get_following(force=True)
+
 class GetUsersScheduledTask(ScheduledTask):
     def __init__(self, identity):
         super(GetUsersScheduledTask, self).__init__(identity)
@@ -85,6 +107,10 @@ class GetUsersScheduledTask(ScheduledTask):
         return IntervalTrigger(minutes=random.randint(5, 7))
 
     def on_run(self):
+
+
+
+
         if not self._all_user_ids:
             self._all_user_ids = self.identity.users.get_uncached_user_ids()
 

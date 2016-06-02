@@ -1,6 +1,5 @@
 import logging
 
-from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.logic.dictionary import get_anagram_candidates
 from twitterpibot.responses.Response import Response, unmentioned_reply_condition
 
@@ -55,6 +54,7 @@ if __name__ == '__main__':
 
 if __name__ == '__main__':
     import identities
+    from twitterpibot.incoming.IncomingTweet import IncomingTweet
 
     logging.basicConfig(level=logging.DEBUG)
 

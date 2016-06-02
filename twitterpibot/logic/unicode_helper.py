@@ -7,37 +7,30 @@ import re
 
 from collections import Counter
 
-from twitterpibot.incoming.IncomingTweet import IncomingTweet
-
 logger = logging.getLogger(__name__)
+threshold = 30
 
 
 class Profile(object):
     def __init__(self, types):
         self._types = types
 
+    def __str__(self):
+        return self.__class__.__name__
+
     def get_score(self, counter):
         score = 0
-
         if counter:
-
-            # todo cumulative% of characters
-
             cumulative_percentage = 0
             types = set()
-            threshold = 80
             for item in counter:
-
-                if cumulative_percentage < 30:
+                if cumulative_percentage < threshold:
                     cumulative_percentage += item["percentage"]
                     types.add(item["name"])
-                    logger.debug("cumulative percent {} types: {}".format(cumulative_percentage, types))
-
-            logger.debug("profile {} expects types: {}".format(self.__class__, self._types))
+            logger.debug("profile {} expects types: {}".format(self, self._types))
             logger.debug("text contains types[{}]: {}".format(threshold, types))
             score = int(bool(types) and set(types).issubset(set(self._types)))
-            logger.debug("profile {} score: {}".format(self.__class__, score))
-
+            logger.debug("profile {} score: {}".format(self, score))
         return score
 
 
@@ -45,7 +38,6 @@ class LatinText(Profile):
     def __init__(self):
         super(LatinText, self).__init__([
             'letters'
-
         ])
 
 
@@ -53,7 +45,6 @@ class NumericText(Profile):
     def __init__(self):
         super(NumericText, self).__init__([
             'digits'
-
         ])
 
 
@@ -438,7 +429,7 @@ def _count_character_ranges(text):
     logger.debug("counter={}".format(counter))
     counter = list(counter.items())
     logger.debug("list(counter.items())={}".format(counter))
-    counter.sort(key=lambda count: count[1], reverse=True)
+    counter.sort(key=lambda c: c[1], reverse=True)
     logger.debug("sorted list(counter.items())={}".format(counter))
     mapped = []
     index = 0
@@ -467,17 +458,18 @@ def _classify(counter):
 
 
 def analyse(text):
-    logger.info("text = {}".format(text))
+    logger.debug("text = {}".format(text))
     counter = _count_character_ranges(text)
     if counter:
-        logger.info("text contains types: {}".format(counter))
+        logger.debug("text contains types: {}".format(counter))
     classification = _classify(counter)
-    logger.info("classification: {}".format(classification))
+    logger.debug("classification: {}".format(classification))
     return classification
 
 
 if __name__ == '__main__':
     import identities
+    from twitterpibot.incoming.IncomingTweet import IncomingTweet
 
     logging.basicConfig(level=logging.INFO)
 
@@ -514,7 +506,7 @@ if __name__ == '__main__':
 
     identity = identities.AndrewTathamPi2Identity(None)
 
-    if False:
+    if True:
         list_name = "Awesome Bots"
         tweets = identity.twitter.get_list_statuses(
             list_id=identity.users._lists._list_ids[list_name],
@@ -529,10 +521,4 @@ if __name__ == '__main__':
 
     for tweet_data in tweets:
         tweet = IncomingTweet(tweet_data, identity)
-        text = tweet.text_stripped
-        classification = analyse(text)
-        logger.info(pprint.pformat({
-            "text": text,
-            "text_utf8": text.encode("utf-8"),
-            "expected": classification
-        }))
+        logging.info(tweet.display())
