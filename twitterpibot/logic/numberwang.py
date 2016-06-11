@@ -7,6 +7,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 import six
 
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
+from twitterpibot.responses.Response import Response, mentioned_reply_condition, _one_in
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
 ep1 = "https://youtu.be/qjOZtWZ56lc"
@@ -47,10 +48,34 @@ host_replies = [
 logger = logging.getLogger(__name__)
 
 
+class NumberwangHostResponse(Response):
+    def __init__(self, identity, contestant_pairs):
+        Response.__init__(self, identity)
+        self._contestants = set()
+        for contestant_pair in contestant_pairs:
+            for contestant in contestant_pair:
+                self._contestants.add(contestant.screen_name)
+
+    def condition(self, inbox_item):
+        return mentioned_reply_condition(inbox_item) and (
+            inbox_item.is_tweet or inbox_item.is_direct_message
+        ) and inbox_item.sender.screen_name not in self._contestants and \
+               _one_in(10) and \
+               inbox_item.text_stripped_whitespace_removed.strip().replace(",", "").isnumeric()
+
+    def respond(self, inbox_item):
+        thats_numberwang = "That's Numberwang!" * random.randint(1, 15)
+        self.identity.twitter.reply_with(inbox_item=inbox_item, text=thats_numberwang)
+
+
 class NumberwangHostScheduledTask(ScheduledTask):
     def __init__(self, identity, contestant_pairs):
         ScheduledTask.__init__(self, identity)
         self._contestant_pairs = contestant_pairs
+        self._contestants = set()
+        for contestant_pair in contestant_pairs:
+            for contestant in contestant_pair:
+                self._contestants.add(contestant.screen_name)
 
     def get_trigger(self):
         return IntervalTrigger(hours=13, minutes=random.randint(0, 59))

@@ -280,7 +280,7 @@ class TwitterHelper(object):
         self.twitter.create_list_members(list_id=list_id, user_id=user_id, screen_name=screen_name)
 
     @retry(**retry_args)
-    def block_user(self, user_id, user_screen_name):
+    def block_user(self, user_id, user_screen_name=None):
         self.twitter.create_block(user_id=user_id, screen_name=user_screen_name)
 
     @retry(**retry_args)

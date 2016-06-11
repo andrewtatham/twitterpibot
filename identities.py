@@ -4,8 +4,9 @@ from identity import Identity, BotIdentity, PiIdentity
 from twitterpibot.logic.botgle import BotgleResponse
 from twitterpibot.logic.cypher_game import CypherHostMidnightScheduledTask, CypherHostScheduledTask, CypherHostResponse
 from twitterpibot.logic.gender import WhenIsIMDScheduledTask, WhenIsInternationalMensDayResponse
-from twitterpibot.logic.numberwang import NumberwangHostScheduledTask
+from twitterpibot.logic.numberwang import NumberwangHostScheduledTask, NumberwangHostResponse
 from twitterpibot.responses.EggPunResponse import EggPunResponse
+from twitterpibot.responses.HiveMindResponse import HiveMindResponse
 from twitterpibot.schedule.EggPunScheduledTask import EggPunScheduledTask
 
 __author__ = 'andrewtatham'
@@ -17,6 +18,11 @@ class AndrewTathamIdentity(Identity):
             screen_name="andrewtatham",
             id_str="19201332")
         self.buddies = None
+
+    def get_responses(self):
+        responses = super(AndrewTathamIdentity, self).get_responses()
+        responses.extend([HiveMindResponse(self, self.buddies)])
+        return responses
 
 
 class AndrewTathamPiIdentity(PiIdentity):
@@ -43,12 +49,17 @@ class NumberwangHostIdentity(BotIdentity):
             screen_name="numberwang_host",
             id_str="4904547543",
             admin_identity=admin_identity)
-        self.contestants = None
+        self.contestant_pairs = None
+
+    def get_responses(self):
+        responses = super(NumberwangHostIdentity, self).get_responses()
+        responses.extend([NumberwangHostResponse(self, self.contestant_pairs)])
+        return responses
 
     def get_scheduled_jobs(self):
         jobs = super(NumberwangHostIdentity, self).get_scheduled_jobs()
         # noinspection PyTypeChecker
-        jobs.extend([NumberwangHostScheduledTask(self, self.contestants)])
+        jobs.extend([NumberwangHostScheduledTask(self, self.contestant_pairs)])
         return jobs
 
 

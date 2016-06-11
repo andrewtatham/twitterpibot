@@ -8,6 +8,16 @@ class SmutSpamSpecific(SpamTopic):
                 "selenaxxxusaxxx", "webcam789", "CAM456",
                 "I can fulfill any wish for you", "show this post and get me for free",
                 "Let's chat tonight! Join me!",
+                "wanna to see my vagina",
+                "chat with me",
+                "Wanna hook up",
+                "You want see me nude",
+                "maybe sex",
+                "Punish me",
+                "Find me pls",
+                "Take me strong",
+                "I'm alone",
+                "I'm bored"
 
             ]
         )
@@ -19,7 +29,7 @@ class SmutSpamGeneral(SpamTopic):
             [
                 "kinky", "frisky", "cum", "horny", "housewi(fe|ves?)", "boobs?", "tits?", "puss(y|ies)",
                 "milf", "hoes?", "boot(y|ies)", "18 ?\+", "slut", "bitch",
-                "dildo", "fuckbuddy", "adult dating"
+                "dildo", "fuckbuddy", "adult (chatroom|dating)"
             ], [
                 "latina", "sexy", "ass", "dirty", "naked", "naughty", "bored", "teen", "sex", "xxx", "babe",
                 "blonde", "redhead", "brunette"

@@ -1,5 +1,7 @@
 import datetime
 
+import re
+
 from twitterpibot.logic import unicode_helper
 
 
@@ -111,6 +113,8 @@ class UserScore(Score):
                 # todo if user has never tweeted
                 self.include_recent_tweets_score = False
 
+# todo meme
+rx = re.compile("^(when|mfw)", re.IGNORECASE)
 
 class TweetScore(Score):
     def __init__(self, tweet):
@@ -132,6 +136,9 @@ class TweetScore(Score):
 
         if tweet._classification and isinstance(tweet._classification, unicode_helper.UnicodeArt):
             self.add(5, "UnicodeArt")
+
+        if rx.search(tweet.text_stripped_whitespace_removed):
+            self.add(5, "Meme")
 
         if tweet.topics:
             self.get_topic_score(tweet.topics)

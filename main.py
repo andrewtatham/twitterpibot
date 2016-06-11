@@ -1,17 +1,18 @@
-
 from twitterpibot import loggingconfig
-loggingconfig.init()
 
+loggingconfig.init()
 
 if __name__ == '__main__':
     from twitterpibot.logic import fsh
     from twitterpibot.data_access import dal
+
     # dal.import_tokens(fsh.root + "tokens.csv")
     dal.export_tokens(fsh.root + "tokens.csv")
 
 if __name__ == "__main__":
 
-    from identities import AndrewTathamIdentity, AndrewTathamPiIdentity, AndrewTathamPi2Identity, NumberwangHostIdentity, \
+    from identities import AndrewTathamIdentity, AndrewTathamPiIdentity, AndrewTathamPi2Identity, \
+        NumberwangHostIdentity, \
         JulieNumberwangIdentity, SimonNumberwangIdentity, EggPunBotIdentity, WhenIsInternationalMensDayBotIdentity, \
         BotgleArtistIdentity, TheMachinesCodeIdentity
 
@@ -26,11 +27,18 @@ if __name__ == "__main__":
     botgleartist = BotgleArtistIdentity(andrewtatham)
     themachinescode = TheMachinesCodeIdentity(andrewtatham)
 
-    andrewtatham.buddies = [andrewtathampi, andrewtathampi2]
+    andrewtatham.buddies = [
+        andrewtathampi, andrewtathampi2,
+        numberwang_host, julienumberwang, simonnumberwang,
+        eggpunbot,
+        whenmensday,
+        botgleartist,
+        themachinescode
+    ]
     andrewtathampi.converse_with = andrewtathampi2
     andrewtathampi2.converse_with = andrewtathampi
 
-    numberwang_host.contestants = [
+    numberwang_host.contestant_pairs = [
         [julienumberwang, simonnumberwang],
         [julienumberwang, simonnumberwang],
         [julienumberwang, simonnumberwang],
@@ -40,12 +48,11 @@ if __name__ == "__main__":
         [julienumberwang, simonnumberwang],
         [julienumberwang, simonnumberwang],
         [julienumberwang, simonnumberwang],
-        [andrewtatham, julienumberwang],
-        [andrewtatham, simonnumberwang],
         [andrewtathampi, andrewtathampi2],
     ]
 
     import twitterpibot.hardware.myhardware
+
     if twitterpibot.hardware.myhardware.is_raspberry_pi_2:
         all_identities = [
             andrewtatham,
@@ -61,10 +68,10 @@ if __name__ == "__main__":
         ]
     else:
         all_identities = [
-            # andrewtatham,
+            andrewtatham,
             andrewtathampi,
             andrewtathampi2,
-            # numberwang_host,
+            numberwang_host,
             # julienumberwang,
             # simonnumberwang,
             # eggpunbot,
@@ -73,4 +80,5 @@ if __name__ == "__main__":
             # themachinescode
         ]
     import twitterpibot.bootstrap
+
     twitterpibot.bootstrap.run(all_identities)
