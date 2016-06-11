@@ -123,6 +123,7 @@ def report():
 def shutdown():
     _shutdown_server()
     logger.info('Server shutting down...')
+    return flask.render_template('shutdown.html')
 
 
 def _shutdown_server():
