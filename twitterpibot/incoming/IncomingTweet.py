@@ -277,6 +277,7 @@ class IncomingTweet(InboxItem):
     def _quote_tweet(self, data, identity):
         if "quoted_status" in data:
             self.quoted_status = IncomingTweet(data.get("quoted_status"), identity)
+            self.is_quote_of_my_status = self.quoted_status.from_me
 
 
 if __name__ == '__main__':

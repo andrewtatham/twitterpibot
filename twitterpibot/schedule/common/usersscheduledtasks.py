@@ -82,7 +82,7 @@ class UpdateFollowersScheduledTask(ScheduledTask):
         self._all_user_ids = []
 
     def get_trigger(self):
-        return IntervalTrigger(minutes=random.randint(10, 407))
+        return IntervalTrigger(minutes=random.randint(15, 60))
 
     def on_run(self):
         self.identity.users.get_followers(force=True)
@@ -94,7 +94,7 @@ class UpdateFollowingScheduledTask(ScheduledTask):
         self._all_user_ids = []
 
     def get_trigger(self):
-        return IntervalTrigger(minutes=random.randint(15, 7))
+        return IntervalTrigger(minutes=random.randint(15, 60))
 
     def on_run(self):
         self.identity.users.get_following(force=True)
@@ -106,7 +106,7 @@ class GetUsersScheduledTask(ScheduledTask):
         self._all_user_ids = []
 
     def get_trigger(self):
-        return IntervalTrigger(minutes=random.randint(5, 7))
+        return IntervalTrigger(minutes=random.randint(15, 60))
 
     def on_run(self):
         if not self._all_user_ids:
@@ -135,7 +135,7 @@ class ScoreUsersScheduledTask(ScheduledTask):
         self._all_user_ids = []
 
     def get_trigger(self):
-        return IntervalTrigger(minutes=random.randint(5, 7))
+        return IntervalTrigger(minutes=random.randint(15, 60))
 
     def on_run(self):
         calls_remaining = self.identity.twitter.rates.get("/statuses/user_timeline")

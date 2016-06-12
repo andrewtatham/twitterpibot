@@ -35,7 +35,7 @@ class Response(object):
 def mentioned_reply_condition(inbox_item):
     mentioned = (inbox_item.is_direct_message or inbox_item.is_tweet) \
                 and not inbox_item.from_me and not inbox_item.is_retweet_of_my_status \
-                and inbox_item.to_me \
+                and (inbox_item.to_me or inbox_item.is_quote_of_my_status) \
                 and not inbox_item.from_me \
                 and inbox_item.sender \
                 and (not inbox_item.sender.is_reply_less or _one_in(mentioned_reply_less)) \

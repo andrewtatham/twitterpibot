@@ -10,6 +10,7 @@ class InboxItem(object):
         self.is_direct_message = False
         self.is_event = False
         self.is_retweet_of_my_status = False
+        self.is_quote_of_my_status = False
         self.words = None
         self.in_reply_to_id_str = None
         self.text = None
