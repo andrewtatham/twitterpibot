@@ -67,19 +67,17 @@ class Users(object):
             for chunk in [to_lookup[i:i + n] for i in range(0, len(to_lookup), n)]:
                 ids_csv = ",".join(chunk)
                 logger.debug("lookup {} users".format(len(chunk)))
-                try:
-                    user_datas = self._identity.twitter.lookup_user(user_id=ids_csv)
-                    if user_datas:
-                        logger.debug("lookup returned {} users".format(len(user_datas)))
-                        for user_data in user_datas:
-                            users.append(self.get_user(user_data=user_data))
-                except TwythonError as ex:
-                    logger.warning(ex)
+                user_datas = self._identity.twitter.lookup_user(user_id=ids_csv)
+                if user_datas:
+                    logger.debug("lookup returned {} users".format(len(user_datas)))
+                    for user_data in user_datas:
+                        users.append(self.get_user(user_data=user_data))
 
 
         n_returned_total = len(users)
         if n_requested_total:
-            logger.info("returning {} users {:.0%}".format(n_returned_total, n_returned_total / n_requested_total))
+            logger.info("requested {} returning {} users {:.0%}".format(
+                n_requested_total, n_returned_total, n_returned_total / n_requested_total))
         return users
 
     def update_user(self, user):

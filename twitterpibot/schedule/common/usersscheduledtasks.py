@@ -82,10 +82,11 @@ class UpdateFollowersScheduledTask(ScheduledTask):
         self._all_user_ids = []
 
     def get_trigger(self):
-        return IntervalTrigger(minutes=random.randint(10,407))
+        return IntervalTrigger(minutes=random.randint(10, 407))
 
     def on_run(self):
         self.identity.users.get_followers(force=True)
+
 
 class UpdateFollowingScheduledTask(ScheduledTask):
     def __init__(self, identity):
@@ -98,6 +99,7 @@ class UpdateFollowingScheduledTask(ScheduledTask):
     def on_run(self):
         self.identity.users.get_following(force=True)
 
+
 class GetUsersScheduledTask(ScheduledTask):
     def __init__(self, identity):
         super(GetUsersScheduledTask, self).__init__(identity)
@@ -107,14 +109,11 @@ class GetUsersScheduledTask(ScheduledTask):
         return IntervalTrigger(minutes=random.randint(5, 7))
 
     def on_run(self):
-
-
-
-
         if not self._all_user_ids:
             self._all_user_ids = self.identity.users.get_uncached_user_ids()
 
         if self._all_user_ids:
+            logger.info("{} uncached user ids".format(len(self._all_user_ids)))
             calls_remaining = self.identity.twitter.rates.get("/users/lookup")
             batch_size = int(100 * calls_remaining / 10)  # 100 users per call, but only use 1/3 allowance
             batch = []
@@ -123,8 +122,11 @@ class GetUsersScheduledTask(ScheduledTask):
                     batch.append(self._all_user_ids.pop())
                 else:
                     break
-            # get user data, so users who dont tweet are cached
-            self.identity.users.get_users(batch)
+
+            if batch:
+                logger.info("getting {} user ids {}".format(len(batch), batch))
+                # get user data, so users who dont tweet are cached
+                self.identity.users.get_users(batch)
 
 
 class ScoreUsersScheduledTask(ScheduledTask):
