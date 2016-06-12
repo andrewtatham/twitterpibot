@@ -166,7 +166,7 @@ def make(board, solution, screen_name):
         # max_length = min(found_words_grouped)
 
         found_words = list(found_words_grouped[max_length])
-
+        found_words = random.sample(found_words, 5)
         # n = random.randint(1, 4)
         # found_words = found_words[-n:]
         # found_words.reverse()
