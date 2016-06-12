@@ -3,6 +3,8 @@ import logging
 import pprint
 import random
 
+from twython import TwythonError
+
 from twitterpibot.users import lists
 from twitterpibot.users.user import User
 
@@ -65,11 +67,15 @@ class Users(object):
             for chunk in [to_lookup[i:i + n] for i in range(0, len(to_lookup), n)]:
                 ids_csv = ",".join(chunk)
                 logger.debug("lookup {} users".format(len(chunk)))
-                user_datas = self._identity.twitter.lookup_user(user_id=ids_csv)
-                if user_datas:
-                    logger.debug("lookup returned {} users".format(len(user_datas)))
-                    for user_data in user_datas:
-                        users.append(self.get_user(user_data=user_data))
+                try:
+                    user_datas = self._identity.twitter.lookup_user(user_id=ids_csv)
+                    if user_datas:
+                        logger.debug("lookup returned {} users".format(len(user_datas)))
+                        for user_data in user_datas:
+                            users.append(self.get_user(user_data=user_data))
+                except TwythonError as ex:
+                    logger.warning(ex)
+
 
         n_returned_total = len(users)
         if n_requested_total:
