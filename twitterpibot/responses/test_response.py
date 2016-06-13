@@ -2,33 +2,64 @@ from unittest import TestCase
 
 from twitterpibot.responses.Response import favourite_condition, retweet_condition, mentioned_reply_condition, \
     unmentioned_reply_condition, _one_in
+from twitterpibot.topics.News import BadThings
 
 __author__ = 'andrewtatham'
 
 
 class TestResponse(TestCase):
     def test_mentioned_reply_condition(self):
+        test_data = _get_test_data(to_me=True)
         # noinspection PyTypeChecker
-        rate = _test_reply_rate(mentioned_reply_condition, True)
+        rate = _test_reply_rate(mentioned_reply_condition, test_data=test_data)
         self.assertGreaterEqual(rate, 0.99)
 
     def test_unmentioned_reply_condition(self):
+        test_data = _get_test_data()
         # noinspection PyTypeChecker
-        rate = _test_reply_rate(unmentioned_reply_condition)
+        rate = _test_reply_rate(unmentioned_reply_condition, test_data=test_data)
         self.assertLessEqual(rate, 0.01)
 
     def test_retweet_condition(self):
+        test_data = _get_test_data()
         # noinspection PyTypeChecker
-        rate = _test_reply_rate(retweet_condition)
+        rate = _test_reply_rate(retweet_condition, test_data=test_data)
         self.assertLessEqual(rate, 0.01)
 
     def test_favourite_condition(self):
+        test_data = _get_test_data()
         # noinspection PyTypeChecker
-        rate = _test_reply_rate(favourite_condition)
+        rate = _test_reply_rate(favourite_condition, test_data=test_data)
         self.assertLessEqual(rate, 0.01)
 
 
-def _get_test_data(to_me=False):
+class TestResponseBadThings(TestCase):
+    def test_mentioned_reply_condition(self):
+        test_data = _get_test_data(to_me=True, topic=BadThings())
+        # noinspection PyTypeChecker
+        rate = _test_reply_rate(mentioned_reply_condition, test_data=test_data)
+        self.assertEqual(rate, 0)
+
+    def test_unmentioned_reply_condition(self):
+        test_data = _get_test_data(topic=BadThings())
+        # noinspection PyTypeChecker
+        rate = _test_reply_rate(unmentioned_reply_condition, test_data=test_data)
+        self.assertEqual(rate, 0)
+
+    def test_retweet_condition(self):
+        test_data = _get_test_data(topic=BadThings())
+        # noinspection PyTypeChecker
+        rate = _test_reply_rate(retweet_condition, test_data=test_data)
+        self.assertEqual(rate, 0)
+
+    def test_favourite_condition(self):
+        test_data = _get_test_data(topic=BadThings())
+        # noinspection PyTypeChecker
+        rate = _test_reply_rate(favourite_condition, test_data=test_data)
+        self.assertEqual(rate, 0)
+
+
+def _get_test_data(to_me=False, topic=None):
     for i in range(10000):
         inbox_item = MockInboxItem()
         inbox_item.is_direct_message = _one_in(1000)
@@ -54,6 +85,7 @@ def _get_test_data(to_me=False):
         inbox_item.sender.screen_name = ""
 
         inbox_item.sender.is_awesome_bot = _one_in(100)
+        inbox_item.sender.is_possibly_bot = _one_in(100)
         inbox_item.sender.is_friend = _one_in(100)
         inbox_item.sender.is_arsehole = _one_in(100)
         inbox_item.sender.is_retweet_more = _one_in(100)
@@ -62,14 +94,13 @@ def _get_test_data(to_me=False):
 
         inbox_item.sender.protected = _one_in(100)
 
-        inbox_item.topics = None
+        inbox_item.topics = topic
         inbox_item.sourceIsTrend = _one_in(100)
         inbox_item.sourceIsSearch = _one_in(100)
         yield inbox_item
 
 
-def _test_reply_rate(condition, to_me=False):
-    test_data = _get_test_data(to_me)
+def _test_reply_rate(condition, test_data):
     results = list(map(condition, test_data))
     responses = sum(results)
     total = len(results)

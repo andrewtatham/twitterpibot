@@ -5,7 +5,8 @@ class BadThings(IgnoreTopic):
     def __init__(self):
         super(BadThings, self).__init__(
             [
-                "Shooting",
+                "Shoot(ing|er)",
+                "Shots?",
                 "Gunman",
                 "Fatal(y|ites)?",
                 "wound(ed)?",
@@ -35,7 +36,9 @@ class BadThings(IgnoreTopic):
                 "miscarriage",
                 "trafficking",
                 "abortion",
-                "died"
+                "died",
+                "AR-?15",
+                "M-?16",
 
             ], [
                 "fire",

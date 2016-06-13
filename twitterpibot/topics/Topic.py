@@ -76,14 +76,23 @@ class Topic(object):
             self._to_date = int(parts[0])
             self._to_month = int(parts[1])
 
+    def reply(self):
+        return self._reply
+
+    def retweet(self):
+        return self._retweet
+
+    def spam(self):
+        return self._spam
+
     def condition(self, text, today=None):
 
         result = {
             'topic': self.__class__.__name__,
-            'retweet': self._retweet,
-            'reply': self._reply,
+            'retweet': self.retweet(),
+            'reply': self.reply(),
             'stream': self._stream,
-            'spam': self._spam,
+            'spam': self.spam(),
             'score': self._score
         }
 

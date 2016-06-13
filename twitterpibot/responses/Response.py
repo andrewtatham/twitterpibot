@@ -33,8 +33,11 @@ class Response(object):
 
 
 def mentioned_reply_condition(inbox_item):
-    mentioned = (inbox_item.is_direct_message or inbox_item.is_tweet) \
-                and not inbox_item.from_me and not inbox_item.is_retweet_of_my_status \
+    mentioned = (
+                    inbox_item.is_direct_message or inbox_item.is_tweet
+                ) and (
+                    not inbox_item.topics or inbox_item.topics.reply()
+                ) and not inbox_item.from_me and not inbox_item.is_retweet_of_my_status \
                 and (inbox_item.to_me or inbox_item.is_quote_of_my_status) \
                 and not inbox_item.from_me \
                 and inbox_item.sender \
@@ -45,9 +48,9 @@ def mentioned_reply_condition(inbox_item):
     return mentioned
 
 
-
 def unmentioned_reply_condition(inbox_item, one_in=None):
-    unmentoned = inbox_item.is_tweet and not inbox_item.from_me and\
+    unmentoned = inbox_item.is_tweet and not inbox_item.from_me and (
+        not inbox_item.topics or inbox_item.topics.reply()) and \
                  not inbox_item.is_retweet_of_my_status and \
                  (
                      (inbox_item.sender.is_awesome_bot and _one_in(bot_unmentioned_reply)) or
@@ -75,9 +78,9 @@ def retweet_condition(inbox_item):
                inbox_item.sender.is_do_not_retweet or
                inbox_item.retweeted_status and
                inbox_item.retweeted_status.sender.is_do_not_retweet
-           ) and \
-           (not inbox_item.topics or inbox_item.topics.retweet()) and \
-           (
+           ) and (
+               not inbox_item.topics or inbox_item.topics.retweet()
+           ) and (
                (inbox_item.sender.is_awesome_bot and _one_in(bot_rt_fav)) or
                (inbox_item.sender.is_possibly_bot and _one_in(bot_rt_fav)) or
                (inbox_item.sender.is_friend and _one_in(friend_rt_fav)) or
