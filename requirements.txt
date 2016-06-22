@@ -18,10 +18,10 @@ astral
 colorama
 images2gif
 numpy
-Pillow
 psutil
 pyjokes
 twython
 wikipedia
 twitter-text-python
 python-dateutil
+Pillow
