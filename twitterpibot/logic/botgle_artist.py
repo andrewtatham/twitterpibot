@@ -96,6 +96,8 @@ def make(board, solution, screen_name):
 
     line_width = 3
 
+    max_found_words = 5
+
     image = Image.new('RGBA', image_size, bg_dark_colour)
     draw = ImageDraw.Draw(image)
 
@@ -166,7 +168,9 @@ def make(board, solution, screen_name):
         # max_length = min(found_words_grouped)
 
         found_words = list(found_words_grouped[max_length])
-        found_words = random.sample(found_words, 5)
+
+        if len(max_found_words) > n:
+            found_words = random.sample(found_words, max_found_words)
         # n = random.randint(1, 4)
         # found_words = found_words[-n:]
         # found_words.reverse()
