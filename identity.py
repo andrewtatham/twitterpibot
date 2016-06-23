@@ -32,7 +32,7 @@ from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirat
 from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
 from twitterpibot.schedule.WikipediaScheduledTask import WikipediaScheduledTask
 from twitterpibot.schedule.common.usersscheduledtasks import ManageUsersScheduledTask, ScoreUsersScheduledTask, \
-    GetUsersScheduledTask
+    GetUsersScheduledTask, UpdateUserGroupsScheduledTask
 from twitterpibot.schedule.common.IdentityMonitorScheduledTask import IdentityMonitorScheduledTask
 from twitterpibot.schedule.common.LightsScheduledTask import LightsScheduledTask
 from twitterpibot.schedule.common.SubscribedListsScheduledTask import SubscribedListsScheduledTask
@@ -105,7 +105,8 @@ class Identity(object):
             SuggestedUsersScheduledTask(self),
             GetUsersScheduledTask(self),
             ScoreUsersScheduledTask(self),
-            RateLimitsScheduledTask(self)
+            RateLimitsScheduledTask(self),
+            UpdateUserGroupsScheduledTask(self)
 
         ]
 

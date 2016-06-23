@@ -76,28 +76,20 @@ class ManageUsersScheduledTask(ScheduledTask):
                         self.identity.users.follow(user_id=user_id)
 
 
-class UpdateFollowersScheduledTask(ScheduledTask):
-    def __init__(self, identity):
-        super(UpdateFollowersScheduledTask, self).__init__(identity)
-        self._all_user_ids = []
-
+class UpdateUserGroupsScheduledTask(ScheduledTask):
     def get_trigger(self):
-        return IntervalTrigger(minutes=random.randint(15, 60))
+        return IntervalTrigger(minutes=random.randint(45, 60))
 
     def on_run(self):
         self.identity.users.get_followers(force=True)
-
-
-class UpdateFollowingScheduledTask(ScheduledTask):
-    def __init__(self, identity):
-        super(UpdateFollowingScheduledTask, self).__init__(identity)
-        self._all_user_ids = []
-
-    def get_trigger(self):
-        return IntervalTrigger(minutes=random.randint(15, 60))
-
-    def on_run(self):
         self.identity.users.get_following(force=True)
+
+        self.identity.users.get_following_followers(force=True)
+        self.identity.users.get_following_only(force=True)
+        self.identity.users.get_followers_only(force=True)
+        self.identity.users.get_others(force=True)
+
+
 
 
 class GetUsersScheduledTask(ScheduledTask):

@@ -3,8 +3,6 @@ import logging
 import pprint
 import random
 
-from twython import TwythonError
-
 from twitterpibot.users import lists
 from twitterpibot.users.user import User
 
@@ -18,6 +16,12 @@ class Users(object):
 
         self._following = set()
         self._followers = set()
+
+        self._following_followers = set()
+        self._following_only = set()
+        self._followers_only = set()
+        self._others = set()
+
         self._lists = lists.Lists(self._identity)
 
         self._lists.update_lists()
@@ -73,7 +77,6 @@ class Users(object):
                     for user_data in user_datas:
                         users.append(self.get_user(user_data=user_data))
 
-
         n_returned_total = len(users)
         if n_requested_total:
             logger.info("requested {} returning {} users {:.0%}".format(
@@ -108,25 +111,29 @@ class Users(object):
         logger.info("[%s] followers %s" % (self._identity.screen_name, len(self._followers)))
         return self._followers
 
-    def get_following_followers(self):
-        following_followers = self.get_following().intersection(self.get_following())
-        logger.info("[%s] following_followers %s" % (self._identity.screen_name, len(following_followers)))
-        return following_followers
+    def get_following_followers(self, force=False):
+        if not self._following_followers or force:
+            self._following_followers = self.get_following().intersection(self.get_following())
+        logger.info("[%s] following_followers %s" % (self._identity.screen_name, len(self._following_followers)))
+        return self._following_followers
 
-    def get_following_only(self):
-        following_only = self.get_following().difference(self.get_followers())
-        logger.info("[%s] following_only %s" % (self._identity.screen_name, len(following_only)))
-        return following_only
+    def get_following_only(self, force=False):
+        if not self._following_only or force:
+            self._following_only = self.get_following().difference(self.get_followers())
+        logger.info("[%s] following_only %s" % (self._identity.screen_name, len(self._following_only)))
+        return self._following_only
 
-    def get_followers_only(self):
-        followers_only = self.get_followers().difference(self.get_following())
-        logger.info("[%s] followers_only %s" % (self._identity.screen_name, len(followers_only)))
-        return followers_only
+    def get_followers_only(self, force=False):
+        if not self._followers_only or force:
+            self._followers_only = self.get_followers().difference(self.get_following())
+        logger.info("[%s] followers_only %s" % (self._identity.screen_name, len(self._followers_only)))
+        return self._followers_only
 
-    def get_others(self):
-        others = set(self._users).difference(self.get_following().union(self.get_followers()))
-        logger.info("[%s] others %s" % (self._identity.screen_name, len(others)))
-        return others
+    def get_others(self, force=False):
+        if not self._others or force:
+            self._others = set(self._users).difference(self.get_following().union(self.get_followers()))
+        logger.info("[%s] others %s" % (self._identity.screen_name, len(self._others)))
+        return self._others
 
     def get_users_with_scores(self):
         return list(filter(lambda u: u.user_score, list(self._users.values())))
