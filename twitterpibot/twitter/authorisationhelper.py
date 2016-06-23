@@ -1,6 +1,7 @@
 import webbrowser
 
 from twitterpibot.data_access import dal
+from twitterpibot.hardware import myhardware
 
 try:
     # noinspection PyUnresolvedReferences,PyShadowingBuiltins
@@ -29,7 +30,8 @@ def get_tokens(screen_name):
         url = auth["auth_url"]
 
         logger.info(url)
-        webbrowser.open(url)
+        if myhardware.is_andrew_desktop or myhardware.is_andrew_macbook:
+            webbrowser.open(url)
         oauth_verifier = input("Please enter your pin:")
 
         twitter = Twython(app_key, app_secret, oauth_token, oauth_token_secret)
