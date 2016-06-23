@@ -113,7 +113,7 @@ class Users(object):
 
     def get_following_followers(self, force=False):
         if not self._following_followers or force:
-            self._following_followers = self.get_following().intersection(self.get_following())
+            self._following_followers = self.get_following().intersection(self.get_followers())
         logger.info("[%s] following_followers %s" % (self._identity.screen_name, len(self._following_followers)))
         return self._following_followers
 
@@ -131,7 +131,7 @@ class Users(object):
 
     def get_others(self, force=False):
         if not self._others or force:
-            self._others = set(self._users).difference(self.get_following().union(self.get_followers()))
+            self._others = self._users.difference(self.get_following().union(self.get_followers()))
         logger.info("[%s] others %s" % (self._identity.screen_name, len(self._others)))
         return self._others
 
@@ -248,21 +248,11 @@ class Users(object):
                 }
 
     def get_user_groups(self):
-        following_followers = self.get_following_followers()
-        following_only = self.get_following_only()
-        followers_only = self.get_followers_only()
-        others = self.get_others()
-
-        following_followers = self.get_users(following_followers, lookup=False)
-        following_only = self.get_users(following_only, lookup=False)
-        followers_only = self.get_users(followers_only, lookup=False)
-        others = self.get_users(others, lookup=False)
-
         groups = {
-            "following_followers": following_followers,
-            "following_only": following_only,
-            "followers_only": followers_only,
-            "others": others,
+            "following_followers": self.get_users(self.get_following_followers(), lookup=False),
+            "following_only": self.get_users(self.get_following_only(), lookup=False),
+            "followers_only": self.get_users(self.get_followers_only(), lookup=False),
+            "others": self.get_users(self.get_others(), lookup=False),
         }
         return groups
 
