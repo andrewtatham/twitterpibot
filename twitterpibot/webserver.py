@@ -4,6 +4,7 @@ import random
 import flask
 
 from twitterpibot import controller
+from twitterpibot.hardware import myhardware
 
 logger = logging.getLogger(__name__)
 app = flask.Flask("twitterpibot")
@@ -126,6 +127,14 @@ def shutdown():
     return flask.render_template('shutdown.html')
 
 
+def run():
+    if myhardware.is_windows:
+        host = "localhost"
+    else:
+        host = "0.0.0.0"
+    app.run(debug=False, host=host)
+
+
 def _shutdown_server():
     func = flask.request.environ.get('werkzeug.server.shutdown')
     if func is None:
@@ -137,7 +146,6 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
 
     import identities
-    import twitterpibot.hardware.myhardware
 
     pi = identities.AndrewTathamPiIdentity()
     pi2 = identities.AndrewTathamPi2Identity()
@@ -152,4 +160,4 @@ if __name__ == '__main__':
 
     controller.set_identities([pi, pi2])
 
-    app.run(debug=False, host=twitterpibot.hardware.myhardware._node)
+    run()
