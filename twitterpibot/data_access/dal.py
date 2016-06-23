@@ -4,13 +4,16 @@ import random
 import traceback
 
 # import uptime
-from twitterpibot.data_access import model, tokens
+
+
+import sqlalchemy
 
 from sqlalchemy.orm import sessionmaker, scoped_session
 
-from twitterpibot.data_access.model import ExceptionRow
-from twitterpibot.data_access.tokens import Token
+from twitterpibot.data_access import model, tokens
 from twitterpibot.logic import fsh
+import twitterpibot.data_access.model
+import twitterpibot.data_access.tokens
 
 try:
     # noinspection PyUnresolvedReferences,PyShadowingBuiltins
@@ -21,8 +24,8 @@ except NameError:
 folder = fsh.root + "temp" + os.sep + "db" + os.sep
 fsh.ensure_directory_exists(folder)
 
-_tokens_engine = tokens.create_engine("sqlite:///" + folder + "tokens.db", echo=False)
-_engine = model.create_engine("sqlite:///" + folder + "twitterpibot.db", echo=False)
+_tokens_engine = sqlalchemy.create_engine("sqlite:///" + folder + "tokens.db", echo=False)
+_engine = sqlalchemy.create_engine("sqlite:///" + folder + "twitterpibot.db", echo=False)
 
 tokens.TokenBase.metadata.bind = _tokens_engine
 model.ModelBase.metadata.bind = _engine
@@ -55,7 +58,8 @@ def tokens_file_path():
 
 def get_token(key, ask=True):
     session = _create_tokens_session()
-    token = session.query(Token).filter(Token.key == key).first()
+    token = session.query(twitterpibot.data_access.tokens.Token).filter(
+        twitterpibot.data_access.tokens.Token.key == key).first()
 
     if token:
         return token.value
@@ -71,9 +75,10 @@ def get_token(key, ask=True):
 
 def set_token(key, value):
     session = _create_tokens_session()
-    token = session.query(Token).filter(Token.key == key).first()
+    token = session.query(twitterpibot.data_access.tokens.Token).filter(
+        twitterpibot.data_access.tokens.Token.key == key).first()
     if not token:
-        token = Token(key, value)
+        token = twitterpibot.data_access.tokens.Token(key, value)
         session.add(token)
     else:
         token.value = value
@@ -106,7 +111,7 @@ def migrate_tokens():
 
 def display_tokens():
     session = _create_tokens_session()
-    ts = session.query(Token).all()
+    ts = session.query(twitterpibot.data_access.tokens.Token).all()
     for t in ts:
         print("{key}: {value}".format(**t.__dict__))
 
@@ -121,7 +126,7 @@ def import_tokens(file_name):
 
 def export_tokens(file_name):
     session = _create_tokens_session()
-    ts = session.query(Token).all()
+    ts = session.query(twitterpibot.data_access.tokens.Token).all()
     csv = [(t.key, t.value) for t in ts]
     fsh.write_csv(file_name, csv)
 
