@@ -7,7 +7,7 @@ from twitterpibot.logic import fsh
 
 def init():
     root_logger = logging.getLogger("")
-    root_logger.setLevel(logging.DEBUG)
+    root_logger.setLevel(logging.INFO)
 
     log_dir = fsh.root + "temp" + os.sep + "log" + os.sep
 

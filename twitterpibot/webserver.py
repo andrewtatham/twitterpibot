@@ -137,6 +137,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
 
     import identities
+    import twitterpibot.hardware.myhardware
 
     pi = identities.AndrewTathamPiIdentity()
     pi2 = identities.AndrewTathamPi2Identity()
@@ -151,4 +152,4 @@ if __name__ == '__main__':
 
     controller.set_identities([pi, pi2])
 
-    app.run(debug=False, host='0.0.0.0')
+    app.run(debug=False, host=twitterpibot.hardware.myhardware._node)

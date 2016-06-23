@@ -36,7 +36,7 @@ def run(identities):
 
     logger.info(obviousness + " Starting UI " + obviousness)
     controller.set_identities(identities)
-    webserver.app.run(debug=False, host='0.0.0.0')
+    webserver.app.run(debug=False, host=myhardware._node)
     logger.info(obviousness + " Stopped UI " + obviousness)
 
     logger.info("Stopping schedule")
