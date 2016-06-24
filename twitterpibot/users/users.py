@@ -131,7 +131,7 @@ class Users(object):
 
     def get_others(self, force=False):
         if not self._others or force:
-            self._others = self._users.difference(self.get_following().union(self.get_followers()))
+            self._others = set(self._users).difference(self.get_following().union(self.get_followers()))
         logger.info("[%s] others %s" % (self._identity.screen_name, len(self._others)))
         return self._others
 
