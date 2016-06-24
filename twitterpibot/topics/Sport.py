@@ -1,4 +1,4 @@
-from twitterpibot.topics.Topic import IgnoreTopic, NewsTopic, GoodTopic
+from twitterpibot.topics.Topic import IgnoreTopic, GoodTopic
 
 
 class FootballUK(IgnoreTopic):

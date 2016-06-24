@@ -169,7 +169,7 @@ def make(board, solution, screen_name):
 
         found_words = list(found_words_grouped[max_length])
 
-        if len(max_found_words) > n:
+        if len(found_words) > n:
             found_words = random.sample(found_words, max_found_words)
         # n = random.randint(1, 4)
         # found_words = found_words[-n:]

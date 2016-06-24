@@ -142,7 +142,7 @@ def exception(identity, ex, label):
 def _exception(identity, ex, log_type, label):
     session = _create_session()
 
-    row = ExceptionRow()
+    row = model.ExceptionRow()
     row.now = datetime.datetime.now()
     row.uptime = None  # uptime.uptime()
     row.boottime = None  # uptime.boottime()
@@ -160,7 +160,7 @@ def _exception(identity, ex, log_type, label):
 
 def get_exceptions():
     session = _create_session()
-    exs = session.query(ExceptionRow).all()
+    exs = session.query(model.ExceptionRow).all()
     return exs
 
 

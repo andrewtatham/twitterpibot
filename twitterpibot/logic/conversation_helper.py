@@ -1,7 +1,6 @@
 import datetime
 import logging
 import os
-import pprint
 
 logger = logging.getLogger(__name__)
 
