@@ -232,12 +232,13 @@ class IncomingTweet(InboxItem):
         text += self.short_description()
 
         n = 16
-
-        text += os.linesep + "text: ".rjust(n, " ") + self.text.replace(os.linesep, ' ')
-        text += os.linesep + "text_stripped: ".rjust(n, " ") + self.text_stripped.replace(os.linesep, ' ')
-        text += os.linesep + "text_stripped_whitespace_removed: ".rjust(n,
-                                                                        " ") + self.text_stripped_whitespace_removed.replace(
-            os.linesep, ' ')
+        if self.text:
+            text += os.linesep + "text: ".rjust(n, " ") + self.text.replace(os.linesep, ' ')
+        if self.text_stripped and self.text_stripped != self.text:
+            text += os.linesep + "text_stripped: ".rjust(n, " ") + self.text_stripped.replace(os.linesep, ' ')
+        if self.text_stripped_whitespace_removed and self.text_stripped_whitespace_removed != self.text_stripped:
+            text += os.linesep + "text_stripped_whitespace_removed: ".rjust(n, " ") \
+                    + self.text_stripped_whitespace_removed.replace(os.linesep, ' ')
         if self._classification:
             text += os.linesep + "classification: ".rjust(n, " ") + str(self._classification)
         if self.english:
