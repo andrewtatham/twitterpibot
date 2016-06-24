@@ -32,8 +32,9 @@ class HiveMindResponse(Response):
             elif inbox_item.is_unfollow:
                 pass
             elif inbox_item.is_block:
-                for identity in self.slave_identities:
-                    funcs.append(lambda i=identity: i.twitter.block_user(user_id=inbox_item.targetObjectID))
+                # for identity in self.slave_identities:
+                #     funcs.append(lambda i=identity: i.twitter.block_user(user_id=inbox_item.targetObjectID))
+                pass
             elif inbox_item.is_unblock:
                 pass
 

@@ -309,27 +309,27 @@ class TwitterHelper(object):
         return self.twitter.create_list(name=name, mode=mode)
 
     @retry(**retry_args)
-    def follow(self, user_id):
-        logger.info("following user id {}".format(user_id))
-        self.twitter.create_friendship(user_id=user_id)
+    def follow(self, user_id, screen_name):
+        logger.info("following user id {} @{}".format(user_id, screen_name))
+        self.twitter.create_friendship(user_id=user_id, screen_name=screen_name)
         self.identity.statistics.increment("Follows")
 
     @retry(**retry_args)
-    def unfollow(self, user_id):
-        logger.info("unfollowing user id {}".format(user_id))
-        self.twitter.destroy_friendship(user_id=user_id)
+    def unfollow(self, user_id, screen_name):
+        logger.info("unfollowing user id {} @{}".format(user_id, screen_name))
+        self.twitter.destroy_friendship(user_id=user_id, screen_name=screen_name)
         self.identity.statistics.increment("Unfollows")
 
     @retry(**retry_args)
-    def block(self, user_id):
-        logger.info("blocking user id {}".format(user_id))
-        self.twitter.create_block(user_id=user_id)
+    def block(self, user_id, screen_name):
+        logger.info("blocking user id {} @{}".format(user_id, screen_name))
+        self.twitter.create_block(user_id=user_id, screen_name=screen_name)
         self.identity.statistics.increment("Blocks")
 
     @retry(**retry_args)
-    def report(self, user_id):
-        logger.info("reporting user id {}".format(user_id))
-        self.twitter.report_spam(user_id=user_id)
+    def report(self, user_id, screen_name):
+        logger.info("reporting user id {} @{}".format(user_id, screen_name))
+        self.twitter.report_spam(user_id=user_id, screen_name=screen_name)
         self.identity.statistics.increment("Reports")
 
     @retry(**retry_args)

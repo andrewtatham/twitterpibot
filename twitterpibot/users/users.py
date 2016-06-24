@@ -164,23 +164,31 @@ class Users(object):
 
     def follow(self, user_id):
         logger.info("following user id %s" % user_id)
-        self._identity.twitter.follow(user_id=user_id)
-        self._following.add(user_id)
+        user = self._users.get(user_id)
+        if user:
+            self._identity.twitter.follow(user_id=user.id_str, screen_name=user.screen_name)
+            self._following.add(user_id)
 
     def unfollow(self, user_id):
         logger.info("unfollowing user id %s" % user_id)
-        self._identity.twitter.unfollow(user_id=user_id)
-        self._forget_user_id(user_id)
+        user = self._users.get(user_id)
+        if user:
+            self._identity.twitter.unfollow(user_id=user.id_str, screen_name=user.screen_name)
+            self._forget_user_id(user_id)
 
     def block(self, user_id):
         logger.info("blocking user id %s" % user_id)
-        self._identity.twitter.block(user_id=user_id)
-        self._forget_user_id(user_id)
+        user = self._users.get(user_id)
+        if user:
+            self._identity.twitter.block(user_id=user.id_str, screen_name=user.screen_name)
+            self._forget_user_id(user_id)
 
     def report(self, user_id):
         logger.info("reporting user id %s" % user_id)
-        self._identity.twitter.report(user_id=user_id)
-        self._forget_user_id(user_id)
+        user = self._users.get(user_id)
+        if user:
+            self._identity.twitter.report(user_id=user.id_str, screen_name=user.screen_name)
+            self._forget_user_id(user_id)
 
     def _forget_user_id(self, user_id):
         if user_id in self._following:
