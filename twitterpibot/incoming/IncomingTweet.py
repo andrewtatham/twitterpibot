@@ -40,14 +40,12 @@ class Media(object):
         return pprint.pformat(self._data)
 
     def short_description(self):
-        text = ""
-        text += self.display_url + " -> " + self.url
-        text += os.linesep + " [ " + self.expanded_url + " ]"
-        text += os.linesep + " L: " + self.get_large()
-        text += os.linesep + " M: " + self.get_medium()
-        text += os.linesep + " S: " + self.get_small()
-        text += os.linesep + " T: " + self.get_thumbnail()
-
+        text = self.display_url + " -> " + self.url
+        # text += os.linesep + " [ " + self.expanded_url + " ]"
+        # text += os.linesep + " L: " + self.get_large()
+        # text += os.linesep + " M: " + self.get_medium()
+        # text += os.linesep + " S: " + self.get_small()
+        # text += os.linesep + " T: " + self.get_thumbnail()
         return text
 
     def get_large(self):

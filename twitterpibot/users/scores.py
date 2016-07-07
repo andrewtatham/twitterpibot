@@ -113,8 +113,10 @@ class UserScore(Score):
                 # todo if user has never tweeted
                 self.include_recent_tweets_score = False
 
+
 # todo meme
 rx = re.compile("^(when|mfw)", re.IGNORECASE)
+
 
 class TweetScore(Score):
     def __init__(self, tweet):

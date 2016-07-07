@@ -38,6 +38,7 @@ elif is_mac_osx:
     if is_andrew_macbook:
         is_webcam_attached = False
         is_blinksticknano_attached = False
+        is_unicornhat_attached = True
 
 
 elif is_linux:

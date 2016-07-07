@@ -10,7 +10,7 @@ if myhardware.is_linux:
 else:
     from twitterpibot.hardware import unicornhat_viz as unicornhat
 
-max_bright = 32
+max_bright = 255
 
 
 def _write_pixel(x, y):
@@ -347,4 +347,4 @@ if __name__ == '__main__':
 
     close()
     if not myhardware.is_linux:
-        unicornhat.close()
+        unicornhat.display()

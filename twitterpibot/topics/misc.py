@@ -16,6 +16,7 @@ class Racism(IgnoreTopic):
             "niggers?"
         })
 
+
 class Hippies(IgnoreTopic):
     def __init__(self):
         super(Hippies, self).__init__({

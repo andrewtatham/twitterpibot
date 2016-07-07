@@ -55,6 +55,7 @@ def get_score_dto(score):
     if score:
         return score._scores
 
+
 def get_user_dto(user):
     user_dto = {
         "user_id": user.id_str,

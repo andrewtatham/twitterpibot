@@ -62,7 +62,7 @@ def change_image(path):
     root.update()
 
 
-def close():
+def display():
     global root
     global label
     root = tkinter.Tk()
@@ -80,3 +80,5 @@ def callback():
         print(path)
         change_image(path)
         time.sleep(0.1)
+
+
