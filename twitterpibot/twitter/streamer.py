@@ -3,7 +3,7 @@ import time
 
 from twython.streaming.api import TwythonStreamer
 
-from twitterpibot.hardware import myperipherals
+from twitterpibot.hardware import myperipherals, myhardware
 from twitterpibot.incoming.IncomingDirectMessage import IncomingDirectMessage
 from twitterpibot.incoming.IncomingEvent import IncomingEvent
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
@@ -51,7 +51,7 @@ class Streamer(TwythonStreamer):
             myperipherals.on_inbox_item_received(inbox_item)
             response = self._determine_response(inbox_item)
 
-            if inbox_item.is_tweet and response or inbox_item.is_event or inbox_item.is_direct_message or True:
+            if inbox_item.is_tweet and response or inbox_item.is_event or inbox_item.is_direct_message or myhardware.is_andrew_macbook:
                 logger.info("[{}] {}".format(self._identity.screen_name, inbox_item.display()))
             if response:
                 self._respond(inbox_item=inbox_item, response=response)
