@@ -3,7 +3,7 @@ import random
 import time
 
 from twitterpibot.hardware import myhardware
-from twitterpibot.logic import image_helper
+from twitterpibot.logic import image_helper, astronomy
 
 if myhardware.is_linux:
     import unicornhat
@@ -318,10 +318,16 @@ def camera_flash(on):
 def inbox_item_received(inbox_item):
     _mode.inbox_item_received(inbox_item)
 
-
+day_bright = 255
+night_bright = 8
 def on_lights_scheduled_task():
+    global max_bright
+    max_bright = night_bright + (day_bright - night_bright) * astronomy.get_daytimeness_factor()
+
     global _mode
     _mode = next(_modes)
+
+
 
 
 def fade():
