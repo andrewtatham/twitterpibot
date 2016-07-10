@@ -132,9 +132,27 @@ class RainMode(UnicornHatMode):
         _write_all()
 
 
-class MatrixMode(UnicornHatMode):
+class MatrixModeRight(UnicornHatMode):
     def __init__(self):
         self._rain = Rain(direction="right")
+
+    def lights(self):
+        self._rain.WriteToBuffer(True)
+        _write_all()
+
+        _sleep(0.1)
+
+    # noinspection PyUnusedLocal
+    def inbox_item_received(self, inbox_item):
+        rgb = (0, max_bright, 0)
+        self._rain.AddRaindrop(rgb)
+        self._rain.WriteToBuffer(False)
+        _write_all()
+
+
+class MatrixModeLeft(UnicornHatMode):
+    def __init__(self):
+        self._rain = Rain(direction="left")
 
     def lights(self):
         self._rain.WriteToBuffer(True)
@@ -282,19 +300,18 @@ class RainbowRainMode(UnicornHatMode):
 
 _buffer = [[(0, 0, 0) for x in range(8)] for y in range(8)]
 _modes = itertools.cycle([
-    DotsMode(),
-    FlashMode(),
-    SnowMode(),
-    RainMode(),
-    FireMode(),
-    MatrixMode(),
-    RainbowMode(),
-    RainbowRainMode(),
+    # DotsMode(),
+    # FlashMode(),
+    # SnowMode(),
+    MatrixModeLeft(),
+    # RainMode(),
+    # FireMode(),
+    MatrixModeRight(),
+    # RainbowMode(),
+    # RainbowRainMode(),
 
     # TODO unicorn hat patterns
-    # Rain
-    # matrix
-    # Fire
+
     # bubbles
     # Fireworks
     # Sin Wave
