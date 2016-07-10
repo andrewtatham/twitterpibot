@@ -12,11 +12,11 @@ def get_times(day):
     city = a['Leeds']
     sun = city.sun(date=day, local=False)
 
-    logger.info("[Astral] dawn: " + str(sun['dawn']))
-    logger.info("[Astral] sunrise: " + str(sun['sunrise']))
-    logger.info("[Astral] noon: " + str(sun['noon']))
-    logger.info("[Astral] sunset: " + str(sun['sunset']))
-    logger.info("[Astral] dusk: " + str(sun['dusk']))
+    logger.debug("dawn: " + str(sun['dawn']))
+    logger.debug("sunrise: " + str(sun['sunrise']))
+    logger.debug("noon: " + str(sun['noon']))
+    logger.debug("sunset: " + str(sun['sunset']))
+    logger.debug("dusk: " + str(sun['dusk']))
     return sun
 
 

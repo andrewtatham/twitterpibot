@@ -10,7 +10,20 @@ if myhardware.is_linux:
 else:
     from twitterpibot.hardware import unicornhat_viz as unicornhat
 
-max_bright = 255
+day_bright = 128
+night_bright = 32
+
+
+def _set_max_brightness():
+    global max_bright
+    max_bright = _calc_max_brightness()
+
+
+def _calc_max_brightness():
+    return night_bright + int((day_bright - night_bright) * astronomy.get_daytimeness_factor())
+
+
+max_bright = _calc_max_brightness()
 
 
 def _write_pixel(x, y):
@@ -318,16 +331,12 @@ def camera_flash(on):
 def inbox_item_received(inbox_item):
     _mode.inbox_item_received(inbox_item)
 
-day_bright = 255
-night_bright = 8
+
 def on_lights_scheduled_task():
-    global max_bright
-    max_bright = night_bright + (day_bright - night_bright) * astronomy.get_daytimeness_factor()
+    _set_max_brightness()
 
     global _mode
     _mode = next(_modes)
-
-
 
 
 def fade():
