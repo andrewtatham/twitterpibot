@@ -5,7 +5,8 @@ import colorama
 import twitterpibot.hardware.myhardware
 
 from twitterpibot.logic import conversation_helper
-from twitterpibot.logic.admin_commands import ImportTokensResponse, ExportTokensResponse, DropCreateTablesResponse
+from twitterpibot.logic.admin_commands import ImportTokensResponse, ExportTokensResponse, DropCreateTablesResponse, \
+    RestartResponse
 from twitterpibot.logic.anagram_solver import AnagramBotResponse
 from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask
 from twitterpibot.logic.conversation import ConversationScheduledTask
@@ -135,7 +136,7 @@ class BotIdentity(Identity):
     def get_responses(self):
         responses = super(BotIdentity, self).get_responses()
         responses.extend([
-            # RestartResponse(self),
+            RestartResponse(self),
             ImportTokensResponse(self),
             ExportTokensResponse(self),
             DropCreateTablesResponse(self),

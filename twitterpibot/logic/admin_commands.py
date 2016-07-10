@@ -1,19 +1,20 @@
 import random
 
-# from twitterpibot.webserver import shutdown
+from twitterpibot.webserver import shutdown
 from twitterpibot.data_access import dal
 from twitterpibot.logic.conversation import hello_words, thanks_and_bye
 from twitterpibot.responses.Response import Response
 
 
-# class RestartResponse(Response):
-#     def condition(self, inbox_item):
-#         return inbox_item.is_direct_message and inbox_item.sender.screen_name == self.identity.admin_screen_name \
-#                and "restart" in inbox_item.text
-#
-#     def respond(self, inbox_item):
-#         self.identity.twitter.reply_with(inbox_item, text=random.choice(hello_words) + " restarting...")
-#         shutdown()
+class RestartResponse(Response):
+    def condition(self, inbox_item):
+        return inbox_item.is_direct_message and inbox_item.sender.screen_name == self.identity.admin_screen_name \
+               and "restart" in inbox_item.text
+
+    def respond(self, inbox_item):
+        self.identity.twitter.reply_with(inbox_item, text=random.choice(hello_words) + " restarting...")
+        shutdown()
+        self.identity.twitter.reply_with(inbox_item, text="...restarting. " + random.choice(thanks_and_bye))
 
 
 class ImportTokensResponse(Response):
