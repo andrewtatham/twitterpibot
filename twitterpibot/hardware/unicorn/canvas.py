@@ -5,7 +5,7 @@ if is_linux:
 else:
     import twitterpibot.hardware.unicorn.unicornhat_viz as unicornhat
 
-from twitterpibot.hardware.unicorn.sprites import Raindrop, Firework, Square
+from twitterpibot.hardware.unicorn.sprites import Raindrop, Firework, Square, BouncingBall
 from twitterpibot.logic import astronomy, image_helper
 
 
@@ -60,6 +60,11 @@ class Fireworks(ParticleMode):
 class Squares(ParticleMode):
     def get_particle(self, rgb):
         return Square(self._buffer, rgb)
+
+
+class BouncingBalls(ParticleMode):
+    def get_particle(self, rgb):
+        return BouncingBall(self._buffer, rgb)
 
 
 class Buffer(object):

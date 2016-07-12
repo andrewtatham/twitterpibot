@@ -3,7 +3,7 @@ import random
 import time
 
 from twitterpibot.hardware import myhardware
-from twitterpibot.hardware.unicorn.canvas import Rain, ParticleMode, Fireworks, Squares
+from twitterpibot.hardware.unicorn.canvas import Rain, ParticleMode, Fireworks, Squares, BouncingBalls
 from twitterpibot.logic import image_helper
 
 
@@ -158,6 +158,25 @@ class RainbowSqaresMode(UnicornHatMode):
         h, s, v = (self.h, 1.0, self._buffer.max_bright)
         rgb = image_helper.hsv_to_rgb(h, s, v)
         self._particles.add_particle(rgb)
+
+
+class BouncingBallMode(UnicornHatMode):
+    def __init__(self, buffer):
+        super(BouncingBallMode, self).__init__(buffer)
+        self._particles = BouncingBalls(buffer)
+        self.h = 0.0
+
+    def lights(self):
+        self._particles.WriteToBuffer(True)
+        _sleep(0.1)
+
+    # noinspection PyUnusedLocal
+    def inbox_item_received(self, inbox_item):
+        self.h = image_helper.h_delta(self.h, 0.05)
+        h, s, v = (self.h, 1.0, self._buffer.max_bright)
+        rgb = image_helper.hsv_to_rgb(h, s, v)
+        self._particles.add_particle(rgb)
+
 
 
 def _sleep(seconds):

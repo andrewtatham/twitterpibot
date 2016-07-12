@@ -13,6 +13,7 @@ else:
 _buffer = Buffer(8, 8)
 
 _modes_list = [
+
     SnowMode(_buffer),
     MatrixModeLeft(_buffer),
     RainMode(_buffer),
@@ -22,6 +23,8 @@ _modes_list = [
 
     RainbowFireworksMode(_buffer),
     RainbowSqaresMode(_buffer),
+
+    BouncingBallMode(_buffer)
 
     # TODO unicorn hat patterns
 
