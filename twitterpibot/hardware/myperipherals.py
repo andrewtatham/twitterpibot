@@ -1,6 +1,6 @@
-from twitterpibot.hardware import myhardware
-
 import logging
+
+from twitterpibot.hardware import myhardware
 logger = logging.getLogger(__name__)
 
 if myhardware.is_webcam_attached:
@@ -8,7 +8,7 @@ if myhardware.is_webcam_attached:
 if myhardware.is_picam_attached:
     from twitterpibot.hardware import MyPicam as MyPicam
 if myhardware.is_unicornhat_attached:
-    from twitterpibot.hardware import myunicornhat as myunicornhat
+    from twitterpibot.hardware.unicorn import myunicornhat as myunicornhat
 if myhardware.is_piglow_attached:
     from twitterpibot.hardware import MyPiglow as MyPiglow
 brightpi = None

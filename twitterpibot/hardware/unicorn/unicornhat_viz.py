@@ -80,5 +80,6 @@ def callback():
         print(path)
         change_image(path)
         time.sleep(0.1)
+    fsh.ensure_directory_exists_and_is_empty(folder)
 
 
