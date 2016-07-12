@@ -13,11 +13,11 @@ else:
 _buffer = Buffer(8, 8)
 
 _modes_list = [
-    # SnowMode(_buffer),
-    # MatrixModeLeft(_buffer),
-    # RainMode(_buffer),
-    # FireMode(_buffer),
-    # MatrixModeRight(_buffer),
+    SnowMode(_buffer),
+    MatrixModeLeft(_buffer),
+    RainMode(_buffer),
+    FireMode(_buffer),
+    MatrixModeRight(_buffer),
     RainbowRainMode(_buffer),
 
     RainbowFireworksMode(_buffer),
@@ -25,8 +25,6 @@ _modes_list = [
 
     # TODO unicorn hat patterns
 
-    # bubbles
-    # Fireworks
     # Sin Wave
     # Swipes
     # graphic equalizer
