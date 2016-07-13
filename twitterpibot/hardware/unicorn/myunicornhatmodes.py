@@ -4,6 +4,8 @@ import time
 
 from twitterpibot.hardware import myhardware
 from twitterpibot.hardware.unicorn.canvas import Rain, ParticleMode, Fireworks, Squares, BouncingBalls
+from twitterpibot.hardware.unicorn.directions import Up, Right, Left
+from twitterpibot.hardware.unicorn.games import SnakeGame
 from twitterpibot.logic import image_helper
 
 
@@ -46,7 +48,7 @@ class RainMode(UnicornHatMode):
 class MatrixModeRight(UnicornHatMode):
     def __init__(self, buffer):
         super(MatrixModeRight, self).__init__(buffer)
-        self._rain = Rain(buffer, direction="right", trails=True)
+        self._rain = Rain(buffer, direction=Right(), trails=True)
 
     def lights(self):
         self._rain.WriteToBuffer(True)
@@ -62,7 +64,7 @@ class MatrixModeRight(UnicornHatMode):
 class MatrixModeLeft(UnicornHatMode):
     def __init__(self, buffer):
         super(MatrixModeLeft, self).__init__(buffer)
-        self._rain = Rain(buffer, direction="left", trails=True)
+        self._rain = Rain(buffer, direction=Left(), trails=True)
 
     def lights(self):
         self._rain.WriteToBuffer(True)
@@ -78,7 +80,7 @@ class MatrixModeLeft(UnicornHatMode):
 class FireMode(UnicornHatMode):
     def __init__(self, buffer):
         super(FireMode, self).__init__(buffer)
-        self._rain = Rain(buffer, direction="up", trails=True)
+        self._rain = Rain(buffer, direction=Up(), trails=True)
 
     def lights(self):
         self._rain.WriteToBuffer(True)
@@ -114,7 +116,7 @@ class RainbowRainMode(UnicornHatMode):
 
     def lights(self):
         self._rain.WriteToBuffer(True)
-        _sleep(0.5)
+        _sleep(0.3)
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
@@ -150,7 +152,7 @@ class RainbowSqaresMode(UnicornHatMode):
 
     def lights(self):
         self._particles.WriteToBuffer(True)
-        _sleep(0.5)
+        _sleep(0.2)
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
@@ -177,6 +179,20 @@ class BouncingBallMode(UnicornHatMode):
         rgb = image_helper.hsv_to_rgb(h, s, v)
         self._particles.add_particle(rgb)
 
+
+class SnakeMode(UnicornHatMode):
+    def __init__(self, buffer):
+        super(SnakeMode, self).__init__(buffer)
+        self._game = SnakeGame(buffer)
+
+    def lights(self):
+        self._game.iterate()
+        _sleep(0.1)
+
+    # noinspection PyUnusedLocal
+    def inbox_item_received(self, inbox_item):
+        if inbox_item and inbox_item.has_media:
+            self._game.add_food()
 
 
 def _sleep(seconds):

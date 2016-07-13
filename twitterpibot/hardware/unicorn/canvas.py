@@ -1,4 +1,5 @@
 from twitterpibot.hardware.myhardware import is_linux
+from twitterpibot.hardware.unicorn.directions import Down
 
 if is_linux:
     import unicornhat
@@ -6,6 +7,7 @@ else:
     import twitterpibot.hardware.unicorn.unicornhat_viz as unicornhat
 
 from twitterpibot.hardware.unicorn.sprites import Raindrop, Firework, Square, BouncingBall
+from twitterpibot.hardware.unicorn.games import SnakeGame
 from twitterpibot.logic import astronomy, image_helper
 
 
@@ -43,7 +45,7 @@ class ParticleMode(CanvasMode):
 
 
 class Rain(ParticleMode):
-    def __init__(self, buffer, direction="down", trails=False):
+    def __init__(self, buffer, direction=Down(), trails=False):
         super(Rain, self).__init__(buffer)
         self._direction = direction
         self._trails = trails

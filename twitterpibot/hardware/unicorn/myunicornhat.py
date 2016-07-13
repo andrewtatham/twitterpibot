@@ -4,6 +4,7 @@ import random
 from twitterpibot.hardware.myhardware import is_linux
 from twitterpibot.hardware.unicorn.canvas import Buffer
 from twitterpibot.hardware.unicorn.myunicornhatmodes import *
+from twitterpibot.incoming.IncomingTweet import IncomingTweet
 
 if is_linux:
     import unicornhat
@@ -24,7 +25,9 @@ _modes_list = [
     RainbowFireworksMode(_buffer),
     RainbowSqaresMode(_buffer),
 
-    BouncingBallMode(_buffer)
+    BouncingBallMode(_buffer),
+
+    SnakeMode(_buffer)
 
     # TODO unicorn hat patterns
 
