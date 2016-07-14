@@ -45,17 +45,18 @@ class Snake(object):
         self._buffer = buffer
         self.head = SnakeHead(buffer)
         self._segments = [self.head]
-        self._length = 2
+        self._length = 3
         self.complete = False
 
     def iterate(self):
 
-        if self._length >= len(self._segments):
+        self._add_segment()
+        self.head.iterate()
+
+        if self._length <= len(self._segments):
             last_segment = self._segments[-1:][0]
             self._segments.remove(last_segment)
 
-        self._add_segment()
-        self.head.iterate()
 
         for segment in self._segments:
             if segment != self.head and segment.x == self.head.x and segment.y == self.head.y:

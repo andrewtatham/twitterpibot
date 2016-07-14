@@ -3,6 +3,7 @@ import random
 import time
 
 from twitterpibot.hardware import myhardware
+from twitterpibot.hardware.unicorn import directions
 from twitterpibot.hardware.unicorn.canvas import Rain, ParticleMode, Fireworks, Squares, BouncingBalls
 from twitterpibot.hardware.unicorn.directions import Up, Right, Left
 from twitterpibot.hardware.unicorn.games import SnakeGame
@@ -84,7 +85,7 @@ class FireMode(UnicornHatMode):
 
     def lights(self):
         self._rain.WriteToBuffer(True)
-        _sleep(0.4)
+        _sleep(0.2)
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
@@ -100,7 +101,7 @@ class SnowMode(UnicornHatMode):
 
     def lights(self):
         self._rain.WriteToBuffer(True)
-        _sleep(0.5)
+        _sleep(0.3)
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
@@ -111,12 +112,12 @@ class SnowMode(UnicornHatMode):
 class RainbowRainMode(UnicornHatMode):
     def __init__(self, buffer):
         super(RainbowRainMode, self).__init__(buffer)
-        self._rain = Rain(buffer, trails=True)
+        self._rain = Rain(buffer, direction=random.choice(directions.DIAGNALS), trails=True)
         self.h = 0.0
 
     def lights(self):
         self._rain.WriteToBuffer(True)
-        _sleep(0.3)
+        _sleep(0.1)
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
@@ -152,7 +153,7 @@ class RainbowSqaresMode(UnicornHatMode):
 
     def lights(self):
         self._particles.WriteToBuffer(True)
-        _sleep(0.2)
+        _sleep(0.1)
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
@@ -191,7 +192,7 @@ class SnakeMode(UnicornHatMode):
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
-        if inbox_item and inbox_item.has_media:
+        if inbox_item and inbox_item.has_media or myhardware.is_andrew_macbook:
             self._game.add_food()
 
 

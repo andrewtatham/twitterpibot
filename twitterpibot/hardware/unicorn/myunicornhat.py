@@ -8,6 +8,7 @@ from twitterpibot.incoming.IncomingTweet import IncomingTweet
 
 if is_linux:
     import unicornhat
+    unicornhat.rotation(270)
 else:
     from twitterpibot.hardware.unicorn import unicornhat_viz as unicornhat
 

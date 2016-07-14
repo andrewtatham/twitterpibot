@@ -78,7 +78,7 @@ class Square(ExpandingParticle):
 
 class BouncingBall(Particle):
     def __init__(self, buffer, rgb):
-        super(BouncingBall, self).__init__(buffer, rgb)
+        super(BouncingBall, self).__init__(buffer, rgb, trails=True)
         self._bounce_count = 0
         self._direction = random.choice(DIAGNALS)
         self._direction.start_position(self)
