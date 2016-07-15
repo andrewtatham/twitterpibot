@@ -15,44 +15,52 @@ else:
 
 _buffer = Buffer(8, 8)
 
+# TODO unicorn hat patterns
+
+# Sin Wave
+# Swipes
+# graphic equalizer
+# starfield
+
+# bouncing ball/line
+
+# snake
+# game of life
+# battleships
+# chess/draughts
+
+# strobe
+# lifts?
+# text/numbers
+# emoticons
+# graphs
+# random/noise
+# images / video / gifs
+
 _modes_list = [
-
-    # SnowMode(_buffer),
-    # MatrixModeLeft(_buffer),
-    # RainMode(_buffer),
-    # FireMode(_buffer),
-    # MatrixModeRight(_buffer),
-    RainbowRainMode(_buffer),
-
-    RainbowFireworksMode(_buffer),
-    RainbowSqaresMode(_buffer),
-
-    BouncingBallMode(_buffer),
-
-    SnakeMode(_buffer)
-
-    # TODO unicorn hat patterns
-
-    # Sin Wave
-    # Swipes
-    # graphic equalizer
-    # starfield
-
-    # bouncing ball/line
-
-    # snake
-    # game of life
-    # battleships
-    # chess/draughts
-
-    # strobe
-    # lifts?
-    # text/numbers
-    # emoticons
-    # graphs
-    # random/noise
-    # images / video / gifs
+    SnakeMode(_buffer),
+    MultiSnakeMode(_buffer)
 ]
+if myhardware.is_linux:
+    _modes_list.extend([
+
+        # SnowMode(_buffer),
+        # MatrixModeLeft(_buffer),
+        # RainMode(_buffer),
+        # FireMode(_buffer),
+        # MatrixModeRight(_buffer),
+        RainbowRainMode(_buffer),
+
+        RainbowFireworksMode(_buffer),
+        RainbowSqaresMode(_buffer),
+
+        BouncingBallMode(_buffer)
+
+
+    ])
+
+
+
 random.shuffle(_modes_list)
 _modes = itertools.cycle(_modes_list)
 _mode = next(_modes)
@@ -88,7 +96,7 @@ def close():
 if __name__ == '__main__':
 
     lights()
-    for i in range(200):
+    for i in range(1000):
         print(i)
 
         fade()

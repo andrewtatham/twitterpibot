@@ -6,7 +6,7 @@ from twitterpibot.hardware import myhardware
 from twitterpibot.hardware.unicorn import directions
 from twitterpibot.hardware.unicorn.canvas import Rain, ParticleMode, Fireworks, Squares, BouncingBalls
 from twitterpibot.hardware.unicorn.directions import Up, Right, Left
-from twitterpibot.hardware.unicorn.games import SnakeGame
+from twitterpibot.hardware.unicorn.games import SnakeGame, SnakeGameOptions
 from twitterpibot.logic import image_helper
 
 
@@ -184,7 +184,8 @@ class BouncingBallMode(UnicornHatMode):
 class SnakeMode(UnicornHatMode):
     def __init__(self, buffer):
         super(SnakeMode, self).__init__(buffer)
-        self._game = SnakeGame(buffer)
+        options = SnakeGameOptions()
+        self._game = SnakeGame(buffer, options)
 
     def lights(self):
         self._game.iterate()
@@ -194,6 +195,22 @@ class SnakeMode(UnicornHatMode):
     def inbox_item_received(self, inbox_item):
         if inbox_item and inbox_item.has_media or myhardware.is_andrew_macbook:
             self._game.add_food()
+
+
+class MultiSnakeMode(UnicornHatMode):
+    def __init__(self, buffer):
+        super(MultiSnakeMode, self).__init__(buffer)
+        options = SnakeGameOptions(n_snakes=3, n_food=3, replenish_food=True)
+        self._game = SnakeGame(buffer, options)
+
+    def lights(self):
+        self._game.iterate()
+        _sleep(0.1)
+
+    # noinspection PyUnusedLocal
+    # def inbox_item_received(self, inbox_item):
+        # if inbox_item and inbox_item.has_media or myhardware.is_andrew_macbook:
+        #     self._game.add_food()
 
 
 def _sleep(seconds):

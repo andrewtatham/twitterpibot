@@ -78,11 +78,12 @@ class ShortSightedSnakeHead(SnakeHead):
         elif right_turn_food and not right_turn_collision:
             self._direction = self._direction.turn_right()
         else:
-            r = random.randint(0, 10)
-            if r == 0:
+            r = random.randint(0, 64)
+            if r == 0 and not left_turn_collision:
                 self._direction = self._direction.turn_left()
-            elif r == 1:
+            elif r == 1 and not right_turn_collision:
                 self._direction = self._direction.turn_right()
+
 
 class SnakeSegment(GameObject):
     def __init__(self, buffer, position, rgb):
@@ -94,15 +95,15 @@ class SnakeSegment(GameObject):
 
 
 class Snake(object):
-    def __init__(self, buffer):
+    def __init__(self, buffer, h, length):
         self._buffer = buffer
-        self._length = 3
+        self._length = length
         self.complete = False
-        self._hsv = (random.uniform(0.0, 0.75), 1.0, buffer.max_bright)
-        self._hsv_alt = (self._hsv[0], 0.9, self._hsv[2])
+        self._hsv = (h, 1.0, buffer.max_bright)
+        # self._hsv_alt = (self._hsv[0], 0.9, self._hsv[2])
         self._rgb = image_helper.hsv_to_rgb_alt(self._hsv)
-        self._rgb_alt = image_helper.hsv_to_rgb_alt(self._hsv_alt)
-        self._colours = cycle([self._rgb, self._rgb_alt])
+        # self._rgb_alt = image_helper.hsv_to_rgb_alt(self._hsv_alt)
+        # self._colours = cycle([self._rgb, self._rgb_alt])
 
         self.head = ShortSightedSnakeHead(buffer, self._rgb)
 
@@ -141,7 +142,7 @@ class Snake(object):
         self.head.draw()
 
         for segment in self._segments[1:]:
-            segment.set_rgb(next(self._colours))
+            # segment.set_rgb(next(self._colours))
             segment.draw()
 
     def eat(self, food):
@@ -158,18 +159,30 @@ class Snake(object):
 
 class FoodPellet(GameObject):
     def __init__(self, buffer):
-        hsv = (random.uniform(0.75, 1.0), 1.0, buffer.max_bright)
-        rgb = image_helper.hsv_to_rgb_alt(hsv)
+        # hsv = (random.uniform(0.75, 1.0), 1.0, buffer.max_bright)
+        # rgb = image_helper.hsv_to_rgb_alt(hsv)
+        rgb = (buffer.max_bright, buffer.max_bright, buffer.max_bright)
         super(FoodPellet, self).__init__(buffer, rgb)
 
 
+class SnakeGameOptions(object):
+    def __init__(self, n_snakes=1, n_food=1, replenish_food=False, snake_length=3):
+        self.n_snakes = n_snakes
+        self.n_food = n_food
+        self.replenish_food = replenish_food
+        self.snake_length = snake_length
+
+
 class SnakeGame(object):
-    def __init__(self, buffer):
+    def __init__(self, buffer, options):
         self._buffer = buffer
+        self._options = options
+        self.h = random.uniform(0.0, 0.75)
         self._snakes = []
         self._food = []
-        for _ in range(3):
+        for _ in range(self._options.n_snakes):
             self.add_snake()
+        for _ in range(self._options.n_food):
             self.add_food()
 
     def iterate(self):
@@ -192,7 +205,8 @@ class SnakeGame(object):
         for food in self._food:
             if food.complete:
                 self._food.remove(food)
-                # self.add_food()
+                if self._options.replenish_food:
+                    self.add_food()
         for snake in self._snakes:
             if snake.complete:
                 snake.clear()
@@ -224,7 +238,8 @@ class SnakeGame(object):
                     snake.eat(food)
 
     def add_snake(self):
-        self._snakes.append(Snake(self._buffer))
+        self.h = image_helper.h_delta(self.h, random.uniform(0.2, 0.9))
+        self._snakes.append(Snake(self._buffer, h=self.h, length=self._options.snake_length))
 
     def add_food(self):
         self._food.append(FoodPellet(self._buffer))
