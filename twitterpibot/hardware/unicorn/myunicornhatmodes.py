@@ -112,7 +112,7 @@ class SnowMode(UnicornHatMode):
 class RainbowRainMode(UnicornHatMode):
     def __init__(self, buffer):
         super(RainbowRainMode, self).__init__(buffer)
-        self._rain = Rain(buffer, direction=random.choice(directions.DIAGNALS), trails=True)
+        self._rain = Rain(buffer, direction=random.choice(directions.DIAGONALS), trails=True)
         self.h = 0.0
 
     def lights(self):
@@ -176,8 +176,8 @@ class BouncingBallMode(UnicornHatMode):
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
         self.h = image_helper.h_delta(self.h, 0.05)
-        h, s, v = (self.h, 1.0, self._buffer.max_bright)
-        rgb = image_helper.hsv_to_rgb(h, s, v)
+        hsv = (self.h, 1.0, self._buffer.max_bright)
+        rgb = image_helper.hsv_to_rgb_alt(hsv)
         self._particles.add_particle(rgb)
 
 

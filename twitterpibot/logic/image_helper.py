@@ -2,7 +2,6 @@ import colorsys
 import random
 
 __author__ = 'andrewtatham'
-_maxbright = 32
 
 
 def rectangle(origin, size):
@@ -26,13 +25,17 @@ def hsv_to_rgb(h, s, v):
     return r, g, b
 
 
-def get_random_hsv():
-    h, s, v = (random.uniform(0.0, 1.0), 1.0, _maxbright)
+def hsv_to_rgb_alt(hsv):
+    return hsv_to_rgb(hsv[0], hsv[1], hsv[2])
+
+
+def get_random_hsv(maxbright=255):
+    h, s, v = (random.uniform(0.0, 1.0), 1.0, maxbright)
     return h, s, v
 
 
-def get_random_rgb():
-    h, s, v = get_random_hsv()
+def get_random_rgb(max_bright=255):
+    h, s, v = get_random_hsv(max_bright)
     r, g, b = hsv_to_rgb(h, s, v)
     return r, g, b
 

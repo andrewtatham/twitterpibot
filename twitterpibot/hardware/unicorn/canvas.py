@@ -132,7 +132,9 @@ class Buffer(object):
                 unicornhat.set_pixel(x, y, r, g, b)
         unicornhat.show()
 
-    def pixel_delta(self, clear, x, y, rgb_delta):
+    def pixel_delta(self, clear, position, rgb_delta):
+        x = position.x
+        y = position.y
         if 0 <= x < 8 and 0 <= y < 8:
             if clear:
                 self._buffer[x][y] = tuple(self._limit(z[0] - z[1]) for z in zip(self._buffer[x][y], rgb_delta))
@@ -142,5 +144,7 @@ class Buffer(object):
     def _limit(self, param):
         return max(0, min(param, self.max_bright))
 
-    def set_pixel(self, x, y, rgb):
+    def set_pixel(self, position, rgb):
+        x = position.x
+        y = position.y
         self._buffer[x][y] = rgb

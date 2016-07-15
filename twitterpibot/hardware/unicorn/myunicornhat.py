@@ -8,6 +8,7 @@ from twitterpibot.incoming.IncomingTweet import IncomingTweet
 
 if is_linux:
     import unicornhat
+
     unicornhat.rotation(270)
 else:
     from twitterpibot.hardware.unicorn import unicornhat_viz as unicornhat
@@ -16,11 +17,11 @@ _buffer = Buffer(8, 8)
 
 _modes_list = [
 
-    SnowMode(_buffer),
-    MatrixModeLeft(_buffer),
-    RainMode(_buffer),
-    FireMode(_buffer),
-    MatrixModeRight(_buffer),
+    # SnowMode(_buffer),
+    # MatrixModeLeft(_buffer),
+    # RainMode(_buffer),
+    # FireMode(_buffer),
+    # MatrixModeRight(_buffer),
     RainbowRainMode(_buffer),
 
     RainbowFireworksMode(_buffer),
@@ -87,10 +88,10 @@ def close():
 if __name__ == '__main__':
 
     lights()
-    for i in range(500):
+    for i in range(200):
         print(i)
-        if i % 4 == 0:
-            fade()
+
+        fade()
         lights()
         if i % 15 == 0 or random.randint(0, 3) == 0:
             inbox_item_received(None)
