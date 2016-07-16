@@ -1,5 +1,5 @@
 import random
-from itertools import cycle
+import itertools
 
 from twitterpibot.hardware.unicorn.directions import NORMAL
 from twitterpibot.hardware.unicorn.sprites import Particle
@@ -40,10 +40,23 @@ class RandomSnakeHead(SnakeHead):
 
 class ShortSightedSnakeHead(SnakeHead):
     def steer(self, snakes, foods):
+        distance_seen = 3
 
         straight_position = self._direction.move(self._position, wrap=True)
-        left_turn_position = self._direction.turn_left().move(self._position, wrap=True)
-        right_turn_position = self._direction.turn_left().move(self._position, wrap=True)
+        left_turn_direction = self._direction.turn_left()
+        right_turn_direction = self._direction.turn_right()
+
+        left_turn_positions = []
+        left_turn_position = self._position
+        for _ in range(distance_seen):
+            left_turn_position = left_turn_direction.move(left_turn_position, wrap=True)
+            left_turn_positions.append(left_turn_position)
+
+        right_turn_positions = []
+        right_turn_position = self._position
+        for _ in range(distance_seen):
+            right_turn_position = right_turn_direction.move(right_turn_position, wrap=True)
+            right_turn_positions.append(right_turn_position)
 
         straight_collision = False
         left_turn_collision = False
@@ -53,13 +66,17 @@ class ShortSightedSnakeHead(SnakeHead):
 
         for snake in snakes:
             straight_collision = straight_collision or snake.is_collision(straight_position, exclude_head=snake == self)
-            left_turn_collision = left_turn_collision or snake.is_collision(left_turn_position,
-                                                                            exclude_head=snake == self)
-            right_turn_collision = right_turn_collision or snake.is_collision(right_turn_position,
-                                                                              exclude_head=snake == self)
+            for left_turn_position in left_turn_positions[:1]:
+                left_turn_collision = left_turn_collision or snake.is_collision(left_turn_position,
+                                                                                exclude_head=snake == self)
+            for right_turn_position in right_turn_positions[:1]:
+                right_turn_collision = right_turn_collision or snake.is_collision(right_turn_position,
+                                                                                  exclude_head=snake == self)
         for food in foods:
-            left_turn_food = left_turn_food or food.is_collision(left_turn_position)
-            right_turn_food = right_turn_food or food.is_collision(right_turn_position)
+            for left_turn_position in left_turn_positions:
+                left_turn_food = left_turn_food or food.is_collision(left_turn_position)
+            for right_turn_position in right_turn_positions:
+                right_turn_food = right_turn_food or food.is_collision(right_turn_position)
 
         if straight_collision:
             turn_left = random.randint(0, 1)
@@ -100,10 +117,9 @@ class Snake(object):
         self._length = length
         self.complete = False
         self._hsv = (h, 1.0, buffer.max_bright)
-        # self._hsv_alt = (self._hsv[0], 0.9, self._hsv[2])
+        self._hsv_alt = (image_helper.h_delta(self._hsv[0], 0.1), 1.0, self._hsv[2])
         self._rgb = image_helper.hsv_to_rgb_alt(self._hsv)
-        # self._rgb_alt = image_helper.hsv_to_rgb_alt(self._hsv_alt)
-        # self._colours = cycle([self._rgb, self._rgb_alt])
+        self._rgb_alt = image_helper.hsv_to_rgb_alt(self._hsv_alt)
 
         self.head = ShortSightedSnakeHead(buffer, self._rgb)
 
@@ -140,9 +156,9 @@ class Snake(object):
     def draw(self):
 
         self.head.draw()
-
+        colours = itertools.cycle([self._rgb_alt, self._rgb, self._rgb])
         for segment in self._segments[1:]:
-            # segment.set_rgb(next(self._colours))
+            segment.set_rgb(next(colours))
             segment.draw()
 
     def eat(self, food):

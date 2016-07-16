@@ -193,7 +193,7 @@ class SnakeMode(UnicornHatMode):
 
     # noinspection PyUnusedLocal
     def inbox_item_received(self, inbox_item):
-        if inbox_item and inbox_item.has_media or myhardware.is_andrew_macbook:
+        if inbox_item and inbox_item.has_media or myhardware.is_andrew_macbook or myhardware.is_andrew_desktop:
             self._game.add_food()
 
 
