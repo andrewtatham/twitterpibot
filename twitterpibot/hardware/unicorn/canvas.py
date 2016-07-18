@@ -31,14 +31,13 @@ class ParticleMode(CanvasMode):
         self._buffer.update_all()
 
     def iterate(self):
-        if iterate:
-            for particle in self._particles:
-                particle.clear()
+
         for particle in self._particles:
-            if iterate:
-                particle.iterate()
-                if particle.complete:
-                    self._particles.remove(particle)
+            particle.clear()
+        for particle in self._particles:
+            particle.iterate()
+            if particle.complete:
+                self._particles.remove(particle)
         for particle in self._particles:
             particle.draw()
         self._buffer.update_all()
