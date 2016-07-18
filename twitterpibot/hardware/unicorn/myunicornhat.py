@@ -49,12 +49,12 @@ if myhardware.is_linux:
         # RainMode(_buffer),
         # FireMode(_buffer),
         # MatrixModeRight(_buffer),
-        RainbowRainMode(_buffer),
+        # RainbowRainMode(_buffer),
 
         RainbowFireworksMode(_buffer),
-        RainbowSqaresMode(_buffer),
+        # RainbowSqaresMode(_buffer),
 
-        BouncingBallMode(_buffer)
+        # BouncingBallMode(_buffer)
 
 
     ])

@@ -11,6 +11,8 @@ class Position(object):
             if self.y < 0: self.y = 7
             if self.y > 7: self.y = 0
 
+
+
     def __eq__(self, other):
         return self.x == other.x and self.y == other.y
 

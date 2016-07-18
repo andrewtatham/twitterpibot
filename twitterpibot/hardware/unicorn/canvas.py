@@ -30,7 +30,7 @@ class ParticleMode(CanvasMode):
         particle.draw()
         self._buffer.update_all()
 
-    def WriteToBuffer(self, iterate):
+    def iterate(self):
         if iterate:
             for particle in self._particles:
                 particle.clear()
@@ -147,4 +147,5 @@ class Buffer(object):
     def set_pixel(self, position, rgb):
         x = position.x
         y = position.y
-        self._buffer[x][y] = rgb
+        if 0 <= x < 8 and 0 <= y < 8:
+            self._buffer[x][y] = rgb

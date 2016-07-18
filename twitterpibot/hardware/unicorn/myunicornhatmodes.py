@@ -36,7 +36,7 @@ class RainMode(UnicornHatMode):
         self._rain = Rain(buffer, trails=True)
 
     def lights(self):
-        self._rain.WriteToBuffer(True)
+        self._rain.iterate()
         _sleep(0.1)
 
     # noinspection PyUnusedLocal
@@ -52,7 +52,7 @@ class MatrixModeRight(UnicornHatMode):
         self._rain = Rain(buffer, direction=Right(), trails=True)
 
     def lights(self):
-        self._rain.WriteToBuffer(True)
+        self._rain.iterate()
         _sleep(0.1)
 
     # noinspection PyUnusedLocal
@@ -68,7 +68,7 @@ class MatrixModeLeft(UnicornHatMode):
         self._rain = Rain(buffer, direction=Left(), trails=True)
 
     def lights(self):
-        self._rain.WriteToBuffer(True)
+        self._rain.iterate()
         _sleep(0.1)
 
     # noinspection PyUnusedLocal
@@ -84,7 +84,7 @@ class FireMode(UnicornHatMode):
         self._rain = Rain(buffer, direction=Up(), trails=True)
 
     def lights(self):
-        self._rain.WriteToBuffer(True)
+        self._rain.iterate()
         _sleep(0.2)
 
     # noinspection PyUnusedLocal
@@ -100,7 +100,7 @@ class SnowMode(UnicornHatMode):
         self._rain = Rain(buffer)
 
     def lights(self):
-        self._rain.WriteToBuffer(True)
+        self._rain.iterate()
         _sleep(0.3)
 
     # noinspection PyUnusedLocal
@@ -116,7 +116,7 @@ class RainbowRainMode(UnicornHatMode):
         self.h = 0.0
 
     def lights(self):
-        self._rain.WriteToBuffer(True)
+        self._rain.iterate()
         _sleep(0.1)
 
     # noinspection PyUnusedLocal
@@ -134,7 +134,7 @@ class RainbowFireworksMode(UnicornHatMode):
         self.h = 0.0
 
     def lights(self):
-        self._particles.WriteToBuffer(True)
+        self._particles.iterate()
         _sleep(0.1)
 
     # noinspection PyUnusedLocal
@@ -152,7 +152,7 @@ class RainbowSqaresMode(UnicornHatMode):
         self.h = 0.0
 
     def lights(self):
-        self._particles.WriteToBuffer(True)
+        self._particles.iterate()
         _sleep(0.1)
 
     # noinspection PyUnusedLocal
@@ -170,7 +170,7 @@ class BouncingBallMode(UnicornHatMode):
         self.h = 0.0
 
     def lights(self):
-        self._particles.WriteToBuffer(True)
+        self._particles.iterate()
         _sleep(0.1)
 
     # noinspection PyUnusedLocal
@@ -200,7 +200,7 @@ class SnakeMode(UnicornHatMode):
 class MultiSnakeMode(UnicornHatMode):
     def __init__(self, buffer):
         super(MultiSnakeMode, self).__init__(buffer)
-        options = SnakeGameOptions(n_snakes=3, n_food=3, replenish_food=True)
+        options = SnakeGameOptions(n_snakes=3)
         self._game = SnakeGame(buffer, options)
 
     def lights(self):
@@ -208,9 +208,10 @@ class MultiSnakeMode(UnicornHatMode):
         _sleep(0.1)
 
     # noinspection PyUnusedLocal
-    # def inbox_item_received(self, inbox_item):
-        # if inbox_item and inbox_item.has_media or myhardware.is_andrew_macbook:
-        #     self._game.add_food()
+    def inbox_item_received(self, inbox_item):
+        if inbox_item and inbox_item.has_media or myhardware.is_andrew_macbook or myhardware.is_andrew_desktop:
+            self._game.add_food()
+
 
 
 def _sleep(seconds):
