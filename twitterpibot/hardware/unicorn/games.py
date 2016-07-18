@@ -51,15 +51,20 @@ class ShortSightedSnakeHead(SnakeHead):
         straight_collision = False
         left_turn_collision = False
         right_turn_collision = False
+        straight_food = False
         left_turn_food = False
         right_turn_food = False
 
-        straight_position = self._direction.move(self._position, wrap=wrap)
         left_turn_direction = self._direction.turn_left()
         right_turn_direction = self._direction.turn_right()
 
-        left_turn_positions = []
+        straight_positions = []
+        straight_position = self._position
+        for _ in range(distance_seen):
+            straight_position = self._direction.move(straight_position, wrap=wrap)
+            straight_positions.append(straight_position)
 
+        left_turn_positions = []
         left_turn_position = self._position
         for _ in range(distance_seen):
             left_turn_position = left_turn_direction.move(left_turn_position, wrap=wrap)
@@ -72,7 +77,7 @@ class ShortSightedSnakeHead(SnakeHead):
             right_turn_positions.append(right_turn_position)
 
         if not wrap:
-            if straight_position.is_off():
+            if straight_positions[:1][0].is_off():
                 straight_collision = True
             if left_turn_positions[:1][0].is_off():
                 left_turn_collision = True
@@ -80,16 +85,19 @@ class ShortSightedSnakeHead(SnakeHead):
                 right_turn_collision = True
 
         for snake in snakes:
-            straight_collision = straight_collision or \
-                                 snake.is_collision(straight_position, exclude_head=snake == self)
-        for left_turn_position in left_turn_positions[:1]:
-            left_turn_collision = left_turn_collision or \
-                                  snake.is_collision(left_turn_position, exclude_head=snake == self)
-        for right_turn_position in right_turn_positions[:1]:
-            right_turn_collision = right_turn_collision or \
-                                   snake.is_collision(right_turn_position, exclude_head=snake == self)
+            for straight_position in straight_positions[:1]:
+                straight_collision = straight_collision or \
+                                     snake.is_collision(straight_position, exclude_head=snake == self)
+            for left_turn_position in left_turn_positions[:1]:
+                left_turn_collision = left_turn_collision or \
+                                      snake.is_collision(left_turn_position, exclude_head=snake == self)
+            for right_turn_position in right_turn_positions[:1]:
+                right_turn_collision = right_turn_collision or \
+                                       snake.is_collision(right_turn_position, exclude_head=snake == self)
 
         for food in foods:
+            for straight_position in straight_positions:
+                straight_food = straight_food or food.is_collision(straight_position)
             for left_turn_position in left_turn_positions:
                 left_turn_food = left_turn_food or food.is_collision(left_turn_position)
             for right_turn_position in right_turn_positions:
@@ -106,7 +114,8 @@ class ShortSightedSnakeHead(SnakeHead):
                 self._direction = self._direction.turn_left()
             else:
                 self._direction = self._direction.turn_right()
-
+        elif straight_food:
+            pass
         elif left_turn_food and not left_turn_collision:
             self._direction = self._direction.turn_left()
         elif right_turn_food and not right_turn_collision:
