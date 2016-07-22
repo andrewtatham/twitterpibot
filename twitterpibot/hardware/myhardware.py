@@ -44,8 +44,8 @@ elif is_mac_osx:
 elif is_linux:
 
     test = subprocess.Popen(["sudo", "i2cdetect", "-y", "1"], stdout=subprocess.PIPE)
-    output = test.communicate()[0]
-    logger.debug(str(output))
+    output = str(test.communicate()[0])
+    logger.debug(output)
 
     if is_raspberry_pi:
         is_webcam_attached = False
