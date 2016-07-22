@@ -25,3 +25,4 @@ wikipedia
 twitter-text-python
 python-dateutil
 Pillow
+sqlalchemy
