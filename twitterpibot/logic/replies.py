@@ -91,55 +91,55 @@ _responses = [
     # go on go on go on go on go on go on go on GO ON!
 
     # Borat
-    "Niiice!",
-    "what type of dog is this?",
-    "is this a cat in a hat?",
-    "wa-woo-wee-wa!",
-    "jak sie masz",
+    # "Niiice!",
+    # "what type of dog is this?",
+    # "is this a cat in a hat?",
+    # "wa-woo-wee-wa!",
+    # "jak sie masz",
 
     # IT Crowd
     "have you tried turning it off and on again?",
-    "if you type 'Google' into Google, you can break the Internet",
-    "I came here to drink milk and kick ass... and I've just finished my milk",
+    # "if you type 'Google' into Google, you can break the Internet",
+    # "I came here to drink milk and kick ass... and I've just finished my milk",
 
     # Anchorman
-    "I'm very important. I have many leather-bound books and my apartment smells of rich mahogany",
-    "I immediately regret this decision",
+    # "I'm very important. I have many leather-bound books and my apartment smells of rich mahogany",
+    # "I immediately regret this decision",
     "I would like to extend to you an invitation to the pants party",
     "don't act like you're not impressed",
     "60 percent of the time, it works every time",
     "I'm in a glass case of emotion!",
-    "you know I don't speak Spanish",
+    # "you know I don't speak Spanish",
     "I love lamp",
 
-    # British Stereotype
-    "jolly good show, (lads|chaps)!",
-    "impressive",
-    "splendid",
-    "I couldn't have said it better myself",
-    "and Bob's your uncle",
-    "bad (show|form)",
-    "righty-o",
-    "indeed",
-    "quite",
-    "rather",
-    "bloody hell!",
-    "cor, blimey!",
-    "chocks away!",
-    "fancy a (cuppa|pint|spot of lunch)?",
-    "Gordon Bennett!",
-    "it's a fair cop, guv(|, you've got me bang to rights)",
-    "don't get your knockers in a twist",
-    "pip pip, cheerio and all that rot",
+    # # British Stereotype
+    # "jolly good show, (lads|chaps)!",
+    # "impressive",
+    # "splendid",
+    # "I couldn't have said it better myself",
+    # "and Bob's your uncle",
+    # "bad (show|form)",
+    # "righty-o",
+    # "indeed",
+    # "quite",
+    # "rather",
+    # "bloody hell!",
+    # "cor, blimey!",
+    # "chocks away!",
+    # "fancy a (cuppa|pint|spot of lunch)?",
+    # "Gordon Bennett!",
+    # "it's a fair cop, guv(|, you've got me bang to rights)",
+    # "don't get your knockers in a twist",
+    # "pip pip, cheerio and all that rot",
 
-    # Yorkshire Stereotype
-    "blummin eck",
-    "ruddy ell",
-    "ey up",
+    # # Yorkshire Stereotype
+    # "blummin eck",
+    # "ruddy ell",
+    # "ey up",
 
-    # Drunk
-    "I bloody love you, you're my best mate, you are!",
-    "I could murder a kebab",
+    # # Drunk
+    # "I bloody love you, you're my best mate, you are!",
+    # "I could murder a kebab",
 
     # Looney Tunes
     "What's up doc?",
@@ -262,9 +262,8 @@ _responses = [
 
 def get_reply():
     joke = None
-    if random.randint(0, 9) == 0:
+    if random.randint(0, 99) == 0:
         joke = jokes.get_joke()
-
     if joke:
         return joke
     else:

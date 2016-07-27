@@ -62,9 +62,9 @@ def set_scheduled_jobs(identities):
 def set_tasks(identities):
     logger.info("Setting tasks")
     _tasks = []
-    if myhardware.is_piglow_attached \
-            or myhardware.is_unicornhat_attached \
-            or myhardware.is_blinksticknano_attached:
+    if myhardware.is_raspberry_pi_2 and (myhardware.is_piglow_attached
+                                         or myhardware.is_unicornhat_attached
+                                         or myhardware.is_blinksticknano_attached):
         _tasks.extend([
             LightsTask(),
 

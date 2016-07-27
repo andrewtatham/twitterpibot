@@ -283,8 +283,23 @@ if __name__ == '__main__':
     import identities
 
     logging.basicConfig(level=logging.INFO)
+
+
     identity = identities.AndrewTathamPiIdentity(None)
-    tweets = identity.twitter.get_user_timeline()
-    for tweet_data in tweets:
-        tweet = IncomingTweet(tweet_data, identity)
-        logging.info(tweet.display())
+
+    id_str = "757389498254659584"
+    tweet_data = identity.twitter.get_status(id_str)
+    logging.info(pprint.pformat(tweet_data))
+    tweet = IncomingTweet(tweet_data, identity)
+    logging.info(tweet.display())
+
+    # tweets = identity.twitter.get_user_timeline()
+
+    # id_strs = [
+    #
+    # ]
+    # tweets = identity.twitter.get_statuses(id_strs)
+
+    # for tweet_data in tweets:
+    #     tweet = IncomingTweet(tweet_data, identity)
+    #     logging.info(tweet.display())

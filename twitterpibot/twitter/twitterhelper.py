@@ -522,6 +522,15 @@ class TwitterHelper(object):
             logger.warning("{} limit exceeded".format(limit_name))
             return None
 
+    @retry(**retry_args)
+    def get_statuses(self, id_strs):
+        id_strs_csv = ",".join(id_strs)
+        return self.twitter.lookup_status(id=id_strs_csv)
+
+    @retry(**retry_args)
+    def get_status(self, id_str):
+        return self.twitter.show_status(id=id_str)
+
 
 if __name__ == "__main__":
     import identities
