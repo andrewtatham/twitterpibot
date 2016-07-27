@@ -56,3 +56,16 @@ if __name__ == '__main__':
     # print(get_gif("test", "wat"))
     for _ in range(20):
         print(get_ed_balls_image())
+
+
+def download_images(image_urls):
+    file_paths = []
+    for image_url in image_urls:
+        if image_url:
+            try:
+                file_path = fsh.download_file(folder, image_url)
+                if file_path:
+                    file_paths.append(file_path)
+            except Exception as ex:
+                logger.error(ex)
+    return file_paths

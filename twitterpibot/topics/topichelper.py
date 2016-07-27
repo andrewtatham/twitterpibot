@@ -2,7 +2,7 @@ import logging
 import pprint
 
 from twitterpibot.topics import Daily, Monthly, Annual, Politics, Sport, Entertainment, Celebrity, News, \
-    Technology, Regional, Spam, Competitions, misc, food, nature, science, memes
+    Technology, Regional, Spam, Competitions, misc, food, nature, science, memes, pokemon
 from twitterpibot.topics import religion
 from twitterpibot.topics import Corporate
 
@@ -33,6 +33,8 @@ _topics.extend(food.get())
 _topics.extend(nature.get())
 _topics.extend(science.get())
 _topics.extend(memes.get())
+_topics.extend(pokemon.get())
+
 
 for topic in _topics:
     logger.debug("Topic %s definite: %s",
@@ -94,3 +96,7 @@ def _score(result):
     if "possible_matches" in result:
         score += len(result["possible_matches"])
     return score
+
+
+if __name__ == '__main__':
+    print(get_topics("wormadam-plant").display())
