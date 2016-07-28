@@ -207,6 +207,15 @@ class Users(object):
                     to_follow.update(list_members.difference(self._following))
         return to_follow
 
+    def get_followed_list_members(self, list_names):
+        following = set()
+        for list_name in list_names:
+            if list_name in self._lists._sets:
+                list_members = self._lists._sets[list_name]
+                if list_members and self._following:
+                    following.update(list_members.intersection(self._following))
+        return following
+
     def get_subscribed_list_members(self):
         members = set()
         subscriptions = self._identity.twitter.get_list_subscriptions()

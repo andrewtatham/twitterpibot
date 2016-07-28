@@ -79,7 +79,7 @@ def inbox_item_received(inbox_item):
 
 
 def on_lights_scheduled_task():
-    _buffer._set_max_brightness()
+    _buffer.set_max_brightness()
 
     global _mode
     _mode = next(_modes)

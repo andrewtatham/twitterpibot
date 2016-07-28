@@ -1,11 +1,14 @@
 import logging
 import random
+from time import sleep
 
 from apscheduler.triggers.interval import IntervalTrigger
 
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
 logger = logging.getLogger(__name__)
+
+_auto_follow_lists = ["Friends", "Awesome Bots", "Retweet More"]
 
 
 class ManageUsersScheduledTask(ScheduledTask):
@@ -25,16 +28,18 @@ class ManageUsersScheduledTask(ScheduledTask):
     def _get_to_follow(self):
         to_follow = set()
         # todo get high scoring users and follow
-        # to_follow.update(
-        #     self.get_unfollowed_list_members(list_names=["Friends", "Awesome Bots", "Retweet More"]))
-        # to_follow.update(self.get_unfollowed_subscribed_list_members())
-
+        to_follow.update(self.identity.users.get_unfollowed_list_members(list_names=_auto_follow_lists))
         return to_follow
 
     def _get_to_unfollow(self):
         to_unfollow = set()
         to_unfollow.update(self.identity.users.get_followed_subscribed_list_members())
         to_unfollow.update(self.identity.users.get_followed_inactive())
+        return to_unfollow
+
+    def _get_to_not_unfollow(self):
+        to_unfollow = set()
+        to_unfollow.update(self.identity.users.get_followed_list_members(list_names=_auto_follow_lists))
         return to_unfollow
 
     @staticmethod
@@ -49,7 +54,7 @@ class ManageUsersScheduledTask(ScheduledTask):
         # biz spam bots
 
         if not self.to_unfollow_list:
-            self.to_unfollow_set = self._get_to_unfollow()
+            self.to_unfollow_set = self._get_to_unfollow().difference(self._get_to_not_unfollow())
         if not self.to_follow_list:
             self.to_follow_set = self._get_to_follow()
 
@@ -88,8 +93,6 @@ class UpdateUserGroupsScheduledTask(ScheduledTask):
         self.identity.users.get_following_only(force=True)
         self.identity.users.get_followers_only(force=True)
         self.identity.users.get_others(force=True)
-
-
 
 
 class GetUsersScheduledTask(ScheduledTask):
@@ -135,3 +138,15 @@ class ScoreUsersScheduledTask(ScheduledTask):
         no_of_scores = self.identity.users.score_users(batch_size)
         # if no_of_scores > 10:
         #     self.identity.users.get_leaderboard(10)
+
+
+if __name__ == '__main__':
+    import identities
+
+    logging.basicConfig(level=logging.INFO)
+
+    identity = identities.BotgleArtistIdentity(None)
+    task = ManageUsersScheduledTask(identity=identity)
+    for _ in range(5):
+        task.on_run()
+        sleep(5)

@@ -79,7 +79,7 @@ class Buffer(object):
 
         self.max_bright = self._calc_max_brightness()
 
-    def _set_max_brightness(self):
+    def set_max_brightness(self):
         self.max_bright = self._calc_max_brightness()
 
     def _calc_max_brightness(self):
