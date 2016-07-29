@@ -84,7 +84,6 @@ class TwitterHelper(object):
         self.rates = None
         self.update_rate_limits()
 
-    @blocked
     @retry(**retry_args)
     def send(self, outbox_item):
         if type(outbox_item) is OutgoingTweet:
@@ -254,7 +253,6 @@ class TwitterHelper(object):
         query = quote_plus(text)
         return self.twitter.search(q=query, result_type=result_type)["statuses"]
 
-    @blocked
     @retry(**retry_args)
     def favourite(self, id_str):
         try:
@@ -266,7 +264,6 @@ class TwitterHelper(object):
             else:
                 raise
 
-    @blocked
     @retry(**retry_args)
     def retweet(self, id_str):
         try:
@@ -278,17 +275,14 @@ class TwitterHelper(object):
             else:
                 raise
 
-    @blocked
     @retry(**retry_args)
     def add_user_to_list(self, list_id, user_id, screen_name):
         self.twitter.create_list_members(list_id=list_id, user_id=user_id, screen_name=screen_name)
 
-    @blocked
     @retry(**retry_args)
     def block_user(self, user_id, user_screen_name=None):
         self.twitter.create_block(user_id=user_id, screen_name=user_screen_name)
 
-    @blocked
     @retry(**retry_args)
     def get_user_timeline(self, **kwargs):
         return self._rate_limit("/statuses/user_timeline", self.twitter.get_user_timeline, **kwargs)
