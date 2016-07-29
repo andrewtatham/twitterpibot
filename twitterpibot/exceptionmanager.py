@@ -1,3 +1,4 @@
+import functools
 from http.client import IncompleteRead
 import logging
 import random
@@ -98,6 +99,33 @@ def test_exception_handling():
         raise_test_exception()
     except Exception as ex:
         handle(None, ex, label="test_exception_handling")
+
+
+def blocked(test_func):
+    logger.info("Wrapping Function: " + test_func.__name__)
+
+    def actualDecorator(arg, **kwargs):
+        logger.info("decorating Function: " + test_func.__name__)
+        logger.info("arg: " + str(arg))
+        logger.info("kwargs: " + str(kwargs))
+
+        @functools.wraps(test_func)
+        def wrapper(arg, **kwargs):
+            logger.info("Calling Function: " + test_func.__name__)
+            logger.info("arg: " + str(arg))
+            logger.info("kwargs: " + str(kwargs))
+            try:
+                return test_func(arg, **kwargs)
+            except TwythonError as ex:
+                logger.warning(ex)
+                if "Twitter API returned a 403 (Forbidden), Application cannot perform write actions. Contact Twitter Platform Operations through https://support.twitter.com/forms/platform" in ex.msg:
+                    logger.warning("BLOCKED")
+                else:
+                    raise
+
+        return wrapper(arg, **kwargs)
+
+    return actualDecorator
 
 
 if __name__ == '__main__':

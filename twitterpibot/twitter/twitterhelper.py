@@ -7,7 +7,7 @@ from retrying import retry
 
 from twython import Twython, TwythonError
 
-from twitterpibot.exceptionmanager import is_timeout
+from twitterpibot.exceptionmanager import is_timeout, blocked
 from twitterpibot.logic import fsh, giphyhelper
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
@@ -84,6 +84,7 @@ class TwitterHelper(object):
         self.rates = None
         self.update_rate_limits()
 
+    @blocked
     @retry(**retry_args)
     def send(self, outbox_item):
         if type(outbox_item) is OutgoingTweet:
@@ -253,6 +254,7 @@ class TwitterHelper(object):
         query = quote_plus(text)
         return self.twitter.search(q=query, result_type=result_type)["statuses"]
 
+    @blocked
     @retry(**retry_args)
     def favourite(self, id_str):
         try:
@@ -264,6 +266,7 @@ class TwitterHelper(object):
             else:
                 raise
 
+    @blocked
     @retry(**retry_args)
     def retweet(self, id_str):
         try:
@@ -275,14 +278,17 @@ class TwitterHelper(object):
             else:
                 raise
 
+    @blocked
     @retry(**retry_args)
     def add_user_to_list(self, list_id, user_id, screen_name):
         self.twitter.create_list_members(list_id=list_id, user_id=user_id, screen_name=screen_name)
 
+    @blocked
     @retry(**retry_args)
     def block_user(self, user_id, user_screen_name=None):
         self.twitter.create_block(user_id=user_id, screen_name=user_screen_name)
 
+    @blocked
     @retry(**retry_args)
     def get_user_timeline(self, **kwargs):
         return self._rate_limit("/statuses/user_timeline", self.twitter.get_user_timeline, **kwargs)
@@ -304,9 +310,10 @@ class TwitterHelper(object):
     def get_list_members(self, list_id):
         return self.twitter.get_list_members(list_id=list_id, count=5000, include_entities=False)
 
+    @blocked
     @retry(**retry_args)
-    def create_list(self, name, mode):
-        return self.twitter.create_list(name=name, mode=mode)
+    def create_list(self, **kwargs):
+        return self.twitter.create_list(**kwargs)
 
     @retry(**retry_args)
     def follow(self, user_id, screen_name):
