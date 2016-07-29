@@ -96,7 +96,7 @@ class Streamer(TwythonStreamer):
             if conversation:
                 inbox_item.conversation = conversation
 
-            if not conversation or conversation.length() < 20:
+            if not conversation or conversation.length() < 10:
                 for response in self.responses:
                     if response.condition(inbox_item):
                         return response

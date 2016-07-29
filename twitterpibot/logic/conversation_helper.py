@@ -71,7 +71,7 @@ class Conversation(object):
         text = []
         if self.root_id:
             self._display(self.root_id, level=0, text=text)
-        return os.linesep.join(text)
+        return "length = {} ".format(self.length()) + os.linesep.join(text)
 
     def _display(self, tweet_id, level, text):
         desc = self.tweet_descriptions.get(tweet_id)
