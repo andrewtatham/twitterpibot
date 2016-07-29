@@ -8,7 +8,8 @@ default_lists = [
     "Retweet More",
     "Awesome Bots",
     "Friends",
-    "Blocked Users"
+    "Blocked Users",
+    "Possibly Bots"
 ]
 
 
@@ -18,8 +19,6 @@ class Lists(object):
         self._list_names = default_lists
         self._sets = {}
         self._list_ids = {}
-
-
 
     def update_lists(self):
 
@@ -46,10 +45,12 @@ class Lists(object):
             self._sets[list_name] = set(map(lambda member: member["id_str"], members["users"]))
             logger.debug("[%s] %s members: %s" % (self._identity.screen_name, list_name, str(self._sets[list_name])))
 
-    def add_user(self, list_name, user_id, screen_name):
+    def add_user_to_list(self, list_name, user_id, screen_name):
         if not self._sets or not self._list_ids:
             self.update_lists()
 
+        logger.debug("{} adding user {} {} to list {}".format(
+            self._identity.screen_name, user_id, screen_name, list_name))
         list_id = self._list_ids[list_name]
         self._identity.twitter.add_user_to_list(list_id, user_id, screen_name)
         self._sets[list_name].add(user_id)
@@ -64,3 +65,9 @@ class Lists(object):
                 list_memberships.add(list_name)
 
         user.update_list_memberships(list_memberships)
+
+    def get_list_members(self, list_name):
+        if not self._sets or not self._list_ids:
+            self.update_lists()
+
+        return self._sets[list_name]

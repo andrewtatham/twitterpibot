@@ -44,7 +44,7 @@ class PokemonScheduledTask(ScheduledTask):
             reply_to = self._converse_with.twitter.send(OutgoingTweet(text=text, in_reply_to_id_str=reply_to))
             sleep(2)
         return reply_to
-    
+
     def _found_pokemon(self, pokemon, reply_to=None):
         text = generate_phrase(
             hello_words) + " @" + self._converse_with.screen_name + " I found a " + pokemon.species.name_en

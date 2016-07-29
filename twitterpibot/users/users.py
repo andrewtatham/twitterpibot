@@ -51,6 +51,9 @@ class Users(object):
 
         return usr
 
+    def get_all_user_ids(self):
+        return list(self._users)
+
     def get_users(self, user_ids, lookup=True):
         n_requested_total = len(user_ids)
         logger.debug("getting {} users".format(n_requested_total))

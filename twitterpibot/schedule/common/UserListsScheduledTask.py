@@ -43,4 +43,4 @@ class UserListsScheduledTask(ScheduledTask):
         if missing_users:
             for missing_user in missing_users:
                 logger.info("adding " + missing_user + " to " + identity.screen_name + " " + user_list)
-                identity.users._lists.add_user(user_list, user_id=missing_user, screen_name=None)
+                identity.users._lists.add_user_to_list(user_list, user_id=missing_user, screen_name=None)

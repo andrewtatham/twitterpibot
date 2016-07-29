@@ -140,13 +140,45 @@ class ScoreUsersScheduledTask(ScheduledTask):
         #     self.identity.users.get_leaderboard(10)
 
 
+class ManageListMembersScheduledTask(ScheduledTask):
+    def __init__(self, identity):
+        super(ManageListMembersScheduledTask, self).__init__(identity)
+        self._all_user_ids = []
+
+    def get_trigger(self):
+        return IntervalTrigger(minutes=random.randint(15, 60))
+
+    def on_run(self):
+
+        if not self._all_user_ids:
+            self._all_user_ids = self.identity.users.get_all_user_ids()
+
+        possibly_bots_list_name = "Possibly Bots"
+        possibly_bots_list_members = self.identity.users._lists.get_list_members(list_name=possibly_bots_list_name)
+
+        for _ in range(random.randint(2, 10)):
+            if self._all_user_ids:
+                user_id = self._all_user_ids.pop()
+                if user_id:
+                    user = self.identity.users.get_user(user_id=user_id)
+
+                    if user and user.is_possibly_bot and user_id not in possibly_bots_list_members:
+                        self.identity.users._lists.add_user_to_list(
+                            list_name=possibly_bots_list_name,
+                            user_id=user_id, screen_name=user.screen_name)
+
+
 if __name__ == '__main__':
     import identities
 
     logging.basicConfig(level=logging.INFO)
 
     identity = identities.BotgleArtistIdentity(None)
-    task = ManageUsersScheduledTask(identity=identity)
+
+    get_users_task = GetUsersScheduledTask(identity=identity)
+    get_users_task.on_run()
+
+    task = ManageListMembersScheduledTask(identity=identity)
     for _ in range(5):
         task.on_run()
         sleep(5)
