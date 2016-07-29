@@ -28,6 +28,7 @@ from twitterpibot.responses.x_or_y_response import X_Or_Y_Response
 from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
 from twitterpibot.schedule.JokesScheduledTask import JokesScheduledTask
 from twitterpibot.schedule.PhotoScheduledTask import PhotoScheduledTask
+from twitterpibot.schedule.PokemonScheduledTask import PokemonScheduledTask
 from twitterpibot.schedule.SongScheduledTask import SongScheduledTask
 from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
 from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
@@ -157,7 +158,6 @@ class PiIdentity(BotIdentity):
             WeatherScheduledTask(self),
             JokesScheduledTask(self),
             SongScheduledTask(self),
-            ConversationScheduledTask(self, self.converse_with),
             HappyBirthdayScheduledTask(self),
             # LocationScheduledTask(self),
             # RaiseExceptionScheduledTask(self),
@@ -166,6 +166,9 @@ class PiIdentity(BotIdentity):
             AprilFoolsDayScheduledTask(self),
             JudgementDayScheduledTask(self),
             DecypherScheduledTask(self),
+
+            ConversationScheduledTask(self, self.converse_with),
+            PokemonScheduledTask(self, self.converse_with)
         ])
 
         if twitterpibot.hardware.myhardware.is_linux and (

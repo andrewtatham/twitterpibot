@@ -4,7 +4,7 @@ from twitterpibot.topics.Topic import GoodTopic
 definite_matches = [
     "Pokemon", "pokedex",
 ]
-definite_matches.extend(pokemon_helper.get_all_names())
+definite_matches.extend(pokemon_helper._get_all_names())
 
 
 class Pokemon(GoodTopic):
