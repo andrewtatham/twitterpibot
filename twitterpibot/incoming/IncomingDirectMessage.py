@@ -2,6 +2,7 @@ import logging
 import colorama
 
 from twitterpibot.incoming.InboxItem import InboxItem
+from twitterpibot.topics import topichelper
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +23,7 @@ class IncomingDirectMessage(InboxItem):
             self.mentions = [self.sender.screen_name]
             self.text = dm.get("text")
             self.text_stripped = self.text
+            self.topics = topichelper.get_topics(self.text)
             self.words = self.text.split()
 
     def display(self):

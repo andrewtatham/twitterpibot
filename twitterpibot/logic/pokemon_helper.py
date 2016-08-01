@@ -130,5 +130,6 @@ def get_random_pokemon_details():
 
 if __name__ == '__main__':
 
-    for _ in range(1):
+    logging.basicConfig(level=logging.INFO)
+    for _ in range(3):
         print(str(get_random_pokemon_details()))

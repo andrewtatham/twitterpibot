@@ -1,4 +1,4 @@
-from twitterpibot.topics.Topic import NewsTopic, IgnoreTopic
+from twitterpibot.topics.Topic import NewsTopic, IgnoreTopic, GoodTopic
 
 
 class NewYear(NewsTopic):
@@ -46,6 +46,14 @@ class Easter(NewsTopic):
             to_date="01/05")
 
 
+class YorkshireDay(GoodTopic):
+    def __init__(self):
+        super(YorkshireDay, self).__init__(
+            {"Yorkshire Day?"},
+            on_date="01/08",
+            on_date_range=2)
+
+
 class Halloween(NewsTopic):
     def __init__(self):
         super(Halloween, self).__init__(
@@ -56,7 +64,7 @@ class Halloween(NewsTopic):
         )
 
 
-class BonfireNight(NewsTopic):
+class BonfireNight(GoodTopic):
     def __init__(self):
         super(BonfireNight, self).__init__(
             ["Bonfire", "Firework", "Guy Fawkes", "5th of Nov(ember)?"],
@@ -66,7 +74,7 @@ class BonfireNight(NewsTopic):
         )
 
 
-class RemembranceSunday(NewsTopic):
+class RemembranceSunday(GoodTopic):
     def __init__(self):
         super(RemembranceSunday, self).__init__(
             ["Remembrance Sunday"],
@@ -84,7 +92,7 @@ class VeteransDay(NewsTopic):
         )
 
 
-class Diwali(NewsTopic):
+class Diwali(GoodTopic):
     def __init__(self):
         super(Diwali, self).__init__(
             {"Di(w|v)ali", "Deepavali"},
@@ -122,6 +130,9 @@ def get():
         PancakeDay(),
         ValentinesDay(),
         Easter(),
+
+        YorkshireDay(),
+
         Halloween(),
         BonfireNight(),
         RemembranceSunday(),

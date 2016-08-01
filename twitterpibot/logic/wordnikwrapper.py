@@ -47,6 +47,19 @@ def init():
         _init = True
 
 
+def get_words_matching(stem):
+    init()
+
+    skip = 0
+    limit = 1000
+
+    search = words_api.searchWords("*%s*" % stem, skip=skip, limit=limit)
+    words = list(map(lambda w: w.word, search.searchResults))
+    logger.debug(words)
+
+    return words
+
+
 def get_word_matching(stem, rx):
     init()
     words = []

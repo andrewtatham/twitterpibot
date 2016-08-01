@@ -31,7 +31,7 @@ class PokemonScheduledTask(ScheduledTask):
 
         reply_to = self._description(pokemon, reply_to)
 
-        reply_to = self._tell_me_more(reply_to)
+        # reply_to = self._tell_me_more(reply_to)
 
         reply_to = self._details(pokemon, reply_to)
 
@@ -105,5 +105,5 @@ if __name__ == '__main__':
     converse_with_identity = identities.AndrewTathamPiIdentity()
     identity = identities.AndrewTathamPi2Identity(converse_with_identity)
 
-    task = PokemonScheduledTask(identity=identity, converse_with_identity=converse_with_identity, armed=False)
+    task = PokemonScheduledTask(identity=identity, converse_with_identity=converse_with_identity, armed=True)
     task.on_run()

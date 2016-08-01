@@ -1,3 +1,4 @@
+from twitterpibot.logic import eggpuns
 from twitterpibot.topics.Topic import GoodTopic, IgnoreTopic
 
 
@@ -27,10 +28,15 @@ class Veganism(IgnoreTopic):
         })
 
 
+class Eggs(GoodTopic):
+    def __init__(self):
+        super(Eggs, self).__init__(eggpuns.trigger_list)
+
+
 def get():
     return [
         GoodFood(),
         Vegetarianism(),
         Veganism(),
-
+        Eggs()
     ]

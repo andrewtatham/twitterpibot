@@ -59,8 +59,10 @@ def is_egg_pun_trigger(text):
     return bool(match)
 
 
+trigger_list = ["egg", "eggs", "egged", "egging", "egg shell", "chicken", "hen", "omlette", "yolk", "albumen"]
+
+
 def get_gif_search_text():
-    trigger_list = ["egg", "eggs", "egg shell", "chicken", "hen", "omlette", "yolk", "albumen"]
     return random.choice(trigger_list)
 
 
@@ -150,3 +152,16 @@ if __name__ == "__main__":
 
         # for i in range(20):
         #     logger.info(make_egg_pun_phrase())
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
+    egg_words = []
+
+    for stem in replacements:
+
+        ex_words = wordnikwrapper.get_words_matching(stem)
+        for ex_word in ex_words:
+            egg_word = make_egg_pun(ex_word)
+            egg_words.append(egg_word)
+    egg_words.sort()
+    pprint(egg_words)
