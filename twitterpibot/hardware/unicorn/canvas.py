@@ -1,3 +1,8 @@
+import datetime
+import logging
+
+import pytz
+
 from twitterpibot.hardware.myhardware import is_linux
 from twitterpibot.hardware.unicorn.directions import Down
 
@@ -9,6 +14,14 @@ else:
 from twitterpibot.hardware.unicorn.sprites import Raindrop, Firework, Square, BouncingBall
 from twitterpibot.hardware.unicorn.games import SnakeGame
 from twitterpibot.logic import astronomy, image_helper
+
+
+day_bright = 196
+night_bright = 64
+
+
+def _calc_max_brightness(now=None):
+    return night_bright + int((day_bright - night_bright) * astronomy.get_daytimeness_factor(now))
 
 
 class CanvasMode(object):
@@ -68,22 +81,18 @@ class BouncingBalls(ParticleMode):
         return BouncingBall(self._buffer, rgb)
 
 
+
+
 class Buffer(object):
     def __init__(self, x, y):
         self._x = x
         self._y = y
         self._buffer = [[(0, 0, 0) for _ in range(self._x)] for _ in range(self._y)]
 
-        self.day_bright = 128
-        self.night_bright = 32
-
         self.max_bright = self._calc_max_brightness()
 
     def set_max_brightness(self):
         self.max_bright = self._calc_max_brightness()
-
-    def _calc_max_brightness(self):
-        return self.night_bright + int((self.day_bright - self.night_bright) * astronomy.get_daytimeness_factor())
 
     def _write_pixel(self, x, y):
         pixel = self._buffer[x][y]
@@ -148,3 +157,15 @@ class Buffer(object):
         y = position.y
         if 0 <= x < 8 and 0 <= y < 8:
             self._buffer[x][y] = rgb
+
+
+if __name__ == '__main__':
+
+    logging.basicConfig(level=logging.WARNING)
+    now = datetime.datetime.now(pytz.UTC)
+
+    for hour in range(24):
+        for min in range(0, 59, 5):
+            time = now + datetime.timedelta(hours=hour, minutes=min)
+
+            print("{} {} {}".format(hour, time, _calc_max_brightness(time)))
