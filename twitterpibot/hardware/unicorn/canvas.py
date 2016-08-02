@@ -89,10 +89,10 @@ class Buffer(object):
         self._y = y
         self._buffer = [[(0, 0, 0) for _ in range(self._x)] for _ in range(self._y)]
 
-        self.max_bright = self._calc_max_brightness()
+        self.max_bright = _calc_max_brightness()
 
     def set_max_brightness(self):
-        self.max_bright = self._calc_max_brightness()
+        self.max_bright = _calc_max_brightness()
 
     def _write_pixel(self, x, y):
         pixel = self._buffer[x][y]
