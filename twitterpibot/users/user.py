@@ -24,8 +24,19 @@ def parse_int(param):
 bot_rx = re.compile("bot|ebooks|#botALLY", re.IGNORECASE)
 
 
+def get_recent_tweet_rate(tweets):
+    if tweets:
+        tweet_times = list(map(lambda t: t.created_at,tweets))
+        earliest_recent_tweet_at = min(tweet_times)
+        latest_recent_tweet_at = max(tweet_times)
+        recent_tweets_time_range = (latest_recent_tweet_at - earliest_recent_tweet_at).days
+        number_of_recent_tweets = len(tweet_times)
+        if recent_tweets_time_range:
+             return number_of_recent_tweets / recent_tweets_time_range
+
+
 class User(object):
-    def __init__(self, data, identity):
+    def __init__(self, data={}, identity=None):
 
         self.id_str = data.get("id_str")
         self.name = data.get("name")
@@ -39,8 +50,10 @@ class User(object):
             self.profile_banner_url += "/300x100"
 
         self.created_at = data.get("created_at")
+        self.account_age = None
         if self.created_at:
             self.created_at = dateutil.parser.parse(self.created_at)
+            self.account_age = datetime.datetime.now(datetime.timezone.utc) - self.created_at
 
         self.entities = data.get("entities")  # TODO get mentions/display urls
         self.lang = data.get("lang")
@@ -61,6 +74,10 @@ class User(object):
         self.followers_count = parse_int(data.get("followers_count"))
         self.statuses_count = parse_int(data.get("statuses_count"))
         self.listed_count = parse_int(data.get("listed_count"))
+
+        self.tweet_rate_lifetime = None
+        if self.statuses_count and self.account_age:
+            self.tweet_rate_lifetime = self.statuses_count / self.account_age.days
 
         self.updated = None
 
@@ -87,6 +104,7 @@ class User(object):
             self.last_tweeted_at = self.status.created_at
 
         self._latest_tweets = []
+        self.tweet_rate_recent = None
 
         self.topics = None
         self.get_user_topics()
@@ -198,6 +216,8 @@ class User(object):
             logger.debug("tweets = {}".format(tweets))
             if tweets:
                 self._latest_tweets = list(map(lambda t: IncomingTweet(t, self.identity, skip_user=True), tweets))
+
+                self.tweet_rate_recent = get_recent_tweet_rate(self._latest_tweets)
         return self._latest_tweets
 
     def get_user_score(self, include_recent_tweets_score=False):

@@ -1,4 +1,5 @@
 import logging
+import pprint
 import random
 
 import flask
@@ -28,7 +29,7 @@ def init():
         "actions": controller.get_actions(),
         "identities": controller.get_identities()
     }
-    logger.debug(retval)
+    logger.debug(pprint.pformat(retval))
     return flask.jsonify(retval)
 
 
@@ -37,35 +38,35 @@ def actions():
     retval = {
         "actions": controller.get_actions(),
     }
-    logger.debug(retval)
+    logger.debug(pprint.pformat(retval))
     return flask.jsonify(retval)
 
 
 @app.route('/identities')
 def identities():
     retval = {"identities": controller.get_identities()}
-    logger.debug(retval)
+    logger.debug(pprint.pformat(retval))
     return flask.jsonify(retval)
 
 
 @app.route('/identity/<id_str>')
 def identity(id_str):
     retval = {"identity": controller.get_identity(id_str)}
-    logger.debug(retval)
+    logger.debug(pprint.pformat(retval))
     return flask.jsonify(retval)
 
 
 @app.route('/following')
 def following():
     retval = {"following": controller.get_following()}
-    logger.debug(retval)
+    logger.debug(pprint.pformat(retval))
     return flask.jsonify(retval)
 
 
 @app.route('/followinggraph')
 def following_graph():
     retval = {"followinggraph": controller.get_following_graph()}
-    logger.debug(retval)
+    logger.debug(pprint.pformat(retval))
     return flask.jsonify(retval)
 
 
@@ -75,7 +76,7 @@ def exceptions():
         "exceptions": controller.get_exceptions(),
         "exceptions_chart_data": controller.get_exceptions_chart_data()
     }
-    logger.debug(retval)
+    logger.debug(pprint.pformat(retval))
     return flask.jsonify(retval)
 
 
@@ -84,7 +85,7 @@ def exceptionsummarys():
     retval = {
         "exceptionsummary": controller.get_exception_summary()
     }
-    logger.debug(retval)
+    logger.debug(pprint.pformat(retval))
     return flask.jsonify(retval)
 
 
@@ -143,7 +144,7 @@ def _shutdown_server():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG)
 
     import identities
 

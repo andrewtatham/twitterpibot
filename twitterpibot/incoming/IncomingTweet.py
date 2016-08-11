@@ -85,7 +85,7 @@ class Medias(object):
 
 
 class IncomingTweet(InboxItem):
-    def __init__(self, data, identity, skip_user=False):
+    def __init__(self, data, identity=None, skip_user=False):
         # https://dev.twitter.com/overview/api/tweets
 
         super(IncomingTweet, self).__init__(data, identity)
@@ -106,8 +106,10 @@ class IncomingTweet(InboxItem):
         self.possibly_sensitive = bool(data.get("possibly_sensitive"))
         self.favorited = bool(data.get("favorited"))
         self.retweeted = bool(data.get("retweeted"))
-        self.favorite_count = int(data.get("favorite_count"))
-        self.retweet_count = int(data.get("retweet_count"))
+        self.favorite_count = data.get("favorite_count")
+        if self.favorite_count: self.favorite_count = int(self.favorite_count)
+        self.retweet_count = data.get("retweet_count")
+        if self.retweet_count: self.retweet_count = int(self.retweet_count)
         self.created_at = data.get("created_at")
         self.source = "source"
         if self.created_at:
@@ -135,7 +137,11 @@ class IncomingTweet(InboxItem):
         if self.retweeted_status:
             topic_text += os.linesep + self.retweeted_status.text
 
-        self.topics = topichelper.get_topics(topic_text)
+        self.topics = None
+        if topic_text:
+            self.topics = topichelper.get_topics(topic_text)
+
+        self._classification = None
         self.tweet_score = TweetScore(self)
 
     def _retweet(self, data, identity, skip_user):

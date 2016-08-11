@@ -14,27 +14,6 @@ except NameError:
     pass
 
 _topics = []
-_topics.extend(Daily.get())
-_topics.extend(Monthly.get())
-_topics.extend(Annual.get())
-_topics.extend(Politics.get())
-_topics.extend(Celebrity.get())
-_topics.extend(Sport.get())
-_topics.extend(Entertainment.get())
-_topics.extend(News.get())
-_topics.extend(Corporate.get())
-_topics.extend(Technology.get())
-_topics.extend(Regional.get())
-_topics.extend(Spam.get())
-_topics.extend(Competitions.get())
-_topics.extend(religion.get())
-_topics.extend(misc.get())
-_topics.extend(food.get())
-_topics.extend(nature.get())
-_topics.extend(science.get())
-_topics.extend(memes.get())
-_topics.extend(pokemon.get())
-
 
 for topic in _topics:
     logger.debug("Topic %s definite: %s",
@@ -75,7 +54,33 @@ class Topics(object):
         return self._topics_list
 
 
+def _init_topics():
+    global _topics
+    if not _topics:
+        _topics.extend(Daily.get())
+        _topics.extend(Monthly.get())
+        _topics.extend(Annual.get())
+        _topics.extend(Politics.get())
+        _topics.extend(Celebrity.get())
+        _topics.extend(Sport.get())
+        _topics.extend(Entertainment.get())
+        _topics.extend(News.get())
+        _topics.extend(Corporate.get())
+        _topics.extend(Technology.get())
+        _topics.extend(Regional.get())
+        _topics.extend(Spam.get())
+        _topics.extend(Competitions.get())
+        _topics.extend(religion.get())
+        _topics.extend(misc.get())
+        _topics.extend(food.get())
+        _topics.extend(nature.get())
+        _topics.extend(science.get())
+        _topics.extend(memes.get())
+        _topics.extend(pokemon.get())
+
+
 def get_topics(text):
+    _init_topics()
     results = map(lambda t: t.condition(text), _topics)
     matching_topics = list(filter(_has_matches, results))
     if 0 < len(matching_topics) <= 3:

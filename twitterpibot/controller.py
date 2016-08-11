@@ -67,16 +67,19 @@ def get_user_dto(user):
         "lang": user.lang,
         "time_zone": user.time_zone,
         "utc_offset": user.utc_offset,
-        "created_at": user.created_at,
+        # "created_at": user.created_at,
+        # "account_age": user.account_age,
         "profile_image_url": user.profile_image_url,
         "profile_banner_url": user.profile_banner_url,
         "location": user.location,
         "profile_url": user.profile_url,
-        "last_tweeted_at": user.last_tweeted_at,
+        # "last_tweeted_at": user.last_tweeted_at,
         "last_tweeted": user.get_last_tweeted(),
         "status": get_tweet_dto(user.status),
         "latest_tweets": get_tweets_dto(user.get_latest_tweets()),
         "user_score": get_score_dto(user.user_score),
+        "tweet_rate_lifetime":user.tweet_rate_lifetime,
+        "tweet_rate_recent": user.tweet_rate_recent
 
     }
 
