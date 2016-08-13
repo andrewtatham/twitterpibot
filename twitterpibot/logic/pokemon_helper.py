@@ -100,7 +100,8 @@ def _get_all_pokemons():
         }
         request_url = urlhelper.parameterise(params, url)
         response = urlhelper.get_response(request_url)
-        pokemons = dict([(result["name"], result["url"]) for result in response["results"]])
+        if response:
+            pokemons = dict([(result["name"], result["url"]) for result in response["results"]])
     return pokemons
 
 

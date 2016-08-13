@@ -9,6 +9,8 @@ from urllib.parse import urlparse
 
 import requests
 
+from twitterpibot.exceptionmanager import handle
+
 __author__ = 'andrewtatham'
 
 logger = logging.getLogger(__name__)
@@ -68,10 +70,18 @@ def parameters_and_sign(params, url, secret):
 
 
 def get_response(url):
-    response = requests.get(url)
-    response_json = response.content.decode()
-    response_dict = json.loads(response_json)
-    logger.info(pprint.pformat(response_dict))
+    response_dict = None
+    try:
+        logger.info(url)
+        response = requests.get(url)
+        logger.info(response)
+        response.raise_for_status()
+        response_json = response.content.decode()
+        response_dict = json.loads(response_json)
+        logger.debug(pprint.pformat(response_dict))
+    except requests.exceptions.HTTPError as ex:
+        handle(None, ex, url)
+
     return response_dict
 
 
