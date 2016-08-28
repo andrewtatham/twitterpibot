@@ -34,7 +34,7 @@ how_are_you_responses = [
     "I'll let you know when I figure it out.",
     "Taking deep breaths.",
     "Ready for tomorrow.",
-    "To tell you the truth, my ______ hurts, but my doc's working on a solution for me so I'm hopeful.",
+    # "To tell you the truth, my ______ hurts, but my doc's working on a solution for me so I'm hopeful.",
     "I've been better.",
     "Trying to stay positive.",
     "Who wants to know?",
@@ -108,7 +108,7 @@ how_are_you_responses = [
     "Today I'm more CHRONIC than BABE.",
     "Not so hot. Wanna help distract me by telling me about your day?",
     "Keepin' busy, which is a good distraction from my other tough stuff.",
-    "I'll be better when ______ gets fixed, but for now I'm doin' OK. Thanks!",
+    # "I'll be better when ______ gets fixed, but for now I'm doin' OK. Thanks!",
     "I'm glad to see you! What's new? ",
     "I'm giving her all she's got, Captain!"
 ]
@@ -140,6 +140,19 @@ thanks = [
     "thank u",
 ]
 
+
+def segue():
+    return random.choice([
+        "MEANWHILE",
+        "In other news",
+        "apparently",
+        "unexpectedly",
+        "perhaps unsuprisingly",
+        "also this",
+        "while you were away",
+        "when you least expect it"
+
+    ]) + "..."
 
 
 weekend_past_responses = [
@@ -190,8 +203,6 @@ weekend_future_responses = [
     "I don't have anything planned",
     "I'll probably just stay at home and relax",
     "I just want to sleep in!"
-
-
 
     # go out to eat
     # go out (to a bar or club)
