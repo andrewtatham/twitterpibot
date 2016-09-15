@@ -1,6 +1,6 @@
 import datetime
+import logging
 import os
-import random
 import traceback
 
 # import uptime
@@ -164,14 +164,24 @@ def get_exceptions():
     return exs
 
 
-if __name__ == "__main__":
-    from twitterpibot import exceptionmanager
+def housekeeping():
+    threshold = datetime.datetime.utcnow() - datetime.timedelta(days=30)
+    session = _create_session()
+    session.query(model.ExceptionRow).filter(model.ExceptionRow.now < threshold).delete()
 
-    for i in range(20):
-        try:
-            exceptionmanager.raise_test_exception()
-        except Exception as ex:
-            if random.randint(0, 1) == 0:
-                warning(None, ex, str(exceptionmanager.raise_test_exception))
-            else:
-                exception(None, ex, str(exceptionmanager.raise_test_exception))
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+    housekeeping()
+
+# if __name__ == "__main__":
+#     from twitterpibot import exceptionmanager
+#
+#     for i in range(20):
+#         try:
+#             exceptionmanager.raise_test_exception()
+#         except Exception as ex:
+#             if random.randint(0, 1) == 0:
+#                 warning(None, ex, str(exceptionmanager.raise_test_exception))
+#             else:
+#                 exception(None, ex, str(exceptionmanager.raise_test_exception))

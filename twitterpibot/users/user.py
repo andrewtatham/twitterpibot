@@ -76,7 +76,7 @@ class User(object):
         self.listed_count = parse_int(data.get("listed_count"))
 
         self.tweet_rate_lifetime = None
-        if self.statuses_count and self.account_age:
+        if self.statuses_count and self.account_age and self.account_age.days:
             self.tweet_rate_lifetime = self.statuses_count / self.account_age.days
 
         self.updated = None
