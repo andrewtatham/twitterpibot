@@ -5,6 +5,7 @@ import colorama
 from twitterpibot import tasks, schedule, webserver, loggingconfig, controller
 from twitterpibot.hardware import myhardware, myperipherals
 from twitterpibot.schedule import GlobalMonitorScheduledTask
+from twitterpibot.schedule.common.database_scheduled_tasks import HousekeepingScheduledTask
 from twitterpibot.tasks.LightsTask import LightsTask
 
 if not myhardware.is_andrew_desktop:
@@ -52,7 +53,8 @@ def run(identities):
 def set_scheduled_jobs(identities):
     logger.info("Setting schedule")
     _scheduled_jobs = [
-        GlobalMonitorScheduledTask(None)
+        GlobalMonitorScheduledTask(None),
+        HousekeepingScheduledTask(None)
     ]
     for identity in identities:
         _scheduled_jobs.extend(identity.get_scheduled_jobs())

@@ -1,3 +1,4 @@
+import os
 import subprocess
 import platform
 import logging
@@ -10,8 +11,6 @@ is_webcam_attached = False
 is_brightpi_attached = False
 is_unicornhat_attached = False
 is_blinksticknano_attached = False
-
-
 
 _platform = platform.platform()
 logger.info("platform: %s", _platform)
@@ -28,6 +27,7 @@ is_raspberry_pi_2 = _node == "raspberrypi2"
 is_andrew_macbook = _node == "Andrews-MacBook-Pro.local"
 
 if is_windows:
+    import wmi
 
     if is_andrew_desktop:
         is_webcam_attached = False
@@ -62,3 +62,25 @@ logger.info("is_unicornhat_attached: %s", is_unicornhat_attached)
 logger.info("is_piglow_attached: %s", is_piglow_attached)
 logger.info("is_brightpi_attached: %s", is_brightpi_attached)
 
+
+def get_remaining_disk_space():
+    free_space_mb = None
+    if is_windows:
+        c = wmi.WMI()
+        # TODO CHECK/FIX disk space on windows
+        for d in c.Win32_LogicalDisk():
+            print(d.Caption, d.FreeSpace, d.Size, d.DriveType)
+            free_space_mb = d.FreeSpace / 1024 / 1024
+
+    else:
+        path = "/"
+
+        st = os.statvfs(path)
+        logger.debug(st)
+        free_space_mb = st.f_bavail * st.f_frsize / 1024 / 1024 
+
+    return free_space_mb
+
+
+if __name__ == '__main__':
+    print(get_remaining_disk_space())
