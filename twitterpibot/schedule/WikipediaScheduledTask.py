@@ -26,10 +26,22 @@ class WikipediaScheduledTask(ScheduledTask):
         try:
             page = wikipediahelper.get_random_page()
             if page:
+                logging.info(page.title)
+                logging.info(page.url)
+                logging.info(page.summary)
+
                 text = _cap(page.summary, 140 * 5 - 24) + " " + page.url
-                logging.info(text)
                 file_paths, valid_file_paths = self._get_valid_images(page)
-                self.identity.twitter.send(OutgoingTweet(text=text, file_paths=valid_file_paths))
+                # self.identity.twitter.send(OutgoingTweet(text=text, file_paths=valid_file_paths))
+
+                if self.identity.facebook:
+                    picture = None
+                    if page.images:
+                        picture = page.images[0]
+                    attachment = self.identity.facebook.create_attachment(
+                        page.title, page.url, page.url, page.summary, picture)
+                    self.identity.facebook.create_wall_post(post_text=page.summary, attachment=attachment)
+
         finally:
             if file_paths:
                 fsh.delete_files(file_paths)

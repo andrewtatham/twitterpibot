@@ -21,4 +21,7 @@ class TalkLikeAPirateDayScheduledTask(ScheduledTask):
         return CronTrigger(month=9, day=19, minute="*/10")
 
     def on_run(self):
-        self.identity.twitter.send(OutgoingTweet(text=random.choice(piracy) + " #TalkLikeAPirateDay"))
+        text = random.choice(piracy) + " #TalkLikeAPirateDay"
+        self.identity.twitter.send(OutgoingTweet(text=text))
+        if self.identity.facebook:
+            self.identity.facebook.create_wall_post(text)

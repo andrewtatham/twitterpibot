@@ -17,6 +17,9 @@ class JokesScheduledTask(ScheduledTask):
         if text:
             self.identity.twitter.send(OutgoingTweet(text=text))
 
+            if self.identity.facebook:
+                self.identity.facebook.create_wall_post(text)
+
 
 if __name__ == '__main__':
     identity = identities.AndrewTathamPiIdentity(None)

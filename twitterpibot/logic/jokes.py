@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
 def get_joke():
     joke = None
-    if random.randint(0, 1) == 0:
+    if random.randint(0, 10) == 0:
         joke = _get_chuck_norris_joke()
     if not joke:
         joke = pyjokes.get_joke()

@@ -3,6 +3,7 @@ import abc
 import colorama
 
 import twitterpibot.hardware.myhardware
+from twitterpibot.facebook import facebook_helper
 
 from twitterpibot.logic import conversation_helper
 from twitterpibot.logic.admin_commands import ImportTokensResponse, ExportTokensResponse, DropCreateTablesResponse, \
@@ -76,6 +77,10 @@ class Identity(object):
         self.statistics = Statistics()
         self.conversations = conversation_helper.ConversationHelper(self)
         self.converse_with = None
+
+        self.facebook = None
+        if self.screen_name == "andrewtathampi":
+            self.facebook = facebook_helper.FacebookHelper(self)
 
     def update(self, me):
         self.id_str = me["id_str"]
