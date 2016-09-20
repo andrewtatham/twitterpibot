@@ -7,7 +7,7 @@ from twitterpibot.facebook import facebook_helper
 
 from twitterpibot.logic import conversation_helper
 from twitterpibot.logic.admin_commands import ImportTokensResponse, ExportTokensResponse, DropCreateTablesResponse, \
-    RestartResponse
+    RestartResponse, SetTokenResponse
 from twitterpibot.logic.anagram_solver import AnagramBotResponse
 from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask
 from twitterpibot.logic.conversation import ConversationScheduledTask
@@ -136,7 +136,6 @@ class BotIdentity(Identity):
             SubscribedListsScheduledTask(self, self.admin_identity),
             ManageUsersScheduledTask(self),
             ManageListMembersScheduledTask(self),
-
         ])
         return jobs
 
@@ -145,6 +144,7 @@ class BotIdentity(Identity):
         responses.extend([
             RestartResponse(self),
             ImportTokensResponse(self),
+            SetTokenResponse(self),
             ExportTokensResponse(self),
             DropCreateTablesResponse(self),
         ])
@@ -172,7 +172,6 @@ class PiIdentity(BotIdentity):
             AprilFoolsDayScheduledTask(self),
             JudgementDayScheduledTask(self),
             DecypherScheduledTask(self),
-
             ConversationScheduledTask(self, self.converse_with),
             PokemonScheduledTask(self, self.converse_with)
         ])
