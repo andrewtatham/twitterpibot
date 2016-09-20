@@ -186,7 +186,7 @@ class PiIdentity(BotIdentity):
         return jobs
 
     def get_responses(self):
-        responses = []
+        responses = super(PiIdentity, self).get_responses()
         responses.extend([
             TalkLikeAPirateDayResponse(self),
             AnagramBotResponse(self),
