@@ -83,6 +83,9 @@ class Medias(object):
     def __len__(self):
         return len(self._medias)
 
+    def __getitem__(self, item):
+        return self._medias.__getitem__(item)
+
 
 class IncomingTweet(InboxItem):
     def __init__(self, data, identity=None, skip_user=False):
@@ -100,6 +103,7 @@ class IncomingTweet(InboxItem):
             self.sender.is_me = False
         self.is_tweet = True
         self.id_str = data.get("id_str")
+        self.url = "https://twitter.com/{}/status/{}".format(self.sender.screen_name, self.id_str)
         self.lang = data.get("lang")
         if self.lang and self.lang == "und":
             self.lang = None
@@ -289,7 +293,6 @@ if __name__ == '__main__':
     import identities
 
     logging.basicConfig(level=logging.INFO)
-
 
     identity = identities.AndrewTathamPiIdentity(None)
 

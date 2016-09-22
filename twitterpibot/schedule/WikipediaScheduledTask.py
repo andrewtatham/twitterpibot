@@ -5,7 +5,6 @@ import random
 
 from apscheduler.triggers.interval import IntervalTrigger
 
-import identities
 from twitterpibot.logic import wikipediahelper, fsh
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
@@ -30,17 +29,22 @@ class WikipediaScheduledTask(ScheduledTask):
                 logging.info(page.url)
                 logging.info(page.summary)
 
-                text = _cap(page.summary, 140 * 5 - 24) + " " + page.url
+                text = _cap(page.summary, 140 * 5 - 24)
                 file_paths, valid_file_paths = self._get_valid_images(page)
-                # self.identity.twitter.send(OutgoingTweet(text=text, file_paths=valid_file_paths))
+                self.identity.twitter.send(OutgoingTweet(text=text + " " + page.url, file_paths=valid_file_paths))
 
                 if self.identity.facebook:
                     picture = None
                     if page.images:
                         picture = page.images[0]
                     attachment = self.identity.facebook.create_attachment(
-                        page.title, page.url, page.url, page.summary, picture)
-                    self.identity.facebook.create_wall_post(post_text=page.summary, attachment=attachment)
+                        page.title,
+                        page.url,
+                        page.url,
+                        text,
+                        picture)
+
+                    self.identity.facebook.create_wall_post(post_text=text, attachment=attachment)
 
         finally:
             if file_paths:
@@ -67,6 +71,8 @@ class WikipediaScheduledTask(ScheduledTask):
 
 
 if __name__ == "__main__":
+    import identities
+
     logging.basicConfig(level=logging.INFO)
     identity = identities.AndrewTathamPiIdentity()
     task = WikipediaScheduledTask(identity)

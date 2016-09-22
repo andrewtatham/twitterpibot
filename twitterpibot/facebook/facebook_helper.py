@@ -81,6 +81,26 @@ class FacebookHelper(object):
         }
         return attachment
 
+    def create_wall_post_from_tweet(self, inbox_item, rt_or_fav):
+        if inbox_item.medias:
+            picture = inbox_item.medias[0].get_thumbnail()
+        elif inbox_item.sender.profile_image_url:
+            picture = inbox_item.sender.profile_image_url
+        else:
+            picture = None
+        attachment = self.create_attachment(
+            name="tweet by {} (@{})".format(
+                inbox_item.sender.name,
+                inbox_item.sender.screen_name),
+            link=inbox_item.url,
+            caption=inbox_item.url,
+            description=inbox_item.sender.description,
+            picture=picture)
+        self.create_wall_post(
+            post_text="{} @{}: \"{}\"".format(
+                rt_or_fav, inbox_item.sender.screen_name, inbox_item.text),
+            attachment=attachment)
+
 
 if __name__ == '__main__':
     import identities
