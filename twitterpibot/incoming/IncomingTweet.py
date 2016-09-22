@@ -103,7 +103,9 @@ class IncomingTweet(InboxItem):
             self.sender.is_me = False
         self.is_tweet = True
         self.id_str = data.get("id_str")
-        self.url = "https://twitter.com/{}/status/{}".format(self.sender.screen_name, self.id_str)
+        self.url = None
+        if self.sender and self.id_str:
+            self.url = "https://twitter.com/{}/status/{}".format(self.sender.screen_name, self.id_str)
         self.lang = data.get("lang")
         if self.lang and self.lang == "und":
             self.lang = None
