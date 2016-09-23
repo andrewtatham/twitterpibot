@@ -8,6 +8,7 @@ from twitterpibot.logic.numberwang import NumberwangHostScheduledTask, Numberwan
 from twitterpibot.responses.EggPunResponse import EggPunResponse
 from twitterpibot.responses.HiveMindResponse import HiveMindResponse
 from twitterpibot.schedule.EggPunScheduledTask import EggPunScheduledTask
+from twitterpibot.schedule.announcement_scheduled_task import AnnouncementScheduledTask
 
 __author__ = 'andrewtatham'
 
@@ -32,6 +33,11 @@ class AndrewTathamPiIdentity(PiIdentity):
             id_str="2935295111",
             admin_identity=admin_identity)
         self.colour = colorama.Fore.MAGENTA
+
+    def get_scheduled_jobs(self):
+        jobs = super().get_scheduled_jobs()
+        jobs.append(AnnouncementScheduledTask(self))
+        return jobs
 
 
 class AndrewTathamPi2Identity(PiIdentity):

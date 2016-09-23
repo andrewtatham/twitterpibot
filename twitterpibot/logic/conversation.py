@@ -154,6 +154,28 @@ def segue():
 
     ]) + "..."
 
+attention_words = [
+    "Attention",
+    "Achtung",
+    "Behold",
+    "Observe",
+    "Check this"
+]
+
+human_words = [
+    "human",
+    "hooman",
+    "earthling",
+    "meatsack",
+    "organism",
+    "homo sapien",
+    "ape-like creature",
+    "being"
+]
+
+bot_words = [
+    "brother"
+]
 
 weekend_past_responses = [
     "It was awesome!",

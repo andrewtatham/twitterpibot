@@ -47,6 +47,9 @@ class FacebookHelper(object):
         # logger.info(pprint.pformat(user))
 
     def create_wall_post(self, post_text, attachment={}):
+        if attachment is None:
+            attachment = {}
+        logger.info(post_text)
         wall_post = self._graph.put_wall_post(post_text, attachment=attachment)
         logger.debug(pprint.pformat(wall_post))
         return wall_post
@@ -71,14 +74,13 @@ class FacebookHelper(object):
         logger.debug(pprint.pformat(comments))
         return comments
 
-    def create_attachment(self, name, link, caption, description, picture):
-        attachment = {
-            'name': name,
-            'link': link,
-            'caption': caption,
-            'description': description,
-            'picture': picture
-        }
+    def create_attachment(self, name=None, link=None, caption=None, description=None, picture=None):
+        attachment = {}
+        if name: attachment['name'] = name
+        if link: attachment['link'] = link
+        if caption: attachment['caption'] = caption
+        if description: attachment['description'] = description
+        if picture: attachment['picture'] = picture
         return attachment
 
     def create_wall_post_from_tweet(self, inbox_item, rt_or_fav):
