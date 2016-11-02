@@ -59,7 +59,7 @@ def get_daytimeness_factor(now=None):
     elif tomorrow_times["sunrise"] <= now < tomorrow_times["sunset"]:
         return 1
     elif tomorrow_times["sunset"] <= now < tomorrow_times["dusk"]:
-        return _interpolate(tomorrow_times["sunset"] <= now < tomorrow_times["dusk"])
+        return _interpolate(tomorrow_times["sunset"], now, tomorrow_times["dusk"])
     else:
         return 0
 
