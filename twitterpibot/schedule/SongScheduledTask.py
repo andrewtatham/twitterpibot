@@ -11,7 +11,7 @@ class SongScheduledTask(ScheduledTask):
         super(SongScheduledTask, self).__init__(identity)
 
     def get_trigger(self):
-        return IntervalTrigger(hours=11, minutes=random.randint(0, 59))
+        return IntervalTrigger(hours=random.randint(72, 96), minutes=random.randint(0, 59))
 
     def on_run(self):
         song_key = random.choice(songhelper.keys())
