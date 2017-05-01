@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 class WeatherScheduledTask(ScheduledTask):
     def get_trigger(self):
-        return CronTrigger(hour=7, minute=random.randint(0, 59))
+        return CronTrigger(hour=random.randint(24, 48), minute=random.randint(0, 59))
 
     def on_run(self):
         tweet_id = self.identity.twitter.send(OutgoingTweet(text="@" + bbc_weather_bot.screen_name + " Leeds Today"))
