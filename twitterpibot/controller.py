@@ -153,15 +153,15 @@ def get_identity_dto(identity):
     }
     # if identity.users._following:
     #     dto["following"] = [{"follower_id": f} for f in identity.users._following]
-    # if identity.users._lists:
+    # if identity.users.lists:
     #     dto["lists"] = [
     #         {
     #             "list_name": l,
     #             "members": [
     #                 {
     #                     "list_member_id": list_member_id
-    #                 } for list_member_id in identity.users._lists._sets[l]]
-    #         } for l in identity.users._lists._sets]
+    #                 } for list_member_id in identity.users.lists._sets[l]]
+    #         } for l in identity.users.lists._sets]
     if identity.users:
         dto["users"] = get_users_dto(identity.users)
         # todo display stats

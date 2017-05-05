@@ -29,7 +29,7 @@ if __name__ == '__main__':
     if True:
         list_name = "Awesome Bots"
         tweets = identity.twitter.get_list_statuses(
-            list_id=identity.users._lists._list_ids[list_name],
+            list_id=identity.users.lists._list_ids[list_name],
             slug=list_name,
             owner_screen_name=identity.screen_name,
             owner_id=identity.id_str,

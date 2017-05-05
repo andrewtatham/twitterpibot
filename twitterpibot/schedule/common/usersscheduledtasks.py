@@ -154,7 +154,7 @@ class ManageListMembersScheduledTask(ScheduledTask):
             self._all_user_ids = self.identity.users.get_all_user_ids()
 
         possibly_bots_list_name = "Possibly Bots"
-        possibly_bots_list_members = self.identity.users._lists.get_list_members(list_name=possibly_bots_list_name)
+        possibly_bots_list_members = self.identity.users.lists.get_list_members(list_name=possibly_bots_list_name)
 
         for _ in range(random.randint(2, 10)):
             if self._all_user_ids:
@@ -163,7 +163,7 @@ class ManageListMembersScheduledTask(ScheduledTask):
                     user = self.identity.users.get_user(user_id=user_id)
 
                     if user and user.is_possibly_bot and user_id not in possibly_bots_list_members:
-                        self.identity.users._lists.add_user_to_list(
+                        self.identity.users.lists.add_user_to_list(
                             list_name=possibly_bots_list_name,
                             user_id=user_id, screen_name=user.screen_name)
 

@@ -21,6 +21,10 @@ class Lists(object):
         self._sets = {}
         self._list_ids = {}
 
+    def _init_lists(self):
+        if not self._sets or not self._list_ids:
+            self.update_lists()
+
     def update_lists(self):
 
         logger.info("[%s] Getting lists " % self._identity.screen_name)
@@ -47,8 +51,7 @@ class Lists(object):
             logger.debug("[%s] %s members: %s" % (self._identity.screen_name, list_name, str(self._sets[list_name])))
 
     def add_user_to_list(self, list_name, user_id, screen_name):
-        if not self._sets or not self._list_ids:
-            self.update_lists()
+        self._init_lists()
 
         logger.debug("{} adding user {} {} to list {}".format(
             self._identity.screen_name, user_id, screen_name, list_name))
@@ -57,8 +60,7 @@ class Lists(object):
         self._sets[list_name].add(user_id)
 
     def update_user_list_memberships(self, user):
-        if not self._sets or not self._list_ids:
-            self.update_lists()
+        self._init_lists()
 
         list_memberships = set()
         for list_name in self._sets:
@@ -68,7 +70,11 @@ class Lists(object):
         user.update_list_memberships(list_memberships)
 
     def get_list_members(self, list_name):
-        if not self._sets or not self._list_ids:
-            self.update_lists()
+        self._init_lists()
 
         return self._sets[list_name]
+
+    def list_contains_user(self, list_name, user):
+        self._init_lists()
+        return user.id_str in self._sets[list_name]
+

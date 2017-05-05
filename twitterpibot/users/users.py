@@ -22,9 +22,9 @@ class Users(object):
         self._followers_only = set()
         self._others = set()
 
-        self._lists = lists.Lists(self._identity)
+        self.lists = lists.Lists(self._identity)
 
-        self._lists.update_lists()
+        self.lists.update_lists()
         self.get_followers()
         self.get_following()
 
@@ -88,7 +88,7 @@ class Users(object):
 
     def update_user(self, user):
 
-        self._lists.update_user_list_memberships(user)
+        self.lists.update_user_list_memberships(user)
 
         user.follower = user.id_str in self._followers
         user.following = user.id_str in self._following
@@ -204,8 +204,8 @@ class Users(object):
     def get_unfollowed_list_members(self, list_names):
         to_follow = set()
         for list_name in list_names:
-            if list_name in self._lists._sets:
-                list_members = self._lists._sets[list_name]
+            if list_name in self.lists._sets:
+                list_members = self.lists._sets[list_name]
                 if list_members and self._following:
                     to_follow.update(list_members.difference(self._following))
         return to_follow
@@ -213,8 +213,8 @@ class Users(object):
     def get_followed_list_members(self, list_names):
         following = set()
         for list_name in list_names:
-            if list_name in self._lists._sets:
-                list_members = self._lists._sets[list_name]
+            if list_name in self.lists._sets:
+                list_members = self.lists._sets[list_name]
                 if list_members and self._following:
                     following.update(list_members.intersection(self._following))
         return following

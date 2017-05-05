@@ -11,7 +11,9 @@ from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
 suggestedUserColours = cycle([Fore.WHITE, Fore.CYAN])
 
-ignored_slugs = {"Government", "London Services", "Sport", "Premier League", "Television","Fashion"}
+ignored_slugs = {
+    # "Government", "London Services", "Sport", "Premier League", "Television", "Fashion"
+}
 
 
 class SuggestedUsersScheduledTask(ScheduledTask, ):
@@ -46,6 +48,12 @@ class SuggestedUsersScheduledTask(ScheduledTask, ):
             if user:
                 logging.info(colour + "User: [" + category["name"] + "] - " + user.long_description())
 
+                if not self.identity.users.lists.list_contains_user("Need Input", user):
+                    self.identity.users.lists.add_user_to_list(
+                        list_name="Need Input",
+                        user_id=user.id_str,
+                        screen_name=user.screen_name)
+
 
 if __name__ == '__main__':
     import identities
@@ -53,5 +61,5 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     identity = identities.AndrewTathamPi2Identity(None)
     task = SuggestedUsersScheduledTask(identity)
-
-    task.on_run()
+    for _ in range(3):
+        task.on_run()
