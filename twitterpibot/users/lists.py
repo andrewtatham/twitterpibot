@@ -9,7 +9,8 @@ default_lists = [
     "Awesome Bots",
     "Friends",
     "Blocked Users",
-    "Possibly Bots"
+    "Possibly Bots",
+    "Need Input"
 ]
 
 
