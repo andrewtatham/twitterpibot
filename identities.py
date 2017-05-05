@@ -9,6 +9,7 @@ from twitterpibot.responses.EggPunResponse import EggPunResponse
 from twitterpibot.responses.HiveMindResponse import HiveMindResponse
 from twitterpibot.schedule.EggPunScheduledTask import EggPunScheduledTask
 from twitterpibot.schedule.announcement_scheduled_task import AnnouncementScheduledTask
+from twitterpibot.schedule.common.UserListsScheduledTask import UserListsScheduledTask
 
 __author__ = 'andrewtatham'
 
@@ -19,6 +20,11 @@ class AndrewTathamIdentity(Identity):
             screen_name="andrewtatham",
             id_str="19201332")
         self.buddies = None
+
+    def get_scheduled_jobs(self):
+        jobs = super().get_scheduled_jobs()
+        jobs.append(UserListsScheduledTask(self, None))
+        return jobs
 
     def get_responses(self):
         responses = super(AndrewTathamIdentity, self).get_responses()

@@ -25,6 +25,8 @@ class UserListsScheduledTask(ScheduledTask):
 
         if self._master_identity:
             self._synchronize([self.identity, self._master_identity])
+        else:
+            self._add_following_to_list("Need Input")
 
     def _synchronize(self, identities):
 
@@ -44,3 +46,20 @@ class UserListsScheduledTask(ScheduledTask):
             for missing_user in missing_users:
                 logger.info("adding " + missing_user + " to " + identity.screen_name + " " + user_list)
                 identity.users.lists.add_user_to_list(user_list, user_id=missing_user, screen_name=None)
+
+    def _add_following_to_list(self, user_list):
+        to_add = self.identity.users._following.difference(self.identity.users.lists._sets[user_list])
+        if to_add:
+            for missing_user in random.sample(to_add, 1):
+                logger.info("adding " + missing_user + " to " + self.identity.screen_name + " " + user_list)
+                self.identity.users.lists.add_user_to_list(user_list, user_id=missing_user, screen_name=None)
+
+
+if __name__ == '__main__':
+    import identities
+
+    logging.basicConfig(level=logging.INFO)
+    identity = identities.AndrewTathamIdentity()
+    task = UserListsScheduledTask(identity, None)
+    for _ in range(3):
+        task.on_run()
