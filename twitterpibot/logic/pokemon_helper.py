@@ -106,7 +106,7 @@ def _get_all_pokemons():
 
 
 def _get_pokemon_details(id_or_name):
-    if not id_or_name in pokemon_details:
+    if id_or_name not in pokemon_details:
         url = pokemons[id_or_name]
         response = urlhelper.get_response(url)
         pokemon_details[id_or_name] = Pokemon(response)
@@ -123,7 +123,7 @@ def get_random_pokemon_details():
     all_names = _get_all_names()
 
     name = random.choice(all_names)
-
+    logging.info(name)
     details = _get_pokemon_details(name)
 
     return details
