@@ -156,6 +156,9 @@ class ManageListMembersScheduledTask(ScheduledTask):
         possibly_bots_list_name = "Possibly Bots"
         possibly_bots_list_members = self.identity.users.lists.get_list_members(list_name=possibly_bots_list_name)
 
+        need_input_list_name = "Need Input"
+        need_input_list_members = self.identity.users.lists.get_list_members(list_name=need_input_list_name)
+
         for _ in range(random.randint(2, 10)):
             if self._all_user_ids:
                 user_id = self._all_user_ids.pop()
@@ -165,6 +168,11 @@ class ManageListMembersScheduledTask(ScheduledTask):
                     if user and user.is_possibly_bot and user_id not in possibly_bots_list_members:
                         self.identity.users.lists.add_user_to_list(
                             list_name=possibly_bots_list_name,
+                            user_id=user_id, screen_name=user.screen_name)
+
+                    if user and user.verified and user.followers_count >= 1000000 and user_id not in need_input_list_members:
+                        self.identity.users.lists.add_user_to_list(
+                            list_name=need_input_list_name,
                             user_id=user_id, screen_name=user.screen_name)
 
 
