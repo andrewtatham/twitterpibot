@@ -265,7 +265,8 @@ class IncomingTweet(InboxItem):
                 text += os.linesep + (media.type + ": ").rjust(n, " ") + media.short_description()
         if self.urls:
             for url in self.urls:
-                text += os.linesep + "url: ".rjust(n, " ") + url["expanded_url"]
+                if "expanded_url" in url and url["expanded_url"]:
+                    text += os.linesep + "url: ".rjust(n, " ") + url["expanded_url"]
 
         if self.conversation:
             text += os.linesep + "conversation: ".rjust(n, " ") + self.conversation.display()
