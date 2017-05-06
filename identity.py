@@ -42,6 +42,7 @@ from twitterpibot.schedule.common.SubscribedListsScheduledTask import Subscribed
 from twitterpibot.schedule.common.SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
 from twitterpibot.schedule.common.UserListsScheduledTask import UserListsScheduledTask
 from twitterpibot.schedule.common.ratelimitsscheduledtask import RateLimitsScheduledTask
+from twitterpibot.schedule.responses_scheduled_task import ResponsesScheduledTask
 from twitterpibot.tasks.StreamTweetsTask import StreamTweetsTask
 from twitterpibot.twitter import twitterhelper
 from twitterpibot.users import users
@@ -136,6 +137,7 @@ class BotIdentity(Identity):
             SubscribedListsScheduledTask(self, self.admin_identity),
             ManageUsersScheduledTask(self),
             ManageListMembersScheduledTask(self),
+            ResponsesScheduledTask(self)
         ])
         return jobs
 

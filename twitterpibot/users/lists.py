@@ -78,3 +78,8 @@ class Lists(object):
         self._init_lists()
         return user.id_str in self._sets[list_name]
 
+
+    def get_list_id(self, list_name):
+        self._init_lists()
+
+        return self._list_ids[list_name]
