@@ -20,7 +20,7 @@ class ResponsesScheduledTask(ScheduledTask):
         tweets_data = self.identity.twitter.get_list_statuses(list_id=list_id)
         tweets = list(map(lambda data: IncomingTweet(data, self.identity), tweets_data))
         for tweet in tweets:
-            logging.info(tweet.display())
+            logging.info(tweet.short_description())
             for response in self._responses:
                 if response.condition(tweet):
                     response.respond(tweet)

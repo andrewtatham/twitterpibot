@@ -105,13 +105,13 @@ def _get_all_pokemons():
     return pokemons
 
 
-def _get_pokemon_details(id_or_name):
-    if id_or_name not in pokemon_details:
-        url = pokemons[id_or_name]
+def _get_pokemon_details(name):
+    if name not in pokemon_details:
+        url = pokemons[name]
         response = urlhelper.get_response(url)
-        pokemon_details[id_or_name] = Pokemon(response)
+        pokemon_details[name] = Pokemon(response)
 
-    return pokemon_details[id_or_name]
+    return pokemon_details[name]
 
 
 def _get_all_names():
