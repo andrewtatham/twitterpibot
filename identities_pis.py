@@ -1,13 +1,37 @@
 import colorama
 
-from identity import Identity, BotIdentity, PiIdentity
+import twitterpibot.hardware
+from identity import Identity, BotIdentity
+from twitterpibot.facebook import facebook_helper
+from twitterpibot.logic.anagram_solver import AnagramBotResponse
+from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask
 from twitterpibot.logic.botgle import BotgleResponse
-from twitterpibot.logic.cypher_game import CypherHostMidnightScheduledTask, CypherHostScheduledTask, CypherHostResponse
+from twitterpibot.logic.conversation import ConversationScheduledTask
+from twitterpibot.logic.cypher_game import CypherHostMidnightScheduledTask, CypherHostScheduledTask, CypherHostResponse, \
+    DecypherScheduledTask, DecypherResponse
+from twitterpibot.logic.ed_balls_day import TweetBeforeEdBallsDayScheduledTask, StreamEdBallsDayScheduledTask
 from twitterpibot.logic.gender import WhenIsIMDScheduledTask, WhenIsInternationalMensDayResponse
+from twitterpibot.logic.morse_code import MorseCodeResponse
 from twitterpibot.logic.numberwang import NumberwangHostScheduledTask, NumberwangHostResponse
 from twitterpibot.responses.EggPunResponse import EggPunResponse
+from twitterpibot.responses.FavoriteResponse import FavoriteResponse
 from twitterpibot.responses.HiveMindResponse import HiveMindResponse
+from twitterpibot.responses.Magic8BallResponse import Magic8BallResponse
+from twitterpibot.responses.PhotoResponse import PhotoResponse
+from twitterpibot.responses.ReplyResponse import ReplyResponse
+from twitterpibot.responses.RetweetResponse import RetweetResponse
+from twitterpibot.responses.TalkLikeAPirateDayResponse import TalkLikeAPirateDayResponse
+from twitterpibot.responses.weather_response import WeatherResponse
+from twitterpibot.responses.x_or_y_response import X_Or_Y_Response
 from twitterpibot.schedule.EggPunScheduledTask import EggPunScheduledTask
+from twitterpibot.schedule.HappyBirthdayScheduledTask import HappyBirthdayScheduledTask
+from twitterpibot.schedule.JokesScheduledTask import JokesScheduledTask
+from twitterpibot.schedule.JudgementDayScheduledTask import JudgementDayScheduledTask
+from twitterpibot.schedule.PokemonScheduledTask import PokemonScheduledTask
+from twitterpibot.schedule.SongScheduledTask import SongScheduledTask
+from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirateDayScheduledTask
+from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
+from twitterpibot.schedule.WikipediaScheduledTask import WikipediaScheduledTask
 from twitterpibot.schedule.announcement_scheduled_task import AnnouncementScheduledTask
 from twitterpibot.schedule.common.UserListsScheduledTask import UserListsScheduledTask
 
@@ -32,6 +56,56 @@ class AndrewTathamIdentity(Identity):
         return responses
 
 
+class PiIdentity(BotIdentity):
+    def __init__(self, screen_name, id_str, admin_identity):
+        super(PiIdentity, self).__init__(screen_name, id_str, admin_identity)
+        self.converse_with = None
+
+    def get_scheduled_jobs(self):
+        jobs = super(PiIdentity, self).get_scheduled_jobs()
+        jobs.extend([
+            WikipediaScheduledTask(self),
+            TalkLikeAPirateDayScheduledTask(self),
+            WeatherScheduledTask(self),
+            JokesScheduledTask(self),
+            SongScheduledTask(self),
+            HappyBirthdayScheduledTask(self),
+            # LocationScheduledTask(self),
+            # RaiseExceptionScheduledTask(self),
+            TweetBeforeEdBallsDayScheduledTask(self),
+            StreamEdBallsDayScheduledTask(self),
+            AprilFoolsDayScheduledTask(self),
+            JudgementDayScheduledTask(self),
+            DecypherScheduledTask(self),
+            ConversationScheduledTask(self, self.converse_with),
+            PokemonScheduledTask(self, self.converse_with)
+        ])
+
+        return jobs
+
+    def get_responses(self):
+        responses = super(PiIdentity, self).get_responses()
+        responses.extend([
+            TalkLikeAPirateDayResponse(self),
+            AnagramBotResponse(self),
+            MorseCodeResponse(self),
+            DecypherResponse(self),
+            # LocationResponse(self),
+            WeatherResponse(self),
+            X_Or_Y_Response(self),
+            Magic8BallResponse(self),
+        ])
+        if twitterpibot.hardware.myhardware.is_picam_attached or twitterpibot.hardware.myhardware.is_webcam_attached:
+            responses.append(PhotoResponse(self))
+        responses.extend([
+            ReplyResponse(self),
+            FavoriteResponse(self),
+            RetweetResponse(self),
+        ])
+        responses.extend(super(PiIdentity, self).get_responses())
+        return responses
+
+
 class AndrewTathamPiIdentity(PiIdentity):
     def __init__(self, admin_identity=None):
         super(AndrewTathamPiIdentity, self).__init__(
@@ -39,6 +113,7 @@ class AndrewTathamPiIdentity(PiIdentity):
             id_str="2935295111",
             admin_identity=admin_identity)
         self.colour = colorama.Fore.MAGENTA
+        self.facebook = facebook_helper.FacebookHelper(self)
 
     def get_scheduled_jobs(self):
         jobs = super().get_scheduled_jobs()
