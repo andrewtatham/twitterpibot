@@ -68,8 +68,6 @@ def on_lights_scheduled_task():
         MyPiglow.on_lights_scheduled_task()
     if myhardware.is_blinksticknano_attached:
         MyBlinkstickNano.on_lights_scheduled_task()
-    if myhardware.is_scroll_hat_attached:
-        myscrollhat.on_lights_scheduled_task()
 
 
 def on_fade_task():
@@ -79,8 +77,6 @@ def on_fade_task():
         MyPiglow.fade()
     if myhardware.is_blinksticknano_attached:
         MyBlinkstickNano.fade()
-    if myhardware.is_scroll_hat_attached:
-        myscrollhat.fade()
 
 
 def on_inbox_item_received(inbox_item):
