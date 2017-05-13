@@ -11,10 +11,10 @@ if __name__ == '__main__':
 
 if __name__ == "__main__":
 
-    from identities import ScrolBotIdentity
+    from identities import ScrollBotIdentity
 
 
-    scrollbot = ScrolBotIdentity()
+    scrollbot = ScrollBotIdentity()
 
     import twitterpibot.hardware.myhardware
 

@@ -167,9 +167,9 @@ class TheMachinesCodeIdentity(BotIdentity):
         return responses
 
 
-class ScrolBotIdentity(BotIdentity):
+class ScrollBotIdentity(BotIdentity):
     def __init__(self, admin_identity=None):
-        super(ScrolBotIdentity, self).__init__(
+        super(ScrollBotIdentity, self).__init__(
             screen_name="scroll_bot",
             id_str="863364063316893696",
             admin_identity=admin_identity)
