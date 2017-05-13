@@ -139,6 +139,17 @@ class BotIdentity(Identity):
             ManageListMembersScheduledTask(self),
             ResponsesScheduledTask(self)
         ])
+        if twitterpibot.hardware.myhardware.is_linux and (
+                    twitterpibot.hardware.myhardware.is_webcam_attached or
+                    twitterpibot.hardware.myhardware.is_picam_attached):
+            jobs.append(PhotoScheduledTask(self))
+
+        if twitterpibot.hardware.myhardware.is_piglow_attached \
+                or twitterpibot.hardware.myhardware.is_unicornhat_attached \
+                or twitterpibot.hardware.myhardware.is_blinksticknano_attached \
+                or twitterpibot.hardware.myhardware.is_scroll_hat_attached:
+            jobs.append(LightsScheduledTask(self))
+
         return jobs
 
     def get_responses(self):
@@ -178,13 +189,6 @@ class PiIdentity(BotIdentity):
             PokemonScheduledTask(self, self.converse_with)
         ])
 
-        if twitterpibot.hardware.myhardware.is_linux and (
-                    twitterpibot.hardware.myhardware.is_webcam_attached or twitterpibot.hardware.myhardware.is_picam_attached):
-            jobs.append(PhotoScheduledTask(self))
-        if twitterpibot.hardware.myhardware.is_piglow_attached \
-                or twitterpibot.hardware.myhardware.is_unicornhat_attached \
-                or twitterpibot.hardware.myhardware.is_blinksticknano_attached:
-            jobs.append(LightsScheduledTask(self))
         return jobs
 
     def get_responses(self):
