@@ -82,11 +82,11 @@ class MorseCodeResponse(Response):
 
 if __name__ == '__main__':
 
-    import identities
+    import identities_pis
 
     logging.basicConfig(level=logging.DEBUG)
 
-    identity = identities.AndrewTathamPi2Identity(None)
+    identity = identities_pis.AndrewTathamPi2Identity(None)
     timeline = identity.twitter.get_user_timeline(screen_name="andrewtathampi", count=10)
     tweets = list(map(lambda data: IncomingTweet(data, identity), timeline))
     tweets.reverse()

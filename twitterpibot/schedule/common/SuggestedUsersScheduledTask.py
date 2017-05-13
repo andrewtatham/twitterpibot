@@ -56,10 +56,10 @@ class SuggestedUsersScheduledTask(ScheduledTask, ):
 
 
 if __name__ == '__main__':
-    import identities
+    import identities_pis
 
     logging.basicConfig(level=logging.INFO)
-    identity = identities.AndrewTathamPi2Identity(None)
+    identity = identities_pis.AndrewTathamPi2Identity(None)
     task = SuggestedUsersScheduledTask(identity)
     for _ in range(3):
         task.on_run()

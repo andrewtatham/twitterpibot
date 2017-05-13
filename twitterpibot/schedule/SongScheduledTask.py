@@ -20,7 +20,7 @@ class SongScheduledTask(ScheduledTask):
             self.identity.twitter.sing_song(song=song)
 
 if __name__ == '__main__':
-    import identities
-    identity = identities.AndrewTathamPiIdentity()
+    import identities_pis
+    identity = identities_pis.AndrewTathamPiIdentity()
     task = SongScheduledTask(identity)
     task.on_run()

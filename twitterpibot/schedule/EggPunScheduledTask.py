@@ -26,9 +26,9 @@ class EggPunScheduledTask(ScheduledTask):
             fsh.delete_files(file_paths)
 
 if __name__ == '__main__':
-    import identities
+    import identities_pis
 
     logging.basicConfig(level=logging.INFO)
-    identity = identities.EggPunBotIdentity(None)
+    identity = identities_pis.EggPunBotIdentity(None)
     task = EggPunScheduledTask(identity)
     task.on_run()

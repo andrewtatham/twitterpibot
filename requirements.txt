@@ -28,3 +28,6 @@ twitter-text-python
 python-dateutil
 Pillow
 facebook
+giphypop
+python-dateutil
+

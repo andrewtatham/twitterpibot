@@ -19,11 +19,11 @@ class FavoriteResponse(Response):
 
 
 if __name__ == '__main__':
-    import identities
+    import identities_pis
     from twitterpibot.incoming.IncomingTweet import IncomingTweet
 
     logging.basicConfig(level=logging.INFO)
-    identity = identities.AndrewTathamPiIdentity()
+    identity = identities_pis.AndrewTathamPiIdentity()
     response = FavoriteResponse(identity)
 
     if True:

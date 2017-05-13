@@ -233,9 +233,9 @@ class User(object):
 
 
 if __name__ == '__main__':
-    import identities
+    import identities_pis
 
-    identity = identities.AndrewTathamPiIdentity(None)
+    identity = identities_pis.AndrewTathamPiIdentity(None)
     user_ids = list(identity.users.get_followers())
     random.sample(user_ids, 2)
 

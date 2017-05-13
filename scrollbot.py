@@ -11,8 +11,7 @@ if __name__ == '__main__':
 
 if __name__ == "__main__":
 
-    from identities import ScrollBotIdentity
-
+    from identities_scrollbot import ScrollBotIdentity
 
     scrollbot = ScrollBotIdentity()
 

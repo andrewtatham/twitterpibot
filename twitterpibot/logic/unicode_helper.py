@@ -466,7 +466,7 @@ def analyse(text):
 
 
 if __name__ == '__main__':
-    import identities
+    import identities_pis
     from twitterpibot.incoming.IncomingTweet import IncomingTweet
 
     logging.basicConfig(level=logging.INFO)
@@ -502,7 +502,7 @@ if __name__ == '__main__':
 
     ]
 
-    identity = identities.AndrewTathamPi2Identity(None)
+    identity = identities_pis.AndrewTathamPi2Identity(None)
 
     if True:
         list_name = "Awesome Bots"

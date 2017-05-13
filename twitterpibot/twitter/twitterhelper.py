@@ -534,9 +534,9 @@ class TwitterHelper(object):
 
 
 if __name__ == "__main__":
-    import identities
+    import identities_pis
 
-    identity = identities.AndrewTathamIdentity()
+    identity = identities_pis.AndrewTathamIdentity()
     twitter = TwitterHelper(identity)
     # pprint.pprint(twitter.twitter_configuration)
 

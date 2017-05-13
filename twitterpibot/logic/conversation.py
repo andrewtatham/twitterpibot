@@ -333,11 +333,11 @@ class ConversationScheduledTask(ScheduledTask):
 
 
 if __name__ == "__main__":
-    import identities
+    import identities_pis
 
     admin = None
-    one = identities.AndrewTathamIdentity()
-    two = identities.AndrewTathamPiIdentity(admin)
+    one = identities_pis.AndrewTathamIdentity()
+    two = identities_pis.AndrewTathamPiIdentity(admin)
 
     task = ConversationScheduledTask(one, two)
     task.on_run()

@@ -65,9 +65,9 @@ def get_common_words(text):
 
 if __name__ == '__main__':
 
-    import identities
+    import identities_pis
 
-    identity = identities.AndrewTathamPiIdentity(None)
+    identity = identities_pis.AndrewTathamPiIdentity(None)
     tweets = identity.twitter.get_user_timeline()
     logging.basicConfig(level=logging.DEBUG)
     for tweet in tweets:

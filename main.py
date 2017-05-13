@@ -11,7 +11,7 @@ if __name__ == '__main__':
 
 if __name__ == "__main__":
 
-    from identities import AndrewTathamIdentity, AndrewTathamPiIdentity, AndrewTathamPi2Identity, \
+    from identities_pis import AndrewTathamIdentity, AndrewTathamPiIdentity, AndrewTathamPi2Identity, \
         NumberwangHostIdentity, \
         JulieNumberwangIdentity, SimonNumberwangIdentity, EggPunBotIdentity, WhenIsInternationalMensDayBotIdentity, \
         BotgleArtistIdentity, TheMachinesCodeIdentity

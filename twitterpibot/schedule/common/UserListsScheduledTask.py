@@ -56,10 +56,10 @@ class UserListsScheduledTask(ScheduledTask):
 
 
 if __name__ == '__main__':
-    import identities
+    import identities_pis
 
     logging.basicConfig(level=logging.INFO)
-    identity = identities.AndrewTathamIdentity()
+    identity = identities_pis.AndrewTathamIdentity()
     task = UserListsScheduledTask(identity, None)
     for _ in range(3):
         task.on_run()

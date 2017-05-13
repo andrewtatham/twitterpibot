@@ -2,7 +2,7 @@ import random
 
 from apscheduler.triggers.cron import CronTrigger
 
-import identities
+import identities_pis
 from twitterpibot.logic import conversation
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
@@ -120,7 +120,7 @@ class AprilFoolsDayScheduledTask(ScheduledTask):
 
 if __name__ == '__main__':
 
-    identity = identities.AndrewTathamPiIdentity(None)
+    identity = identities_pis.AndrewTathamPiIdentity(None)
     task = AprilFoolsDayScheduledTask(identity)
     for i in range(100):
         text = task.get_shopping_list()

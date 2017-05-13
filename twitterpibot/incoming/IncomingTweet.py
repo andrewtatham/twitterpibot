@@ -293,11 +293,11 @@ class IncomingTweet(InboxItem):
 
 
 if __name__ == '__main__':
-    import identities
+    import identities_pis
 
     logging.basicConfig(level=logging.INFO)
 
-    identity = identities.AndrewTathamPiIdentity(None)
+    identity = identities_pis.AndrewTathamPiIdentity(None)
 
     id_str = "757389498254659584"
     tweet_data = identity.twitter.get_status(id_str)

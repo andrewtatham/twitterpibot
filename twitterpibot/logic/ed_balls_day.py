@@ -105,8 +105,8 @@ class StreamEdBallsDayScheduledTask(StreamingTopicScheduledTask):
 
 
 if __name__ == '__main__':
-    import identities
+    import identities_pis
 
-    identity = identities.AndrewTathamIdentity()
+    identity = identities_pis.AndrewTathamIdentity()
     task = TweetBeforeEdBallsDayScheduledTask(identity)
     task.on_run()

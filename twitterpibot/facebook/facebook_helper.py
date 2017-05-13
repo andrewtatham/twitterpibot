@@ -105,11 +105,11 @@ class FacebookHelper(object):
 
 
 if __name__ == '__main__':
-    import identities
+    import identities_pis
 
     logging.basicConfig(level=logging.INFO)
 
-    identity = identities.AndrewTathamPiIdentity()
+    identity = identities_pis.AndrewTathamPiIdentity()
 
     post_text = "blah {}".format(uuid.uuid4())
     wall_post = identity.facebook.create_wall_post(post_text)

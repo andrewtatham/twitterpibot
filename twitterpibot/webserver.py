@@ -146,10 +146,10 @@ def _shutdown_server():
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
 
-    import identities
+    import identities_pis
 
-    pi = identities.AndrewTathamPiIdentity()
-    pi2 = identities.AndrewTathamPi2Identity()
+    pi = identities_pis.AndrewTathamPiIdentity()
+    pi2 = identities_pis.AndrewTathamPi2Identity()
 
     pi.users.get_users(random.sample(pi.users.get_followers(), 10))
     pi.users.score_users(5)

@@ -203,11 +203,11 @@ class BotgleResponse(Response):
 
 
 if __name__ == '__main__':
-    import identities
+    import identities_pis
 
     logging.basicConfig(level=logging.INFO)
 
-    identity = identities.BotgleArtistIdentity(None)
+    identity = identities_pis.BotgleArtistIdentity(None)
     timeline = identity.twitter.get_user_timeline(screen_name="botgle", count=50)
     tweets = list(map(lambda data: IncomingTweet(data, identity), timeline))
     tweets.reverse()

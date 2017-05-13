@@ -4,7 +4,7 @@ import random
 from apscheduler.triggers.interval import IntervalTrigger
 import logging
 
-import identities
+import identities_pis
 from twitterpibot.logic.conversation import attention_words, human_words
 from twitterpibot.logic.phrase_generator import generate_phrase, phrase_wrap_list
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
@@ -90,6 +90,6 @@ class AnnouncementScheduledTask(ScheduledTask):
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    identity = identities.AndrewTathamPiIdentity(None)
+    identity = identities_pis.AndrewTathamPiIdentity(None)
     task = AnnouncementScheduledTask(identity)
     task.on_run()

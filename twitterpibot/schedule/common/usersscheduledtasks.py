@@ -177,11 +177,11 @@ class ManageListMembersScheduledTask(ScheduledTask):
 
 
 if __name__ == '__main__':
-    import identities
+    import identities_pis
 
     logging.basicConfig(level=logging.INFO)
 
-    identity = identities.BotgleArtistIdentity(None)
+    identity = identities_pis.BotgleArtistIdentity(None)
 
     get_users_task = GetUsersScheduledTask(identity=identity)
     get_users_task.on_run()

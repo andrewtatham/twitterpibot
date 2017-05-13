@@ -71,10 +71,10 @@ class WikipediaScheduledTask(ScheduledTask):
 
 
 if __name__ == "__main__":
-    import identities
+    import identities_pis
 
     logging.basicConfig(level=logging.INFO)
-    identity = identities.AndrewTathamPiIdentity()
+    identity = identities_pis.AndrewTathamPiIdentity()
     task = WikipediaScheduledTask(identity)
     for i in range(1):
         task.on_run()

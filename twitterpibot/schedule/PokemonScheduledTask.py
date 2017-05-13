@@ -98,12 +98,12 @@ class PokemonScheduledTask(ScheduledTask):
 
 
 if __name__ == '__main__':
-    import identities
+    import identities_pis
 
     logging.basicConfig(level=logging.INFO)
 
-    converse_with_identity = identities.AndrewTathamPiIdentity()
-    identity = identities.AndrewTathamPi2Identity(converse_with_identity)
+    converse_with_identity = identities_pis.AndrewTathamPiIdentity()
+    identity = identities_pis.AndrewTathamPi2Identity(converse_with_identity)
 
     task = PokemonScheduledTask(identity=identity, converse_with_identity=converse_with_identity, armed=True)
     task.on_run()

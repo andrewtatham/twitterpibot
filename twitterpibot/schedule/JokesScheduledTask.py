@@ -2,7 +2,7 @@ import random
 
 from apscheduler.triggers.interval import IntervalTrigger
 
-import identities
+import identities_pis
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.logic import jokes
@@ -22,6 +22,6 @@ class JokesScheduledTask(ScheduledTask):
 
 
 if __name__ == '__main__':
-    identity = identities.AndrewTathamPiIdentity(None)
+    identity = identities_pis.AndrewTathamPiIdentity(None)
     task = JokesScheduledTask(identity)
     task.on_run()

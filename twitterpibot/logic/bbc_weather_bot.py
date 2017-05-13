@@ -105,9 +105,9 @@ if __name__ == '__main__':
     pprint.pprint(bbc_emoji)
 
 if __name__ == '__main__':
-    import identities
+    import identities_pis
 
-    identity = identities.AndrewTathamPiIdentity(None)
+    identity = identities_pis.AndrewTathamPiIdentity(None)
     for tweet in identity.twitter.get_user_timeline(screen_name=screen_name, count=200):
         tweet_text = tweet["text"]
 

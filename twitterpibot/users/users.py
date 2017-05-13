@@ -297,11 +297,11 @@ class Users(object):
 
 
 if __name__ == '__main__':
-    import identities
+    import identities_pis
 
     logging.basicConfig(level=logging.INFO)
 
-    identity = identities.AndrewTathamPi2Identity(None)
+    identity = identities_pis.AndrewTathamPi2Identity(None)
 
     logging.info(pprint.pformat(identity.users.get_statistics()))
 

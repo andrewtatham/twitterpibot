@@ -27,12 +27,12 @@ class ResponsesScheduledTask(ScheduledTask):
 
 
 if __name__ == '__main__':
-    import identities
+    import identities_pis
     logging.basicConfig(level=logging.INFO)
 
-    andrewtatham = identities.AndrewTathamIdentity()
-    andrewtathampi = identities.AndrewTathamPiIdentity(andrewtatham)
-    andrewtathampi2 = identities.AndrewTathamPi2Identity(andrewtatham)
+    andrewtatham = identities_pis.AndrewTathamIdentity()
+    andrewtathampi = identities_pis.AndrewTathamPiIdentity(andrewtatham)
+    andrewtathampi2 = identities_pis.AndrewTathamPi2Identity(andrewtatham)
 
     andrewtathampi.converse_with = andrewtathampi2
     andrewtathampi2.converse_with = andrewtathampi
