@@ -11,6 +11,7 @@ is_webcam_attached = False
 is_brightpi_attached = False
 is_unicornhat_attached = False
 is_blinksticknano_attached = False
+is_scroll_hat_attached = False
 
 _platform = platform.platform()
 logger.info("platform: %s", _platform)
@@ -25,6 +26,7 @@ is_andrew_laptop = _node == "ANDREWLAPTOP"
 is_raspberry_pi = _node == "raspberrypi"
 is_raspberry_pi_2 = _node == "raspberrypi2"
 is_andrew_macbook = _node == "Andrews-MacBook-Pro.local"
+is_scroll_bot = _node == "scrollbot"
 
 if is_windows:
     import wmi
@@ -55,13 +57,15 @@ elif is_linux:
     elif is_raspberry_pi_2:
         is_webcam_attached = False
         is_unicornhat_attached = True
+    elif is_scroll_bot:
+        is_scroll_hat_attached = True
 
 logger.info("is_webcam_attached: %s", is_webcam_attached)
 logger.info("is_picam_attached: %s", is_picam_attached)
 logger.info("is_unicornhat_attached: %s", is_unicornhat_attached)
 logger.info("is_piglow_attached: %s", is_piglow_attached)
 logger.info("is_brightpi_attached: %s", is_brightpi_attached)
-
+logger.info("is_scroll_hat_attached: %s", is_scroll_hat_attached)
 
 def get_remaining_disk_space():
     free_space_mb = None
@@ -84,3 +88,4 @@ def get_remaining_disk_space():
 
 if __name__ == '__main__':
     print(get_remaining_disk_space())
+

@@ -3,6 +3,7 @@ import logging
 from twitterpibot.hardware import myhardware
 logger = logging.getLogger(__name__)
 
+
 if myhardware.is_webcam_attached:
     from twitterpibot.hardware import MyWebcam as MyWebcam
 if myhardware.is_picam_attached:
@@ -18,7 +19,8 @@ if myhardware.is_brightpi_attached:
     brightpi = MyBrightPi.BrightPI()
 if myhardware.is_blinksticknano_attached:
     from twitterpibot.hardware import MyBlinkstickNano as MyBlinkstickNano
-
+if myhardware.is_scroll_hat_attached:
+    from twitterpibot.hardware import myscrollhat
 
 def take_photo(folder, name, ext, use_flash=False):
     try:
@@ -53,7 +55,8 @@ def on_lights_task():
         MyPiglow.lights()
     if myhardware.is_blinksticknano_attached:
         MyBlinkstickNano.lights()
-
+    if myhardware.is_scroll_hat_attached:
+        myscrollhat.lights()
 
 def on_lights_scheduled_task():
     if myhardware.is_unicornhat_attached:
@@ -62,7 +65,8 @@ def on_lights_scheduled_task():
         MyPiglow.on_lights_scheduled_task()
     if myhardware.is_blinksticknano_attached:
         MyBlinkstickNano.on_lights_scheduled_task()
-
+    if myhardware.is_scroll_hat_attached:
+        myscrollhat.on_lights_scheduled_task()
 
 def on_fade_task():
     if myhardware.is_unicornhat_attached:
@@ -71,7 +75,8 @@ def on_fade_task():
         MyPiglow.fade()
     if myhardware.is_blinksticknano_attached:
         MyBlinkstickNano.fade()
-
+    if myhardware.is_scroll_hat_attached:
+        myscrollhat.fade()
 
 def on_inbox_item_received(inbox_item):
     if myhardware.is_unicornhat_attached:
@@ -80,6 +85,8 @@ def on_inbox_item_received(inbox_item):
         MyPiglow.inbox_item_received(inbox_item)
     if myhardware.is_blinksticknano_attached:
         MyBlinkstickNano.inbox_item_received(inbox_item)
+    if myhardware.is_scroll_hat_attached:
+        myscrollhat.inbox_item_received(inbox_item)
 
 
 def stop():
@@ -96,4 +103,6 @@ def stop():
         brightpi.close()
     if myhardware.is_blinksticknano_attached:
         MyBlinkstickNano.close()
+    if myhardware.is_scroll_hat_attached:
+        myscrollhat.close()
     logger.info("Stopped")
