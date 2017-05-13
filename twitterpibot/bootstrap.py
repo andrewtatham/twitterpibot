@@ -64,14 +64,14 @@ def set_scheduled_jobs(identities):
 def set_tasks(identities):
     logger.info("Setting tasks")
     _tasks = []
-    if myhardware.is_raspberry_pi_2 and (myhardware.is_piglow_attached
-                                         or myhardware.is_unicornhat_attached
-                                         or myhardware.is_blinksticknano_attached
-                                         or myhardware.is_scroll_hat_attached):
+    if myhardware.is_raspberry_pi_2 and (
+            myhardware.is_piglow_attached or myhardware.is_unicornhat_attached or myhardware.is_blinksticknano_attached
+            ) or myhardware.is_scroll_bot and myhardware.is_scroll_hat_attached:
         _tasks.extend([
             LightsTask(),
 
         ])
+
     for identity in identities:
         _tasks.extend(identity.get_tasks())
     tasks.set_tasks(_tasks)
