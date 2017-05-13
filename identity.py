@@ -1,7 +1,7 @@
+
 import abc
-
 import colorama
-
+import logging
 import twitterpibot.hardware.myhardware
 from twitterpibot.logic import conversation_helper
 from twitterpibot.logic.admin_commands import ImportTokensResponse, ExportTokensResponse, DropCreateTablesResponse, \
@@ -122,6 +122,7 @@ class BotIdentity(Identity):
                 or twitterpibot.hardware.myhardware.is_unicornhat_attached \
                 or twitterpibot.hardware.myhardware.is_blinksticknano_attached \
                 or twitterpibot.hardware.myhardware.is_scroll_hat_attached:
+            logging.info("adding LightsScheduledTask")
             jobs.append(LightsScheduledTask(self))
 
         return jobs
