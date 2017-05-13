@@ -15,7 +15,7 @@ def lights():
     global status_length
 
     logging.info("myscrollhat status_length {}".format(status_length))
-    logging.info("myscrollhat q length {}".format(q.count()))
+    logging.info("myscrollhat q length {}".format(len(q)))
 
     if status_length > 0:
         scrollphathd.show()
