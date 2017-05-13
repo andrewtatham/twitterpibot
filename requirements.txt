@@ -30,4 +30,6 @@ Pillow
 facebook
 giphypop
 python-dateutil
+retrying
+
 
