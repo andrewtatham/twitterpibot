@@ -13,30 +13,18 @@ scrollphathd.show()
 
 def lights():
     global status_length
-
-    logging.info("myscrollhat status_length {}".format(status_length))
-    logging.info("myscrollhat q length {}".format(len(q)))
-
     if status_length > 0:
         scrollphathd.show()
         scrollphathd.scroll(1)
         status_length -= 1
-
+        time.sleep(0.1)
+    else:
+        time.sleep(1)
 
     if status_length <= 0 and any(q):
         status = q.pop()
         scrollphathd.write_string(status, font=font5x7smoothed, brightness=0.1)
         status_length = scrollphathd.write_string(status, x=0, y=0, font=font5x7smoothed, brightness=0.1)
-
-    time.sleep(0.1)
-
-
-def on_lights_scheduled_task():
-    logging.info("myscrollhat on_lights_scheduled_task")
-
-
-def fade():
-    logging.info("myscrollhat fade")
 
 
 def inbox_item_received(inbox_item):
