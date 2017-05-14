@@ -186,7 +186,7 @@ class TwitterHelper(object):
         return Streamer(self.identity, topic, topic_name, responses, filter_level)
 
     def _upload_video(self, file_path):
-        logging.info('[MyTwitter] uploading ' + file_path)
+        logger.info('[MyTwitter] uploading ' + file_path)
         url = 'https://upload.twitter.com/1.1/media/upload.json'
         file_size = os.path.getsize(file_path)
 

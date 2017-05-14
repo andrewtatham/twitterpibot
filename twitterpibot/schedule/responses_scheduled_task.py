@@ -6,6 +6,8 @@ from apscheduler.triggers.interval import IntervalTrigger
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
+logger = logging.getLogger(__name__)
+
 
 class ResponsesScheduledTask(ScheduledTask):
     def __init__(self, identity):
@@ -20,7 +22,7 @@ class ResponsesScheduledTask(ScheduledTask):
         tweets_data = self.identity.twitter.get_list_statuses(list_id=list_id)
         tweets = list(map(lambda data: IncomingTweet(data, self.identity), tweets_data))
         for tweet in tweets:
-            logging.info(tweet.short_description())
+            logger.info(tweet.short_description())
             for response in self._responses:
                 if response.condition(tweet):
                     response.respond(tweet)
@@ -28,6 +30,7 @@ class ResponsesScheduledTask(ScheduledTask):
 
 if __name__ == '__main__':
     import identities_pis
+
     logging.basicConfig(level=logging.INFO)
 
     andrewtatham = identities_pis.AndrewTathamIdentity()

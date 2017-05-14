@@ -514,9 +514,9 @@ if __name__ == '__main__':
             count=200)
     else:
         screen_name = random.choice(screen_names)
-        logging.info("screen_name = {}".format(screen_name))
+        logger.info("screen_name = {}".format(screen_name))
         tweets = identity.twitter.get_user_timeline(screen_name=screen_name)
 
     for tweet_data in tweets:
         tweet = IncomingTweet(tweet_data, identity)
-        logging.info(tweet.display())
+        logger.info(tweet.display())

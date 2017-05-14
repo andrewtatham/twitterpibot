@@ -56,7 +56,7 @@ class State(object):
 
     @staticmethod
     def _parse_tiles(word):
-        logging.debug("parsing: %s", word)
+        logger.debug("parsing: %s", word)
         tile_letters = []
         letters = list(word)
         letters.reverse()
@@ -76,7 +76,7 @@ class State(object):
             else:
                 tile_letters.append(letter)
         tile_letters.reverse()
-        logging.debug("tiles: %s", tile_letters)
+        logger.debug("tiles: %s", tile_letters)
         return tile_letters
 
 

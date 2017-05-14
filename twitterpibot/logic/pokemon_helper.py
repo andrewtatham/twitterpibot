@@ -123,7 +123,7 @@ def get_random_pokemon_details():
     all_names = _get_all_names()
 
     name = random.choice(all_names)
-    logging.info(name)
+    logger.info(name)
     details = _get_pokemon_details(name)
 
     return details
@@ -131,6 +131,6 @@ def get_random_pokemon_details():
 
 if __name__ == '__main__':
 
-    logging.basicConfig(level=logging.INFO)
+    logger.basicConfig(level=logging.INFO)
     for _ in range(3):
         print(str(get_random_pokemon_details()))

@@ -215,7 +215,7 @@ if __name__ == '__main__':
     testcases = []
 
     for tweet in tweets:
-        logging.info(tweet.text)
+        logger.info(tweet.text)
         testcases.append(tweet.text)
 
         if response.condition(tweet):

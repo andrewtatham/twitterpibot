@@ -5,6 +5,7 @@ import colorama
 from twitterpibot import tasks, schedule, webserver, loggingconfig, controller
 from twitterpibot.hardware import myhardware, myperipherals
 from twitterpibot.schedule import GlobalMonitorScheduledTask
+from twitterpibot.schedule.common.LightsScheduledTask import LightsScheduledTask
 from twitterpibot.schedule.common.database_scheduled_tasks import HousekeepingScheduledTask
 from twitterpibot.tasks.LightsTask import LightsTask
 
@@ -69,6 +70,7 @@ def set_tasks(identities):
             ) or myhardware.is_scroll_bot and myhardware.is_scroll_hat_attached:
         _tasks.extend([
             LightsTask(),
+            LightsScheduledTask()
 
         ])
 

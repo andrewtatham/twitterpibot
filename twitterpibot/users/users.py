@@ -303,16 +303,16 @@ if __name__ == '__main__':
 
     identity = identities_pis.AndrewTathamPi2Identity(None)
 
-    logging.info(pprint.pformat(identity.users.get_statistics()))
+    logger.info(pprint.pformat(identity.users.get_statistics()))
 
     all_user_ids = identity.users.get_uncached_user_ids()[:20]
 
     identity.users.get_users(all_user_ids)
 
-    logging.info(pprint.pformat(identity.users.get_statistics()))
+    logger.info(pprint.pformat(identity.users.get_statistics()))
 
     identity.users.score_users()
 
-    logging.info(pprint.pformat(identity.users.get_statistics()))
+    logger.info(pprint.pformat(identity.users.get_statistics()))
 
     identity.users.get_leaderboard()

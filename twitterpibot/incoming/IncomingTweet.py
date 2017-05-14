@@ -301,9 +301,9 @@ if __name__ == '__main__':
 
     id_str = "757389498254659584"
     tweet_data = identity.twitter.get_status(id_str)
-    logging.info(pprint.pformat(tweet_data))
+    logger.info(pprint.pformat(tweet_data))
     tweet = IncomingTweet(tweet_data, identity)
-    logging.info(tweet.display())
+    logger.info(tweet.display())
 
     # tweets = identity.twitter.get_user_timeline()
 
@@ -314,4 +314,4 @@ if __name__ == '__main__':
 
     # for tweet_data in tweets:
     #     tweet = IncomingTweet(tweet_data, identity)
-    #     logging.info(tweet.display())
+    #     logger.info(tweet.display())

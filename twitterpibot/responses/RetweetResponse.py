@@ -46,5 +46,5 @@ if __name__ == '__main__':
     random.shuffle(tweets)
     for i in range(1):
         tweet = tweets.pop()
-        logging.info(tweet.display())
+        logger.info(tweet.display())
         response.respond(tweet)

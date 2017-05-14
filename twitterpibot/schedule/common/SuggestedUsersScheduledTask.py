@@ -6,7 +6,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 from colorama import Fore
 
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
-
+logger = logging.getLogger(__name__)
 # import random
 
 suggestedUserColours = cycle([Fore.WHITE, Fore.CYAN])
@@ -32,9 +32,9 @@ class SuggestedUsersScheduledTask(ScheduledTask, ):
 
             for category in categories:
                 if category["name"] not in ignored_slugs:
-                    logging.debug(category)
+                    logger.debug(category)
                     colour = next(suggestedUserColours)
-                    logging.info(colour + "Users: [" + category["name"] + "]")
+                    logger.info(colour + "Users: [" + category["name"] + "]")
                     self._slug_list.append(category)
             self._slug_list.reverse()
 
@@ -46,7 +46,7 @@ class SuggestedUsersScheduledTask(ScheduledTask, ):
             # user cache will be populated with suggested users
             user = self.identity.users.get_user(user_data=user_data)
             if user:
-                logging.info(colour + "User: [" + category["name"] + "] - " + user.long_description())
+                logger.info(colour + "User: [" + category["name"] + "] - " + user.long_description())
 
                 if not self.identity.users.lists.list_contains_user("Need Input", user):
                     self.identity.users.lists.add_user_to_list(

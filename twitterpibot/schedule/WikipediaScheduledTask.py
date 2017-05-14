@@ -25,9 +25,9 @@ class WikipediaScheduledTask(ScheduledTask):
         try:
             page = wikipediahelper.get_random_page()
             if page:
-                logging.info(page.title)
-                logging.info(page.url)
-                logging.info(page.summary)
+                logger.info(page.title)
+                logger.info(page.url)
+                logger.info(page.summary)
 
                 text = _cap(page.summary, 140 * 5 - 24)
                 file_paths, valid_file_paths = self._get_valid_images(page)

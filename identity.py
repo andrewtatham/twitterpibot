@@ -1,7 +1,7 @@
-
 import abc
+
 import colorama
-import logging
+
 import twitterpibot.hardware.myhardware
 from twitterpibot.logic import conversation_helper
 from twitterpibot.logic.admin_commands import ImportTokensResponse, ExportTokensResponse, DropCreateTablesResponse, \
@@ -10,7 +10,6 @@ from twitterpibot.logic.ed_balls_day import TweetEdBallsDayScheduledTask
 from twitterpibot.logic.statstics import Statistics
 from twitterpibot.schedule.PhotoScheduledTask import PhotoScheduledTask
 from twitterpibot.schedule.common.IdentityMonitorScheduledTask import IdentityMonitorScheduledTask
-from twitterpibot.schedule.common.LightsScheduledTask import LightsScheduledTask
 from twitterpibot.schedule.common.SubscribedListsScheduledTask import SubscribedListsScheduledTask
 from twitterpibot.schedule.common.SuggestedUsersScheduledTask import SuggestedUsersScheduledTask
 from twitterpibot.schedule.common.UserListsScheduledTask import UserListsScheduledTask
@@ -117,13 +116,6 @@ class BotIdentity(Identity):
                     twitterpibot.hardware.myhardware.is_webcam_attached or
                     twitterpibot.hardware.myhardware.is_picam_attached):
             jobs.append(PhotoScheduledTask(self))
-
-        if twitterpibot.hardware.myhardware.is_piglow_attached \
-                or twitterpibot.hardware.myhardware.is_unicornhat_attached \
-                or twitterpibot.hardware.myhardware.is_blinksticknano_attached \
-                or twitterpibot.hardware.myhardware.is_scroll_hat_attached:
-            logging.info("adding LightsScheduledTask")
-            jobs.append(LightsScheduledTask(self))
 
         return jobs
 
