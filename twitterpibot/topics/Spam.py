@@ -17,7 +17,11 @@ class SmutSpamSpecific(SpamTopic):
                 "Find me pls",
                 "Take me strong",
                 "I'm alone",
-                "I'm bored"
+                "I'm bored",
+                "if you like my body",
+                "you can web chat with me",
+                "live cam with me",
+                "talk dirty to me"
 
             ]
         )
