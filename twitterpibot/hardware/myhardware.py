@@ -60,12 +60,18 @@ elif is_linux:
     elif is_scroll_bot:
         is_scroll_hat_attached = True
 
+is_lights_attached = is_raspberry_pi_2 and (is_piglow_attached or is_unicornhat_attached or is_blinksticknano_attached) \
+                     or is_scroll_bot and is_scroll_hat_attached
+
 logger.info("is_webcam_attached: %s", is_webcam_attached)
 logger.info("is_picam_attached: %s", is_picam_attached)
 logger.info("is_unicornhat_attached: %s", is_unicornhat_attached)
 logger.info("is_piglow_attached: %s", is_piglow_attached)
 logger.info("is_brightpi_attached: %s", is_brightpi_attached)
 logger.info("is_scroll_hat_attached: %s", is_scroll_hat_attached)
+
+logger.info("is_lights_attached: %s", is_lights_attached)
+
 
 def get_remaining_disk_space():
     free_space_mb = None
@@ -81,11 +87,10 @@ def get_remaining_disk_space():
 
         st = os.statvfs(path)
         logger.debug(st)
-        free_space_mb = st.f_bavail * st.f_frsize / 1024 / 1024 
+        free_space_mb = st.f_bavail * st.f_frsize / 1024 / 1024
 
     return free_space_mb
 
 
 if __name__ == '__main__':
     print(get_remaining_disk_space())
-

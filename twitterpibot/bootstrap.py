@@ -57,6 +57,11 @@ def set_scheduled_jobs(identities):
         GlobalMonitorScheduledTask(None),
         HousekeepingScheduledTask(None)
     ]
+
+    if myhardware.is_lights_attached:
+        _scheduled_jobs.extend([
+            LightsScheduledTask(None)
+        ])
     for identity in identities:
         _scheduled_jobs.extend(identity.get_scheduled_jobs())
     schedule.set_scheduled_jobs(_scheduled_jobs)
@@ -65,13 +70,9 @@ def set_scheduled_jobs(identities):
 def set_tasks(identities):
     logger.info("Setting tasks")
     _tasks = []
-    if myhardware.is_raspberry_pi_2 and (
-            myhardware.is_piglow_attached or myhardware.is_unicornhat_attached or myhardware.is_blinksticknano_attached
-            ) or myhardware.is_scroll_bot and myhardware.is_scroll_hat_attached:
+    if myhardware.is_lights_attached:
         _tasks.extend([
-            LightsTask(),
-            LightsScheduledTask(None)
-
+            LightsTask()
         ])
 
     for identity in identities:
