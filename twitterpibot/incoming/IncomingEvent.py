@@ -48,20 +48,21 @@ class IncomingEvent(InboxItem):
             if "text" in self.targetObject:
                 self.targetObjectText = self.targetObject["text"]
 
+    def short_display(self):
+        text = "{}: {} {}".format(self.event, self.source.short_display(), self.target.short_display())
+        if self.targetObjectText:
+            text += ": {}".format(self.targetObjectText.replace(os.linesep, ' '))
+        return text
+
     def display(self):
-
         colour = self.identity.colour
-
         if self.to_me or self.from_me:
             colour += Style.BRIGHT
         else:
             colour += Style.NORMAL
-
         text = "* EVENT: Type: " + self.event + os.linesep \
                + " Source: " + self.source.short_description() + os.linesep \
                + " Target: " + self.target.short_description()
-
         if self.targetObjectText:
             text += os.linesep + " TargetObject: " + self.targetObjectText
-
         return colour + text

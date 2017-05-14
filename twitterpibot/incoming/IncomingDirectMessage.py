@@ -1,4 +1,6 @@
 import logging
+import os
+
 import colorama
 
 from twitterpibot.incoming.InboxItem import InboxItem
@@ -25,6 +27,13 @@ class IncomingDirectMessage(InboxItem):
             self.text_stripped = self.text
             self.topics = topichelper.get_topics(self.text)
             self.words = self.text.split()
+
+    def short_display(self):
+        text = "DM {}: {}".format(
+            self.sender.short_display(),
+            self.text.replace(os.linesep, ' ')
+        )
+        return text
 
     def display(self):
         colour = self.identity.colour + colorama.Style.BRIGHT
