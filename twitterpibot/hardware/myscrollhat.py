@@ -14,6 +14,7 @@ scrollphathd.show()
 def lights():
     global status_length
     if status_length > 0:
+        logging.info("myscrollhat status_length = {}".format(status_length))
         scrollphathd.show()
         scrollphathd.scroll(1)
         status_length -= 1
@@ -22,6 +23,7 @@ def lights():
         time.sleep(1)
 
     if status_length <= 0 and any(q):
+        logging.info("myscrollhat len(q) = {}".format(len(q)))
         status = q.pop()
         scrollphathd.write_string(status, font=font5x7smoothed, brightness=0.1)
         status_length = scrollphathd.write_string(status, x=0, y=0, font=font5x7smoothed, brightness=0.1)
