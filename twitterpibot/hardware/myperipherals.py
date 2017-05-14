@@ -68,7 +68,8 @@ def on_lights_scheduled_task():
         MyPiglow.on_lights_scheduled_task()
     if myhardware.is_blinksticknano_attached:
         MyBlinkstickNano.on_lights_scheduled_task()
-
+    if myhardware.is_scroll_hat_attached:
+        myscrollhat.on_lights_scheduled_task()
 
 def on_fade_task():
     if myhardware.is_unicornhat_attached:

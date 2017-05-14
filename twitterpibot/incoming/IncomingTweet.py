@@ -217,6 +217,13 @@ class IncomingTweet(InboxItem):
 
                     self.replace_entity(media["indices"])
 
+    def short_display(self):
+        text = ""
+        if self.sender:
+            text += self.sender.short_display()
+        text += ": " + self.text.replace(os.linesep, ' ')
+        return text
+
     def short_description(self):
         text = ""
         if self.sender:

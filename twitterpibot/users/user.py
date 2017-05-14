@@ -158,6 +158,13 @@ class User(object):
             self.flags
         )
 
+    def short_display(self):
+        desc = "{} @{}".format(
+            self.name,
+            self.screen_name,
+        )
+        return desc
+
     def short_description(self):
         desc = "{} [screen name: @{}".format(
             self.name,
