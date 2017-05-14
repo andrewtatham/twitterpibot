@@ -20,24 +20,23 @@ def lights():
         scrollphathd.show()
         scrollphathd.scroll(1)
         status_length -= 1
-        time.sleep(0.1)
+        time.sleep(0.05)
     else:
-        time.sleep(1)
+        time.sleep(2)
 
     if status_length <= 0 and any(q):
         scrollphathd.clear()
         scrollphathd.show()
         logger.info("myscrollhat len(q) = {}".format(len(q)))
-        status = q.pop()
-        scrollphathd.write_string(status, font=font5x7smoothed, brightness=0.1)
-        status_length = 17 + scrollphathd.write_string(status, x=17, y=0, font=font5x7smoothed, brightness=0.1)
+        status = 6 * " " + q.pop() + 6 * " "
+        status_length = scrollphathd.write_string(status, x=0, y=0, font=font5x7smoothed, brightness=0.1)
 
 
 def inbox_item_received(inbox_item):
     logger.info("myscrollhat inbox_item_received {}".format(inbox_item))
     if inbox_item.is_tweet or inbox_item.is_direct_message:
         logger.info("myscrollhat text {}".format(inbox_item.text))
-        q.insert(0, inbox_item.text)
+        q.insert(0, inbox_item.short_description())
 
 
 def close():
