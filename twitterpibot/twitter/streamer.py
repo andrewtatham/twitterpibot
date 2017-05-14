@@ -11,8 +11,8 @@ from twitterpibot.twitter import authorisationhelper
 
 logger = logging.getLogger(__name__)
 
-default_backoff = 60
-max_backoff = 600
+default_backoff = 120
+max_backoff = 1200
 
 
 class Streamer(TwythonStreamer):
@@ -36,10 +36,7 @@ class Streamer(TwythonStreamer):
             self._identity.tokens[0],
             self._identity.tokens[1],
             self._identity.tokens[2],
-            self._identity.tokens[3],
-            timeout=300,
-            retry_count=2,
-            retry_in=10
+            self._identity.tokens[3]
         )
 
     def on_success(self, data):
