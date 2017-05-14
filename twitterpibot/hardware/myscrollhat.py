@@ -6,7 +6,7 @@ import time
 from scrollphathd.fonts import font5x7smoothed
 
 logger = logging.getLogger(__name__)
-scroll_until_x = -17
+scroll_until_x = 0
 q = [
     str(datetime.datetime.now()),
     "Hello World"
