@@ -70,7 +70,7 @@ def set_tasks(identities):
             ) or myhardware.is_scroll_bot and myhardware.is_scroll_hat_attached:
         _tasks.extend([
             LightsTask(),
-            LightsScheduledTask()
+            LightsScheduledTask(None)
 
         ])
 

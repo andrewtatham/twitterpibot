@@ -1,6 +1,6 @@
 import colorama
 
-import twitterpibot.hardware
+from twitterpibot.hardware import myhardware
 from identity import Identity, BotIdentity
 from twitterpibot.facebook import facebook_helper
 from twitterpibot.logic.anagram_solver import AnagramBotResponse
@@ -95,7 +95,7 @@ class PiIdentity(BotIdentity):
             X_Or_Y_Response(self),
             Magic8BallResponse(self),
         ])
-        if twitterpibot.hardware.myhardware.is_picam_attached or twitterpibot.hardware.myhardware.is_webcam_attached:
+        if myhardware.is_picam_attached or myhardware.is_webcam_attached:
             responses.append(PhotoResponse(self))
         responses.extend([
             ReplyResponse(self),
