@@ -115,7 +115,8 @@ class NumberwangHostIdentity(BotIdentity):
         super(NumberwangHostIdentity, self).__init__(
             screen_name="numberwang_host",
             id_str="4904547543",
-            admin_identity=admin_identity)
+            admin_identity=admin_identity,
+            stream=False)
         self.contestant_pairs = None
 
     def get_responses(self):
@@ -135,7 +136,8 @@ class JulieNumberwangIdentity(BotIdentity):
         super(JulieNumberwangIdentity, self).__init__(
             screen_name="JulieNumberwang",
             id_str="4912246174",
-            admin_identity=admin_identity)
+            admin_identity=admin_identity,
+            stream=False)
 
 
 class SimonNumberwangIdentity(BotIdentity):
@@ -143,7 +145,8 @@ class SimonNumberwangIdentity(BotIdentity):
         super(SimonNumberwangIdentity, self).__init__(
             screen_name="SimonNumberwang",
             id_str="4912203173",
-            admin_identity=admin_identity)
+            admin_identity=admin_identity,
+            stream=False)
 
 
 class EggPunBotIdentity(BotIdentity):
@@ -172,7 +175,8 @@ class WhenIsInternationalMensDayBotIdentity(BotIdentity):
         super(WhenIsInternationalMensDayBotIdentity, self).__init__(
             screen_name="WhenMensDay",
             id_str="708233017639215104",
-            admin_identity=admin_identity)
+            admin_identity=admin_identity,
+            stream=False)
 
     def get_scheduled_jobs(self):
         jobs = super(WhenIsInternationalMensDayBotIdentity, self).get_scheduled_jobs()
@@ -201,7 +205,8 @@ class TheMachinesCodeIdentity(BotIdentity):
         super(TheMachinesCodeIdentity, self).__init__(
             screen_name="THEMACHINESCODE",
             id_str="723742144645718016",
-            admin_identity=admin_identity)
+            admin_identity=admin_identity,
+            stream=False)
         self.colour = colorama.Fore.GREEN
 
     def get_scheduled_jobs(self):

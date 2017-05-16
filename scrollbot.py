@@ -13,7 +13,7 @@ if __name__ == "__main__":
     from identities import AndrewTathamIdentity
     from identities_scrollbot import ScrollBotIdentity
 
-    andrewtatham = AndrewTathamIdentity(stream=True)
+    andrewtatham = AndrewTathamIdentity(stream=False)
     scrollbot = ScrollBotIdentity(andrewtatham)
 
     andrewtatham.buddies = [

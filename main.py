@@ -17,7 +17,7 @@ if __name__ == "__main__":
         BotgleArtistIdentity, TheMachinesCodeIdentity
     from identities import AndrewTathamIdentity
 
-    andrewtatham = AndrewTathamIdentity(stream=True)
+    andrewtatham = AndrewTathamIdentity(stream=False)
     andrewtathampi = AndrewTathamPiIdentity(andrewtatham)
     andrewtathampi2 = AndrewTathamPi2Identity(andrewtatham)
     numberwang_host = NumberwangHostIdentity(andrewtatham)
@@ -73,12 +73,12 @@ if __name__ == "__main__":
             andrewtathampi,
             andrewtathampi2,
             numberwang_host,
-            # julienumberwang,
-            # simonnumberwang,
-            # eggpunbot,
-            # whenmensday,
-            # botgleartist,
-            # themachinescode
+            julienumberwang,
+            simonnumberwang,
+            eggpunbot,
+            whenmensday,
+            botgleartist,
+            themachinescode
         ]
     import twitterpibot.bootstrap
 

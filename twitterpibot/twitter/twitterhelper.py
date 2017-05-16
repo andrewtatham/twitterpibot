@@ -7,7 +7,7 @@ from retrying import retry
 
 from twython import Twython, TwythonError
 
-import identities
+
 from twitterpibot.exceptionmanager import is_timeout, blocked
 from twitterpibot.logic import fsh, giphyhelper
 from twitterpibot.outgoing.OutgoingDirectMessage import OutgoingDirectMessage
@@ -535,6 +535,7 @@ class TwitterHelper(object):
 
 
 if __name__ == "__main__":
+    import identities
     import identities_pis
 
     identity = identities.AndrewTathamIdentity()

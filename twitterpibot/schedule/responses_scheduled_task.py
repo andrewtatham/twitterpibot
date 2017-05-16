@@ -3,7 +3,6 @@ import random
 
 from apscheduler.triggers.interval import IntervalTrigger
 
-import identities
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
@@ -30,6 +29,7 @@ class ResponsesScheduledTask(ScheduledTask):
 
 
 if __name__ == '__main__':
+    import identities
     import identities_pis
 
     logging.basicConfig(level=logging.INFO)

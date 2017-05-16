@@ -98,8 +98,8 @@ class Identity(object):
 
 
 class BotIdentity(Identity):
-    def __init__(self, screen_name, id_str, admin_identity):
-        super(BotIdentity, self).__init__(screen_name, id_str)
+    def __init__(self, screen_name, id_str, admin_identity, stream=True):
+        super(BotIdentity, self).__init__(screen_name, id_str, stream)
         self.admin_identity = admin_identity
 
     def get_scheduled_jobs(self):

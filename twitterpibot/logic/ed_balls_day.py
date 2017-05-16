@@ -3,7 +3,6 @@ import random
 
 from apscheduler.triggers.cron import CronTrigger
 
-import identities
 from twitterpibot.logic import imagemanager
 from twitterpibot.responses.FavoriteResponse import FavoriteResponse
 from twitterpibot.responses.RetweetResponse import RetweetResponse
@@ -106,7 +105,7 @@ class StreamEdBallsDayScheduledTask(StreamingTopicScheduledTask):
 
 
 if __name__ == '__main__':
-    import identities_pis
+    import identities
 
     identity = identities.AndrewTathamIdentity()
     task = TweetBeforeEdBallsDayScheduledTask(identity)

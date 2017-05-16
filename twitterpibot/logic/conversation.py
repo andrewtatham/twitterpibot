@@ -3,7 +3,7 @@ import time
 
 from apscheduler.triggers.interval import IntervalTrigger
 
-import identities
+
 from twitterpibot.outgoing.OutgoingTweet import OutgoingTweet
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 
@@ -334,6 +334,7 @@ class ConversationScheduledTask(ScheduledTask):
 
 
 if __name__ == "__main__":
+    import identities
     import identities_pis
 
     admin = None

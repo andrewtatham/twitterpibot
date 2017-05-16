@@ -3,7 +3,6 @@ import random
 
 from apscheduler.triggers.interval import IntervalTrigger
 
-import identities
 from twitterpibot.schedule.ScheduledTask import ScheduledTask
 from twitterpibot.users.lists import default_lists
 
@@ -57,6 +56,7 @@ class UserListsScheduledTask(ScheduledTask):
 
 
 if __name__ == '__main__':
+    import identities
     import identities_pis
 
     logging.basicConfig(level=logging.INFO)
