@@ -25,7 +25,6 @@ pyjokes
 twython
 wikipedia
 twitter-text-python
-python-dateutil
 Pillow
 facebook
 python-dateutil
