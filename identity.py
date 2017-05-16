@@ -25,7 +25,7 @@ __author__ = 'andrewtatham'
 
 
 class Identity(object):
-    def __init__(self, screen_name, id_str, stream=true):
+    def __init__(self, screen_name, id_str, stream=True):
         self.id_str = id_str
         self.screen_name = screen_name
         self.profile_url = "https://twitter.com/" + self.screen_name
