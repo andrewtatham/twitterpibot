@@ -28,6 +28,5 @@ twitter-text-python
 Pillow
 facebook
 python-dateutil
-retrying
 
 
