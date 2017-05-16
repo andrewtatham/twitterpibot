@@ -1,8 +1,8 @@
 import colorama
 
-from twitterpibot.hardware import myhardware
-from identity import Identity, BotIdentity
+from identity import BotIdentity
 from twitterpibot.facebook import facebook_helper
+from twitterpibot.hardware import myhardware
 from twitterpibot.logic.anagram_solver import AnagramBotResponse
 from twitterpibot.logic.april_fools_day import AprilFoolsDayScheduledTask
 from twitterpibot.logic.botgle import BotgleResponse
@@ -15,7 +15,6 @@ from twitterpibot.logic.morse_code import MorseCodeResponse
 from twitterpibot.logic.numberwang import NumberwangHostScheduledTask, NumberwangHostResponse
 from twitterpibot.responses.EggPunResponse import EggPunResponse
 from twitterpibot.responses.FavoriteResponse import FavoriteResponse
-from twitterpibot.responses.HiveMindResponse import HiveMindResponse
 from twitterpibot.responses.Magic8BallResponse import Magic8BallResponse
 from twitterpibot.responses.PhotoResponse import PhotoResponse
 from twitterpibot.responses.ReplyResponse import ReplyResponse
@@ -33,27 +32,8 @@ from twitterpibot.schedule.TalkLikeAPirateDayScheduledTask import TalkLikeAPirat
 from twitterpibot.schedule.WeatherScheduledTask import WeatherScheduledTask
 from twitterpibot.schedule.WikipediaScheduledTask import WikipediaScheduledTask
 from twitterpibot.schedule.announcement_scheduled_task import AnnouncementScheduledTask
-from twitterpibot.schedule.common.UserListsScheduledTask import UserListsScheduledTask
 
 __author__ = 'andrewtatham'
-
-
-class AndrewTathamIdentity(Identity):
-    def __init__(self):
-        super(AndrewTathamIdentity, self).__init__(
-            screen_name="andrewtatham",
-            id_str="19201332")
-        self.buddies = None
-
-    def get_scheduled_jobs(self):
-        jobs = super().get_scheduled_jobs()
-        jobs.append(UserListsScheduledTask(self, None))
-        return jobs
-
-    def get_responses(self):
-        responses = super(AndrewTathamIdentity, self).get_responses()
-        responses.extend([HiveMindResponse(self, self.buddies)])
-        return responses
 
 
 class PiIdentity(BotIdentity):
@@ -240,5 +220,3 @@ class TheMachinesCodeIdentity(BotIdentity):
             CypherHostResponse(self)
         ])
         return responses
-
-

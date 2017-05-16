@@ -1,4 +1,5 @@
 import pprint
+import random
 
 import feedparser
 
@@ -14,6 +15,8 @@ flickr_sunrise_sunset = "https://api.flickr.com/services/feeds/photos_public.gne
 
 google_news = "http://news.google.co.uk/news?cf=all&hl=en&pz=1&ned=uk&output=rss"
 bbc_news_magazine = "http://feeds.bbci.co.uk/news/magazine/rss.xml"
+bbc_technology = "http://feeds.bbci.co.uk/news/technology/rss.xml?edition=uk"
+bbc_science_and_environment = "http://feeds.bbci.co.uk/news/science_and_environment/rss.xml?edition=uk"
 
 
 # all = [
@@ -63,13 +66,26 @@ def get_news_stories():
     return items
 
 
-if __name__ == '__main__':
+def get_bbc_science_and_technology():
+    items = []
+    for url in [bbc_technology, bbc_science_and_environment]:
+        feed = feedparser.parse(url)
+        for entry in feed["entries"]:
+            items.append(entry["title"] + ": " + entry["description"])
+    random.shuffle(items)
+    return items
+
+
+def foo():
     from twitterpibot.logic import english
     from twitterpibot.topics import topichelper
-
     news = get_news_stories()
     for headline in news:
         print(headline)
         pprint.pprint(topichelper.get_topics(headline))
         pprint.pprint(english.get_common_words(headline))
         print()
+
+
+if __name__ == '__main__':
+    pprint.pprint(get_bbc_science_and_technology(),width=140)

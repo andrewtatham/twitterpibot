@@ -11,12 +11,13 @@ if __name__ == '__main__':
 
 if __name__ == "__main__":
 
-    from identities_pis import AndrewTathamIdentity, AndrewTathamPiIdentity, AndrewTathamPi2Identity, \
+    from identities_pis import AndrewTathamPiIdentity, AndrewTathamPi2Identity, \
         NumberwangHostIdentity, \
         JulieNumberwangIdentity, SimonNumberwangIdentity, EggPunBotIdentity, WhenIsInternationalMensDayBotIdentity, \
         BotgleArtistIdentity, TheMachinesCodeIdentity
+    from identities import AndrewTathamIdentity
 
-    andrewtatham = AndrewTathamIdentity()
+    andrewtatham = AndrewTathamIdentity(stream=True)
     andrewtathampi = AndrewTathamPiIdentity(andrewtatham)
     andrewtathampi2 = AndrewTathamPi2Identity(andrewtatham)
     numberwang_host = NumberwangHostIdentity(andrewtatham)

@@ -18,7 +18,7 @@ scrollphathd.clear()
 scrollphathd.show()
 
 
-def _enqueue(text):
+def enqueue(text):
     logger.info("_enqueue text = {}".format(text))
     q.insert(0, text)
 
@@ -55,11 +55,11 @@ def lights():
 
 def inbox_item_received(inbox_item):
     if inbox_item.is_tweet or inbox_item.is_direct_message:
-        _enqueue(inbox_item.short_display())
+        enqueue(inbox_item.short_display())
 
 
 def on_lights_scheduled_task():
-    _enqueue(str(datetime.datetime.now()))
+    enqueue(str(datetime.datetime.now()))
 
 
 def close():

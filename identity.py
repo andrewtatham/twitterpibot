@@ -25,13 +25,14 @@ __author__ = 'andrewtatham'
 
 
 class Identity(object):
-    def __init__(self, screen_name, id_str):
+    def __init__(self, screen_name, id_str, stream=true):
         self.id_str = id_str
         self.screen_name = screen_name
         self.profile_url = "https://twitter.com/" + self.screen_name
         self.admin_screen_name = "andrewtatham"
         self.colour = colorama.Fore.WHITE
         self.tokens = None
+        self._stream = stream
         self.streamer = None
 
         self.name = None
@@ -54,8 +55,6 @@ class Identity(object):
         self.converse_with = None
         self.facebook = None
 
-
-
     def update(self, me):
         self.id_str = me["id_str"]
         self.name = me["name"]
@@ -75,9 +74,10 @@ class Identity(object):
 
     @abc.abstractmethod
     def get_tasks(self):
-        return [
-            StreamTweetsTask(self)
-        ]
+        tasks = []
+        if self._stream:
+            tasks.append(StreamTweetsTask(self))
+        return tasks
 
     @abc.abstractmethod
     def get_scheduled_jobs(self):
@@ -129,5 +129,3 @@ class BotIdentity(Identity):
             DropCreateTablesResponse(self),
         ])
         return responses
-
-

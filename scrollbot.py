@@ -10,21 +10,21 @@ if __name__ == '__main__':
     dal.export_tokens(fsh.root + "tokens.csv")
 
 if __name__ == "__main__":
-
+    from identities import AndrewTathamIdentity
     from identities_scrollbot import ScrollBotIdentity
 
-    scrollbot = ScrollBotIdentity()
+    andrewtatham = AndrewTathamIdentity(stream=True)
+    scrollbot = ScrollBotIdentity(andrewtatham)
 
-    import twitterpibot.hardware.myhardware
+    andrewtatham.buddies = [
+        scrollbot
+    ]
 
-    if twitterpibot.hardware.myhardware.is_scroll_bot:
-        all_identities = [
-            scrollbot
-        ]
-    else:
-        all_identities = [
-            scrollbot
-        ]
+    all_identities = [
+        andrewtatham,
+        scrollbot
+    ]
+
     import twitterpibot.bootstrap
 
     twitterpibot.bootstrap.run(all_identities)
