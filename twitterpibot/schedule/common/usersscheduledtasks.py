@@ -33,7 +33,6 @@ class ManageUsersScheduledTask(ScheduledTask):
 
     def _get_to_unfollow(self):
         to_unfollow = set()
-        to_unfollow.update(self.identity.users.get_followed_subscribed_list_members())
         to_unfollow.update(self.identity.users.get_followed_inactive())
         return to_unfollow
 
@@ -110,7 +109,7 @@ class GetUsersScheduledTask(ScheduledTask):
         if self._all_user_ids:
             logger.info("{} uncached user ids".format(len(self._all_user_ids)))
             calls_remaining = self.identity.twitter.rates.get("/users/lookup")
-            batch_size = int(100 * calls_remaining / 10)  # 100 users per call, but only use 1/3 allowance
+            batch_size = int(calls_remaining / 10)
             batch = []
             for _ in range(batch_size):
                 if self._all_user_ids:

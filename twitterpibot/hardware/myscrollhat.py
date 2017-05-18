@@ -6,11 +6,12 @@ import time
 from scrollphathd.fonts import font5x7smoothed
 
 logger = logging.getLogger(__name__)
-scroll_until_x = 18
+scroll_until_x = 16
 q = [
     str(datetime.datetime.now()),
     "Hello World"
 ]
+
 status_length = 0
 
 scrollphathd.rotate(degrees=180)
@@ -59,6 +60,11 @@ def inbox_item_received(inbox_item):
 
 
 def on_lights_scheduled_task():
+    enqueue(datetime.datetime.now().strftime("%A"))  # Day
+    enqueue(datetime.datetime.now().strftime("%B"))  # Month
+    enqueue(datetime.datetime.now().strftime("%Y"))  # Year
+    enqueue(datetime.datetime.now().strftime("%X"))  # Date
+    enqueue(datetime.datetime.now().strftime("%x"))  # Time
     enqueue(str(datetime.datetime.now()))
 
 
