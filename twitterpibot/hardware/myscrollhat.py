@@ -6,7 +6,7 @@ import time
 from scrollphathd.fonts import font5x7smoothed
 
 logger = logging.getLogger(__name__)
-scroll_until_x = 17
+scroll_until_x = 0
 q = [
     str(datetime.datetime.now()),
     "Hello World"
@@ -27,8 +27,8 @@ def enqueue(text):
 def _dequeue():
     global status_length
     scrollphathd.clear()
-    status = 6 * " " + q.pop() + 7 * " "
-    status_length = scrollphathd.write_string(status, x=0, y=0, font=font5x7smoothed, brightness=0.1)
+    status = q.pop()
+    status_length = scrollphathd.write_string(status, x=17, y=0, font=font5x7smoothed, brightness=0.1) + 17
     scrollphathd.show()
     time.sleep(0.01)
 
@@ -63,7 +63,6 @@ def inbox_item_received(inbox_item):
 
 def on_lights_scheduled_task():
     enqueue(datetime.datetime.now().strftime("%A"))  # Day
-    enqueue(datetime.datetime.now().strftime("%B"))  # Month
     enqueue(datetime.datetime.now().strftime("%B"))  # Month
     enqueue(datetime.datetime.now().strftime("%Y"))  # Year
     enqueue(datetime.datetime.now().strftime("%X"))  # Date
