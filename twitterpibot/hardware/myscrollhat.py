@@ -52,8 +52,9 @@ def lights():
         _dequeue()
     else:
         scrollphathd.clear()
+        enqueue(datetime.datetime.now().strftime("%x"))  # Time
         scrollphathd.show()
-        time.sleep(2)
+        time.sleep(0.25)
 
 
 def inbox_item_received(inbox_item):
@@ -62,12 +63,7 @@ def inbox_item_received(inbox_item):
 
 
 def on_lights_scheduled_task():
-    enqueue(datetime.datetime.now().strftime("%A"))  # Day
-    enqueue(datetime.datetime.now().strftime("%B"))  # Month
-    enqueue(datetime.datetime.now().strftime("%Y"))  # Year
     enqueue(datetime.datetime.now().strftime("%X"))  # Date
-    enqueue(datetime.datetime.now().strftime("%x"))  # Time
-    enqueue(str(datetime.datetime.now()))
 
 
 def close():
