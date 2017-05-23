@@ -28,7 +28,7 @@ def _dequeue():
     global status_length
     scrollphathd.clear()
     status = q.pop()
-    status_length = scrollphathd.write_string(status, x=17, y=0, font=font5x7smoothed, brightness=0.1) + 17
+    status_length = scrollphathd.write_string(status, x=18, y=0, font=font5x7smoothed, brightness=0.1) + 18
     scrollphathd.show()
     time.sleep(0.01)
 
