@@ -58,7 +58,7 @@ def lights():
 
 
 def inbox_item_received(inbox_item):
-    if inbox_item.is_tweet and inbox_item.text_stripped_whitespace_removed and not inbox_item.has_media:
+    if inbox_item.is_tweet and inbox_item.text_stripped_whitespace_removed and not any(inbox_item.medias):
         enqueue(inbox_item.short_display())
     elif inbox_item.is_direct_message:
         enqueue(inbox_item.short_display())
