@@ -8,7 +8,8 @@ from scrollphathd.fonts import font5x7smoothed
 logger = logging.getLogger(__name__)
 scroll_until_x = 0
 q = [
-    str(datetime.datetime.now()),
+    datetime.datetime.now().strftime("%x"),  # Date
+    datetime.datetime.now().strftime("%X"),  # Time
     "Hello World"
 ]
 
@@ -27,8 +28,9 @@ def enqueue(text):
 def _dequeue():
     global status_length
     scrollphathd.clear()
+    logger.info("len(q) = {}".format(len(q)))
     status = q.pop()
-    status_length = scrollphathd.write_string(status, x=18, y=0, font=font5x7smoothed, brightness=0.1) + 18
+    status_length = scrollphathd.write_string(status, x=18, y=0, font=font5x7smoothed, brightness=0.1) + 17
     scrollphathd.show()
     time.sleep(0.01)
 
@@ -52,7 +54,7 @@ def lights():
         _dequeue()
     else:
         scrollphathd.clear()
-        enqueue(datetime.datetime.now().strftime("%x"))  # Time
+        enqueue(datetime.datetime.now().strftime("%X"))  # Time
         scrollphathd.show()
         time.sleep(0.25)
 
@@ -65,8 +67,8 @@ def inbox_item_received(inbox_item):
 
 
 def on_lights_scheduled_task():
-    enqueue(datetime.datetime.now().strftime("%X"))  # Date
-
+    enqueue(datetime.datetime.now().strftime("%x"))  # Date
+    enqueue(datetime.datetime.now().strftime("%X"))  # Time
 
 def close():
     scrollphathd.clear()
