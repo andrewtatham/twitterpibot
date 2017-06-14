@@ -5,6 +5,8 @@ import scrollphathd
 import time
 from scrollphathd.fonts import font5x7smoothed
 
+from twitterpibot.responses.Response import _one_in
+
 logger = logging.getLogger(__name__)
 scroll_until_x = 0
 q = [
@@ -60,7 +62,7 @@ def lights():
 
 
 def inbox_item_received(inbox_item):
-    if inbox_item.is_tweet and inbox_item.text_stripped_whitespace_removed and not any(inbox_item.medias):
+    if inbox_item.is_tweet and inbox_item.text_stripped_whitespace_removed and not any(inbox_item.medias) and _one_in(10):
         enqueue(inbox_item.short_display())
     elif inbox_item.is_direct_message:
         enqueue(inbox_item.short_display())
