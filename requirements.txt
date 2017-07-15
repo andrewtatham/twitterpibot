@@ -28,5 +28,6 @@ twitter-text-python
 Pillow
 facebook
 python-dateutil
-
-
+requests
+requests_oauthlib
+psutil
