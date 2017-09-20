@@ -17,7 +17,7 @@ class FacebookHelper(object):
 
         # https://developers.facebook.com/tools/explorer
         access_token_key = "facebook access token " + identity.screen_name
-        # dal.set_token(access_token_key, "")
+        dal.set_token(access_token_key, "")
         self._access_token = dal.get_token(access_token_key)
         self._graph = facebook.GraphAPI(self._access_token)
 
