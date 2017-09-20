@@ -17,34 +17,12 @@ class FacebookHelper(object):
 
         # https://developers.facebook.com/tools/explorer
         access_token_key = "facebook access token " + identity.screen_name
-        dal.set_token(access_token_key, "")
+        # dal.set_token(access_token_key, "")
         self._access_token = dal.get_token(access_token_key)
         self._graph = facebook.GraphAPI(self._access_token)
 
         debug_access_token = self._graph.debug_access_token(self._access_token, self._app_id, self._app_secret)["data"]
         logger.info(pprint.pformat(debug_access_token))
-
-        # TODO check
-        is_valid = debug_access_token["is_valid"]
-        scopes = debug_access_token["scopes"]
-        expires_at = datetime.datetime.utcfromtimestamp(debug_access_token["expires_at"])
-        logger.info("expires_at: {}".format(expires_at))
-        expires_in = expires_at - datetime.datetime.utcnow()
-        logger.info("expires_in: {}".format(expires_in))
-
-        app_name = debug_access_token["application"]
-        app_id = debug_access_token["app_id"]
-        profile_id = debug_access_token["profile_id"]
-        user_id = debug_access_token["user_id"]
-
-        # profile = self._graph.get_object(profile_id)
-        # logger.info(pprint.pformat(profile))
-        #
-        # app = self._graph.get_object(app_id)
-        # logger.info(pprint.pformat(app))
-        #
-        # user = self._graph.get_object(user_id)
-        # logger.info(pprint.pformat(user))
 
     def create_wall_post(self, post_text, attachment={}):
         if attachment is None:
