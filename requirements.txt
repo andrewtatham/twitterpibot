@@ -23,7 +23,6 @@ images2gif
 numpy
 psutil
 pyjokes
-twython
 wikipedia
 twitter-text-python
 Pillow
