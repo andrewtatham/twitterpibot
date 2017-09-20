@@ -30,4 +30,3 @@ facebook-sdk
 python-dateutil
 requests
 requests_oauthlib
-psutil
