@@ -1,3 +1,4 @@
+twython
 scrollphathd
 wmi
 humanize
@@ -26,7 +27,7 @@ twython
 wikipedia
 twitter-text-python
 Pillow
-facebook
+facebook-sdk
 python-dateutil
 requests
 requests_oauthlib
