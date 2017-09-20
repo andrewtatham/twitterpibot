@@ -61,7 +61,7 @@ def get_token(key, ask=True):
     token = session.query(twitterpibot.data_access.tokens.Token).filter(
         twitterpibot.data_access.tokens.Token.key == key).first()
 
-    if token:
+    if token and token.value:
         return token.value
     elif ask:
         value = None
