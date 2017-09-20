@@ -32,7 +32,7 @@ def _dequeue():
     scrollphathd.clear()
     logger.info("len(q) = {}".format(len(q)))
     status = q.pop()
-    status_length = scrollphathd.write_string(status, x=18, y=0, font=font5x7smoothed, brightness=0.1) + 17
+    status_length = scrollphathd.write_string(status, x=18, y=0, font=font5x7smoothed, brightness=1.0) + 17
     scrollphathd.show()
     time.sleep(0.01)
 
@@ -62,7 +62,8 @@ def lights():
 
 
 def inbox_item_received(inbox_item):
-    if inbox_item.is_tweet and inbox_item.text_stripped_whitespace_removed and not any(inbox_item.medias) and _one_in(10):
+    if inbox_item.is_tweet and inbox_item.text_stripped_whitespace_removed and not any(inbox_item.medias) and _one_in(
+            10):
         enqueue(inbox_item.short_display())
     elif inbox_item.is_direct_message:
         enqueue(inbox_item.short_display())
@@ -71,6 +72,7 @@ def inbox_item_received(inbox_item):
 def on_lights_scheduled_task():
     enqueue(datetime.datetime.now().strftime("%x"))  # Date
     enqueue(datetime.datetime.now().strftime("%X"))  # Time
+
 
 def close():
     scrollphathd.clear()
