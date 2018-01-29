@@ -93,7 +93,7 @@ class AndrewTathamPiIdentity(PiIdentity):
             id_str="2935295111",
             admin_identity=admin_identity)
         self.colour = colorama.Fore.MAGENTA
-        self.facebook = facebook_helper.FacebookHelper(self)
+        # self.facebook = facebook_helper.FacebookHelper(self) # TODO Fix Facebook?
 
     def get_scheduled_jobs(self):
         jobs = super().get_scheduled_jobs()
