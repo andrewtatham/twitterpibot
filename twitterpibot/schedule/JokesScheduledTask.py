@@ -10,7 +10,7 @@ from twitterpibot.logic import jokes
 
 class JokesScheduledTask(ScheduledTask):
     def get_trigger(self):
-        return IntervalTrigger(hours=random.randint(24, 48), minutes=random.randint(0, 59))
+        return IntervalTrigger(hours=random.randint(18, 24), minutes=random.randint(0, 59))
 
     def on_run(self):
         text = jokes.get_joke()
