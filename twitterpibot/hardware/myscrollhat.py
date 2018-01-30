@@ -32,7 +32,7 @@ def _dequeue():
     scrollphathd.clear()
     logger.info("len(q) = {}".format(len(q)))
     status = q.pop()
-    status_length = scrollphathd.write_string(status, x=18, y=0, font=font5x7smoothed, brightness=1.0) + 17
+    status_length = scrollphathd.write_string(status, x=18, y=0, font=font5x7smoothed, brightness=0.4) + 17
     scrollphathd.show()
     time.sleep(0.01)
 

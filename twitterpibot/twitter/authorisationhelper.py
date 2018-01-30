@@ -19,8 +19,8 @@ def get_tokens(screen_name):
     app_key = dal.get_token("twitter app key " + screen_name)
     app_secret = dal.get_token("twitter app secret " + screen_name)
 
-    final_key = dal.get_token("twitter final key " + screen_name, ask=False)
-    final_secret = dal.get_token("twitter final secret " + screen_name, ask=False)
+    final_key = dal.get_token("twitter final key " + screen_name)
+    final_secret = dal.get_token("twitter final secret " + screen_name)
 
     if not final_key or not final_secret:
         twitter = Twython(app_key, app_secret)
