@@ -30,6 +30,8 @@ def generate_phrase(response, text=""):
                 response = response.replace(match, choice)
                 logger.debug(response)
             text += " " + response
+        else:
+            return response
 
         return text
 
