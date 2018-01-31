@@ -86,7 +86,7 @@ def make(board, solution, screen_name):
 
     h_range = random.uniform(0.3, 0.8)
 
-    a = 196
+    a = 255
 
     r, g, b = hsv_to_rgb(h, s, v / random.randint(2, 3))
     bg_colour = (r, g, b, a)
