@@ -10,8 +10,6 @@ from twitterpibot.responses.Response import _one_in
 logger = logging.getLogger(__name__)
 scroll_until_x = 0
 q = [
-    datetime.datetime.now().strftime("%x"),  # Date
-    datetime.datetime.now().strftime("%X"),  # Time
     "Hello World"
 ]
 
@@ -20,6 +18,11 @@ status_length = 0
 scrollphathd.rotate(degrees=180)
 scrollphathd.clear()
 scrollphathd.show()
+
+
+def jump_queue(text):
+    logger.info("_enqueue text = {}".format(text))
+    q.append(text)
 
 
 def enqueue(text):
@@ -56,22 +59,22 @@ def lights():
         _dequeue()
     else:
         scrollphathd.clear()
-        enqueue(datetime.datetime.now().strftime("%X"))  # Time
         scrollphathd.show()
         time.sleep(0.25)
 
 
 def inbox_item_received(inbox_item):
-    if inbox_item.is_tweet and inbox_item.text_stripped_whitespace_removed and not any(inbox_item.medias) and _one_in(
-            10):
+    if inbox_item.is_tweet \
+            and inbox_item.text_stripped_whitespace_removed \
+            and not any(inbox_item.medias) \
+            and _one_in(10):
         enqueue(inbox_item.short_display())
     elif inbox_item.is_direct_message:
         enqueue(inbox_item.short_display())
 
 
 def on_lights_scheduled_task():
-    enqueue(datetime.datetime.now().strftime("%x"))  # Date
-    enqueue(datetime.datetime.now().strftime("%X"))  # Time
+    pass
 
 
 def close():

@@ -2,7 +2,9 @@ import colorama
 
 from identity import BotIdentity
 from twitterpibot.hardware import myhardware
-from twitterpibot.schedule.ScrollNewsHeadlinesScheduledTask import ScrollNewsHeadlinesScheduledTask
+from twitterpibot.schedule.scrolly.ScrollNewsHeadlinesScheduledTask import ScrollNewsHeadlinesScheduledTask
+from twitterpibot.schedule.scrolly.ScrollTimeScheduledTask import ScrollTimeScheduledTask
+from twitterpibot.schedule.scrolly.ScrollDateScheduledTask import ScrollDateScheduledTask
 
 
 class ScrollBotIdentity(BotIdentity):
@@ -16,5 +18,8 @@ class ScrollBotIdentity(BotIdentity):
     def get_scheduled_jobs(self):
         jobs = super().get_scheduled_jobs()
         if myhardware.is_scroll_bot and myhardware.is_scroll_hat_attached:
+            jobs.append(ScrollTimeScheduledTask(self))
+            jobs.append(ScrollDateScheduledTask(self))
             jobs.append(ScrollNewsHeadlinesScheduledTask(self))
+
         return jobs
