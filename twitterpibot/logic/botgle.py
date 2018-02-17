@@ -15,10 +15,10 @@ descriptions = [
     "piece titled: %s",
     "title: %s",
 ]
-frame_request = [
-    "please can you put this in a frame for me?",
-    "do your thang",
-]
+# frame_request = [
+#     "please can you put this in a frame for me?",
+#     "do your thang",
+# ]
 # todo manage files / make collage?
 played_rx = re.compile("@(?P<screen_name>[\w_]+) plays (?P<words>[\w\s]+)")
 
@@ -136,8 +136,8 @@ class BotgleResponse(Response):
                     self._reply_with_image(image, inbox_item)
                     if random.randint(0, 9) == 0:
                         self._update_profile_picture(image)
-                    if random.randint(0, 9) == 0:
-                        self._get_image_framed(image)
+                    # if random.randint(0, 9) == 0:
+                    #     self._get_image_framed(image)
 
             elif "solutions" in response:
                 if "text" in response:
@@ -190,16 +190,16 @@ class BotgleResponse(Response):
         else:
             logger.info("updates profile image " + file_path)
 
-    def _get_image_framed(self, image):
-        text = random.choice(hello_words)
-        text += " @ShouldFrameIt "
-        text += random.choice(frame_request)
-        file_paths = [image["file_path"]]
-        if self._armed:
-            text = " " + text
-            self.identity.twitter.send(OutgoingTweet(text=text, file_paths=file_paths))
-        else:
-            logger.info("tweets " + text + " " + str(file_paths))
+    # def _get_image_framed(self, image):
+    #     text = random.choice(hello_words)
+    #     text += " @ShouldFrameIt "
+    #     text += random.choice(frame_request)
+    #     file_paths = [image["file_path"]]
+    #     if self._armed:
+    #         text = " " + text
+    #         self.identity.twitter.send(OutgoingTweet(text=text, file_paths=file_paths))
+    #     else:
+    #         logger.info("tweets " + text + " " + str(file_paths))
 
 
 if __name__ == '__main__':
