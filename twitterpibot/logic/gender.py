@@ -89,9 +89,10 @@ class WhenIsInternationalMensDayResponse(Response):
         self.identity.statistics.increment("International womens/mens day tweets")
         response = get_response()
 
-        self.identity.twitter.quote_tweet(
-            inbox_item,
-            text=response)
+        if random.randint(0, 3) == 0:
+            self.identity.twitter.reply_with(inbox_item, text=response)
+        else:
+            self.identity.twitter.quote_tweet(inbox_item, text=response)
 
 
 if __name__ == '__main__':
