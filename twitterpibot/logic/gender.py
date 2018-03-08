@@ -4,6 +4,7 @@ import re
 
 from apscheduler.triggers.cron import CronTrigger
 
+from twitterpibot.logic.phrase_generator import generate_phrase
 from twitterpibot.responses.Response import Response
 from twitterpibot.schedule.StreamTopicScheduledTask import StreamingTopicScheduledTask
 
@@ -16,13 +17,13 @@ _question_rx = re.compile(
             ".*"
             "men'?s.*day"
             ".*"
-            "\??" # literal question mark, optional
+            "\??"  # literal question mark, optional
     ,
     flags=re.IGNORECASE)
 
 _answer_rx_1 = re.compile(
     "(19|nineteen)|(11|Nov)"
-      "|Every( ?| single | other )day"
+    "|Every( ?| single | other )day"
     "|364|365"
     "|ask"
     "|insecure"
@@ -32,6 +33,7 @@ _answer_rx_1 = re.compile(
 
 def is_question(text):
     return bool(_question_rx.findall(text))
+
 
 def is_not_question(text):
     return bool(_answer_rx_1.findall(text))
@@ -45,7 +47,13 @@ def is_not_question(text):
 
 # Make a donation to https://www.justgiving.com/fundraising/November19th?
 
-responses = ["International Men's Day is on November 19th"]
+responses = [
+    "(International Men's Day|#InternationalMensDay) is on (the 19th of November|November 19th|19th Nov)"
+]
+
+
+def get_response():
+    return generate_phrase(responses)
 
 
 class WhenIsIMDScheduledTask(StreamingTopicScheduledTask):
@@ -60,7 +68,7 @@ class WhenIsIMDScheduledTask(StreamingTopicScheduledTask):
 
     def _get_topic_streamer(self):
         return self.identity.twitter.get_streamer(
-            topic="men,day",
+            topic="men day",
             topic_name=self._task_key,
             responses=[WhenIsInternationalMensDayResponse(self.identity)],
             filter_level="none"
@@ -79,8 +87,13 @@ class WhenIsInternationalMensDayResponse(Response):
 
     def respond(self, inbox_item):
         self.identity.statistics.increment("International womens/mens day tweets")
-        response = random.choice(responses)
+        response = get_response()
 
         self.identity.twitter.quote_tweet(
             inbox_item,
             text=response)
+
+
+if __name__ == '__main__':
+    for _ in range(10):
+        print(get_response())
