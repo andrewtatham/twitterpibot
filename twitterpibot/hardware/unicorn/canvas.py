@@ -17,7 +17,7 @@ from twitterpibot.logic import astronomy, image_helper
 
 
 day_bright = 196
-night_bright = 64
+night_bright = 128
 
 
 def _calc_max_brightness(now=None):

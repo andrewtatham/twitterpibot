@@ -51,7 +51,6 @@ root = None
 photo = None
 
 
-
 def change_image(path):
     global photo
     image = Image.open(path)
@@ -69,17 +68,21 @@ def display():
 
     label = tkinter.Label(root)
     label.pack()
-    label.place(x=0,y=0)
+    label.place(x=0, y=0)
 
     root.after(100, callback)
     root.mainloop()
 
 
 def callback():
-    for path in paths:
-        print(path)
-        change_image(path)
-        time.sleep(0.1)
+    run = True
+
+    while run:
+        try:
+            for path in paths:
+                print(path)
+                change_image(path)
+                time.sleep(0.1)
+        except Exception:
+            run = False
     fsh.ensure_directory_exists_and_is_empty(folder)
-
-

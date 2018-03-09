@@ -1,10 +1,8 @@
 import itertools
-import random
 
 from twitterpibot.hardware.myhardware import is_linux
 from twitterpibot.hardware.unicorn.canvas import Buffer
 from twitterpibot.hardware.unicorn.myunicornhatmodes import *
-from twitterpibot.incoming.IncomingTweet import IncomingTweet
 
 if is_linux:
     import unicornhat
