@@ -28,6 +28,7 @@ _answer_rx_1 = re.compile(
     "|ask"
     "|insecure"
     "|@Herring1967"
+    "|Day\?? Day"
     , flags=re.IGNORECASE)
 
 

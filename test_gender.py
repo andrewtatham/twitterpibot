@@ -57,7 +57,8 @@ not_question_testcases = [
     "Every other day",
     "364",
     "365",
-    " @Herring1967 "
+    " @Herring1967 ",
+    "also known as When Is International Men's Day? Day.",
 ]
 
 
