@@ -15,10 +15,7 @@ descriptions = [
     "piece titled: %s",
     "title: %s",
 ]
-# frame_request = [
-#     "please can you put this in a frame for me?",
-#     "do your thang",
-# ]
+
 # todo manage files / make collage?
 played_rx = re.compile("@(?P<screen_name>[\w_]+) plays (?P<words>[\w\s]+)")
 
