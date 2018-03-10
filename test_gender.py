@@ -38,7 +38,12 @@ question_testcases = [
     "What about international MENS day huh? Sounds like sexism if you ask me!",
     "When’s international mens day cos I’m feeling left out",
     "what is the date of international mens day?",
-    "How about an #internationalmensday you sexist bitches!   "
+    "How about an #internationalmensday you sexist bitches!   ",
+    "So my 9 y/o son was watching .@TuckerCarlson with me. him: Mommy what's a #InternationalWomensDay Me: A day to celebrate women Him: When's International Men's Day? Me: We don't have one Him: That's unfair, aren't men & women equal? My kid has more #CommonSense than the libs",
+    "So is today National Men’s Day?",
+    "international men’s day is on april 1st",
+    "It's official We having National Mens Day tomorrow IDGAF what y'all say.",
+    "It’s Friday!!  Or like 364 days a year, it’s International Men’s Day. "
 
 ]
 
@@ -64,7 +69,12 @@ not_question_testcases = [
     "Comedian Richard Herring takes it upon himself to reply to every person asking 'when is International Men's Day?' on Twitter ",
     "If everyone who asked 'when is international men's day?' yesterday, took 12 minutes to watch this video of Tony Porter talking about his Man Box, they may decide they have events to organise for Nov 19th.",
     "The effort that @Herring1967 puts into schooling the 'why isn't there an international mens day?' dorks is magnificent to behold. The fact that I interviewed him for an hour this very week without mentioning it, somewhat less so.",
-    "What do Indian men think about International Women's Day?"
+    "What do Indian men think about International Women's Day?",
+    "What do Indian men think about International Fishermen's Day?",
+    "Reminders for men on international women’s day: 1 - check your privilege 2 - if you choose to speak in support of women, make sure you’re not suppressing their voices at the same time 3 - trans women are women too 4 - check the privilege of others around you marginalizing women",
+    "Okay, back to International Men's Day.",
+    "Today's Spin Zone with @FeitsBarstool, Should We Care About International Men's Day? ",
+    "If you’re a man asking why there’s no International Men’s Day, it’s because of you "
 ]
 
 
@@ -87,11 +97,26 @@ class TestsGender(TestCase):
 
         for testcase in question_testcases:
             with self.subTest(testcase):
-                self.assertTrue(gender.is_question(testcase))
+                print(testcase)
+                question_match = gender.is_question(testcase)
+                answer_match = gender.is_answer(testcase)
+                print("q: {} {}".format(str(bool(question_match)),str(question_match)))
+                print("a: {} {}".format(str(bool(answer_match)),str(answer_match)))
+                if bool(question_match) and not bool(answer_match):
+                    print("response: {}".format(gender.get_response(testcase)))
+                self.assertTrue(bool(question_match) and not bool(answer_match))
+                print()
 
-
-    def test_is_not_question(self):
+    def test_is_answer(self):
         for testcase in not_question_testcases:
             with self.subTest(testcase):
-                self.assertTrue(not gender.is_question(testcase) or gender.is_not_question(testcase))
+                print(testcase)
+                question_match = gender.is_question(testcase)
+                answer_match = gender.is_answer(testcase)
+                print("q: {} {}".format(str(bool(question_match)),str(question_match)))
+                print("a: {} {}".format(str(bool(answer_match)),str(answer_match)))
+                if bool(question_match) and not bool(answer_match):
+                    print("response: {}".format(gender.get_response(testcase)))
+                self.assertTrue(not bool(question_match) or bool(answer_match))
+                print()
 

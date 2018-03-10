@@ -11,36 +11,34 @@ from twitterpibot.schedule.StreamTopicScheduledTask import StreamingTopicSchedul
 logger = logging.getLogger(__name__)
 
 _question_rx = re.compile(
-    pattern="When|is.*there|(how|what).*about|Why.*(no|isn't)|We want|Do we need|There is no|Where|What|backlash|outcry"
-            ".*"
-            "(inter)?national"
-            ".*"
-            "\\bmen'?s"
-            ".*"
-            "day"
-            ".*"
-            "\??"  # literal question mark, optional
+    pattern=
+    "(What|When|Why|Where|is there|how about|what about|isn't|We want|Do we need|There is no|backlash|outcry)"
+    ".*"
+    "(#InternationalMensDay|((inter)?national)?.*men'?s?.*day)"
+    ".*"
+    "(\\?)?"  # literal question mark, optional
     ,
     flags=re.IGNORECASE)
 
-_answer_rx_1 = re.compile(
-    "(19|nineteen)|(11|Nov)"
+_answer = re.compile(
+    "(19|nineteen"
+    "|11|Nov"
     "|Every( ?| single | other )day"
     "|364|365"
     "|ask"
     "|insecure"
     "|@Herring1967"
     "|Richard Herring"
-    "|Day\?? Day"
+    "|Day\?? Day)"
     , flags=re.IGNORECASE)
 
 
 def is_question(text):
-    return bool(_question_rx.findall(text))
+    return _question_rx.findall(text)
 
 
-def is_not_question(text):
-    return bool(_answer_rx_1.findall(text))
+def is_answer(text):
+    return _answer.findall(text)
 
 
 # responses
@@ -52,12 +50,31 @@ def is_not_question(text):
 # Make a donation to https://www.justgiving.com/fundraising/November19th?
 
 responses = [
-    "(International Men's Day|#InternationalMensDay) is on (the 19th of November|November 19th|19th Nov)"
+    "(International Men's Day|#InternationalMensDay) is on (the 19th of November|November 19th|19th Nov)."
 ]
 
+_lol = re.compile("lol", flags=re.IGNORECASE)
+_sexist = re.compile("(sexis(t|m))", flags=re.IGNORECASE)
+_swear = re.compile("fuck|bitches", flags=re.IGNORECASE)
 
-def get_response():
-    return generate_phrase(responses)
+def is_lol(text):
+    return _lol.findall(text)
+def is_sexist(text):
+    return _sexist.findall(text)
+def is_swear(text):
+    return _swear.findall(text)
+def get_response(text):
+    response = generate_phrase(responses)
+    if is_lol(text):
+        response += " lol"
+    sexist = is_sexist(text)
+    if sexist:
+        print(sexist)
+        sexist_text = str(sexist.text)
+        response += " #Not".format(sexist_text)
+    if is_swear(text):
+        response += " #WashYourMouth"
+    return response
 
 
 class WhenIsIMDScheduledTask(StreamingTopicScheduledTask):
@@ -84,14 +101,14 @@ class WhenIsInternationalMensDayResponse(Response):
         super(WhenIsInternationalMensDayResponse, self).__init__(identity)
 
     def condition(self, inbox_item):
-        # when in quotes its rhetorical so ignore, also answers were sometimes images
         return (inbox_item.is_tweet or inbox_item.is_direct_message) \
-               and is_question(inbox_item.text) \
-               and not is_not_question(inbox_item.text)
+               and bool(is_question(inbox_item.text)) \
+               and not (is_answer(inbox_item.text))
 
     def respond(self, inbox_item):
         self.identity.statistics.increment("International womens/mens day tweets")
-        response = get_response()
+
+        response = get_response(inbox_item.text)
 
         if random.randint(0, 3) == 0:
             self.identity.twitter.reply_with(inbox_item, text=response)
@@ -101,4 +118,4 @@ class WhenIsInternationalMensDayResponse(Response):
 
 if __name__ == '__main__':
     for _ in range(10):
-        print(get_response())
+        print(get_response(""))
