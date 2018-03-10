@@ -46,7 +46,7 @@ class RandomSnakeHead(SnakeHead):
 
 class ShortSightedSnakeHead(SnakeHead):
     def steer(self, snakes, foods, wrap):
-        distance_seen = 4
+        distance_seen = 3
 
         straight_collision = False
         left_turn_collision = False
@@ -85,13 +85,13 @@ class ShortSightedSnakeHead(SnakeHead):
                 right_turn_collision = True
 
         for snake in snakes:
-            for straight_position in straight_positions[:1]:
+            for straight_position in straight_positions:
                 straight_collision = straight_collision or \
                                      snake.is_collision(straight_position, exclude_head=snake == self)
-            for left_turn_position in left_turn_positions[:1]:
+            for left_turn_position in left_turn_positions:
                 left_turn_collision = left_turn_collision or \
                                       snake.is_collision(left_turn_position, exclude_head=snake == self)
-            for right_turn_position in right_turn_positions[:1]:
+            for right_turn_position in right_turn_positions:
                 right_turn_collision = right_turn_collision or \
                                        snake.is_collision(right_turn_position, exclude_head=snake == self)
 

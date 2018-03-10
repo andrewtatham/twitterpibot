@@ -58,6 +58,7 @@ not_question_testcases = [
     "364",
     "365",
     " @Herring1967 ",
+    "also known as When Is International Men's Day? Day.",
     "Male Student: when is International Men's Day?? ME: EVERY DAY IS INTERNATIONAL MENS DAY!!! Male Student: *wide eyed, point noted, backs away slowly* ME: ....my job is done here.",
     "Late to the party. @Herring1967 spent yesterday answering the question 'When is International Men's Day?' on twitter and his timeline is ",
     "Comedian Richard Herring takes it upon himself to reply to every person asking 'when is International Men's Day?' on Twitter ",
