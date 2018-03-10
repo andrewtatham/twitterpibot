@@ -15,7 +15,9 @@ _question_rx = re.compile(
             ".*"
             "(inter)?national"
             ".*"
-            "men'?s.*day"
+            "\\bmen'?s"
+            ".*"
+            "day"
             ".*"
             "\??"  # literal question mark, optional
     ,
@@ -28,6 +30,7 @@ _answer_rx_1 = re.compile(
     "|ask"
     "|insecure"
     "|@Herring1967"
+    "|Richard Herring"
     , flags=re.IGNORECASE)
 
 

@@ -57,7 +57,13 @@ not_question_testcases = [
     "Every other day",
     "364",
     "365",
-    " @Herring1967 "
+    " @Herring1967 ",
+    "Male Student: when is International Men's Day?? ME: EVERY DAY IS INTERNATIONAL MENS DAY!!! Male Student: *wide eyed, point noted, backs away slowly* ME: ....my job is done here.",
+    "Late to the party. @Herring1967 spent yesterday answering the question 'When is International Men's Day?' on twitter and his timeline is ",
+    "Comedian Richard Herring takes it upon himself to reply to every person asking 'when is International Men's Day?' on Twitter ",
+    "If everyone who asked 'when is international men's day?' yesterday, took 12 minutes to watch this video of Tony Porter talking about his Man Box, they may decide they have events to organise for Nov 19th.",
+    "The effort that @Herring1967 puts into schooling the 'why isn't there an international mens day?' dorks is magnificent to behold. The fact that I interviewed him for an hour this very week without mentioning it, somewhat less so.",
+    "What do Indian men think about International Women's Day?"
 ]
 
 
