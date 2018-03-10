@@ -10,14 +10,26 @@ from twitterpibot.schedule.StreamTopicScheduledTask import StreamingTopicSchedul
 
 logger = logging.getLogger(__name__)
 
+_question_beginnings = [
+    "What",
+    "When",
+    "Why",
+    "Where",
+    "how",
+    "is there",
+    "isn't",
+    "We want",
+    "Do we need",
+    "There is no",
+    "we want",
+    "backlash",
+    "outcry",
+    "is today"
+]
+
 _question_rx = re.compile(
-    pattern=
-    "(What|When|Why|Where|is there|how about|what about|isn't|We want|Do we need|There is no|backlash|outcry)"
-    ".*"
-    "(#InternationalMensDay|((inter)?national)?.*men'?s?.*day)"
-    ".*"
-    "(\\?)?"  # literal question mark, optional
-    ,
+    pattern="({0}).*(#InternationalMensDay|men.?s day)"
+        .format("|".join(_question_beginnings)),
     flags=re.IGNORECASE)
 
 _answer = re.compile(
@@ -25,20 +37,31 @@ _answer = re.compile(
     "|11|Nov"
     "|Every( ?| single | other )day"
     "|364|365"
-    "|ask"
-    "|insecure"
     "|@Herring1967"
     "|Richard Herring"
-    "|Day\?? Day)"
+    "|Day\?? Day"
+    "|if.*ask"
+    ")"
     , flags=re.IGNORECASE)
 
 
 def is_question(text):
-    return _question_rx.findall(text)
+    return _question_rx.search(text)
 
 
 def is_answer(text):
-    return _answer.findall(text)
+    return _answer.search(text)
+
+
+def condition(text):
+    question_match = is_question(text)
+    answer_match = is_answer(text)
+    sexism_match = is_sexism(text)
+    print(text)
+    print("q: {} {}".format(str(bool(question_match)), str(question_match)))
+    print("a: {} {}".format(str(bool(answer_match)), str(answer_match)))
+    trigger = bool(question_match) and (not bool(answer_match) or bool(sexism_match))
+    return trigger
 
 
 # responses
@@ -54,26 +77,57 @@ responses = [
 ]
 
 _lol = re.compile("lol", flags=re.IGNORECASE)
-_sexist = re.compile("(sexis(t|m))", flags=re.IGNORECASE)
+_feminism = re.compile("femini(sts|ism)", flags=re.IGNORECASE)
+_equality = re.compile("equality", flags=re.IGNORECASE)
+_sexism = re.compile("(sexis(t|m))", flags=re.IGNORECASE)
 _swear = re.compile("fuck|bitches", flags=re.IGNORECASE)
 
+
 def is_lol(text):
-    return _lol.findall(text)
-def is_sexist(text):
-    return _sexist.findall(text)
+    return _lol.search(text)
+
+
+def is_feminism(text):
+    return _feminism.search(text)
+
+
+def is_equality(text):
+    return _equality.search(text)
+
+
+def is_sexism(text):
+    return _sexism.search(text)
+
+
 def is_swear(text):
-    return _swear.findall(text)
+    return _swear.search(text)
+
+
+def capitalise(text):
+    return text[0].upper() + text[1:].lower()
+
+
 def get_response(text):
     response = generate_phrase(responses)
+
     if is_lol(text):
         response += " lol"
-    sexist = is_sexist(text)
+
+    sexist = is_sexism(text)
     if sexist:
-        print(sexist)
-        sexist_text = str(sexist.text)
-        response += " #Not".format(sexist_text)
+        sexist_text = str(sexist[0])
+        sexist_text = capitalise(sexist_text)
+        response += " #Not{}".format(sexist_text)
+
+    if is_feminism(text):
+        response += " #Feminism"
+
+    if is_equality(text):
+        response += " #Equality"
+
     if is_swear(text):
         response += " #WashYourMouth"
+
     return response
 
 

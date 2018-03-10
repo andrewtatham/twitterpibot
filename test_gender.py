@@ -5,26 +5,26 @@ import twitterpibot.logic.gender as gender
 __author__ = 'andrewtatham'
 
 question_testcases = [
-    "We want international men’s day #InternationalMensDay",
+    " We want international men’s day #InternationalMensDay",
     " Why there is no #InternationalMensDay ?",
-    " #InternationalMensDay when will this be allowed?",
+    # " #InternationalMensDay when will this be allowed?",
     " Do we need #InternationalMensDay then to even up just saying",
     " Why isn't there a men's day?",
     " There is no \"International Men's Day\" for the ",
     " when is international men’s day?",
     " Besides, when exactly is International Men’s Day?",
-    "So when is men's day?",
+    " So when is men's day?",
     " Why isn't there an International Men's Day?",
     "  Is there even a international men's day? Lol",
     " Where’s the international men’s day?",
     " Is there an international men's day?"
-    "Is there a international men's day?",
-    "I must have missed it , but when is international men's day?",
-    "Imagine the outcry if someone decided on a international mens day",
-    "When is 'International mens day?'",
-    "Out of interest when is International Mens Day? Asking for friends.",
-    "I, for one, would like to take this opportunity to ask, WHEN IS INTERNATIONAL MENS DAY? WHAT ABOUT THE MEN? yall talk about equality smh",
-    "I see Womens Day nice nice feminists now WHEN THE FUCK IS MENS DAY?",
+    " Is there a international men's day?",
+    " I must have missed it , but when is international men's day?",
+    " Imagine the outcry if someone decided on a international mens day",
+    " When is 'International mens day?'",
+    " Out of interest when is International Mens Day? Asking for friends.",
+    " I, for one, would like to take this opportunity to ask, WHEN IS INTERNATIONAL MENS DAY? WHAT ABOUT THE MEN? yall talk about equality smh",
+    " I see Womens Day nice nice feminists now WHEN THE FUCK IS MENS DAY?",
     "Someone enlighten me pls why is there no international mens day",
     "Serious Question and please excuse my ignorance in advance - Is there such thing as International Mens Day? If so, when is it?",
     "Love the idea of international woman's day. In the interest of equality, what date is international mens day?",
@@ -41,9 +41,9 @@ question_testcases = [
     "How about an #internationalmensday you sexist bitches!   ",
     "So my 9 y/o son was watching .@TuckerCarlson with me. him: Mommy what's a #InternationalWomensDay Me: A day to celebrate women Him: When's International Men's Day? Me: We don't have one Him: That's unfair, aren't men & women equal? My kid has more #CommonSense than the libs",
     "So is today National Men’s Day?",
-    "international men’s day is on april 1st",
-    "It's official We having National Mens Day tomorrow IDGAF what y'all say.",
-    "It’s Friday!!  Or like 364 days a year, it’s International Men’s Day. "
+    # "international men’s day is on april 1st",
+    # "It's official We having National Mens Day tomorrow IDGAF what y'all say.",
+    # "It’s Friday!!  Or like 364 days a year, it’s International Men’s Day. "
 
 ]
 
@@ -69,13 +69,17 @@ not_question_testcases = [
     "Comedian Richard Herring takes it upon himself to reply to every person asking 'when is International Men's Day?' on Twitter ",
     "If everyone who asked 'when is international men's day?' yesterday, took 12 minutes to watch this video of Tony Porter talking about his Man Box, they may decide they have events to organise for Nov 19th.",
     "The effort that @Herring1967 puts into schooling the 'why isn't there an international mens day?' dorks is magnificent to behold. The fact that I interviewed him for an hour this very week without mentioning it, somewhat less so.",
-    "What do Indian men think about International Women's Day?",
-    "What do Indian men think about International Fishermen's Day?",
+    # "What do Indian men think about International Women's Day?",
+    # "What do Indian men think about International Fishermen's Day?",
     "Reminders for men on international women’s day: 1 - check your privilege 2 - if you choose to speak in support of women, make sure you’re not suppressing their voices at the same time 3 - trans women are women too 4 - check the privilege of others around you marginalizing women",
     "Okay, back to International Men's Day.",
     "Today's Spin Zone with @FeitsBarstool, Should We Care About International Men's Day? ",
     "If you’re a man asking why there’s no International Men’s Day, it’s because of you "
 ]
+
+all_testcases = []
+all_testcases.extend(question_testcases)
+all_testcases.extend(not_question_testcases)
 
 
 # Hashtags
@@ -97,26 +101,19 @@ class TestsGender(TestCase):
 
         for testcase in question_testcases:
             with self.subTest(testcase):
-                print(testcase)
-                question_match = gender.is_question(testcase)
-                answer_match = gender.is_answer(testcase)
-                print("q: {} {}".format(str(bool(question_match)),str(question_match)))
-                print("a: {} {}".format(str(bool(answer_match)),str(answer_match)))
-                if bool(question_match) and not bool(answer_match):
-                    print("response: {}".format(gender.get_response(testcase)))
-                self.assertTrue(bool(question_match) and not bool(answer_match))
+                match = gender.condition(testcase)
+                if match:
+                    response = gender.get_response(testcase)
+                    print("response: {}".format(response))
+                self.assertTrue(match)
                 print()
 
     def test_is_answer(self):
         for testcase in not_question_testcases:
             with self.subTest(testcase):
-                print(testcase)
-                question_match = gender.is_question(testcase)
-                answer_match = gender.is_answer(testcase)
-                print("q: {} {}".format(str(bool(question_match)),str(question_match)))
-                print("a: {} {}".format(str(bool(answer_match)),str(answer_match)))
-                if bool(question_match) and not bool(answer_match):
-                    print("response: {}".format(gender.get_response(testcase)))
-                self.assertTrue(not bool(question_match) or bool(answer_match))
+                match = gender.condition(testcase)
+                if match:
+                    response = gender.get_response(testcase)
+                    print("response: {}".format(response))
+                self.assertFalse(match)
                 print()
-
