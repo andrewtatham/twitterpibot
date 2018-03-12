@@ -2,7 +2,7 @@ import random
 import re
 import logging
 
-from twitterpibot.logic import wordnikwrapper
+# from twitterpibot.logic import wordnikwrapper
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +27,8 @@ replacements = {
 
     "i'm a lit": "omlette",
     "i'm lit": "omlette",
+
+    "over":"ovum",
 
     # sketchy
     "ag": "egg",
@@ -97,71 +99,15 @@ def make_egg_pun(text, mask=None):
     return None
 
 
-def make_egg_pun_phrase(phrase=None, mask=None):
-    if not phrase:
-        stem = random.choice(stem_list)
-        logger.debug("stem: %s" % stem)
-        word = wordnikwrapper.get_word_matching(stem, None)  # stem_rx)
-        logger.debug("word: %s" % word)
-        phrase = wordnikwrapper.get_example(word)
+def make_egg_pun_phrase(phrase, mask=None):
+    # if not phrase:
+    #     stem = random.choice(stem_list)
+    #     logger.debug("stem: %s" % stem)
+    #     word = wordnikwrapper.get_word_matching(stem, None)  # stem_rx)
+    #     logger.debug("word: %s" % word)
+    #     phrase = wordnikwrapper.get_example(word)
     logger.debug("phrase: %s" % phrase)
     logger.debug("mask: %s" % str(mask))
     pun = make_egg_pun(phrase, mask)
     logger.debug("pun: %s" % pun)
     return pun
-
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    logger.info(stem_rx)
-    logger.info(replacements)
-    phrases = [
-        "there was an explosion",
-        "very selfish",
-        "hello what shall i ",
-        "dalek",
-        "six of these",
-        "Egypt",
-        "aggregate",
-        "enough",
-        "ignite",
-        "it was a funny joke",
-        "they were joking around",
-        "listening to folk music",
-        "self-aware",
-        "eggregious",
-        "I'm a little teapot",
-        "I'm literally",
-        "I'm a literary",
-        "corrected"
-
-    ]
-
-    for phrase in phrases:
-        logger.info("%s -> %s" % (phrase, make_egg_pun_phrase(phrase)))
-
-    phrases_with_mask = [
-        [
-            " @imagebot explosion http://blah.com #joke",
-            "           explosion                 #joke"
-        ]
-    ]
-    for phrase in phrases_with_mask:
-        logger.info("%s -> %s" % (phrase[0], make_egg_pun_phrase(phrase[0], phrase[1])))
-
-
-        # for i in range(20):
-        #     logger.info(make_egg_pun_phrase())
-
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
-    egg_words = []
-
-    for stem in replacements:
-
-        ex_words = wordnikwrapper.get_words_matching(stem)
-        for ex_word in ex_words:
-            egg_word = make_egg_pun(ex_word)
-            egg_words.append(egg_word)
-    egg_words.sort()
-    pprint(egg_words)
