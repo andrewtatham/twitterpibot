@@ -10,7 +10,7 @@ class EggPunResponse(Response):
     def respond(self, inbox_item):
         file_paths = None
         try:
-            response = eggpuns.make_egg_pun_phrase(inbox_item.text, mask=inbox_item.text_stripped)
+            response = eggpuns.make_egg_pun(inbox_item.text, mask=inbox_item.text_stripped)
             if inbox_item.is_tweet:
                 gif_text = eggpuns.get_gif_search_text()
                 gif = imagemanager.get_gif(screen_name=self.identity.screen_name, text=gif_text)

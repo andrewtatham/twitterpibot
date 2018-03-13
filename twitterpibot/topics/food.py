@@ -30,7 +30,7 @@ class Veganism(IgnoreTopic):
 
 class Eggs(GoodTopic):
     def __init__(self):
-        super(Eggs, self).__init__(eggpuns.trigger_list)
+        super(Eggs, self).__init__(eggpuns.gif_search_words)
 
 
 def get():

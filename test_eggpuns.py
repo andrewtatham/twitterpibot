@@ -1,10 +1,19 @@
 from unittest import TestCase
 
 from twitterpibot.logic import eggpuns
+import logging
 
+logging.basicConfig(level=logging.DEBUG)
 __author__ = 'andrewtatham'
 
-trigger_testcases = ["egg"]
+trigger_testcases = [
+    " eg ",
+    " ag "
+]
+not_trigger_testcases = [
+    "egg",
+    "eggs"
+]
 
 pun_testcases = [
 
@@ -19,7 +28,7 @@ pun_testcases = [
     ("dalek", "dalEGG"),
     ("six of these", "six OEUF these"),
     ("Egypt", "EGGypt"),
-    ("aggregate", "EGGgrEGGate"),
+    ("aggregate", "EGGrEGGate"),
     ("enough", "enoEGGh"),
     ("ignite", "EGGnite"),
     ("it was a funny joke", "it was a funny YOLK"),
@@ -33,16 +42,17 @@ pun_testcases = [
     ("corrected", "corrEGGted"),
     ("over and out", "OVUM and out"),
     ("eccentric", "EGGcentric"),
-    ("eggbox", "eggbox"),
-    ("eggshell", "eggshell")
+    ("I'm selling a", "I'm SHELLing a"),
+    ("eggbox", None),
+    ("eggshell", None)
 
 ]
 
 pun_with_mask_testcases = [
     (
-        " @imagebot explosion http://blah.com #joke",
+        " @imagebot explosion http://blagh.com #joke",
         "           explosion                 #joke",
-        " @imagebot EGGSplosion http://blah.com #YOLK"
+        " @imagebot EGGSplosion http://blagh.com #YOLK"
 
     )
 ]
@@ -53,6 +63,11 @@ class TestsEggPuns(TestCase):
         for testcase in trigger_testcases:
             with self.subTest(testcase):
                 self.assertTrue(eggpuns.is_egg_pun_trigger(testcase))
+
+    def test_is_not_egg_pun_trigger(self):
+        for testcase in not_trigger_testcases:
+            with self.subTest(testcase):
+                self.assertFalse(eggpuns.is_egg_pun_trigger(testcase))
 
     def test_make_egg_pun(self):
         for testcase in pun_testcases:
