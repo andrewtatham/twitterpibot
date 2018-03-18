@@ -2,7 +2,7 @@ from twitterpibot.logic import imagemanager, eggpuns, fsh
 from twitterpibot.responses.Response import Response, mentioned_reply_condition, unmentioned_reply_condition
 
 
-class EggPunResponse(Response):
+class MakeEggPunResponse(Response):
     def condition(self, inbox_item):
         return (mentioned_reply_condition(inbox_item) or unmentioned_reply_condition(
             inbox_item)) and eggpuns.is_egg_pun_trigger(inbox_item.text_stripped)
@@ -23,3 +23,12 @@ class EggPunResponse(Response):
                 file_paths=file_paths)
         finally:
             fsh.delete_files(file_paths)
+
+
+class FavouriteEggPunResponse(Response):
+    def condition(self, inbox_item):
+        return (mentioned_reply_condition(inbox_item) or unmentioned_reply_condition(
+            inbox_item)) and eggpuns.is_egg_pun(inbox_item.text_stripped)
+
+    def respond(self, inbox_item):
+        self.identity.twitter.favourite(inbox_item=inbox_item)

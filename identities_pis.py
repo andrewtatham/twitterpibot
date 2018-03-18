@@ -13,7 +13,7 @@ from twitterpibot.logic.ed_balls_day import TweetBeforeEdBallsDayScheduledTask, 
 from twitterpibot.logic.gender import WhenIsIMDScheduledTask, WhenIsInternationalMensDayResponse
 from twitterpibot.logic.morse_code import MorseCodeResponse
 from twitterpibot.logic.numberwang import NumberwangHostScheduledTask, NumberwangHostResponse
-from twitterpibot.responses.EggPunResponse import EggPunResponse
+from twitterpibot.responses.egg_pun_responses import MakeEggPunResponse, FavouriteEggPunResponse
 from twitterpibot.responses.FavoriteResponse import FavoriteResponse
 from twitterpibot.responses.Magic8BallResponse import Magic8BallResponse
 from twitterpibot.responses.PhotoResponse import PhotoResponse
@@ -166,7 +166,8 @@ class EggPunBotIdentity(BotIdentity):
 
     def get_responses(self):
         return [
-            EggPunResponse(self)
+            MakeEggPunResponse(self),
+            FavouriteEggPunResponse(self)
         ]
 
 
