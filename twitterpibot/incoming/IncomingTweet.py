@@ -9,6 +9,7 @@ from colorama import Fore, Style
 
 from twitterpibot.incoming.InboxItem import InboxItem
 from twitterpibot.logic import english, location, unicode_helper
+from twitterpibot.logic.string_helper import clean_string
 from twitterpibot.topics import topichelper
 from twitterpibot.users.scores import TweetScore
 
@@ -169,9 +170,9 @@ class IncomingTweet(InboxItem):
                 tweet_place=place)
 
     def _text(self, data, identity):
-        self.text = data.get("text")
+        self.text = clean_string(data.get("text"))
         if self.text:
-            self.text = html.unescape(self.text)
+            self.text = self.text
             self.to_me = False
 
             self.text_stripped = self.text

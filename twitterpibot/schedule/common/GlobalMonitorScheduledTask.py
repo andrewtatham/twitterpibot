@@ -1,3 +1,4 @@
+import pythoncom
 from apscheduler.triggers.cron import CronTrigger
 from colorama import Style, Fore
 import psutil

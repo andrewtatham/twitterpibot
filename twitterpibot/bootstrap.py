@@ -54,9 +54,12 @@ def run(identities):
 def set_scheduled_jobs(identities):
     logger.info("Setting schedule")
     _scheduled_jobs = [
-        GlobalMonitorScheduledTask(None),
         HousekeepingScheduledTask(None)
     ]
+    if not myhardware.is_windows:
+        _scheduled_jobs.extend([
+            GlobalMonitorScheduledTask(None)
+        ])
 
     if myhardware.is_lights_attached:
         _scheduled_jobs.extend([

@@ -3,11 +3,13 @@ import logging
 import os
 import random
 import re
+import sys
 
 import dateutil.parser
 import humanize
 
 from twitterpibot.incoming.IncomingTweet import IncomingTweet
+from twitterpibot.logic.string_helper import clean_string
 from twitterpibot.topics import topichelper
 from twitterpibot.users.scores import UserScore
 
@@ -26,23 +28,23 @@ bot_rx = re.compile("bot|ebooks|#botALLY", re.IGNORECASE)
 
 def get_recent_tweet_rate(tweets):
     if tweets:
-        tweet_times = list(map(lambda t: t.created_at,tweets))
+        tweet_times = list(map(lambda t: t.created_at, tweets))
         earliest_recent_tweet_at = min(tweet_times)
         latest_recent_tweet_at = max(tweet_times)
         recent_tweets_time_range = (latest_recent_tweet_at - earliest_recent_tweet_at).days
         number_of_recent_tweets = len(tweet_times)
         if recent_tweets_time_range:
-             return number_of_recent_tweets / recent_tweets_time_range
+            return number_of_recent_tweets / recent_tweets_time_range
 
 
 class User(object):
     def __init__(self, data={}, identity=None):
 
         self.id_str = data.get("id_str")
-        self.name = data.get("name")
-        self.screen_name = data.get("screen_name")
+        self.name = clean_string(data.get("name"))
+        self.screen_name = clean_string(data.get("screen_name"))
         self.profile_url = "https://twitter.com/" + str(self.screen_name)
-        self.description = data.get("description")
+        self.description = clean_string(data.get("description"))
         self.url = data.get("url")
         self.profile_image_url = data.get("profile_image_url")
         self.profile_banner_url = data.get("profile_banner_url")
@@ -229,7 +231,7 @@ class User(object):
 
     def get_user_score(self, include_recent_tweets_score=False):
         if not self.user_score or self.user_score and (
-                    not self.user_score.include_recent_tweets_score or self.user_score.is_stale()):
+                not self.user_score.include_recent_tweets_score or self.user_score.is_stale()):
             logger.debug("scoring user: {}".format(self.short_description()))
             self.user_score = UserScore(self, include_recent_tweets_score)
             logger.debug("scored user: {}".format(self.short_description()))

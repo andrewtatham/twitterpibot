@@ -46,12 +46,11 @@ class Streamer(TwythonStreamer):
         inbox_item = self._create_inbox_item(data)
         if inbox_item:
             myperipherals.on_inbox_item_received(inbox_item)
-            response = self._determine_response(inbox_item)
 
-            if inbox_item.is_tweet and response or inbox_item.is_event or inbox_item.is_direct_message:
-                logger.info("[{}] {}".format(self._identity.screen_name, inbox_item.display()))
-            else:
-                logger.info("[{}] {}".format(self._identity.screen_name, inbox_item.short_description()))
+            if inbox_item.is_tweet or inbox_item.is_event or inbox_item.is_direct_message:
+                logger.debug("{}".format(inbox_item.display()))
+
+            response = self._determine_response(inbox_item)
             if response:
                 self._respond(inbox_item=inbox_item, response=response)
 
